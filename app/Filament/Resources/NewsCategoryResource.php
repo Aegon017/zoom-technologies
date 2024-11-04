@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\NewsCategoryResource\Pages;
 use App\Filament\Resources\NewsCategoryResource\RelationManagers;
+use App\Filament\Resources\NewsCategoryResource\RelationManagers\MetaDetailRelationManager;
 use App\Filament\Resources\NewsCategoryResource\RelationManagers\NewsRelationManager;
 use App\Models\NewsCategory;
 use Filament\Forms;
@@ -22,7 +23,6 @@ class NewsCategoryResource extends Resource
     protected static ?string $model = NewsCategory::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
-    protected static ?string $navigationLabel = 'News';
     protected static ?int $navigationSort = 5;
     public static function form(Form $form): Form
     {
@@ -56,7 +56,7 @@ class NewsCategoryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            NewsRelationManager::class
+            MetaDetailRelationManager::class,
         ];
     }
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class News extends Model
 {
@@ -22,5 +23,10 @@ class News extends Model
     public function news_category(): BelongsTo
     {
         return $this->belongsTo(NewsCategory::class);
+    }
+
+    public function metaDetail(): HasOne
+    {
+        return $this->hasOne(MetaDetails::class);
     }
 }

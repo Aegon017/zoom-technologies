@@ -10,6 +10,8 @@ class MetaDetails extends Model
     protected $fillable = [
         'course_id',
         'package_id',
+        'news_category_id',
+        'news_id',
         'title',
         'keywords',
         'description'
@@ -23,5 +25,15 @@ class MetaDetails extends Model
     public function package(): BelongsTo
     {
         return $this->belongsTo(Package::class);
+    }
+
+    public function newsCategory(): BelongsTo
+    {
+        return $this->belongsTo(NewsCategory::class);
+    }
+
+    public function news(): BelongsTo
+    {
+        return $this->belongsTo(News::class);
     }
 }
