@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'payu' => [
+        'key' => env('PAYU_MERCHANT_KEY'),
+        'salt' => env('PAYU_MERCHANT_SALT'),
+        'payu_url' => env('PAYU_URL'),
+        'environment' => env('PAYU_ENVIRONMENT'),
+    ]
+
 ];
