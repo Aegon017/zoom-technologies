@@ -8,24 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Schedule extends Model
 {
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function () {
-            self::deletePastSchedules();
-        });
-
-        static::updating(function () {
-            self::deletePastSchedules();
-        });
-    }
-
-    protected static function deletePastSchedules()
-    {
-        self::whereDate('start_date', '<', Carbon::today())->delete();
-    }
-
     protected $fillable = [
         'course_id',
         'start_date',
@@ -44,5 +26,10 @@ class Schedule extends Model
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
+    }
+
+    public static function deletePastSchedules()
+    {
+        self::whereDate('start_date', '<', Carbon::today())->delete();
     }
 }
