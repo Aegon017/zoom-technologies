@@ -48,8 +48,8 @@ class CourseResource extends Resource
                         TextInput::make('duration')->required(),
                         Select::make('duration_type')->options(['Month' => 'Month', 'Week' => 'Week', 'Day' => 'Day'])->required(),
                         Select::make('training_mode')->multiple()->options(['Online' => 'Online', 'Classroom' => 'Classroom'])->columnSpanFull()->required(),
-                        TextInput::make('original_price')->prefix('Rs.'),
-                        TextInput::make('price')->prefix('Rs.')->label('Offer price')->required()
+                        TextInput::make('price')->label('Regular price')->prefix('Rs.')->required(),
+                        TextInput::make('original_price')->label('Offer price')->prefix('Rs.')
                     ])->columns(2),
                     Section::make('Placement & Certification')->schema([
                         Radio::make('placement')->boolean()->label('Placement assistance')->inline()->required(),

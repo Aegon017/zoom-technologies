@@ -1,7 +1,7 @@
 <div class="course-details-widget style-two course-sidebar sticky-top">
     <div class="course-widget-wrap">
         <div class="cd-video-widget position-relative">
-            <img src="{{ asset(Storage::url($item->image)) }}" alt="{{$item->image_alt}}">
+            <img src="{{ asset(Storage::url($item->image)) }}" alt="{{ $item->image_alt }}">
             <a class="video_box text-center" href="https://youtu.be/naLqv5fj3T0"><i class="fas fa-play"></i></a>
             <span class="play-view-text d-block color-white"><i class="fas-fa-eye"></i>
                 Preview
@@ -49,7 +49,7 @@
                 @if ($item->original_price)
                     <div class="course-table-item clearfix text-center mb-1">
                         <p class="mb-0"><strong class="txt-primary">Introductory Limited Period Offer</strong></p>
-                        <h4 class="txt-primary m-0"><del class="txt-priamry">INR {{ $item->original_price }}</del></h4>
+                        <h4 class="txt-primary m-0"><del class="txt-priamry">INR {{ $item->price }}</del></h4>
                     </div>
                 @endif
             </div>
@@ -60,7 +60,8 @@
                     $cgst = $price * 0.09;
                     $total_price = $price + $sgst + $cgst;
                 @endphp
-                <span>Price: <strong><i class="fas fa-rupee-sign"></i>{{ number_format($item->price) }}</strong></span>
+                <span>Price: <strong><i
+                            class="fas fa-rupee-sign"></i>{{ $item->orginal_price ? number_format($item->price) : number_format($item->original_price) }}</strong></span>
                 <div class="payment-button">
                     <button data-toggle="modal" data-target="#checkoutpopup">Buy
                         Now</button>
