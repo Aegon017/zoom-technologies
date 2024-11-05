@@ -100,7 +100,6 @@ class PackageResource extends Resource
             MetaDetailRelationManager::class,
             OverviewRelationManager::class,
             GuidelineRelationManager::class,
-            StudyMaterialRelationManager::class,
             FaqRelationManager::class
         ];
     }
