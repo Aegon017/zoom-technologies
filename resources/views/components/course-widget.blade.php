@@ -49,18 +49,20 @@
                 @if ($item->original_price)
                     <div class="course-table-item clearfix text-center mb-1">
                         <p class="mb-0"><strong class="txt-primary">Introductory Limited Period Offer</strong></p>
-                        <h4 class="txt-primary m-0"><del class="txt-priamry">INR {{ $item->original_price }}</del></h4>
+                        <h4 class="txt-primary m-0"><del class="txt-priamry">INR {{ number_format($item->price) }}</del>
+                        </h4>
                     </div>
                 @endif
             </div>
             <div class="cd-course-price clearfix">
                 @php
-                    $price = $item->price;
+                    $price = $item->original_price ? $item->original_price : $item->price;
                     $sgst = $price * 0.09;
                     $cgst = $price * 0.09;
                     $total_price = $price + $sgst + $cgst;
                 @endphp
-                <span>Price: <strong><i class="fas fa-rupee-sign"></i>{{ number_format($item->price) }}</strong></span>
+                <span>Price: <strong><i
+                            class="fas fa-rupee-sign"></i>{{ $item->original_price ? number_format($item->original_price) : number_format($item->price) }}</strong></span>
                 <div class="payment-button">
                     <button data-toggle="modal" data-target="#checkoutpopup">Buy
                         Now</button>

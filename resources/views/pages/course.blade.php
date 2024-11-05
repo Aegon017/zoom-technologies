@@ -97,7 +97,7 @@
     @foreach ([$course, $package] as $item)
         @if ($item)
             @php
-                $totalPrice = $item->price * 1.18;
+                $totalPrice = ($item->original_price ? $item->original_price : $item->price) * 1.18;
             @endphp
             <x-checkout-popup :$item :$totalPrice :$packageCourses />
         @endif

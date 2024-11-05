@@ -53,10 +53,14 @@
                             <form action="{{ route('payment.initiate') }}" method="POST">
                                 @csrf
                                 <h5 class="font-weight-bold">{{ $item->name }}</h5>
-                                <h5>₹{{ $item->price }}</h5>
-                                <p>CGST(9%) - ₹{{ $item->price * 0.09 }}</p>
-                                <p>SGST(9%) - ₹{{ $item->price * 0.09 }}</p>
-                                <h6>Total Price - ₹{{ $item->price + $item->price * 0.18 }}/-</h6>
+                                <h5>₹{{ $item->original_price ? $item->original_price : $item->price }}</h5>
+                                <p>CGST(9%) -
+                                    ₹{{ ($item->original_price ? $item->original_price : $item->price) * 0.09 }}</p>
+                                <p>SGST(9%) -
+                                    ₹{{ ($item->original_price ? $item->original_price : $item->price) * 0.09 }}</p>
+                                <h6>Total Price -
+                                    ₹{{ ($item->original_price ? $item->original_price : $item->price) + ($item->original_price ? $item->original_price : $item->price) * 0.18 }}/-
+                                </h6>
                                 <div class="pt-2">
                                     <label for="course-schedule">Select Your Course Date & Time</label>
                                     <select class="form-control" name="course_schedule" id="course-schedule" required>
