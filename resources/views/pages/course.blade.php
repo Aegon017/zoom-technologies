@@ -2,7 +2,7 @@
     @php
         $metaDetail = $course->metaDetail ?? ($package->metaDetail ?? null);
     @endphp
-    @if ($metaDetails != null)
+    @if ($metaDetail != null)
         <x-slot:metaTitle>
             {{ $metaDetail->title }}
         </x-slot>
