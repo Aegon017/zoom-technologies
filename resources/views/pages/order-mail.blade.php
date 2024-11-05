@@ -127,6 +127,10 @@
         <h3 class="mt-3">Order payment {{ $order->status }} notification</h3>
     </div>
     @if ($order->status == 'success')
+        @php
+            $courseSchedulesJson = html_entity_decode($order->course_schedule);
+            $courseSchedulesArray = json_decode($courseSchedulesJson, true);
+        @endphp
         <div class="content">
             <p>Dear <strong>{{ $order->user->name }}</strong>,</p>
             <p>We are pleased to inform you that your order <a href="#">with transaction Id:
@@ -151,15 +155,11 @@
                 <thead>
                     <tr>
                         <th>Batch</th>
-                        <th>Traning mode</th>
+                        <th>{{ $courseSchedulesArray ? '' : 'Training mode' }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <td>
-                        @php
-                            $courseSchedulesJson = html_entity_decode($order->course_schedule);
-                            $courseSchedulesArray = json_decode($courseSchedulesJson, true);
-                        @endphp
                         @if ($courseSchedulesArray)
                             @foreach ($courseSchedulesArray as $item)
                                 @php
@@ -186,7 +186,7 @@
                             {{ $dateTimeObject->format('d M Y h:i A') }} <br>
                         @endif
                     </td>
-                    <td>{{ $mode }}</td>
+                    <td>{{ $courseSchedulesArray ? '' : $mode }}</td>
                 </tbody>
             </table>
             <table>
@@ -222,6 +222,10 @@
             <p>Sincerely,<br /><strong>Zoom Technologies Team</strong></p>
         </div>
     @else
+        @php
+            $courseSchedulesJson = html_entity_decode($order->course_schedule);
+            $courseSchedulesArray = json_decode($courseSchedulesJson, true);
+        @endphp
         <div class="content">
             <p>Dear <strong>{{ $order->user->name }}</strong>,</p>
             <p>We regret to inform you that your order <a href="#">with transaction Id:
@@ -246,15 +250,11 @@
                 <thead>
                     <tr>
                         <th>Batch</th>
-                        <th>Traning mode</th>
+                        <th>{{ $courseSchedulesArray ? '' : 'Training mode' }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <td>
-                        @php
-                            $courseSchedulesJson = html_entity_decode($order->course_schedule);
-                            $courseSchedulesArray = json_decode($courseSchedulesJson, true);
-                        @endphp
                         @if ($courseSchedulesArray)
                             @foreach ($courseSchedulesArray as $item)
                                 @php
@@ -281,7 +281,7 @@
                             {{ $dateTimeObject->format('d M Y h:i A') }} <br>
                         @endif
                     </td>
-                    <td>{{ $mode }}</td>
+                    <td>{{ $courseSchedulesArray ? '' : $mode }}</td>
                 </tbody>
             </table>
             <table>
