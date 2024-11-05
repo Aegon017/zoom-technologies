@@ -45,9 +45,4 @@ class Schedule extends Model
     {
         return $this->belongsTo(Course::class);
     }
-
-    public function package(): BelongsTo
-    {
-        return $this->belongsTo(Package::class);
-    }
 }

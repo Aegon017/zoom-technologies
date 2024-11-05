@@ -47,19 +47,9 @@ class Package extends Model
         return $this->hasOne(MetaDetails::class);
     }
 
-    public function schedule(): HasMany
-    {
-        return $this->hasMany(Schedule::class);
-    }
-
     public function guideline(): HasMany
     {
         return $this->hasMany(Guideline::class);
-    }
-
-    public function studyMaterial(): HasMany
-    {
-        return $this->hasMany(StudyMaterial::class);
     }
 
     public function faq(): HasMany

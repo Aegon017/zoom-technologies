@@ -11,7 +11,6 @@ return new class extends Migration
         Schema::create('study_materials', function (Blueprint $table) {
             $table->id();
             $table->foreignId('course_id')->nullable()->constrained()->cascadeOnDelete();
-            $table->foreignId('package_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('image');
             $table->string('image_alt');
