@@ -19,8 +19,8 @@
     <div class="news-details__tag-and-social">
         <div class="news-details__social">
             <span>Share on:</span>
-            <a href="https://www.facebook.com/sharer/sharer?u=news/the-future-of-cybersecurity-recruiting-lessons-on-what-employers-want-and-what-students-need"
-                target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.facebook.com/sharer/sharer?u=news/{{ $news->slug }}" target="_blank"><i
+                    class="fab fa-facebook"></i></a>
         </div>
     </div>
 </div>
