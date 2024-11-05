@@ -12,7 +12,6 @@ class MetaDetails extends Model
         'package_id',
         'news_category_id',
         'news_id',
-        'page_name',
         'title',
         'keywords',
         'description'

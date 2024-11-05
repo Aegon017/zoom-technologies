@@ -7,6 +7,7 @@ use App\Models\News;
 use App\Models\NewsCategory;
 use App\Models\Order;
 use App\Models\Package;
+use App\Models\PageMetaDetails;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,28 +15,33 @@ class FrontendController extends Controller
 {
     public function renderHome()
     {
-        return view('pages.home');
+        $metaDetail = PageMetaDetails::where('page_name', 'Home')->first();
+        return view('pages.home', compact('metaDetail'));
     }
 
     public function renderNewsList()
     {
         $news = News::all();
-        return view('pages.news-list', compact('news'));
+        $metaDetail = PageMetaDetails::where('page_name', 'News list')->first();
+        return view('pages.news-list', compact('news', 'metaDetail'));
     }
 
     public function renderNews($slug)
     {
-        return view('pages.news', compact('slug'));
+        $metaDetail = News::where('slug', $slug)->first()->metaDetail;
+        return view('pages.news', compact('slug', 'metaDetail'));
     }
 
     public function renderCourseList()
     {
-        return view('pages.course-list');
+        $metaDetail = PageMetaDetails::where('page_name', 'Course list')->first();
+        return view('pages.course-list', compact('metaDetail'));
     }
 
     public function renderContact()
     {
-        return view('pages.contact');
+        $metaDetail = PageMetaDetails::where('page_name', 'Contact')->first();
+        return view('pages.contact', compact('metaDetail'));
     }
 
     public function renderCourse($slug)
@@ -48,11 +54,12 @@ class FrontendController extends Controller
 
     public function renderUpcomingBatches()
     {
+        $metaDetail = PageMetaDetails::where('page_name', 'Upcoming schedule')->first();
         $latestSchedules = Course::with('schedule')->get()->map(function ($course) {
             $latestSchedule = $course->schedule->firstWhere('start_date', '>=', Carbon::today());
             return ['item' => $course, 'latest_schedule' => $latestSchedule,];
         });
-        return view('pages.upcoming-batches', compact('latestSchedules'));
+        return view('pages.upcoming-batches', compact('latestSchedules', 'metaDetail'));
     }
 
     public function render_account()
@@ -71,6 +78,25 @@ class FrontendController extends Controller
     {
         $newsCategory = NewsCategory::where('name', $category)->first();
         $news = $newsCategory->news ?? collect();
-        return view('pages.news-list', compact('news'));
+        $metaDetail = $newsCategory->metaDetail;
+        return view('pages.news-list', compact('news', 'metaDetail'));
+    }
+
+    public function renderTestimonials()
+    {
+        $metaDetail = PageMetaDetails::where('page_name', 'Testimonials')->first();
+        return view('pages.testimonials', compact('metaDetail'));
+    }
+
+    public function renderMemorableMoments()
+    {
+        $metaDetail = PageMetaDetails::where('page_name', 'Memorable moments')->first();
+        return view('pages.memorable-moments', compact('metaDetail'));
+    }
+
+    public function renderFranchisee()
+    {
+        $metaDetail = PageMetaDetails::where('page_name', 'Franchisee')->first();
+        return view('pages.franchisee', compact('metaDetail'));
     }
 }

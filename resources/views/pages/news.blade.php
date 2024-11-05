@@ -1,7 +1,18 @@
 <x-frontend-layout>
+    @if ($metaDetail != null)
+        <x-slot:metaTitle>
+            {{ $metaDetail->title }}
+        </x-slot>
+        <x-slot:metaKeywords>
+            {{ $metaDetail->keywords }}
+        </x-slot>
+        <x-slot:metaDescription>
+            {{ $metaDetail->description }}
+        </x-slot>
+    @endif
     @php
-    $pageBackground = 'frontend/assets/img/banner/contact-us-banner.jpg';
-    $pageTitle = 'News';
+        $pageBackground = 'frontend/assets/img/banner/contact-us-banner.jpg';
+        $pageTitle = 'News';
     @endphp
     <x-page-breadcrumb :pageBackground="$pageBackground" :pageTitle="$pageTitle" />
     <section class="news-left zt-inner-page-wrapper news-details">

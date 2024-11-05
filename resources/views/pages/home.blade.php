@@ -1,4 +1,15 @@
 <x-frontend-layout>
+    @if ($metaDetail != null)
+        <x-slot:metaTitle>
+            {{ $metaDetail->title }}
+        </x-slot>
+        <x-slot:metaKeywords>
+            {{ $metaDetail->keywords }}
+        </x-slot>
+        <x-slot:metaDescription>
+            {{ $metaDetail->description }}
+        </x-slot>
+    @endif
     <section id="zt-slider-2" class="zt-slider-section-2">
         <div id="zt-main-slider-2" class="zt-main-slider-wrap owl-carousel">
             <div class="slider-main-item-2 position-relative">
@@ -325,7 +336,8 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="about-page-about-img">
-                            <img src="{{ asset('frontend/assets/img/zoom-about.png') }}" alt="Zoom Group company about us promotional image">
+                            <img src="{{ asset('frontend/assets/img/zoom-about.png') }}"
+                                alt="Zoom Group company about us promotional image">
                             <a class="video_box text-center"
                                 href="https://www.youtube.com/watch?v=6EA-YrAbEzc&t=2s"><i
                                     class="fas fa-play"></i></a>
@@ -371,27 +383,32 @@
                 <div class="zt-client-logos zt-client-logo-carousel owl-carousel">
                     <div class="zt-client-logo-item">
                         <a href="#">
-                            <img src="{{ asset('frontend/assets/img/clients/1.png') }}" alt="Corporate Training client">
+                            <img src="{{ asset('frontend/assets/img/clients/1.png') }}"
+                                alt="Corporate Training client">
                         </a>
                     </div>
                     <div class="zt-client-logo-item">
                         <a href="#">
-                            <img src="{{ asset('frontend/assets/img/clients/2.png') }}" alt="Corporate Training client">
+                            <img src="{{ asset('frontend/assets/img/clients/2.png') }}"
+                                alt="Corporate Training client">
                         </a>
                     </div>
                     <div class="zt-client-logo-item">
                         <a href="#">
-                            <img src="{{ asset('frontend/assets/img/clients/3.png') }}" alt="Corporate Training client">
+                            <img src="{{ asset('frontend/assets/img/clients/3.png') }}"
+                                alt="Corporate Training client">
                         </a>
                     </div>
                     <div class="zt-client-logo-item">
                         <a href="#">
-                            <img src="{{ asset('frontend/assets/img/clients/4.png') }}" alt="Corporate Training client">
+                            <img src="{{ asset('frontend/assets/img/clients/4.png') }}"
+                                alt="Corporate Training client">
                         </a>
                     </div>
                     <div class="zt-client-logo-item">
                         <a href="#">
-                            <img src="{{ asset('frontend/assets/img/clients/5.png') }}" alt="Corporate Training client">
+                            <img src="{{ asset('frontend/assets/img/clients/5.png') }}"
+                                alt="Corporate Training client">
                         </a>
                     </div>
                     <div class="zt-client-logo-item">

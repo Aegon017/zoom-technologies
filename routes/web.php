@@ -19,9 +19,9 @@ Route::prefix('/training/india')->group(function () {
 });
 Route::get('/contact', [FrontendController::class, 'renderContact'])->name('render.contact');
 Route::get('/upcoming-batches', [FrontendController::class, 'renderUpcomingBatches'])->name('render.upcoming.batches');
-Route::view('/testimonials', 'pages.testimonials')->name('render.testimonials');
-Route::view('/memorable-moments', 'pages.memorable-moments')->name('render.memorable-moments');
-Route::view('/franchisee', 'pages.franchisee')->name('render.franchisee');
+Route::get('/testimonials', [FrontendController::class, 'renderTestimonials'])->name('render.testimonials');
+Route::get('/memorable-moments', [FrontendController::class, 'renderMemorableMoments'])->name('render.memorable-moments');
+Route::get('/franchisee', [FrontendController::class, 'renderFranchisee'])->name('render.franchisee');
 
 Route::middleware([
     'auth:sanctum',
@@ -36,8 +36,8 @@ Route::middleware([
     Route::post('/payment/failure', [PaymentController::class, 'paymentFailure'])->name('payment.failure');
 });
 
-Route::get('/storage-link', function(){
+Route::get('/storage-link', function () {
     $target = storage_path('app/public');
-    $link = $_SERVER['DOCUMENT_ROOT'].'/zoom-technologies/public/storage';
+    $link = $_SERVER['DOCUMENT_ROOT'] . '/zoom-technologies/public/storage';
     symlink($target, $link);
 });

@@ -21,7 +21,7 @@ class ContactLocationResource extends Resource
     protected static ?string $model = ContactLocation::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-map-pin';
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 7;
     public static function form(Form $form): Form
     {
         return $form
