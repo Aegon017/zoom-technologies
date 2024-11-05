@@ -53,12 +53,19 @@
                                     </div>
                                     <div class="study-material-list mt-3">
                                         <div class="row">
-                                            @foreach ([$course->studyMaterial ?? null, $package->studyMaterial ?? null] as $materials)
+                                            @foreach ([$course->studyMaterial ?? null] as $materials)
                                                 @if ($materials)
                                                     @foreach ($materials as $material)
                                                         <x-study-material :$material />
                                                     @endforeach
                                                 @endif
+                                            @endforeach
+                                            @foreach ($packageCourses as $packageCourse)
+                                                @foreach ($packageCourse->studyMaterial as $material)
+                                                    @if ($material)
+                                                        <x-study-material :$material />
+                                                    @endif
+                                                @endforeach
                                             @endforeach
                                         </div>
                                     </div>
