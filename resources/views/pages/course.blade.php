@@ -1,20 +1,18 @@
 <x-frontend-layout>
-    @if (($course->metaDetail || $package->metaDetail) != null)
+    @php
+        $metaDetail = $course->metaDetail ?? ($package->metaDetail ?? null);
+    @endphp
+    @if ($metaDetails != null)
         <x-slot:metaTitle>
-            {{ isset($course) ? $course->metaDetail->title : (isset($package) ? $package->metaDetail->title : null) }}
+            {{ $metaDetail->title }}
         </x-slot>
         <x-slot:metaKeywords>
-            {{ isset($course) ? $course->metaDetail->keywords : (isset($package) ? $package->metaDetail->keywords : null) }}
+            {{ $metaDetail->keywords }}
         </x-slot>
         <x-slot:metaDescription>
-            {{ isset($course)
-                ? $course->metaDetail->description
-                : (isset($package)
-                    ? $package->metaDetail->description
-                    : null) }}
+            {{ $metaDetail->description }}
         </x-slot>
     @endif
-
     <x-course-breadcrumb :$course :$package />
     <section id="course-details" class="course-details-section">
         <div class="container">
