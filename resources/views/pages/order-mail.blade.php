@@ -148,6 +148,48 @@
                 </tbody>
             </table>
             <table>
+                <thead>
+                    <tr>
+                        <th>Batch</th>
+                        <th>Traning mode</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <td>
+                        @php
+                            $courseSchedulesJson = html_entity_decode($order->course_schedule);
+                            $courseSchedulesArray = json_decode($courseSchedulesJson, true);
+                        @endphp
+                        @if ($courseSchedulesArray)
+                            @foreach ($courseSchedulesArray as $item)
+                                @php
+                                    [$course_name, $course_time] = array_map('trim', explode(',', $item));
+                                    [$date, $time, $mode] = array_map('trim', explode(' ', $course_time)) + [
+                                        'Not specified',
+                                    ];
+
+                                    $dateTimeObject = new DateTime("$date $time");
+                                @endphp
+                                <br>{{ $course_name }}:
+                                {{ $dateTimeObject->format('d M Y h:i A') }}
+                                {{ $mode }}
+                            @endforeach
+                        @else
+                            @php
+                                [$course_name, $course_time] = array_map('trim', explode(',', $order->course_schedule));
+                                [$date, $time, $mode] = array_map('trim', explode(' ', $course_time)) + [
+                                    'Not specified',
+                                ];
+
+                                $dateTimeObject = new DateTime("$date $time");
+                            @endphp
+                            {{ $dateTimeObject->format('d M Y h:i A') }} <br>
+                        @endif
+                    </td>
+                    <td>{{ $mode }}</td>
+                </tbody>
+            </table>
+            <table>
                 <tbody>
                     <tr>
                         <td>Subtotal:</td>
@@ -172,7 +214,7 @@
                     </tr>
                     <tr>
                         <td>Total:</td>
-                        <td>Rs. {{ $order->amount }}</td>
+                        <td>Rs. {{ $order->amount }}/-</td>
                     </tr>
                 </tbody>
             </table>
@@ -182,7 +224,8 @@
     @else
         <div class="content">
             <p>Dear <strong>{{ $order->user->name }}</strong>,</p>
-            <p>We regret to inform you that your order <a href="#">with transaction Id: {{ $order->transaction_id }}</a>
+            <p>We regret to inform you that your order <a href="#">with transaction Id:
+                    {{ $order->transaction_id }}</a>
                 placed on {{ $order->payment_time }} has not been processed due to a payment {{ $order->status }}.
                 This is occured
                 because of {{ $order->payment_desc }}.</p>
@@ -200,10 +243,52 @@
                 </tbody>
             </table>
             <table>
+                <thead>
+                    <tr>
+                        <th>Batch</th>
+                        <th>Traning mode</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <td>
+                        @php
+                            $courseSchedulesJson = html_entity_decode($order->course_schedule);
+                            $courseSchedulesArray = json_decode($courseSchedulesJson, true);
+                        @endphp
+                        @if ($courseSchedulesArray)
+                            @foreach ($courseSchedulesArray as $item)
+                                @php
+                                    [$course_name, $course_time] = array_map('trim', explode(',', $item));
+                                    [$date, $time, $mode] = array_map('trim', explode(' ', $course_time)) + [
+                                        'Not specified',
+                                    ];
+
+                                    $dateTimeObject = new DateTime("$date $time");
+                                @endphp
+                                <br>{{ $course_name }}:
+                                {{ $dateTimeObject->format('d M Y h:i A') }}
+                                {{ $mode }}
+                            @endforeach
+                        @else
+                            @php
+                                [$course_name, $course_time] = array_map('trim', explode(',', $order->course_schedule));
+                                [$date, $time, $mode] = array_map('trim', explode(' ', $course_time)) + [
+                                    'Not specified',
+                                ];
+
+                                $dateTimeObject = new DateTime("$date $time");
+                            @endphp
+                            {{ $dateTimeObject->format('d M Y h:i A') }} <br>
+                        @endif
+                    </td>
+                    <td>{{ $mode }}</td>
+                </tbody>
+            </table>
+            <table>
                 <tbody>
                     <tr>
                         <td>Subtotal:</td>
-                        <td>Rs. {{ $order->course_price }}</td>
+                        <td>Rs. {{ $order->course_price }}/-</td>
                     </tr>
                     <tr>
                         <td>Payment Method:</td>
@@ -218,13 +303,13 @@
                     <tr>
                         <td>Taxes(18%):</td>
                         <td>
-                            C.GST(9%): Rs. {{ $order->cgst }}<br>
-                            S.GST(9%): Rs. {{ $order->sgst }}
+                            C.GST(9%): Rs. {{ $order->cgst }}/-<br>
+                            S.GST(9%): Rs. {{ $order->sgst }}/-
                         </td>
                     </tr>
                     <tr>
                         <td>Total:</td>
-                        <td>Rs. {{ $order->total_price }}</td>
+                        <td>Rs. {{ $order->amount }}/-</td>
                     </tr>
                 </tbody>
             </table>

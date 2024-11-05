@@ -155,12 +155,14 @@
                     $dateTimeObject = new DateTime("$date $time");
                 @endphp
                 {{ $dateTimeObject->format('d M Y h:i A') }} <br>
-                Training Mode: {{ $mode }}
+                <strong>Training Mode</strong>: {{ $mode }}
             @endif
         </p>
         <p><strong>Enrolled Student:</strong> {{ $order->user->name }}</p>
         <p><strong>Student email:</strong> {{ $order->user->email }}</p>
         <p><strong>Student phone:</strong> {{ $order->user->phone }}</p>
+        <p><strong>Order ID:</strong> {{ $order->order_number }}</p>
+        <p><strong>Payu ID:</strong> {{ $order->payu_id }}</p>
         <p><strong>Transaction ID:</strong> {{ $order->transaction_id }}</p>
         <p><strong>Enrollment Date:</strong> {{ $order->payment_time }}</p>
         <p><strong>Payment Details:</strong></p>

@@ -36,14 +36,14 @@
                     <td class="px-6 py-4">
                         Rs. {{ $order->course_price }}/-
                     </td>
-                    <td class="px-6 py-4 font-semibold text-gray-900">
-                        {{ $order->payment_time }}
+                    <td class="px-6 py-4 font-semibold">
+                        {!! \Carbon\Carbon::parse($order->payment_time)->format('F j, Y, g:i A') !!}
                     </td>
                     <td class="px-6 py-4">
                         {{ $order->status }}
                     </td>
                     <td class="px-6 py-4">
-                        <a class="font-bold hover:text-orange-500 hover:bg-gray-100 px-4 py-2 rounded"
+                        <a class="font-bold hover:text-orange-500 px-2 py-2 rounded"
                             href="{{ route('order-details', $order->id) }}">
                             View
                         </a>

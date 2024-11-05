@@ -14,6 +14,7 @@ use App\Mail\OrderMail;
 use App\Mail\AdminMail;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 
 class PaymentController extends Controller
@@ -118,7 +119,7 @@ class PaymentController extends Controller
         }
         $order = new Order();
         $order->user_id = Auth::id();
-        $order->order_number = 'order_' . Str::random(13);
+        $order->order_number = 'zt_' . Auth::id() . now()->format('YmdHis');
         $order->transaction_id = $request->txnid;
         $order->payu_id = $request->mihpayid;
         $order->payment_mode = $request->mode;

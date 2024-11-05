@@ -14,7 +14,10 @@
                         <a class="text-blue-600" href="{{ asset($order->invoice) }}">View invoice →</a>
                     @endif
                 </div>
-                <p class="text-gray-600 mb-8">Order number: {{ $order->order_number }}, {{ $order->payment_time }}</p>
+                <p class="text-gray-600 mb-1"><strong>Order number:</strong> {{ $order->order_number }}</p>
+                <p class="text-gray-600 mb-8"><strong>Date & time:</strong>
+                    {!! \Carbon\Carbon::parse($order->payment_time)->format('F j, Y, g:i A') !!}
+                </p>
                 <div class="mb-8">
                     <div class="flex flex-col sm:flex-row mb-6">
                         <img alt="{{ $order->course_thumbnail_alt }}" class="w-full object-cover sm:w-1/2 rounded-lg"
@@ -64,7 +67,7 @@
                                                 $dateTimeObject = new DateTime("$date $time");
                                             @endphp
                                             {{ $dateTimeObject->format('d M Y h:i A') }} <br>
-                                            Training Mode: {{ $mode }}
+                                            <strong>Training Mode:</strong> {{ $mode }}
                                         @endif
                                         <br /> <strong>Course duration:</strong>
                                         {{ $order->course_duration }}
@@ -78,16 +81,32 @@
                 <div class="bg-gray-100 p-6 rounded-lg">
                     <div class="flex flex-col sm:flex-row justify-between mb-4">
                         <div class="mb-4 sm:mb-0">
-                            <h3 class="font-semibold">Customer details</h3>
+                            <h3 class="font-semibold mb-2">Customer details</h3>
                             <p class="text-gray-600">
-                                Name: {{ $order->user->name }}<br />
-                                Email: {{ $order->user->email }}<br />
-                                Phone: {{ $order->user->phone }}
+                                <strong>Name</strong>: {{ $order->user->name }}
+                            </p>
+                            <p class="text-gray-600">
+                                <strong>Email</strong>: {{ $order->user->email }}
+                            </p>
+                            <p class="text-gray-600">
+                                <strong>Phone</strong>: {{ $order->user->phone }}
+                            </p>
+                        </div>
+                        <div class="mb-4 sm:mb-0">
+                            <h3 class="font-semibold mb-2">Order Summary</h3>
+                            <p class="text-gray-600"><strong>Payment status</strong>: {{ $order->status }}</p>
+                            <p class="text-gray-600"><strong>Transaction Status</strong>: {{ $order->payment_desc }}
+                            </p>
+                            <p class="text-gray-600"><strong>Transaction Id:</strong>
+                                {{ $order->transaction_id }}
+                            </p>
+                            <p class="text-gray-600"><strong>Payu Id:</strong>
+                                {{ $order->payu_id }}
                             </p>
                         </div>
                     </div>
                     <div>
-                        <h3 class="font-semibold">Payment information</h3>
+                        <h3 class="font-semibold mb-3">Payment information</h3>
                     </div>
                     <div class="flex justify-between text-gray-600 mb-2">
                         <span>Subtotal</span>
