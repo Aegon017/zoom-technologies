@@ -362,9 +362,9 @@
                             </div>
                         </div>
                         <div class="button-group">
-                            <a href="https://www.zoomgroup.com/pdf/company-brochure.pdf" target="_blank"
+                            <a href="{{asset('pdf/company-brochure.pdf')}}" target="_blank"
                                 class="zt-btn-download"><i class="fas fa-file-pdf"></i>Company Brochure</a>
-                            <a href="https://www.zoomgroup.com/pdf/classroom-training-in-hyderabad.pdf"
+                            <a href="{{asset('pdf/classroom-training-in-hyderabad.pdf')}}"
                                 target="_blank" class="zt-btn-download"><i class="fas fa-file-pdf"></i>Course
                                 Brochure</a>
                         </div>
