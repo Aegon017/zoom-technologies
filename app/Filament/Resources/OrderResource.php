@@ -4,22 +4,20 @@ namespace App\Filament\Resources;
 
 use App\Filament\Exports\OrderExporter;
 use App\Filament\Resources\OrderResource\Pages;
-use App\Filament\Resources\OrderResource\RelationManagers;
+use App\Models\Course;
 use App\Models\Order;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Fieldset;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Storage;
 
 class OrderResource extends Resource
 {
@@ -35,9 +33,7 @@ class OrderResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                //
-            ]);
+            ->schema([]);
     }
 
     public static function infolist(Infolist $infolist): Infolist
@@ -52,6 +48,7 @@ class OrderResource extends Resource
                 Fieldset::make('Course Details')->schema([
                     TextEntry::make('course_name'),
                     TextEntry::make('course_price')->prefix('Rs. ')->suffix('/-'),
+                    TextEntry::make('course_schedule')
                 ]),
                 Fieldset::make('Payment Details')->schema([
                     TextEntry::make('order_number'),
@@ -67,7 +64,6 @@ class OrderResource extends Resource
             ]);
     }
 
-
     public static function table(Table $table): Table
     {
         return $table
@@ -80,10 +76,16 @@ class OrderResource extends Resource
                 TextColumn::make('user.name')->searchable(),
                 TextColumn::make('course_name'),
                 TextColumn::make('amount')->label('Order Amount')->prefix('Rs. ')->suffix('/-'),
-                TextColumn::make('status')->sortable(),
-            ])
+                TextColumn::make('status'),
+            ])->defaultSort('payment_time', 'desc')
             ->filters([
-                //
+                SelectFilter::make('course_name')
+                    ->options(Course::pluck('name', 'name'))->searchable(),
+                SelectFilter::make('status')
+                    ->options([
+                        'success' => 'Success',
+                        'failure' => 'Failure',
+                    ]),
             ])
             ->actions([
                 ViewAction::make(),

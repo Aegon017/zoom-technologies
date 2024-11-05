@@ -17,12 +17,12 @@ return new class extends Migration
             $table->string('order_number');
             $table->string('transaction_id');
             $table->string('payu_id');
-            $table->string('payment_mode');
+            $table->string('payment_mode')->nullable();
             $table->string('payment_time');
             $table->string('payment_desc');
             $table->mediumInteger('amount');
             $table->string('status');
-            $table->string('invoice');
+            $table->string('invoice')->nullable();
             $table->string('course_name');
             $table->string('course_thumbnail');
             $table->string('course_thumbnail_alt');
