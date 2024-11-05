@@ -2,14 +2,16 @@
     <div class="zt-header-three clearfix">
         <div class="container">
             <div class="zt-brand-logo float-left">
-                <a href="{{ route('render.home') }}"><img src="{{ asset('frontend/assets/img/logo.png') }}" alt="Zoom Group company logo"></a>
+                <a href="{{ route('render.home') }}"><img src="{{ asset('frontend/assets/img/logo.png') }}"
+                        alt="Zoom Group company logo"></a>
             </div>
-            <div class="zt-header-cart-login float-right">
+            <div class="zt-header-cart-login float-right d-sm-block d-none">
                 <div class="my-account">
                     <a class="dropbtn"><i class="fas fa-user {{ request()->is('/') ? '' : 'text-dark' }}"></i></a>
                     <div class="dropdown-content">
                         @if (auth()->user())
-                            <a href="{{ route('dashboard') }}"><i class="far fa-address-card"></i> My account</a>
+                            <a href="{{ route('dashboard') }}"><i class="far mr-2 fa-address-card"></i>My account</a>
+                            <a href="{{ route('profile.show') }}"><i class="far mr-2 fa-user"></i>Profile</a>
                             <form method="POST" action="{{ route('logout') }}" x-data>
                                 @csrf
                                 <a class="logout-text" href="{{ route('logout') }}" @click.prevent="$root.submit();">
@@ -60,7 +62,8 @@
                             </div>
                             <div class="m-brand-logo text-center">
                                 <a href="{{ route('render.home') }}"><img
-                                        src="{{ asset('frontend/assets/img/logo.png') }}" alt="Zoom Group company logo"></a>
+                                        src="{{ asset('frontend/assets/img/logo.png') }}"
+                                        alt="Zoom Group company logo"></a>
                             </div>
                             <nav class="zt-mobile-main-navigation  clearfix ul-li">
                                 <ul id="m-main-nav" class="navbar-nav text-capitalize clearfix">
