@@ -5,8 +5,8 @@
                 <a href="{{ route('render.home') }}"><img src="{{ asset('frontend/assets/img/logo.png') }}"
                         alt="Zoom Group company logo"></a>
             </div>
-            <div class="zt-header-cart-login float-right d-sm-block d-none">
-                <div class="my-account">
+            <div class="zt-header-cart-login float-right">
+                <div class="my-account pr-3">
                     <a class="dropbtn"><i class="fas fa-user {{ request()->is('/') ? '' : 'text-dark' }}"></i></a>
                     <div class="dropdown-content">
                         @if (auth()->user())

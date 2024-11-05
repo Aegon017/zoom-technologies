@@ -185,7 +185,7 @@ theme.
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1200px !important;
 }
 
 .ul-li ul {
@@ -9970,7 +9970,8 @@ select:visited {
     }
 
     .header-style-two .zt-header-cart-login {
-        display: none;
+        padding-right: 2.5rem;
+        padding-top: 0.6rem;
     }
 
     .zt-registration-content-2 .registration-side-img {
@@ -11761,7 +11762,7 @@ select:visited {
     min-width: 140px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
-    left: -30px;
+    left: -7rem;
 }
 
 .my-account .dropdown-content a {
@@ -11788,11 +11789,11 @@ select:visited {
     position: relative;
 }
 
-.header-style-three.zt-sticky-menu  .my-account .dropbtn i {
+.header-style-three.zt-sticky-menu .my-account .dropbtn i {
     color: #000000;
 }
 
-.map iframe{
+.map iframe {
     height: 250px;
     width: 100%;
 }
