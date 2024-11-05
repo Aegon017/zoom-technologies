@@ -1,1 +1,0 @@
-<img class=" w-24" src="{{ asset('frontend/assets/img/logo.png') }}" alt="Zoom Group company logo">
