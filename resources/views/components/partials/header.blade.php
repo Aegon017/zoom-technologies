@@ -35,7 +35,7 @@
                             <a href="{{ route('render.course.list') }}">Courses</a>
                         </li>
                         <li>
-                            <a href="#">Solutions</a>
+                            <a href="https://www.zoomcybersense.com" target="_blank">Solutions</a>
                         </li>
                         <li>
                             <a href="{{ route('render.upcoming.batches') }}">Upcoming Schedule</a>
@@ -75,7 +75,7 @@
                                         <a href="{{ route('render.course.list') }}">Courses</a>
                                     </li>
                                     <li>
-                                        <a href="#">Solutions</a>
+                                        <a href="https://www.zoomcybersense.com" target="_blank">Solutions</a>
                                     </li>
                                     <li>
                                         <a href="{{ route('render.upcoming.batches') }}">Upcoming Schedule</a>
