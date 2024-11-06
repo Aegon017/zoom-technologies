@@ -4,6 +4,7 @@ use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\PaymentController;
 use App\Livewire\NewsCard;
 use App\Livewire\NewsCategory;
+use Filament\Actions\Exports\Http\Controllers\DownloadExport;
 use Illuminate\Routing\RouteGroup;
 use Illuminate\Support\Facades\Route;
 
@@ -42,3 +43,7 @@ Route::get('/storage-link', function () {
     $link = $_SERVER['DOCUMENT_ROOT'] . '/zoom-technologies/public/storage';
     symlink($target, $link);
 });
+
+Route::get('/zoom-technologies/filament/exports/{export}/download', DownloadExport::class)
+    ->name('filament.exports.download')
+    ->middleware(['web', 'auth']);
