@@ -36,6 +36,7 @@ class PageMetaDetailsResource extends Resource
                     'Franchisee' => 'Franchisee',
                     'Memorable moments' => 'Memorable moments',
                     'Testimonials' => 'Testimonials',
+                    'Study material' => 'Study material',
                 ])->required(),
                 TextInput::make('title')->required(),
                 Textarea::make('keywords')->rows(7)->required(),
