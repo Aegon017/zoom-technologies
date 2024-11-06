@@ -25,7 +25,7 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->databaseNotifications()
-            ->homeUrl('/')
+            ->homeUrl('/zoom-technologies')
             ->favicon(asset('frontend/assets/img/favicon.png'))
             ->brandLogo(asset('frontend/assets/img/logo.png'))->brandLogoHeight('2.5rem')
             ->default()
