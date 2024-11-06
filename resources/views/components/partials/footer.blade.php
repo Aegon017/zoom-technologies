@@ -6,7 +6,8 @@
                     <div class="zt-footer-widget">
                         <div class="zt-footer-logo-widget zt-headline pera-content">
                             <div class="zt-footer-logo">
-                                <a href="#"><img src="{{ asset('frontend/assets/img/logo.png') }}" alt="Zoom Group company logo"></a>
+                                <a href="#"><img src="{{ asset('frontend/assets/img/logo.png') }}"
+                                        alt="Zoom Group company logo"></a>
                             </div>
                             <p>At Zoom Technologies, we redefine education by seamlessly blending innovation,
                                 accessibility, and personalized learning.</p>
@@ -81,7 +82,7 @@
                                     <li><a href="{{ route('render.home') }}">About Us</a></li>
                                     <li><a href="{{ route('render.contact') }}">Contact Us</a></li>
                                     <li><a href="{{ route('render.course.list') }}">Courses</a></li>
-                                    <li><a href="{{ route('render.home') }}">Study Material</a></li>
+                                    <li><a href="{{ route('render.free.ebooks') }}">Study Material</a></li>
                                     <li><a href="{{ route('render.franchisee') }}">Franchisee</a></li>
                                     <li><a href="{{ route('render.memorable-moments') }}">Memorable Moments</a></li>
                                     <li><a href="{{ route('render.home') }}">Projects Implemented</a></li>

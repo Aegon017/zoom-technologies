@@ -59,7 +59,7 @@ class FrontendController extends Controller
             $latestSchedule = $course->schedule->firstWhere('start_date', '>=', Carbon::today());
             return ['item' => $course, 'latest_schedule' => $latestSchedule,];
         });
-        
+
         $packages = Package::all();
         $latestPackageSchedules = collect($packages)->map(function ($package) {
             $packageSchedules = Course::findMany($package->courses);
@@ -115,5 +115,12 @@ class FrontendController extends Controller
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Franchisee')->first();
         return view('pages.franchisee', compact('metaDetail'));
+    }
+
+    public function renderFreeEbooks()
+    {
+        $metaDetail = PageMetaDetails::where('page_name', 'Study material')->first();
+        $materials = Course::with('studyMaterial')->get()->flatMap->studyMaterial;
+        return view('pages.free-ebooks', compact('metaDetail', 'materials'));
     }
 }

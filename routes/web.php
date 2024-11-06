@@ -16,6 +16,7 @@ Route::prefix('/news')->group(function () {
 Route::prefix('/training/india')->group(function () {
     Route::get('/courses', [FrontendController::class, 'renderCourseList'])->name('render.course.list');
     Route::get('/{slug}', [FrontendController::class, 'renderCourse'])->name('render.course');
+    Route::get('/free/ebooks', [FrontendController::class, 'renderFreeEbooks'])->name('render.free.ebooks');
 });
 Route::get('/contact', [FrontendController::class, 'renderContact'])->name('render.contact');
 Route::get('/upcoming-batches', [FrontendController::class, 'renderUpcomingBatches'])->name('render.upcoming.batches');
