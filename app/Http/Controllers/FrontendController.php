@@ -59,7 +59,24 @@ class FrontendController extends Controller
             $latestSchedule = $course->schedule->firstWhere('start_date', '>=', Carbon::today());
             return ['item' => $course, 'latest_schedule' => $latestSchedule,];
         });
-        return view('pages.upcoming-batches', compact('latestSchedules', 'metaDetail'));
+        
+        $packages = Package::all();
+        $latestPackageSchedules = collect($packages)->map(function ($package) {
+            $packageSchedules = Course::findMany($package->courses);
+
+            $latestSchedule = $packageSchedules->flatMap(function ($course) {
+                return optional($course->schedule)->filter(function ($schedule) {
+                    return $schedule->start_date >= Carbon::today();
+                });
+            })->sortByDesc('start_date')->first();
+
+            return $latestSchedule ? [
+                'package' => $package,
+                'latest_schedule' => $latestSchedule,
+            ] : null;
+        })->filter()->values()->all();
+
+        return view('pages.upcoming-batches', compact('latestSchedules', 'metaDetail', 'latestPackageSchedules'));
     }
 
     public function render_account()
