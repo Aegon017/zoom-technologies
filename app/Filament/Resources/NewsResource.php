@@ -43,6 +43,7 @@ class NewsResource extends Resource
                     ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
                 TextInput::make('slug')->required(),
                 TextInput::make('source')->required(),
+                TextInput::make('source_url')->columnSpanFull(),
                 Section::make([
                     Group::make()->schema([
                         FileUpload::make('thumbnail')->disk('public')->directory('thumbnails/news')->preserveFilenames()->required(),
