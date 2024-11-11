@@ -34,10 +34,6 @@ class PageSchemaResource extends Resource
             ->schema([
                 Select::make('page_name')->options(
                     array_merge(
-                        Course::pluck('name', 'name')->toArray(),
-                        Package::pluck('name', 'name')->toArray(),
-                        NewsCategory::pluck('name', 'name')->toArray(),
-                        News::pluck('name', 'name')->toArray(),
                         [
                             'Home' => 'Home',
                             'News list' => 'News list',
@@ -48,7 +44,19 @@ class PageSchemaResource extends Resource
                             'Memorable moments' => 'Memorable moments',
                             'Testimonials' => 'Testimonials',
                             'Study material' => 'Study material',
-                        ]
+                        ],
+                        Course::pluck('name', 'name')->mapWithKeys(function ($item, $key) {
+                            return [$key => 'Course - ' . $item];
+                        })->toArray(),
+                        Package::pluck('name', 'name')->mapWithKeys(function ($item, $key) {
+                            return [$key => 'Package - ' . $item];
+                        })->toArray(),
+                        News::pluck('name', 'name')->mapWithKeys(function ($item, $key) {
+                            return [$key => 'News - ' . $item];
+                        })->toArray(),
+                        NewsCategory::pluck('name', 'name')->mapWithKeys(function ($item, $key) {
+                            return [$key => 'News category - ' . $item];
+                        })->toArray()
                     )
                 )->searchable()->required()->columnSpanFull(),
                 Textarea::make('local_schema')->rows(10)->columnSpanFull(),
