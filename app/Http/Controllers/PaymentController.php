@@ -12,6 +12,7 @@ use App\Models\Package;
 use PDF;
 use App\Mail\OrderMail;
 use App\Mail\AdminMail;
+use App\Models\Tax;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Carbon\Carbon;
@@ -108,9 +109,9 @@ class PaymentController extends Controller
     private function findOrCreateOrder(Request $request)
     {
         $total_price = $request->amount;
-        $course_price = $total_price / 1.18;
-        $sgst = $course_price * 0.09;
-        $cgst = $course_price * 0.09;
+        $course_price = $total_price / (1 + (Tax::where('name', 'SGST')->first()->rate + Tax::where('name', 'CGST')->first()->rate) / 100);
+        $sgst = $course_price * (Tax::where('name', 'SGST')->first()->rate / 100);
+        $cgst = $course_price * (Tax::where('name', 'CGST')->first()->rate / 100);
         $model = $this->getModelFromProductType($request->udf2);
         $item = $model::where('slug', $request->productinfo)->first();
         $existingOrder = Order::where('transaction_id', $request->txnid)->first();

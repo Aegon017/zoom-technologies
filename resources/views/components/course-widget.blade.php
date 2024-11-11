@@ -57,8 +57,8 @@
             <div class="cd-course-price clearfix">
                 @php
                     $price = $item->original_price ? $item->original_price : $item->price;
-                    $sgst = $price * 0.09;
-                    $cgst = $price * 0.09;
+                    $sgst = ($price * App\Models\Tax::where('name', 'CGST')->first()->rate) / 100;
+                    $cgst = ($price * App\Models\Tax::where('name', 'SGST')->first()->rate) / 100;
                     $total_price = $price + $sgst + $cgst;
                 @endphp
                 <span>Price: <strong><i

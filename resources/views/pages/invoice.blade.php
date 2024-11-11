@@ -194,7 +194,7 @@
                         <tr>
                             <td style="width:60%;"></td>
                             <td style="text-align: end">
-                                <span><b>S.GST(9%) :</b> &nbsp;&nbsp;</span>
+                                <span><b>S.GST({{ 100 / ($course_price / $sgst) }}%) :</b> &nbsp;&nbsp;</span>
                             </td>
                             <td style="text-align: end">
                                 <div>Rs. {{ $sgst }}/-</div>
@@ -204,7 +204,7 @@
                         <tr>
                             <td style="width:60%;"></td>
                             <td style="text-align: end">
-                                <span><b>C.GST(9%) :</b> &nbsp;&nbsp;</span>
+                                <span><b>C.GST({{ 100 / ($course_price / $cgst) }}%) :</b> &nbsp;&nbsp;</span>
                             </td>
                             <td style="text-align: end">
                                 <div>Rs. {{ $cgst }}/-</div>

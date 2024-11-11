@@ -113,7 +113,12 @@
     @foreach ([$course, $package] as $item)
         @if ($item)
             @php
-                $totalPrice = ($item->original_price ? $item->original_price : $item->price) * 1.18;
+                $totalPrice =
+                    ($item->original_price ? $item->original_price : $item->price) *
+                    (1 +
+                        (App\Models\Tax::where('name', 'SGST')->first()->rate +
+                            App\Models\Tax::where('name', 'CGST')->first()->rate) /
+                            100);
             @endphp
             <x-checkout-popup :$item :$totalPrice :$packageCourses />
         @endif
