@@ -13,9 +13,9 @@ return new class extends Migration
             $table->foreignId('course_id')->nullable()->constrained()->cascadeOnDelete();
             $table->date('start_date');
             $table->time('time');
+            $table->time('end_time');
             $table->tinyInteger('duration');
             $table->string('duration_type');
-            $table->tinyInteger('daily_hours');
             $table->string('day_off');
             $table->string('training_mode');
             $table->timestamps();

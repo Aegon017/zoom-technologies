@@ -30,9 +30,9 @@ class ScheduleRelationManager extends RelationManager
                     ])->required(),
                 DatePicker::make('start_date')->native(false)->minDate(now())->required(),
                 TimePicker::make('time')->seconds(false)->required(),
+                TimePicker::make('end_time')->seconds(false)->required(),
                 TextInput::make('duration')->required(),
                 Select::make('duration_type')->options(['Month' => 'Month', 'Week' => 'Week', 'Day' => 'Day'])->required(),
-                TextInput::make('daily_hours')->required(),
                 Select::make('day_off')
                     ->multiple()
                     ->options([
@@ -43,7 +43,7 @@ class ScheduleRelationManager extends RelationManager
                         'Friday' => 'Friday',
                         'Saturday' => 'Saturday',
                         'Sunday' => 'Sunday',
-                    ])->required(),
+                    ])->columnSpanFull()->required(),
             ]);
     }
 
@@ -55,7 +55,7 @@ class ScheduleRelationManager extends RelationManager
                 TextColumn::make('#')->rowIndex(),
                 TextColumn::make('start_date')->searchable()->date(),
                 TextColumn::make('time'),
-                TextColumn::make('daily_hours')->suffix(' Hours'),
+                TextColumn::make('end_time'),
                 TextColumn::make('training_mode')
             ])
             ->filters([

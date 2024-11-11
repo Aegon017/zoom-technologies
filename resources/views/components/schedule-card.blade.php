@@ -17,7 +17,8 @@
                     </div>
                     <div class="course-batch-time">
                         <i class="fa fa-clock"></i>
-                        <p>{{ \Carbon\Carbon::parse($schedule->time)->format('g:i A') }}
+                        <p>{{ \Carbon\Carbon::parse($schedule->time)->format('g:i A') }} to
+                            {{ \Carbon\Carbon::parse($schedule->end_time)->format('g:i A') }}
                         </p>
                         <p>(IST - GMT +5.30)</p>
                     </div>
@@ -26,8 +27,9 @@
                         <p class="days">{{ $schedule->duration }}
                             {{ $schedule->duration_type }}</p>
                         <p class="hrs">
-                            {{ $schedule->daily_hours }}
-                            Hrs/Day</p>
+                            {{ (new DateTime($schedule->time))->diff(new DateTime($schedule->end_time))->h + (new DateTime($schedule->time))->diff(new DateTime($schedule->end_time))->i / 60 }}
+                            Hrs/Day
+                        </p>
                         <p class="m-0">
                             @foreach ($schedule->day_off as $day_off)
                                 {{ $day_off }}@if (!$loop->last)

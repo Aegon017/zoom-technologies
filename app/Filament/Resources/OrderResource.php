@@ -6,18 +6,29 @@ use App\Filament\Exports\OrderExporter;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Models\Course;
 use App\Models\Order;
+use App\Models\Package;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Filament\Actions\Action;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Fieldset;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\Action as ActionsAction;
+use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\QueryBuilder\Constraints\DateConstraint;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Storage;
+use ZipArchive;
+use Filament\Tables\Filters\DateFilter;
+use Filament\Tables\Filters\Filter;
+use OpenSpout\Writer\AutoFilter;
 
 class OrderResource extends Resource
 {
@@ -80,19 +91,66 @@ class OrderResource extends Resource
             ])->defaultSort('payment_time', 'desc')
             ->filters([
                 SelectFilter::make('course_name')
-                    ->options(Course::pluck('name', 'name'))->searchable(),
+                    ->options(
+                        array_merge(
+                            Course::pluck('name', 'name')->toArray(),
+                            Package::pluck('name', 'name')->toArray()
+                        )
+                    )
+                    ->searchable(),
                 SelectFilter::make('status')
                     ->options([
                         'success' => 'Success',
                         'failure' => 'Failure',
                     ]),
+                Filter::make('order_date_range')
+                    ->label('Order Date Range')
+                    ->form([
+                        DatePicker::make('start_date')->label('Start Date'),
+                        DatePicker::make('end_date')->label('End Date'),
+                    ])
+                    ->query(function ($query, $data) {
+                        // Use whereDate to compare only the date part, ignoring time
+                        if (isset($data['start_date']) && isset($data['end_date'])) {
+                            $query->whereDate('payment_time', '>=', $data['start_date'])
+                                ->whereDate('payment_time', '<=', $data['end_date']);
+                        }
+                    }),
             ])
             ->actions([
                 ViewAction::make(),
-                ExportAction::make()->exporter(OrderExporter::class)
+                ExportAction::make()->exporter(OrderExporter::class),
+                ActionsAction::make('invoice')
+                    ->label('Download Invoice')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->action(function ($record) {
+                        return response()->download(public_path($record->invoice));
+                    })
             ])
             ->bulkActions([
-                ExportBulkAction::make(OrderExporter::class)
+                ExportBulkAction::make(OrderExporter::class),
+                BulkAction::make('invoice')
+                    ->label('Download Invoices')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->action(function ($records) {
+                        $zip = new ZipArchive;
+                        $zipFileName = storage_path('invoices.zip');
+                        if (file_exists($zipFileName)) {
+                            unlink($zipFileName);
+                        }
+                        if ($zip->open($zipFileName, ZipArchive::CREATE) === TRUE) {
+                            foreach ($records as $record) {
+                                $filePath = public_path($record->invoice);
+                                if (file_exists($filePath)) {
+                                    $zip->addFile($filePath, basename($filePath));
+                                }
+                            }
+                            $zip->close();
+                            return response()->download($zipFileName)->deleteFileAfterSend(true);
+                        } else {
+                            return back()->with('error', 'Unable to create the ZIP file.');
+                        }
+                    })
             ]);
     }
 

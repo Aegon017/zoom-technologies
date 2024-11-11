@@ -12,9 +12,9 @@ class Schedule extends Model
         'course_id',
         'start_date',
         'time',
+        'end_time',
         'duration',
         'duration_type',
-        'daily_hours',
         'day_off',
         'training_mode'
     ];
