@@ -10,6 +10,15 @@
             {{ $metaDetail->description }}
         </x-slot>
     @endif
+
+    @if ($pageSchema != null)
+        <x-slot:localSchema>
+            {!! $pageSchema->local_schema !!}
+        </x-slot>
+        <x-slot:organizationSchema>
+            {!! $pageSchema->organization_schema !!}
+        </x-slot>
+    @endif
     <section id="zt-slider-2" class="zt-slider-section-2">
         <div id="zt-main-slider-2" class="zt-main-slider-wrap owl-carousel">
             <div class="slider-main-item-2 position-relative">
@@ -362,10 +371,10 @@
                             </div>
                         </div>
                         <div class="button-group">
-                            <a href="{{asset('pdf/company-brochure.pdf')}}" target="_blank"
+                            <a href="{{ asset('pdf/company-brochure.pdf') }}" target="_blank"
                                 class="zt-btn-download"><i class="fas fa-file-pdf"></i>Company Brochure</a>
-                            <a href="{{asset('pdf/classroom-training-in-hyderabad.pdf')}}"
-                                target="_blank" class="zt-btn-download"><i class="fas fa-file-pdf"></i>Course
+                            <a href="{{ asset('pdf/classroom-training-in-hyderabad.pdf') }}" target="_blank"
+                                class="zt-btn-download"><i class="fas fa-file-pdf"></i>Course
                                 Brochure</a>
                         </div>
                     </div>

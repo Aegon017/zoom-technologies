@@ -10,6 +10,15 @@
             {{ $metaDetail->description }}
         </x-slot>
     @endif
+
+    @if ($pageSchema != null)
+        <x-slot:localSchema>
+            {!! $pageSchema->local_schema !!}
+        </x-slot>
+        <x-slot:organizationSchema>
+            {!! $pageSchema->organization_schema !!}
+        </x-slot>
+    @endif
     @php
         $pageBackground = 'frontend/assets/img/banner/bn-bg1.jpg';
         $pageTitle = 'Courses';

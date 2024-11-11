@@ -8,6 +8,7 @@ use App\Models\NewsCategory;
 use App\Models\Order;
 use App\Models\Package;
 use App\Models\PageMetaDetails;
+use App\Models\PageSchema;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,33 +16,38 @@ class FrontendController extends Controller
 {
     public function renderHome()
     {
+        $pageSchema = PageSchema::where('page_name', 'Home')->first();
         $metaDetail = PageMetaDetails::where('page_name', 'Home')->first();
-        return view('pages.home', compact('metaDetail'));
+        return view('pages.home', compact('metaDetail', 'pageSchema'));
     }
 
     public function renderNewsList()
     {
         $news = News::all();
         $metaDetail = PageMetaDetails::where('page_name', 'News list')->first();
-        return view('pages.news-list', compact('news', 'metaDetail'));
+        $pageSchema = PageSchema::where('page_name', 'News list')->first();
+        return view('pages.news-list', compact('news', 'metaDetail', 'pageSchema'));
     }
 
     public function renderNews($slug)
     {
         $metaDetail = News::where('slug', $slug)->first()->metaDetail;
-        return view('pages.news', compact('slug', 'metaDetail'));
+        $pageSchema = PageSchema::where('page_name', $metaDetail->name)->first();
+        return view('pages.news', compact('slug', 'metaDetail', 'pageSchema'));
     }
 
     public function renderCourseList()
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Course list')->first();
-        return view('pages.course-list', compact('metaDetail'));
+        $pageSchema = PageSchema::where('page_name', 'Course list')->first();
+        return view('pages.course-list', compact('metaDetail', 'pageSchema'));
     }
 
     public function renderContact()
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Contact')->first();
-        return view('pages.contact', compact('metaDetail'));
+        $pageSchema = PageSchema::where('page_name', 'Contact')->first();
+        return view('pages.contact', compact('metaDetail', 'pageSchema'));
     }
 
     public function renderCourse($slug)
@@ -49,7 +55,8 @@ class FrontendController extends Controller
         $package = Package::where('slug', $slug)->first();
         $course = Course::where('slug', $slug)->first();
         $packageCourses = optional($package)->courses ? Course::findMany($package->courses) : [];
-        return view('pages.course', compact('course', 'package', 'packageCourses'));
+        $pageSchema = PageSchema::where('page_name', 'Course list')->first();
+        return view('pages.course', compact('course', 'package', 'packageCourses', 'pageSchema'));
     }
 
     public function renderUpcomingBatches()
@@ -75,8 +82,8 @@ class FrontendController extends Controller
                 'latest_schedule' => $latestSchedule,
             ] : null;
         })->filter()->values()->all();
-
-        return view('pages.upcoming-batches', compact('latestSchedules', 'metaDetail', 'latestPackageSchedules'));
+        $pageSchema = PageSchema::where('page_name', 'Upcoming schedule')->first();
+        return view('pages.upcoming-batches', compact('latestSchedules', 'metaDetail', 'latestPackageSchedules', 'pageSchema'));
     }
 
     public function render_account()
@@ -96,31 +103,36 @@ class FrontendController extends Controller
         $newsCategory = NewsCategory::where('name', $category)->first();
         $news = $newsCategory->news ?? collect();
         $metaDetail = $newsCategory->metaDetail;
-        return view('pages.news-list', compact('news', 'metaDetail'));
+        $pageSchema = PageSchema::where('page_name', $newsCategory->name)->first();
+        return view('pages.news-list', compact('news', 'metaDetail', 'pageSchema'));
     }
 
     public function renderTestimonials()
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Testimonials')->first();
-        return view('pages.testimonials', compact('metaDetail'));
+        $pageSchema = PageSchema::where('page_name', 'Testimonials')->first();
+        return view('pages.testimonials', compact('metaDetail', 'pageSchema'));
     }
 
     public function renderMemorableMoments()
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Memorable moments')->first();
-        return view('pages.memorable-moments', compact('metaDetail'));
+        $pageSchema = PageSchema::where('page_name', 'Memorable moments')->first();
+        return view('pages.memorable-moments', compact('metaDetail', 'pageSchema'));
     }
 
     public function renderFranchisee()
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Franchisee')->first();
-        return view('pages.franchisee', compact('metaDetail'));
+        $pageSchema = PageSchema::where('page_name', 'Franchisee')->first();
+        return view('pages.franchisee', compact('metaDetail', 'pageSchema'));
     }
 
     public function renderFreeEbooks()
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Study material')->first();
         $materials = Course::with('studyMaterial')->get()->flatMap->studyMaterial;
-        return view('pages.free-ebooks', compact('metaDetail', 'materials'));
+        $pageSchema = PageSchema::where('page_name', 'Study material')->first();
+        return view('pages.free-ebooks', compact('metaDetail', 'materials', 'pageSchema'));
     }
 }

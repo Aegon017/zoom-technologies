@@ -7,15 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="{{ asset('frontend/assets/img/favicon.png') }}">
     <title>
-        {{ $metaTitle ?? 'Online Training in India | Hyderabad, Vijayawada, Surat | CCNA, CCNP, CCIE, MCSE, MCSA,
-        Ethical Hacking, Cybersecurity, Cyber Security, Linux, VMware, Checkpoint, RHCE, Azure, AWS, Microsoft Training'
-        }}
+        {{ $metaTitle ??
+            'Online Training in India | Hyderabad, Vijayawada, Surat | CCNA, CCNP, CCIE, MCSE, MCSA,
+                                                                                                                                                                                                                                                                                                                Ethical Hacking, Cybersecurity, Cyber Security, Linux, VMware, Checkpoint, RHCE, Azure, AWS, Microsoft Training' }}
     </title>
     @if (isset($metaKeywords))
-    <meta name="keywords" content="{{ $metaKeywords }}">
+        <meta name="keywords" content="{{ $metaKeywords }}">
     @endif
     @if (isset($metaDescription))
-    <meta name="description" content="{{ $metaDescription }}">
+        <meta name="description" content="{{ $metaDescription }}">
     @endif
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="copyright" content="www.zoomgroup.com">
@@ -60,6 +60,15 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
+    @if (isset($localSchema))
+        <script type="application/ld+json">{{ $localSchema }}</script>
+    @endif
+
+    @if (isset($organizationSchema))
+        <script type="application/ld+json">{{ $organizationSchema }}</script>
+    @endif
+
+
     @livewireStyles
 </head>
 
