@@ -26,10 +26,32 @@ class ScheduleRelationManager extends RelationManager
                 Select::make('training_mode')
                     ->options([
                         'Online' => 'Online',
-                        'Classroom' => 'Classroom'
-                    ])->required(),
+                        'Classroom' => 'Classroom',
+                    ])
+                    ->required()
+                    ->reactive()
+                    ->afterStateUpdated(function (callable $set, $state) {
+                        if ($state !== 'Online') {
+                            $set('zoom_meeting_url', null);
+                            $set('meeting_id', null);
+                            $set('meeting_password', null);
+                        }
+                    }),
+                TextInput::make('zoom_meeting_url')
+                    ->label('Zoom Meeting URL')
+                    ->hidden(fn($get) => $get('training_mode') !== 'Online')
+                    ->url()
+                    ->required(),
+                TextInput::make('meeting_id')
+                    ->label('Meeting ID')
+                    ->hidden(fn($get) => $get('training_mode') !== 'Online')
+                    ->required(),
+                TextInput::make('meeting_password')
+                    ->label('Meeting Password')
+                    ->hidden(fn($get) => $get('training_mode') !== 'Online')
+                    ->required(),
                 DatePicker::make('start_date')->native(false)->minDate(now())->required(),
-                TimePicker::make('time')->seconds(false)->required(),
+                TimePicker::make('time')->label('Start time')->seconds(false)->required(),
                 TimePicker::make('end_time')->seconds(false)->required(),
                 TextInput::make('duration')->required(),
                 Select::make('duration_type')->options(['Month' => 'Month', 'Week' => 'Week', 'Day' => 'Day'])->required(),
@@ -43,7 +65,7 @@ class ScheduleRelationManager extends RelationManager
                         'Friday' => 'Friday',
                         'Saturday' => 'Saturday',
                         'Sunday' => 'Sunday',
-                    ])->columnSpanFull()->required(),
+                    ])->required(),
             ]);
     }
 

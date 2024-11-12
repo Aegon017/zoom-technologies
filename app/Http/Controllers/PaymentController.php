@@ -12,14 +12,21 @@ use App\Models\Package;
 use PDF;
 use App\Mail\OrderMail;
 use App\Mail\AdminMail;
+use App\Mail\MeetingMail;
+use App\Models\Schedule;
 use App\Models\Tax;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Carbon\Carbon;
+use Hamcrest\Arrays\IsArray as ArraysIsArray;
+use Hamcrest\Type\IsArray;
 use Illuminate\Support\Arr;
 
 class PaymentController extends Controller
 {
+    public $zoom_meeting_url;
+    public $meeting_id;
+    public $meeting_password;
     public function initiatePayment(Request $request)
     {
         $data = $this->preparePaymentData($request);
@@ -186,7 +193,9 @@ class PaymentController extends Controller
         if ($order->status == 'success') {
             $admin = "kondanagamalleswararao016@gmail.com";
             $subject = "New Enrollment";
+            $schedules = Schedule::query();
             Mail::to($admin)->send(new AdminMail($subject, $order));
+            Mail::to($to)->send(new MeetingMail($order, $schedules));
         }
     }
 }

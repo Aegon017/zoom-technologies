@@ -12,13 +12,15 @@ use Illuminate\Queue\SerializesModels;
 class MeetingMail extends Mailable
 {
     use Queueable, SerializesModels;
-
+    public $order;
+    public $schedules;
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($order, $schedules)
     {
-        //
+        $this->order = $order;
+        $this->schedules = $schedules;
     }
 
     /**
@@ -27,7 +29,7 @@ class MeetingMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Meeting Mail',
+            subject: "Zoom Technologies Training Session Details",
         );
     }
 
@@ -37,7 +39,7 @@ class MeetingMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'pages.meeting-mail',
         );
     }
 

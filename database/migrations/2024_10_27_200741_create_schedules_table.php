@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('duration_type');
             $table->string('day_off');
             $table->string('training_mode');
+            $table->string('zoom_meeting_url')->nullable();
+            $table->string('meeting_id')->nullable();
+            $table->string('meeting_password')->nullable();
             $table->timestamps();
         });
     }

@@ -16,7 +16,10 @@ class Schedule extends Model
         'duration',
         'duration_type',
         'day_off',
-        'training_mode'
+        'training_mode',
+        'zoom_meeting_url',
+        'meeting_id',
+        'meeting_password'
     ];
 
     protected $casts = [
