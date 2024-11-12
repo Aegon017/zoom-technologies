@@ -1,9 +1,7 @@
 @php
-    // Decode the JSON content of the course_schedule
     $courseSchedulesJson = html_entity_decode($order->course_schedule);
     $courseSchedulesArray = json_decode($courseSchedulesJson, true);
 @endphp
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -102,7 +100,7 @@
         <div class="company-logo">
             <img alt="Logo" class="logo" src="{{ asset('frontend/assets/img/logo.png') }}" />
         </div>
-        <h3 class="mt-3">Your Training Session Details – {{ $order->course_name }}</h3>
+        <h3 class="mt-3">Your Training Session Details - {{ $order->course_name }}</h3>
     </div>
 
     <div class="content">
