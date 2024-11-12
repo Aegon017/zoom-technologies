@@ -10,6 +10,7 @@ use App\Models\Package;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Filament\Actions\Action;
+use Filament\Actions\ExportAction as ActionsExportAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Fieldset;
@@ -120,17 +121,17 @@ class OrderResource extends Resource
                     }),
             ])
             ->actions([
-                ViewAction::make(),
-                ExportAction::make()->exporter(OrderExporter::class),
+                // ExportAction::make()->exporter(OrderExporter::class),
                 ActionsAction::make('invoice')
                     ->label('Download Invoice')
                     ->icon('heroicon-o-arrow-down-tray')
                     ->action(function ($record) {
                         return response()->download(public_path($record->invoice));
-                    })
+                    }),
+                ViewAction::make()
             ])
             ->bulkActions([
-                ExportBulkAction::make(OrderExporter::class),
+                // ExportBulkAction::make(OrderExporter::class),
                 BulkAction::make('invoice')
                     ->label('Download Invoices')
                     ->icon('heroicon-o-arrow-down-tray')
