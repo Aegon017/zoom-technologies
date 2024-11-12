@@ -8,6 +8,7 @@ use App\Models\Course;
 use App\Models\Order;
 use App\Models\Package;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
@@ -59,13 +60,13 @@ class OrderResource extends Resource
                 Fieldset::make('Course Details')->schema([
                     TextEntry::make('course_name'),
                     TextEntry::make('course_price')->prefix('Rs. ')->suffix('/-'),
-                    TextEntry::make('course_schedule')
+                    TextEntry::make('course_schedule')->label('Course Schedule')->getStateUsing(fn($record) => is_array($courseSchedule = json_decode(html_entity_decode($record->course_schedule), true)) && !empty($courseSchedule) ? collect($courseSchedule)->map(fn($item) => count($courseDetails = explode(',', $item)) === 2 ? "<strong>{$courseDetails[0]}</strong> - " . Carbon::parse(preg_replace('/\s+Online$/', '', trim($courseDetails[1])))->format('l, F j, Y g:i A') : 'Invalid date')->implode('<br>') : 'No course schedule available.')->html(),
                 ]),
                 Fieldset::make('Payment Details')->schema([
                     TextEntry::make('order_number'),
                     TextEntry::make('transaction_id'),
                     TextEntry::make('payu_id'),
-                    TextEntry::make('sgst')->label('S.GST')->prefix('Rs. ')->suffix('/-'),
+                    TextEntry::make('payment_time')->getStateUsing(fn($record) => Carbon::parse($record->payment_time)->format('F j, Y g:i A')),
                     TextEntry::make('cgst')->label('C.GST')->prefix('Rs. ')->suffix('/-'),
                     TextEntry::make('amount')->label('Order Amount')->prefix('Rs. ')->suffix('/-'),
                     TextEntry::make('status'),
@@ -87,6 +88,7 @@ class OrderResource extends Resource
                 TextColumn::make('user.name')->searchable(),
                 TextColumn::make('course_name'),
                 TextColumn::make('amount')->label('Order Amount')->prefix('Rs. ')->suffix('/-'),
+                TextColumn::make('payment_time')->getStateUsing(fn($record) => Carbon::parse($record->payment_time)->format('F j, Y g:i A')),
                 TextColumn::make('status'),
             ])->defaultSort('payment_time', 'desc')
             ->filters([
@@ -134,14 +136,14 @@ class OrderResource extends Resource
                     ->icon('heroicon-o-arrow-down-tray')
                     ->action(function ($records) {
                         $zip = new ZipArchive;
-                        $zipFileName = storage_path('invoices.zip');
+                        $zipFileName = storage_path('app/public/invoices.zip');
                         if (file_exists($zipFileName)) {
                             unlink($zipFileName);
                         }
                         if ($zip->open($zipFileName, ZipArchive::CREATE) === TRUE) {
                             foreach ($records as $record) {
                                 $filePath = public_path($record->invoice);
-                                if (file_exists($filePath)) {
+                                if (file_exists($filePath) && is_file($filePath)) {
                                     $zip->addFile($filePath, basename($filePath));
                                 }
                             }
