@@ -22,6 +22,9 @@ class Package extends Model
         'duration',
         'duration_type',
         'training_mode',
+        'zoom_meeting_url',
+        'meeting_id',
+        'meeting_password',
         'placement',
         'certificate',
         'original_price',
@@ -33,7 +36,8 @@ class Package extends Model
         'courses' => 'array'
     ];
 
-    public function course(){
+    public function course()
+    {
         return $this->hasMany(Course::class);
     }
 

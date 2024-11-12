@@ -47,7 +47,34 @@ class CourseResource extends Resource
                         RichEditor::make('short_description')->columnSpanFull()->required(),
                         TextInput::make('duration')->required(),
                         Select::make('duration_type')->options(['Month' => 'Month', 'Week' => 'Week', 'Day' => 'Day'])->required(),
-                        Select::make('training_mode')->multiple()->options(['Online' => 'Online', 'Classroom' => 'Classroom'])->columnSpanFull()->required(),
+                        Select::make('training_mode')
+                            ->options([
+                                'Online' => 'Online',
+                                'Classroom' => 'Classroom',
+                            ])
+                            ->multiple()
+                            ->required()
+                            ->reactive()
+                            ->afterStateUpdated(function (callable $set, $state) {
+                                if (!in_array('Online', $state)) {
+                                    $set('zoom_meeting_url', null);
+                                    $set('meeting_id', null);
+                                    $set('meeting_password', null);
+                                }
+                            }),
+                        TextInput::make('zoom_meeting_url')
+                            ->label('Zoom Meeting URL')
+                            ->hidden(fn($get) => !in_array('Online', $get('training_mode')))
+                            ->url()
+                            ->required(),
+                        TextInput::make('meeting_id')
+                            ->label('Meeting ID')
+                            ->hidden(fn($get) => !in_array('Online', $get('training_mode')))
+                            ->required(),
+                        TextInput::make('meeting_password')
+                            ->label('Meeting Password')
+                            ->hidden(fn($get) => !in_array('Online', $get('training_mode')))
+                            ->required(),
                         TextInput::make('price')->label('Regular price')->prefix('Rs.')->required(),
                         TextInput::make('original_price')->label('Offer price')->prefix('Rs.')
                     ])->columns(2),

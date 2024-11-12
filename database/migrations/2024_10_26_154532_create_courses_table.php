@@ -22,6 +22,9 @@ return new class extends Migration
             $table->tinyInteger('duration');
             $table->string('duration_type');
             $table->string('training_mode');
+            $table->string('zoom_meeting_url')->nullable();
+            $table->string('meeting_id')->nullable();
+            $table->string('meeting_password')->nullable();
             $table->boolean('placement');
             $table->boolean('certificate');
             $table->mediumInteger('original_price')->nullable();
