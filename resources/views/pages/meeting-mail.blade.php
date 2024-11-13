@@ -1,7 +1,12 @@
 @php
-    $courseSchedulesJson = html_entity_decode($order->course_schedule);
-    $courseSchedulesArray = json_decode($courseSchedulesJson, true);
+$courseSchedulesJson = html_entity_decode($order->course_schedule);
+$courseSchedulesArray = json_decode($courseSchedulesJson, true);
+
+if (json_last_error() !== JSON_ERROR_NONE || !is_array($courseSchedulesArray)) {
+    $courseSchedulesArray = [$courseSchedulesJson];
+}
 @endphp
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,20 +32,8 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        .header .company-logo {
-            display: inline-block;
-            vertical-align: middle;
-        }
-
         .header .company-logo img {
             width: 10rem;
-        }
-
-        .header .company-name {
-            display: inline-block;
-            vertical-align: middle;
-            margin-left: 10px;
-            font-size: 24px;
         }
 
         .content {
@@ -111,59 +104,42 @@
         </p>
         <p>This email contains the details of your upcoming training sessions. Please find the session information
             below:</p>
-        @if (is_array($courseSchedulesArray) && count($courseSchedulesArray) > 1)
-            <h4>Courses Included in Your Package:</h4>
-            @foreach ($courseSchedulesArray as $course)
-                @php
-                    [$course_name, $course_time] = array_map('trim', explode(',', $course));
-                    [$date, $time, $mode] = array_map('trim', explode(' ', $course_time)) + ['Not specified'];
-                    $dateTimeObject = new DateTime("$date $time");
-                    $schedule = $schedules
-                        ->where('start_date', $date)
-                        ->where('time', $time)
-                        ->where('training_mode', $mode)
-                        ->whereHas('course', fn($query) => $query->where('name', $course_name))
-                        ->first();
-                @endphp
-                <h3>{{ $course_name }}:</h3>
-                <p>Date and Time: {{ $dateTimeObject->format('d M Y h:i A') }}</p>
-                @if ($mode == 'Online')
-                    <p>Training Mode: {{ $mode }}</p>
-                    <p>Zoom Meeting Link: <a href="{{ $schedule->zoom_meeting_url }}">Click here to join the meeting</a>
-                    </p>
+
+        @foreach ($courseSchedulesArray as $course)
+            @php
+                [$course_name, $course_time] = array_map('trim', explode(',', $course));
+                [$date, $time, $mode] = array_map('trim', explode(' ', $course_time)) + ['Not specified'];
+
+                $dateTimeObject = new DateTime("$date $time");
+
+                $schedule = \App\Models\Schedule::where('start_date', $date)
+                    ->where('time', $time)
+                    ->where('training_mode', $mode)
+                    ->whereHas('course', function ($query) use ($course_name) {
+                        $query->where('name', $course_name);
+                    })
+                    ->first();
+            @endphp
+
+            <h3>{{ $course_name }}:</h3>
+            <p>Date and Time: {{ $dateTimeObject->format('d M Y h:i A') }}</p>
+
+            @if ($mode == 'Online' && $schedule)
+                <p>Training Mode: {{ $mode }}</p>
+                @if ($schedule->zoom_meeting_url && $schedule->meeting_id && $schedule->meeting_password)
+                    <p>Zoom Meeting Link: <a href="{{ $schedule->zoom_meeting_url }}" target="_blank">Click here to join
+                            the meeting</a></p>
                     <p>Meeting ID: {{ $schedule->meeting_id }}</p>
                     <p>Passcode: {{ $schedule->meeting_password }}</p>
                 @else
-                    <p>Training Mode: {{ $mode }}</p>
+                    <p><strong>Zoom details are missing. Please contact support.</strong></p>
                 @endif
-                <hr>
-            @endforeach
-        @else
-            @php
-                $course = $order->course_schedule;
-                [$course_name, $course_time] = array_map('trim', explode(',', $course));
-                [$date, $time, $mode] = array_map('trim', explode(' ', $course_time)) + ['Not specified'];
-                $dateTimeObject = new DateTime("$date $time");
-                $schedule = $schedules
-                    ->where('start_date', $date)
-                    ->where('time', $time)
-                    ->where('training_mode', $mode)
-                    ->whereHas('course', fn($query) => $query->where('name', $course_name))
-                    ->first();
-            @endphp
-            <h4>Course Included in Your Order:</h4>
-            <h3>{{ $course_name }}:</h3>
-            <p>Date and Time: {{ $dateTimeObject->format('d M Y h:i A') }}</p>
-            @if ($mode == 'Online')
-                <p>Training Mode: {{ $mode }}</p>
-                <p>Zoom Meeting Link: <a href="{{ $schedule->zoom_meeting_url }}">Click here to join the meeting</a>
-                </p>
-                <p>Meeting ID: {{ $schedule->meeting_id }}</p>
-                <p>Passcode: {{ $schedule->meeting_password }}</p>
             @else
                 <p>Training Mode: {{ $mode }}</p>
             @endif
-        @endif
+            <hr>
+        @endforeach
+
         <p>Thank you for your purchase! We hope you enjoy your experience.</p>
         <p>Sincerely,<br /><strong>Zoom Technologies Team</strong></p>
     </div>

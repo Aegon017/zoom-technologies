@@ -105,13 +105,21 @@ class PaymentController extends Controller
     private function handlePaymentResponse(Request $request, $status)
     {
         $order = $this->findOrCreateOrder($request);
+
         if ($order->status == 'success') {
             $order->invoice = $this->generateInvoice($order);
         }
+
         $order->save();
-        $this->send($order);
+
+        if (!session()->has('send_called')) {
+            $this->send($order);
+            session(['send_called' => true]);
+        }
+
         return view("pages.payment-$status", compact('order'));
     }
+
 
     private function findOrCreateOrder(Request $request)
     {
