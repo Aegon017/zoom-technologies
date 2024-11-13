@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 use Filament\Tables\Filters\DateFilter;
 use Filament\Tables\Filters\Filter;
+use Illuminate\Support\Facades\Log;
 use OpenSpout\Writer\AutoFilter;
 
 class OrderResource extends Resource
@@ -101,6 +102,25 @@ class OrderResource extends Resource
                         )
                     )
                     ->searchable(),
+                SelectFilter::make('course_schedule')->label('Training mode')
+                    ->options([
+                        'Online' => 'Online',
+                        'Classroom' => 'Classroom',
+                    ])
+                    ->query(function ($query) {
+                        $value = request()->input('filters.course_schedule');  // Accessing the selected value
+
+                        Log::info('Selected Filter Value:', [$value]); // Log the selected value for debugging
+
+                        if ($value) {
+                            return $query->where('course_schedule', 'like', "%$value%");
+                        }
+
+                        return $query;  // No filter applied if no value is selected
+                    }),
+                // SelectFilter::make('course_schedule')->options([
+                //     Order::pluck('course_schedule', 'course_schedule')->toArray()
+                // ]),
                 SelectFilter::make('status')
                     ->options([
                         'success' => 'Success',

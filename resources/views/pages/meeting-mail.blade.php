@@ -1,10 +1,10 @@
 @php
-$courseSchedulesJson = html_entity_decode($order->course_schedule);
-$courseSchedulesArray = json_decode($courseSchedulesJson, true);
+    $courseSchedulesJson = html_entity_decode($order->course_schedule);
+    $courseSchedulesArray = json_decode($courseSchedulesJson, true);
 
-if (json_last_error() !== JSON_ERROR_NONE || !is_array($courseSchedulesArray)) {
-    $courseSchedulesArray = [$courseSchedulesJson];
-}
+    if (json_last_error() !== JSON_ERROR_NONE || !is_array($courseSchedulesArray)) {
+        $courseSchedulesArray = [$courseSchedulesJson];
+    }
 @endphp
 
 <!DOCTYPE html>
