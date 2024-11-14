@@ -3,7 +3,7 @@
         <h4>Overview</h4>
     </div>
     @isset($course)
-        @if ($course->overview->uscouncil_certified)
+        @if ($course->overview && $course->overview->uscouncil_certified)
             <div class="voucher-promo">
                 <h4><img src="{{ asset('frontend/assets/img/us-council-logo-2.png') }}" alt="us-council"> Certified
                     {{ $course->name }}</h4>
@@ -21,7 +21,7 @@
             </div>
         @endif
         <p>
-            {!! $course->overview->content !!}
+            {!! $course->overview->content ?? '' !!}
         </p>
     @endisset
     @isset($package)

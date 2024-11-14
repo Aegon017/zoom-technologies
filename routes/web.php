@@ -34,9 +34,8 @@ Route::middleware([
     Route::get('/my-account', [FrontendController::class, 'render_account'])->name('dashboard');
     Route::get('/order-details/{id}', [FrontendController::class, 'order_details'])->name('order-details');
     Route::get('/my-account', [FrontendController::class, 'render_account'])->name('dashboard');
-    Route::post('/payment/initiate', [PaymentController::class, 'initiatePayment'])->name('payment.initiate');
-    Route::post('/payment/success', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
-    Route::post('/payment/failure', [PaymentController::class, 'paymentFailure'])->name('payment.failure');
+    Route::post('/payment/initiate', [PaymentController::class, 'initiate'])->name('payment.initiate');
+    Route::post('/payment/response', [PaymentController::class, 'response'])->name('payment.response');
 });
 
 Route::get('/storage-link', function () {

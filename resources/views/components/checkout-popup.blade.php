@@ -59,14 +59,14 @@
                                 @csrf
                                 <h5 class="font-weight-bold">{{ $item->name }}</h5>
                                 <h5>₹{{ $item->original_price ? $item->original_price : $item->price }}</h5>
-                                <p>CGST({{ App\Models\Tax::where('name', 'CGST')->first()->rate }}%) -
-                                    ₹{{ (($item->original_price ? $item->original_price : $item->price) * App\Models\Tax::where('name', 'CGST')->first()->rate) / 100 }}
+                                <p>CGST({{ App\Models\Tax::where('name', 'CGST')->first()->rate ?? 0 }}%) -
+                                    ₹{{ (($item->original_price ? $item->original_price : $item->price) * (App\Models\Tax::where('name', 'CGST')->first()->rate ?? 0)) / 100 }}
                                 </p>
-                                <p>SGST({{ App\Models\Tax::where('name', 'SGST')->first()->rate }}%) -
-                                    ₹{{ (($item->original_price ? $item->original_price : $item->price) * App\Models\Tax::where('name', 'SGST')->first()->rate) / 100 }}
+                                <p>SGST({{ App\Models\Tax::where('name', 'SGST')->first()->rate ?? 0 }}%) -
+                                    ₹{{ (($item->original_price ? $item->original_price : $item->price) * (App\Models\Tax::where('name', 'SGST')->first()->rate ?? 0)) / 100 }}
                                 </p>
                                 <h6>Total Price -
-                                    ₹{{ ($item->original_price ? $item->original_price : $item->price) + (($item->original_price ? $item->original_price : $item->price) * (App\Models\Tax::where('name', 'CGST')->first()->rate + App\Models\Tax::where('name', 'SGST')->first()->rate)) / 100 }}/-
+                                    ₹{{ ($item->original_price ? $item->original_price : $item->price) + (($item->original_price ? $item->original_price : $item->price) * ((App\Models\Tax::where('name', 'CGST')->first()->rate ?? 0) + (App\Models\Tax::where('name', 'SGST')->first()->rate ?? 0))) / 100 }}/-
                                 </h6>
                                 <div class="pt-2">
                                     <label for="course-schedule">Select Your Course Date & Time</label>

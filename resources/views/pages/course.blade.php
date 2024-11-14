@@ -116,8 +116,8 @@
                 $totalPrice =
                     ($item->original_price ? $item->original_price : $item->price) *
                     (1 +
-                        (App\Models\Tax::where('name', 'SGST')->first()->rate +
-                            App\Models\Tax::where('name', 'CGST')->first()->rate) /
+                        ((App\Models\Tax::where('name', 'SGST')->first()->rate ?? 0) +
+                            (App\Models\Tax::where('name', 'SGST')->first()->rate ?? 0)) /
                             100);
             @endphp
             <x-checkout-popup :$item :$totalPrice :$packageCourses />
