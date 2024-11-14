@@ -11,7 +11,7 @@
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-2xl font-semibold">Order Details</h1>
                     @if ($order->status == 'success')
-                        <a class="text-blue-600" href="{{ asset($order->invoice) }}">View invoice →</a>
+                        <a class="text-blue-600" href="{{ asset($order->invoice) }}" target="_blank">View invoice →</a>
                     @endif
                 </div>
                 <p class="text-gray-600 mb-1"><strong>Order number:</strong> {{ $order->order_number }}</p>

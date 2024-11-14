@@ -49,11 +49,12 @@ class PaymentController extends Controller
         $scheduleIDs = Session::get('scheduleIDs');
         $productType = Session::get('productType');
         $order = $createOrder->execute($request, $tax, $modelFromProductType, $productType);
-        if ($request->status == 'success') {
-            $order->invoice = $generateInvoice->execute($order);
-        }
         $order->save();
         $attachScheduleToOrder->execute($scheduleIDs, $order);
+        if ($order->status == 'success') {
+            $order->invoice = $generateInvoice->execute($order);
+            $order->save();
+        }
         $sendEmails->execute($order);
         return view("pages.payment-$order->status", compact('order'));
     }
