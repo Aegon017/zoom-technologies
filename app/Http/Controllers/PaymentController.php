@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Services\PayU;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class PaymentController extends Controller
 {
     public function initiate(Request $request)
     {
+        $schedule = array_values(array_filter($request->all(), fn($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
+        Session::put('schedule', $schedule);
         $payu_obj = new PayU();
         $payu_obj->env_prod = config('services.payu.environment');
         $payu_obj->key = config('services.payu.key');
@@ -36,6 +39,6 @@ class PaymentController extends Controller
 
     public function response(Request $request)
     {
-        
+        dd(Session::get('schedule'));
     }
 }
