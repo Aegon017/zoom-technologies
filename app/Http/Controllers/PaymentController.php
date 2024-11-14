@@ -108,7 +108,9 @@ class PaymentController extends Controller
     {
         $order = $this->findOrCreateOrder($request);
         $order->save();
-
+        if ($order->status == 'success') {
+            $order->invoice = $this->generateInvoice($order);
+        }
         $this->attachSchedulesToOrder($order);
         $this->sendOrderEmails($order);
 
