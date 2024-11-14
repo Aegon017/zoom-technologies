@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\Package;
 use App\Models\PageMetaDetails;
 use App\Models\PageSchema;
+use App\Models\Slider;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +19,8 @@ class FrontendController extends Controller
     {
         $pageSchema = PageSchema::where('page_name', 'Home')->first();
         $metaDetail = PageMetaDetails::where('page_name', 'Home')->first();
-        return view('pages.home', compact('metaDetail', 'pageSchema'));
+        $sliders = Slider::where('status', 1)->get();
+        return view('pages.home', compact('metaDetail', 'pageSchema', 'sliders'));
     }
 
     public function renderNewsList()

@@ -21,77 +21,22 @@
     @endif
     <section id="zt-slider-2" class="zt-slider-section-2">
         <div id="zt-main-slider-2" class="zt-main-slider-wrap owl-carousel">
-            <div class="slider-main-item-2 position-relative">
-                <div class="slider-main-img img-zooming"
-                    data-background="{{ asset('frontend/assets/img/banner/special-offer-slide.webp') }}"></div>
-                <div class="slider-overlay"></div>
-                <div class="container">
-                    <div class="slider-main-text zt-headline text-center pera-content">
-                        <h1>
-                            Special Offer
-                        </h1>
-                        <ul>
-                            <li>Cybersecurity Associate - SOC Analyst (1 Month)</li>
-                            <li>Cybersecurity Professional (1 Month)</li>
-                            <li><strong>Free</strong> US-Council Exam Vouchers for Both Courses</li>
-                        </ul>
-                        <a href="training/india/cybersecurity-offer" class="slide-btn">Know More</a>
+            @foreach ($sliders as $slider)
+                <div class="slider-main-item-2 position-relative">
+                    <div class="slider-main-img img-zooming" data-background="{{ asset(Storage::url($slider->image)) }}">
+                    </div>
+                    <div class="slider-overlay"></div>
+                    <div class="container">
+                        <div class="slider-main-text zt-headline text-center pera-content">
+                            <h1>
+                                {{ $slider->title }}
+                            </h1>
+                            {!! $slider->content !!}
+                            <a href="{{ $slider->redirect_url }}" class="slide-btn">{{ $slider->button_name }}</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="slider-main-item-2 position-relative">
-                <div class="slider-main-img img-zooming"
-                    data-background="{{ asset('frontend/assets/img/banner/zoom-slide-1.jpg') }}"></div>
-                <div class="slider-overlay"></div>
-                <div class="container">
-                    <div class="slider-main-text zt-headline text-center pera-content">
-                        <h1>
-                            ZOOM ties up with US-Council
-                        </h1>
-                        <p>Zoom becomes the official training partner of US-Council for Cybersecurity Professional
-                            courses.
-                            <strong><a href="#">www.us-council.com</a></strong>
-                        </p>
-                        <a href="#" class="slide-btn">Know More</a>
-                    </div>
-                </div>
-            </div>
-            <div class="slider-main-item-2 position-relative">
-                <div class="slider-main-img img-zooming"
-                    data-background="{{ asset('frontend/assets/img/banner/zoom-slide-3.jpg') }}"></div>
-                <div class="slider-overlay"></div>
-                <div class="container">
-                    <div class="slider-main-text zt-headline text-center pera-content">
-                        <h1>
-                            Total Data Recovery Professional
-                        </h1>
-                        <p><strong class="text-white">Certificate to be issued by ACELab and ZOOM</strong></p>
-                        <p>The Total Data Recovery Professional Course is designed to provide a comprehensive
-                            understanding
-                            of data recovery from various storage devices such as HDD, SSD, SCSI / SAS drives, Flash
-                            drives,
-                            SD cards, and RAID arrays.</p>
-                        <a href="training/india/total-data-recovery-professional" class="slide-btn">Know
-                            More</a>
-                    </div>
-                </div>
-            </div>
-            <div class="slider-main-item-2 position-relative">
-                <div class="slider-main-img img-zooming"
-                    data-background="{{ asset('frontend/assets/img/banner/zoom-slide-4.jpg') }}"></div>
-                <div class="slider-overlay"></div>
-                <div class="container">
-                    <div class="slider-main-text zt-headline text-center pera-content">
-                        <h1>
-                            Mobile Forensic Expert - Training
-                        </h1>
-                        <p>Mobile Forensic Expert course is for those who are looking to get skills necessary for data
-                            extraction and analysis from mobile devices. The course is structured into various topics,
-                            including both physical and logical acquisition methods.</p>
-                        <a href="training/india/mobile-forensic-expert" class="slide-btn">Know More</a>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
     </section>
     <!-- End of slider section -->
