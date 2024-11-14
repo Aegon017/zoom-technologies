@@ -1,12 +1,3 @@
-@php
-    $courseSchedulesJson = html_entity_decode($order->course_schedule);
-    $courseSchedulesArray = json_decode($courseSchedulesJson, true);
-
-    if (json_last_error() !== JSON_ERROR_NONE || !is_array($courseSchedulesArray)) {
-        $courseSchedulesArray = [$courseSchedulesJson];
-    }
-@endphp
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -102,44 +93,25 @@
             <strong>{{ $order->order_number }}</strong>, placed on <strong>{{ $order->payment_time }}</strong>, has
             been successfully processed.
         </p>
-        <p>This email contains the details of your upcoming training sessions. Please find the session information
-            below:</p>
-
-        @foreach ($courseSchedulesArray as $course)
-            @php
-                [$course_name, $course_time] = array_map('trim', explode(',', $course));
-                [$date, $time, $mode] = array_map('trim', explode(' ', $course_time)) + ['Not specified'];
-
-                $dateTimeObject = new DateTime("$date $time");
-
-                $schedule = \App\Models\Schedule::where('start_date', $date)
-                    ->where('time', $time)
-                    ->where('training_mode', $mode)
-                    ->whereHas('course', function ($query) use ($course_name) {
-                        $query->where('name', $course_name);
-                    })
-                    ->first();
-            @endphp
-
-            <h3>{{ $course_name }}:</h3>
-            <p>Date and Time: {{ $dateTimeObject->format('d M Y h:i A') }}</p>
-
-            @if ($mode == 'Online' && $schedule)
-                <p>Training Mode: {{ $mode }}</p>
-                @if ($schedule->zoom_meeting_url && $schedule->meeting_id && $schedule->meeting_password)
-                    <p>Zoom Meeting Link: <a href="{{ $schedule->zoom_meeting_url }}" target="_blank">Click here to join
+        <p>This email contains the details of your upcoming training sessions. Please find the
+            <strong>{{ $order->course_name }}</strong> course session information below:
+        </p>
+        @foreach ($order->orderSchedule as $schedules)
+            <h3>{{ $schedules->course_name }}:</h3>
+            <p>Batch: {{ $schedules->start_date->format('d M Y') }} {{ $schedules->time->format('h:i A') }}</p>
+            <p>Training Mode: {{ $schedules->training_mode }}</p>
+            @if ($schedules->training_mode == 'Online')
+                @if ($schedules->zoom_meeting_url && $schedules->meeting_id && $schedules->meeting_password)
+                    <p>Zoom Meeting Link: <a href="{{ $schedules->zoom_meeting_url }}">Click here to join
                             the meeting</a></p>
-                    <p>Meeting ID: {{ $schedule->meeting_id }}</p>
-                    <p>Passcode: {{ $schedule->meeting_password }}</p>
+                    <p>Meeting ID: {{ $schedules->meeting_id }}</p>
+                    <p>Meeting Password: {{ $schedules->meeting_password }}</a></p>
                 @else
-                    <p><strong>Zoom details are missing. Please contact support.</strong></p>
+                    <p><strong>Zoom details are missing. Please contact our customer support.</strong></p>
                 @endif
-            @else
-                <p>Training Mode: {{ $mode }}</p>
             @endif
             <hr>
         @endforeach
-
         <p>Thank you for your purchase! We hope you enjoy your experience.</p>
         <p>Sincerely,<br /><strong>Zoom Technologies Team</strong></p>
     </div>

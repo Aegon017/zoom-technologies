@@ -2,46 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
+use App\Mail\AdminMail;
+use App\Mail\MeetingMail;
+use App\Mail\OrderMail;
 use App\Models\Order;
 use App\Models\Course;
 use App\Models\Package;
-use PDF;
-use App\Mail\OrderMail;
-use App\Mail\AdminMail;
-use App\Mail\MeetingMail;
+use App\Models\OrderSchedule;
 use App\Models\Schedule;
 use App\Models\Tax;
-use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
-use Carbon\Carbon;
-use Hamcrest\Arrays\IsArray as ArraysIsArray;
-use Hamcrest\Type\IsArray;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class PaymentController extends Controller
 {
-    public $zoom_meeting_url;
-    public $meeting_id;
-    public $meeting_password;
+    protected $cgst;
+    protected $sgst;
+
+    public function __construct()
+    {
+        $this->cgst = Tax::where('name', 'CGST')->first()->rate;
+        $this->sgst = Tax::where('name', 'SGST')->first()->rate;
+    }
+
     public function initiatePayment(Request $request)
     {
         $data = $this->preparePaymentData($request);
         return view('pages.payment-initiate', compact('data'));
     }
 
-    private function preparePaymentData(Request $request)
+    public function preparePaymentData(Request $request): array
     {
-        if ($request->product_type == 'package') {
-            $courseSchedules = json_encode(array_values(Arr::where($request->all(), function ($value, $key) {
-                return str_starts_with($key, 'course_schedule_');
-            })));
-        } else {
-            $courseSchedules = $request->course_schedule;
-        }
+        $courseSchedules = $this->getCourseSchedulesFromRequest($request);
+        Session::put('courseSchedules', $courseSchedules);
+
         $txnid = uniqid();
         return [
             'key' => config('services.payu.key'),
@@ -51,21 +49,25 @@ class PaymentController extends Controller
             'firstname' => Auth::user()->name,
             'email' => Auth::user()->email,
             'phone' => Auth::user()->phone,
-            'surl' => env('APP_URL') . '/payment/success',
-            'furl' => env('APP_URL') . '/payment/failure',
-            'udf1' => $courseSchedules,
-            'udf2' => $request->product_type,
-            'hash' => $this->generateHash($txnid, $request->amount, $request->name, $courseSchedules, $request->product_type),
+            'surl' => route('payment.success'),
+            'furl' => route('payment.failure'),
+            'udf1' => $request->product_type,
+            'hash' => $this->generateHash($txnid, $request->amount, $request->name, $request->product_type),
         ];
     }
 
-    private function generateHash($txnid, $amount, $productinfo, $udf1, $udf2)
+    private function getCourseSchedulesFromRequest(Request $request): array
     {
-        $hashSequence = $this->createHashSequence($txnid, $amount, $productinfo, $udf1, $udf2);
+        return array_values(Arr::where($request->all(), fn($value, $key) => str_starts_with($key, 'course_schedule')));
+    }
+
+    public function generateHash($txnid, $amount, $productinfo, $udf1): string
+    {
+        $hashSequence = $this->createHashSequence($txnid, $amount, $productinfo, $udf1);
         return strtolower(hash('sha512', $hashSequence));
     }
 
-    private function createHashSequence($txnid, $amount, $productinfo, $udf1, $udf2)
+    public function createHashSequence($txnid, $amount, $productinfo, $udf1): string
     {
         $key = config('services.payu.key');
         $salt = config('services.payu.salt');
@@ -79,7 +81,6 @@ class PaymentController extends Controller
             $firstname,
             $email,
             $udf1,
-            $udf2,
             '',
             '',
             '',
@@ -88,7 +89,8 @@ class PaymentController extends Controller
             '',
             '',
             '',
-            $salt,
+            '',
+            $salt
         ]);
     }
 
@@ -102,108 +104,99 @@ class PaymentController extends Controller
         return $this->handlePaymentResponse($request, 'failure');
     }
 
-    private function handlePaymentResponse(Request $request, $status)
+    public function handlePaymentResponse(Request $request, string $status)
     {
         $order = $this->findOrCreateOrder($request);
-
-        if ($order->status == 'success') {
-            $order->invoice = $this->generateInvoice($order);
-        }
-
         $order->save();
 
-        if (!session()->has('send_called')) {
-            $this->send($order);
-            session(['send_called' => true]);
-        }
+        $this->attachSchedulesToOrder($order);
+        $this->sendOrderEmails($order);
 
         return view("pages.payment-$status", compact('order'));
     }
 
-
-    private function findOrCreateOrder(Request $request)
+    public function findOrCreateOrder(Request $request): Order
     {
-        $total_price = $request->amount;
-        $course_price = $total_price / (1 + (Tax::where('name', 'SGST')->first()->rate + Tax::where('name', 'CGST')->first()->rate) / 100);
-        $sgst = $course_price * (Tax::where('name', 'SGST')->first()->rate / 100);
-        $cgst = $course_price * (Tax::where('name', 'CGST')->first()->rate / 100);
-        $model = $this->getModelFromProductType($request->udf2);
-        $item = $model::where('slug', $request->productinfo)->first();
-        $existingOrder = Order::where('transaction_id', $request->txnid)->first();
-        if ($existingOrder) {
-            return $existingOrder;
-        }
-        $order = new Order();
-        $order->user_id = Auth::id();
-        $order->order_number = 'zt_' . Auth::id() . now()->format('YmdHis');
-        $order->transaction_id = $request->txnid;
-        $order->payu_id = $request->mihpayid;
-        $order->payment_mode = $request->mode;
-        $order->payment_time = $request->addedon;
-        $order->payment_desc = $request->field9;
-        $order->amount = $total_price;
-        $order->status = $request->status;
-        $order->course_name = $item->name;
-        $order->course_thumbnail = $item->thumbnail;
-        $order->course_thumbnail_alt = $item->thumbnail_alt;
-        $order->course_duration = $item->duration;
-        $order->course_duration_type = $item->duration_type;
-        $order->course_schedule = $request->udf1;
-        $order->course_price = $course_price;
-        $order->sgst = $sgst;
-        $order->cgst = $cgst;
-        return $order;
+        $totalPrice = $request->amount;
+        $coursePrice = $totalPrice / (1 + ($this->sgst + $this->cgst) / 100);
+        $sgst = $coursePrice * ($this->sgst / 100);
+        $cgst = $coursePrice * ($this->cgst / 100);
+
+        $model = $this->getModelFromProductType($request->udf1);
+        $item = $model::where('slug', $request->productinfo)->firstOrFail();
+
+        return Order::firstOrNew(['transaction_id' => $request->txnid], [
+            'user_id' => Auth::id(),
+            'order_number' => 'zt_' . Auth::id() . now()->format('YmdHis'),
+            'payu_id' => $request->mihpayid,
+            'payment_mode' => $request->mode,
+            'payment_time' => $request->addedon,
+            'payment_desc' => $request->field9,
+            'amount' => $totalPrice,
+            'status' => $request->status,
+            'course_name' => $item->name,
+            'course_thumbnail' => $item->thumbnail,
+            'course_thumbnail_alt' => $item->thumbnail_alt,
+            'course_duration' => $item->duration,
+            'course_duration_type' => $item->duration_type,
+            'course_price' => $coursePrice,
+            'sgst' => $sgst,
+            'cgst' => $cgst,
+        ]);
     }
 
-    private function getModelFromProductType($productType)
+    private function getModelFromProductType(string $productType)
     {
         return match ($productType) {
             'course' => Course::class,
             'package' => Package::class,
-            default => null,
+            default => throw new \InvalidArgumentException("Unknown product type: $productType"),
         };
     }
 
-    private function generateInvoice($order)
+    private function attachSchedulesToOrder(Order $order): void
     {
-        $data = [
-            'id' => $order->order_number,
-            'name' => $order->user->name,
-            'email' => $order->user->email,
-            'phone' => $order->user->phone,
-            'txn_id' => $order->transaction_number,
-            'payment_time' => $order->payment_time,
-            'payu_id' => $order->payu_id,
-            'payment_mode' => $order->payment_mode,
-            'course_name' => $order->course_name,
-            'course_price' => $order->course_price,
-            'course_duration' => $order->course_duration,
-            'course_duration_type' => $order->course_duration_type,
-            'course_schedule' => $order->course_schedule,
-            'sgst' => $order->sgst,
-            'cgst' => $order->cgst,
-            'total_price' => $order->amount,
-        ];
+        $schedulesId = Session::get('courseSchedules');
+        foreach ($schedulesId as $scheduleId) {
+            $schedule = Schedule::find($scheduleId);
+            $orderSchedule = new OrderSchedule([
+                'order_id' => $order->id,
+                'course_name' => $schedule->course->name,
+                'start_date' => $schedule->start_date,
+                'time' => $schedule->time,
+                'end_time' => $schedule->end_time,
+                'duration' => $schedule->duration,
+                'duration_type' => $schedule->duration_type,
+                'day_off' => $schedule->day_off,
+                'training_mode' => $schedule->training_mode,
+                'zoom_meeting_url' => $schedule->zoom_meeting_url,
+                'meeting_id' => $schedule->meeting_id,
+                'meeting_password' => $schedule->meeting_password,
+            ]);
+            $orderSchedule->save();
+        }
+    }
 
+    public function generateInvoice(Order $order): string
+    {
+        $data = ['order' => $order];
         $pdf = FacadePdf::loadView('pages.invoice', $data);
         $pdfFileName = 'invoices/invoice_' . time() . '.pdf';
         $pdfPath = public_path($pdfFileName);
         $pdf->save($pdfPath);
-
         return $pdfFileName;
     }
 
-    public function send($order)
+    public function sendOrderEmails(Order $order): void
     {
         $to = $order->user->email;
-        $subject = "Payment " . $order->status . " on your order with Zoom Technologies";
+        $subject = "Payment {$order->status} on your order with Zoom Technologies";
         Mail::to($to)->send(new OrderMail($subject, $order));
-        if ($order->status == 'success') {
-            $admin = "kondanagamalleswararao016@gmail.com";
-            $subject = "New Enrollment";
-            $schedules = Schedule::query();
-            Mail::to($admin)->send(new AdminMail($subject, $order));
-            Mail::to($to)->send(new MeetingMail($order, $schedules));
+
+        if ($order->status === 'success') {
+            $adminEmail = 'kondanagamalleswararao016@gmail.com';
+            Mail::to($adminEmail)->send(new AdminMail("New Enrollment", $order));
+            Mail::to($to)->send(new MeetingMail($order));
         }
     }
 }

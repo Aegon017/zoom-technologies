@@ -28,7 +28,6 @@ return new class extends Migration
             $table->string('course_thumbnail_alt');
             $table->tinyInteger('course_duration');
             $table->string('course_duration_type');
-            $table->string('course_schedule');
             $table->mediumInteger('course_price');
             $table->smallInteger('sgst');
             $table->smallInteger('cgst');

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
@@ -22,7 +23,6 @@ class Order extends Model
         'course_thumbnail_alt',
         'course_duration',
         'course_duration_type',
-        'course_schedule',
         'course_price',
         'sgst',
         'cgst',
@@ -41,5 +41,10 @@ class Order extends Model
     public function package()
     {
         return $this->belongsTo(Package::class);
+    }
+
+    public function orderSchedule(): HasMany
+    {
+        return $this->hasMany(OrderSchedule::class);
     }
 }

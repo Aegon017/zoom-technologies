@@ -129,35 +129,16 @@
 
     <div class="content">
         <p>Dear Admin,</p>
-        <p>We are pleased to inform you that a new student has enrolled in your course:</p>
-        <p><strong>Course Name:</strong> {{ $order->course_name }}</p>
-        <p><strong>Batch:</strong> @php
-            $courseSchedulesJson = html_entity_decode($order->course_schedule);
-            $courseSchedulesArray = json_decode($courseSchedulesJson, true);
-        @endphp
-            @if ($courseSchedulesArray)
-                @foreach ($courseSchedulesArray as $item)
-                    @php
-                        [$course_name, $course_time] = array_map('trim', explode(',', $item));
-                        [$date, $time, $mode] = array_map('trim', explode(' ', $course_time)) + ['Not specified'];
-
-                        $dateTimeObject = new DateTime("$date $time");
-                    @endphp
-                    <br>{{ $course_name }}:
-                    {{ $dateTimeObject->format('d M Y h:i A') }}
-                    {{ $mode }}
-                @endforeach
-            @else
-                @php
-                    [$course_name, $course_time] = array_map('trim', explode(',', $order->course_schedule));
-                    [$date, $time, $mode] = array_map('trim', explode(' ', $course_time)) + ['Not specified'];
-
-                    $dateTimeObject = new DateTime("$date $time");
-                @endphp
-                {{ $dateTimeObject->format('d M Y h:i A') }} <br>
-                <strong>Training Mode</strong>: {{ $mode }}
-            @endif
-        </p>
+        <p>We are pleased to inform you that a new student has enrolled in your {{ $order->course_name }} course:</p>
+        @foreach ($order->orderSchedule as $schedules)
+            <br>
+            <p><strong>Course Name : </strong>{{ $schedules->course_name }}</p>
+            <p><strong>Batch : </strong>{{ $schedules->start_date->format('d M Y') }}
+                {{ $schedules->time->format('h:i A') }}
+            </p>
+            <p><strong>Training mode : </strong>{{ $schedules->training_mode }}</p>
+            <hr>
+        @endforeach
         <p><strong>Enrolled Student:</strong> {{ $order->user->name }}</p>
         <p><strong>Student email:</strong> {{ $order->user->email }}</p>
         <p><strong>Student phone:</strong> {{ $order->user->phone }}</p>
@@ -175,11 +156,7 @@
                 <tr>
                     <td>Payment Method:</td>
                     <td>
-                        @if ($order->payment_mode)
-                            {{ $order->payment_mode }}
-                        @else
-                            none
-                        @endif
+                        {{ $order->payment_mode ?? 'none' }}
                     </td>
                 </tr>
                 <tr>

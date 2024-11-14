@@ -22,12 +22,11 @@
                                     <div class="my-4">
                                         <label for="course-schedule">Select {{ $course->name }} Course Date &
                                             Time</label>
-                                        <select class="form-control" name="course_schedule_{{ $course->id }}"
+                                        <select class="form-control" name="course_schedule{{ $course->id }}"
                                             id="course-schedule" required>
                                             <option value="" selected>select schedule</option>
                                             @foreach ($course->schedule as $schedule)
-                                                <option
-                                                    value="{{ $schedule->course->name }},{{ $schedule->start_date }} {{ $schedule->time }} {{ $schedule->training_mode }}">
+                                                <option value="{{ $schedule->id }}">
                                                     {{ \Carbon\Carbon::parse($schedule->start_date)->format('jS M Y') }}
                                                     -
                                                     {{ \Carbon\Carbon::parse($schedule->time)->format('g:i A') }} -
@@ -74,8 +73,7 @@
                                     <select class="form-control" name="course_schedule" id="course-schedule" required>
                                         <option value="" selected>select schedule</option>
                                         @foreach ($item->schedule as $schedule)
-                                            <option
-                                                value="{{ $schedule->course->name }},{{ $schedule->start_date }} {{ $schedule->time }} {{ $schedule->training_mode }}">
+                                            <option value="{{ $schedule->id }}">
                                                 {{ \Carbon\Carbon::parse($schedule->start_date)->format('jS M Y') }} -
                                                 {{ \Carbon\Carbon::parse($schedule->time)->format('g:i A') }} -
                                                 {{ $schedule->training_mode }}</option>

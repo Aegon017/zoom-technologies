@@ -13,14 +13,12 @@ class MeetingMail extends Mailable
 {
     use Queueable, SerializesModels;
     public $order;
-    public $schedules;
     /**
      * Create a new message instance.
      */
-    public function __construct($order, $schedules)
+    public function __construct($order)
     {
         $this->order = $order;
-        $this->schedules = $schedules;
     }
 
     /**

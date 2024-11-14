@@ -30,8 +30,10 @@ use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 use Filament\Tables\Filters\DateFilter;
 use Filament\Tables\Filters\Filter;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Log;
 use OpenSpout\Writer\AutoFilter;
+use App\Models\OrderSchedule;
 
 class OrderResource extends Resource
 {
@@ -62,7 +64,7 @@ class OrderResource extends Resource
                 Fieldset::make('Course Details')->schema([
                     TextEntry::make('course_name'),
                     TextEntry::make('course_price')->prefix('Rs. ')->suffix('/-'),
-                    TextEntry::make('course_schedule')->label('Course Schedule')->getStateUsing(fn($record) => is_array($courseSchedule = json_decode(html_entity_decode($record->course_schedule), true)) && !empty($courseSchedule) ? collect($courseSchedule)->map(fn($item) => count($courseDetails = explode(',', $item)) === 2 ? "<strong>{$courseDetails[0]}</strong> - " . Carbon::parse(preg_replace('/\s+Online$/', '', trim($courseDetails[1])))->format('l, F j, Y g:i A') : 'Invalid date')->implode('<br>') : 'No course schedule available.')->html(),
+                    TextEntry::make('course_schedule')->label('Course Schedule')->getStateUsing(fn($record) => is_array($courseSchedule = json_decode(html_entity_decode($record->course_schedule), true)) && !empty($courseSchedule) ? collect($courseSchedule)->map(fn($item) => count($courseDetails = explode(',', $item)) === 2 ? "<strong>{$courseDetails[0]}</strong> - " . Carbon::parse(preg_replace('/\s+Online$|\s+Classroom$/', '', trim($courseDetails[1])))->format('l, F j, Y g:i A') : 'Invalid date')->implode('<br>') : (is_string($record->course_schedule) && !empty($record->course_schedule) ? htmlspecialchars($record->course_schedule) : 'No course schedule available.'))->html()
                 ]),
                 Fieldset::make('Payment Details')->schema([
                     TextEntry::make('order_number'),
@@ -102,25 +104,9 @@ class OrderResource extends Resource
                         )
                     )
                     ->searchable(),
-                SelectFilter::make('course_schedule')->label('Training mode')
-                    ->options([
-                        'Online' => 'Online',
-                        'Classroom' => 'Classroom',
-                    ])
-                    ->query(function ($query) {
-                        $value = request()->input('filters.course_schedule');  // Accessing the selected value
-
-                        Log::info('Selected Filter Value:', [$value]); // Log the selected value for debugging
-
-                        if ($value) {
-                            return $query->where('course_schedule', 'like', "%$value%");
-                        }
-
-                        return $query;  // No filter applied if no value is selected
-                    }),
-                // SelectFilter::make('course_schedule')->options([
-                //     Order::pluck('course_schedule', 'course_schedule')->toArray()
-                // ]),
+                SelectFilter::make('training_mode')
+                    ->relationship('orderSchedule', 'training_mode')
+                    ->preload(),
                 SelectFilter::make('status')
                     ->options([
                         'success' => 'Success',
@@ -133,7 +119,6 @@ class OrderResource extends Resource
                         DatePicker::make('end_date')->label('End Date'),
                     ])
                     ->query(function ($query, $data) {
-                        // Use whereDate to compare only the date part, ignoring time
                         if (isset($data['start_date']) && isset($data['end_date'])) {
                             $query->whereDate('payment_time', '>=', $data['start_date'])
                                 ->whereDate('payment_time', '<=', $data['end_date']);

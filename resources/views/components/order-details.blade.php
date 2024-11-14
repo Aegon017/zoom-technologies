@@ -26,52 +26,20 @@
                             <h2 class="text-xl font-semibold mb-2">
                                 {{ $order->course_name }}
                             </h2>
-                            <p class="text-gray-600 mb-4">Rs. {{ $order->course_price }}/-</p>
+                            <p><strong>Price:</strong> Rs. {{ $order->course_price }}/-</p>
+                            <p><strong>Duration:</strong>{{ $order->course_duration }}
+                                {{ $order->course_duration_type }}</p>
                             <div class="flex flex-col sm:flex-row justify-between my-4">
                                 <div class="mb-4 sm:mb-0">
                                     <p class="text-gray-600">
-                                        <strong>Batch:</strong>
-                                        @php
-                                            $courseSchedulesJson = html_entity_decode($order->course_schedule);
-                                            $courseSchedulesArray = json_decode($courseSchedulesJson, true);
-                                        @endphp
-                                        @if ($courseSchedulesArray)
-                                            @foreach ($courseSchedulesArray as $item)
-                                                @php
-                                                    [$course_name, $course_time] = array_map(
-                                                        'trim',
-                                                        explode(',', $item),
-                                                    );
-                                                    [$date, $time, $mode] = array_map(
-                                                        'trim',
-                                                        explode(' ', $course_time),
-                                                    ) + ['Not specified'];
-
-                                                    $dateTimeObject = new DateTime("$date $time");
-                                                @endphp
-                                                <br>{{ $course_name }}:
-                                                {{ $dateTimeObject->format('d M Y h:i A') }}
-                                                {{ $mode }}
-                                            @endforeach
-                                        @else
-                                            @php
-                                                [$course_name, $course_time] = array_map(
-                                                    'trim',
-                                                    explode(',', $order->course_schedule),
-                                                );
-                                                [$date, $time, $mode] = array_map(
-                                                    'trim',
-                                                    explode(' ', $course_time),
-                                                ) + ['Not specified'];
-
-                                                $dateTimeObject = new DateTime("$date $time");
-                                            @endphp
-                                            {{ $dateTimeObject->format('d M Y h:i A') }} <br>
-                                            <strong>Training Mode:</strong> {{ $mode }}
-                                        @endif
-                                        <br /> <strong>Course duration:</strong>
-                                        {{ $order->course_duration }}
-                                        {{ $order->course_duration_type }}
+                                        <strong class="mb-4">Course schedule:</strong>
+                                        @foreach ($order->orderSchedule as $schedules)
+                                            <br><strong>Course name:</strong>{{ $schedules->course_name }} <br>
+                                            <strong>Batch:</strong>{{ $schedules->start_date->format('d M Y') }}
+                                            {{ $schedules->time->format('h:i A') }} <br>
+                                            <strong>Training mode:</strong>{{ $schedules->training_mode }}
+                                            <p></p>
+                                        @endforeach
                                     </p>
                                 </div>
                             </div>
