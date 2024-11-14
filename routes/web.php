@@ -48,8 +48,3 @@ Route::get('/storage-link', function () {
 Route::get('/zoom-technologies/filament/exports/{export}/download', DownloadExport::class)
     ->name('filament.exports.download')
     ->middleware(['web', 'auth']);
-
-Route::get('/invoice', function () {
-    $order = Order::find(67);
-    return view('pages.invoice', compact('order'));
-})->name('invoice');
