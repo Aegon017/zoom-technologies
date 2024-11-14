@@ -84,7 +84,7 @@
                                 <img src="data:image/png;base64,{{ base64_encode(file_get_contents(asset('frontend/assets/img/logo.png'))) }}"
                                     style="width: 100%; max-width: 150px;" alt="Logo" />
                             </td>
-                            <td>{{ $order->order_number }}<br />{{ \Carbon\Carbon::parse($order->payment_time)->format('d M, Y, h:i') }}
+                            <td>{{ $order->order_number }}<br />{{ $order->payment_time->format('d M, Y, h:i') }}
                             </td>
                         </tr>
                     </table>
@@ -115,8 +115,10 @@
                     <table>
                         <tr>
                             <td>
-                                <h3 style="margin-block:0.5rem">{{ \Carbon\Carbon::parse($order->payment_time)->format('d M, Y, h:i') }}</h3>
-                                <div>{{ $order->user->name }} <br />{{ $order->user->email }} <br />{{ $order->user->phone }}</div>
+                                <h3 style="margin-block:0.5rem">{{ $order->payment_time->format('d M, Y, h:i') }}</h3>
+                                <div>{{ $order->user->name }} <br />{{ $order->user->email }}
+                                    <br />{{ $order->user->phone }}
+                                </div>
                             </td>
                         </tr>
                     </table>
@@ -169,7 +171,7 @@
                         <tr>
                             <td style="width:60%;"></td>
                             <td style="text-align: end">
-                                <span><b>S.GST({{ 100 / ($order->course_price / $order->sgst) }}%) :</b>
+                                <span><b>S.GST({{ (100 * $order->sgst) / $order->course_price }}%) :</b>
                                     &nbsp;&nbsp;</span>
                             </td>
                             <td style="text-align: end">
@@ -180,7 +182,7 @@
                         <tr>
                             <td style="width:60%;"></td>
                             <td style="text-align: end">
-                                <span><b>C.GST({{ 100 / ($order->course_price / $order->cgst) }}%) :</b>
+                                <span><b>C.GST({{ (100 * $order->cgst) / $order->course_price }}%) :</b>
                                     &nbsp;&nbsp;</span>
                             </td>
                             <td style="text-align: end">

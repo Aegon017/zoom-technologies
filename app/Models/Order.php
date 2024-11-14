@@ -28,6 +28,10 @@ class Order extends Model
         'cgst',
     ];
 
+    protected $casts = [
+        'payment_time' => 'datetime',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -14,9 +14,9 @@ class AdminMail extends Mailable
     use Queueable, SerializesModels;
     public $subject;
     public $order;
-    public function __construct($subject, $order)
+    public function __construct($adminMailSubject, $order)
     {
-        $this->subject = $subject;
+        $this->subject = $adminMailSubject;
         $this->order = $order;
     }
 

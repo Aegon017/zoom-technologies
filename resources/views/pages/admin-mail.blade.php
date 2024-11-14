@@ -162,8 +162,8 @@
                 <tr>
                     <td>Taxes (18%):</td>
                     <td>
-                        C.GST({{ 100 / ($order->course_price / $order->cgst) }}%): Rs. {{ $order->cgst }}/-<br>
-                        S.GST({{ 100 / ($order->course_price / $order->sgst) }}%): Rs. {{ $order->sgst }}/-
+                        C.GST({{ (100 * $order->cgst) / $order->course_price }}%): Rs. {{ $order->cgst }}/-<br>
+                        S.GST({{ (100 * $order->sgst) / $order->course_price }}%): Rs. {{ $order->sgst }}/-
                     </td>
                 </tr>
                 <tr>

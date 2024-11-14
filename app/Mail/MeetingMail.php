@@ -13,11 +13,13 @@ class MeetingMail extends Mailable
 {
     use Queueable, SerializesModels;
     public $order;
+    public $subject;
     /**
      * Create a new message instance.
      */
-    public function __construct($order)
+    public function __construct($meetingMailSubject,$order)
     {
+        $this->subject = $meetingMailSubject;
         $this->order = $order;
     }
 
@@ -27,7 +29,7 @@ class MeetingMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "Zoom Technologies Training Session Details",
+            subject: $this->subject,
         );
     }
 

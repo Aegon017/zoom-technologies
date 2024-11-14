@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Payment\AttachScheduleToOrder;
+use App\Actions\Payment\CreateOrder;
+use App\Actions\Payment\GenerateInvoice;
+use App\Actions\Payment\ModelFromProductType;
+use App\Actions\Payment\SendEmails;
+use App\Models\Tax;
 use App\Services\PayU;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,8 +17,9 @@ class PaymentController extends Controller
 {
     public function initiate(Request $request)
     {
-        $schedule = array_values(array_filter($request->all(), fn($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
-        Session::put('schedule', $schedule);
+        $scheduleIDs = array_values(array_filter($request->all(), fn($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
+        Session::put('scheduleIDs', $scheduleIDs);
+        Session::put('productType', $request->product_type);
         $payu_obj = new PayU();
         $payu_obj->env_prod = config('services.payu.environment');
         $payu_obj->key = config('services.payu.key');
@@ -37,8 +44,17 @@ class PaymentController extends Controller
         $payu_obj->showPaymentForm($params);
     }
 
-    public function response(Request $request)
+    public function response(Request $request, CreateOrder $createOrder, SendEmails $sendEmails, Tax $tax, ModelFromProductType $modelFromProductType, AttachScheduleToOrder $attachScheduleToOrder, GenerateInvoice $generateInvoice)
     {
-        dd(Session::get('schedule'));
+        $scheduleIDs = Session::get('scheduleIDs');
+        $productType = Session::get('productType');
+        $order = $createOrder->execute($request, $tax, $modelFromProductType, $productType);
+        if ($request->status == 'success') {
+            $order->invoice = $generateInvoice->execute($order);
+        }
+        $order->save();
+        $attachScheduleToOrder->execute($scheduleIDs, $order);
+        $sendEmails->execute($order);
+        return view("pages.payment-$order->status", compact('order'));
     }
 }

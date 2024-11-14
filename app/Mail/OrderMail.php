@@ -15,9 +15,9 @@ class OrderMail extends Mailable
     use Queueable, SerializesModels;
     public $subject;
     public $order;
-    public function __construct($subject, $order)
+    public function __construct($orderMailSubject, $order)
     {
-        $this->subject = $subject;
+        $this->subject = $orderMailSubject;
         $this->order = $order;
     }
 
