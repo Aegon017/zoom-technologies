@@ -2,13 +2,11 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SliderResource\Pages;
-use App\Filament\Resources\SliderResource\RelationManagers;
-use App\Models\Slider;
+use App\Filament\Resources\CorporateTrainingResource\Pages;
+use App\Filament\Resources\CorporateTrainingResource\RelationManagers;
+use App\Models\CorporateTraining;
 use Filament\Forms;
-use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -19,9 +17,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class SliderResource extends Resource
+class CorporateTrainingResource extends Resource
 {
-    protected static ?string $model = Slider::class;
+    protected static ?string $model = CorporateTraining::class;
     protected static ?string $navigationGroup = 'Home page';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -29,12 +27,9 @@ class SliderResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('title')->columnSpanFull()->required(),
-                RichEditor::make('content')->columnSpanFull()->required(),
                 FileUpload::make('image')->columnSpanFull()->required(),
-                TextInput::make('button_name')->required(),
+                TextInput::make('image_alt')->required(),
                 TextInput::make('redirect_url'),
-                Checkbox::make('status')->required()
             ]);
     }
 
@@ -42,8 +37,9 @@ class SliderResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('image')->width(200)->height(100),
-                TextColumn::make('title'),
+                ImageColumn::make('image'),
+                TextColumn::make('image_alt'),
+                TextColumn::make('redirect_url'),
             ])
             ->filters([
                 //
@@ -68,9 +64,9 @@ class SliderResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSliders::route('/'),
-            'create' => Pages\CreateSlider::route('/create'),
-            'edit' => Pages\EditSlider::route('/{record}/edit'),
+            'index' => Pages\ListCorporateTrainings::route('/'),
+            'create' => Pages\CreateCorporateTraining::route('/create'),
+            'edit' => Pages\EditCorporateTraining::route('/{record}/edit'),
         ];
     }
 }

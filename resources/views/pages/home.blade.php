@@ -19,6 +19,7 @@
             {!! $pageSchema->organization_schema !!}
         </x-slot>
     @endif
+    <!-- Start of slider section -->
     <section id="zt-slider-2" class="zt-slider-section-2">
         <div id="zt-main-slider-2" class="zt-main-slider-wrap owl-carousel">
             @foreach ($sliders as $slider)
@@ -44,24 +45,16 @@
     <section class="zt-promo-section">
         <div class="container">
             <div class="zt-promo zt-promo-carousel owl-carousel">
-                <div class="zt-promo-item">
-                    <a href="#">
-                        <div class="wrapper">
-                            <h3>Zoom Partners With Ace Lab</h3>
-                            <p>Data Recovery Solution in india using worlds leading PC3000 products</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="zt-promo-item">
-                    <a href="training/india/cybersecurity-offer">
-                        <div class="wrapper">
-                            <h3>Special Offer</h3>
-                            <p>Cybersecurity Associate - SOC Analyst (1 Month), Cybersecurity Professional (1 Month) and
-                                <strong>Free</strong> US-Council Exam Voucher
-                            </p>
-                        </div>
-                    </a>
-                </div>
+                @foreach ($promoSections as $promoSection)
+                    <div class="zt-promo-item">
+                        <a href="{{ $promoSection->redirect_url }}">
+                            <div class="wrapper">
+                                <h3>{{ $promoSection->title }}</h3>
+                                <p>{!! $promoSection->content !!}</p>
+                            </div>
+                        </a>
+                    </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -70,63 +63,27 @@
     <section id="zt-feature" class="zt-feature-section zt-why-choose-us">
         <div class="container">
             <div class="zt-section-title text-center zt-headline zt-title-style-two position-relative">
-                <p class="title-watermark">Why Choose Us</p>
-                <span>Why Choose Us</span>
-                <h2>Unlock Your Potential, Learn From Anywhere</h2>
-                <p>At Zoom Technologies, we redefine education by seamlessly blending innovation, accessibility, and
-                    personalized learning. Our unique approach empowers learners worldwide to unlock their true
-                    potential,
-                    fostering a community of knowledge seekers and achievers.</p>
+                <span>{{ $featureSection->title }}</span>
+                <h2>{{ $featureSection->heading }}</h2>
+                <p>{!! $featureSection->content !!}</p>
             </div>
             <div class="zt-feature-content">
                 <div class="row justify-content-center wow fadeInUp" data-wow-delay="0ms" data-wow-duration="1500ms">
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <div class="zt-feature-innerbox position-relative">
-                            <div class="zt-feature-icon">
-                                <i class="far fa-calendar-plus"></i>
-                            </div>
-                            <div class="zt-feature-text zt-headline pera-content">
-                                <h3><span class="odometer" data-count="20">00</span><sup>+</sup></h3>
-                                <h4>Years</h4>
-                                <p>Providing Training + Consulting + Solutions & Large Turnkey Projects.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <div class="zt-feature-innerbox position-relative">
-                            <div class="zt-feature-icon">
-                                <i class="fas fa-briefcase"></i>
-                            </div>
-                            <div class="zt-feature-text zt-headline pera-content">
-                                <h3><span class="odometer" data-count="2000"> 00 </span><sup>+</sup></h3>
-                                <h4>Engineers</h4>
-                                <p>Certified Trainers in Microsoft, CISCO, VMware, Linux, Security Etc.</p>
+                    @foreach ($featureCards as $featureCard)
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <div class="zt-feature-innerbox position-relative">
+                                <div class="zt-feature-icon">
+                                    <i class="far fa-calendar-plus"></i>
+                                </div>
+                                <div class="zt-feature-text zt-headline pera-content">
+                                    <h3><span class="odometer"
+                                            data-count="{{ $featureCard->number }}">00</span><sup>+</sup></h3>
+                                    <h4>{{ $featureCard->title }}</h4>
+                                    <p>{{ $featureCard->content }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <div class="zt-feature-innerbox position-relative">
-                            <div class="zt-feature-icon">
-                                <i class="fas fa-graduation-cap"></i>
-                            </div>
-                            <div class="zt-feature-text zt-headline pera-content">
-                                <h3><span class="odometer" data-count="200"> 00 </span><sup>+</sup></h3>
-                                <h4>Students</h4>
-                                <p>Trained and Employed over 100 Countries.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <div class="zt-feature-innerbox position-relative">
-                            <div class="zt-feature-icon">
-                                <i class="fas fa-globe"></i>
-                            </div>
-                            <div class="zt-feature-text zt-headline pera-content">
-                                <h4>Learn Anywhere</h4>
-                                <p>Switch between your devices without losing your place.</p>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -139,144 +96,60 @@
     <section id="zt-cta-4" class="zt-cta-section-4 study-material bg-white">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <div class="zt-feature-innerbox position-relative">
-                        <div class="zt-feature-icon float-left">
-                            <i class="fas fa-book"></i>
-                        </div>
-                        <div class="zt-feature-text zt-headline pera-content">
-                            <h3><a href="#">Study Material</a></h3>
-                            <p>Free Study Material! Presentations, Lab Manual & Workbooks</p>
-                            <a href="#" class="zt-feature-button">Download Now<i
-                                    class="fa fa-arrow-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <div class="zt-feature-innerbox position-relative">
-                        <div class="zt-feature-icon float-left">
-                            <i class="fas fa-video"></i>
-                        </div>
-                        <div class="zt-feature-text zt-headline pera-content">
-                            <h3>Training Video</h3>
-                            <p>Free Training Videos Download</p>
-                            <a href="#" class="zt-feature-button">Download Now<i
-                                    class="fa fa-arrow-right"></i></a>
+                @foreach ($freeMaterials as $freeMaterial)
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="zt-feature-innerbox position-relative">
+                            <div class="zt-feature-icon float-left">
+                                {!! $freeMaterial->icon !!}
+                            </div>
+                            <div class="zt-feature-text zt-headline pera-content">
+                                <h3><a href="#">{{ $freeMaterial->title }}</a></h3>
+                                <p>{{ $freeMaterial->content }}</p>
+                                <a href="{{ $freeMaterial->redirect_url }}"
+                                    class="zt-feature-button">{{ $freeMaterial->button_name }}<i
+                                        class="fa fa-arrow-right"></i></a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
     <!-- End of cta section -->
     <!-- Start of Testimonial section -->
     <section id="zt-testimonial" class="zt-testimonial-section"
-        data-background="{{ asset('frontend/assets/img/bg/testimonial-bg.jpeg') }}">
+        data-background="{{ Storage::url($testimonialSection->image) }}">
         <div class="container">
             <div class="row">
                 <div class="col-lg-5">
                     <div class="zt-section-title zt-headline zt-title-style-two position-relative">
-                        <span>Student's testimonials</span>
-                        <h2>We are Very Happy to Get
-                            Our Student's Reviews.
-                        </h2>
+                        <span>{{ $testimonialSection->title }}</span>
+                        <h2>{{ $testimonialSection->heading }}</h2>
                     </div>
                     <div class="zt-testimonial-content">
                         <div id="zt-testimonial-slide" class="zt-testimonial-area owl-carousel">
-                            <div class="zt-testimonial-item-wrap pera-content zt-headline">
-                                <p>“My experience with ZOOM Technologies was really great.. unforgettable. It has shaped
-                                    my
-                                    career and even my life in many ways. It has brought out untapped potential in me.
-                                    ZOOM
-                                    Technologies is undoubtedly the best place to launch your career.”</p>
-                                <div class="zt-testimonial-author">
-                                    <div class="zt-testimonial-text">
-                                        <div class="zt-testimonial-rate ul-li">
-                                            <ul>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                            </ul>
+                            @foreach ($testimonials as $testimonial)
+                                <div class="zt-testimonial-item-wrap pera-content zt-headline">
+                                    <p>{!! $testimonial->content !!}</p>
+                                    <div class="zt-testimonial-author">
+                                        <div class="zt-testimonial-text">
+                                            <div class="zt-testimonial-rate ul-li">
+                                                <ul>
+                                                    <li><i class="fas fa-star"></i></li>
+                                                    <li><i class="fas fa-star"></i></li>
+                                                    <li><i class="fas fa-star"></i></li>
+                                                    <li><i class="fas fa-star"></i></li>
+                                                    <li><i class="fas fa-star"></i></li>
+                                                </ul>
+                                            </div>
+                                            <h4><a href="#">{{ $testimonial->name }}</a></h4>
+                                            <span>{{ $testimonial->location }}</span>
                                         </div>
-                                        <h4><a href="#">M.Venkat</a></h4>
-                                        <span>IT Analyst, TCS.</span>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="zt-testimonial-item-wrap pera-content zt-headline">
-                                <p>“ZOOM Technologies is synonymous with quality be it teaching or facilities. They have
-                                    the
-                                    best. The faculty members are very approachable. Before taking up the course, I
-                                    visited
-                                    several institutes, read brochures, reviews on websites, spoke to my friends. But
-                                    once I
-                                    visited this place, I realized this would be the right choice for learning.”</p>
-                                <div class="zt-testimonial-author">
-                                    <div class="zt-testimonial-text">
-                                        <div class="zt-testimonial-rate ul-li">
-                                            <ul>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                            </ul>
-                                        </div>
-                                        <h4><a href="#">Mohamoud</a></h4>
-                                        <span>East Africa.</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="zt-testimonial-item-wrap pera-content zt-headline">
-                                <p>“ZOOM Technologies has taught me all the nuances of networking and helped me build my
-                                    career. I can proudly say that ZOOM Technologies must be credited for what I have
-                                    achieved today. What I learned in ZOOM Technologies has laid a strong foundation for
-                                    my
-                                    career.”</p>
-                                <div class="zt-testimonial-author">
-                                    <div class="zt-testimonial-text">
-                                        <div class="zt-testimonial-rate ul-li">
-                                            <ul>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                            </ul>
-                                        </div>
-                                        <h4><a href="#">Goutham Kondapavuluru</a></h4>
-                                        <span>Software Engineer, Cisco Systems.</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="zt-testimonial-item-wrap pera-content zt-headline">
-                                <p>“This place was recommended by many in my country. Yet, I came here and personally
-                                    checked this place and liked it. They are very organized here at ZOOM Technologies
-                                    and
-                                    everything a student needs is there. Communication skills of trainers are good which
-                                    is
-                                    an essential pre-requisite for teaching. If the communication isn't good, then it
-                                    becomes very challenging for students to learn.”</p>
-                                <div class="zt-testimonial-author">
-                                    <div class="zt-testimonial-text">
-                                        <div class="zt-testimonial-rate ul-li">
-                                            <ul>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                                <li><i class="fas fa-star"></i></li>
-                                            </ul>
-                                        </div>
-                                        <h4><a href="#">Yemi</a></h4>
-                                        <span>Nigeria.</span>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
-                        <a href="testimonials.html" class="zt-btn-style-1 mt-3">View All</a>
+                        <a href="{{ route('render.testimonials') }}" class="zt-btn-style-1 mt-3">View All</a>
                     </div>
                 </div>
             </div>
@@ -292,15 +165,13 @@
                         <div class="about-page-about-img">
                             <img src="{{ asset('frontend/assets/img/zoom-about.png') }}"
                                 alt="Zoom Group company about us promotional image">
-                            <a class="video_box text-center"
-                                href="https://www.youtube.com/watch?v=6EA-YrAbEzc&t=2s"><i
+                            <a class="video_box text-center" href="https://www.youtube.com/watch?v=6EA-YrAbEzc&t=2s"><i
                                     class="fas fa-play"></i></a>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="about-page-about-text">
                             <div class="zt-section-title  zt-headline zt-title-style-two position-relative">
-                                <p class="title-watermark">About us</p>
                                 <span>ZOOM Technologies</span>
                                 <h2>ZOOM is a pioneering leader in Network and Security Solutions.</h2>
                             </div>
@@ -316,11 +187,10 @@
                             </div>
                         </div>
                         <div class="button-group">
-                            <a href="{{ asset('pdf/company-brochure.pdf') }}" target="_blank"
-                                class="zt-btn-download"><i class="fas fa-file-pdf"></i>Company Brochure</a>
-                            <a href="{{ asset('pdf/classroom-training-in-hyderabad.pdf') }}" target="_blank"
-                                class="zt-btn-download"><i class="fas fa-file-pdf"></i>Course
-                                Brochure</a>
+                            @foreach ($brochures as $brochure)
+                                <a href="{{ asset(Storage::url($brochure->brochure)) }}" target="_blank"
+                                    class="zt-btn-download"><i class="fas fa-file-pdf"></i>{{ $brochure->name }}</a>
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -335,46 +205,13 @@
             </div>
             <div class="zt-client-logo-wrapper">
                 <div class="zt-client-logos zt-client-logo-carousel owl-carousel">
-                    <div class="zt-client-logo-item">
-                        <a href="#">
-                            <img src="{{ asset('frontend/assets/img/clients/1.png') }}"
-                                alt="Corporate Training client">
-                        </a>
-                    </div>
-                    <div class="zt-client-logo-item">
-                        <a href="#">
-                            <img src="{{ asset('frontend/assets/img/clients/2.png') }}"
-                                alt="Corporate Training client">
-                        </a>
-                    </div>
-                    <div class="zt-client-logo-item">
-                        <a href="#">
-                            <img src="{{ asset('frontend/assets/img/clients/3.png') }}"
-                                alt="Corporate Training client">
-                        </a>
-                    </div>
-                    <div class="zt-client-logo-item">
-                        <a href="#">
-                            <img src="{{ asset('frontend/assets/img/clients/4.png') }}"
-                                alt="Corporate Training client">
-                        </a>
-                    </div>
-                    <div class="zt-client-logo-item">
-                        <a href="#">
-                            <img src="{{ asset('frontend/assets/img/clients/5.png') }}"
-                                alt="Corporate Training client">
-                        </a>
-                    </div>
-                    <div class="zt-client-logo-item">
-                        <a href="#">
-                            <img src="{{ asset('frontend/assets/img/clients/6.png') }}" alt="zoom clients">
-                        </a>
-                    </div>
-                    <div class="zt-client-logo-item">
-                        <a href="#">
-                            <img src="{{ asset('frontend/assets/img/clients/7.png') }}" alt="zoom clients">
-                        </a>
-                    </div>
+                    @foreach ($clients as $client)
+                        <div class="zt-client-logo-item">
+                            <a href="{{ $client->redirect_url }}">
+                                <img src="{{ asset(Storage::url($client->image)) }}" alt="{{ $client->image_alt }}">
+                            </a>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -386,39 +223,14 @@
                 <h2>FAQ'S</h2>
             </div>
             <div class="accordion faq-accordion">
-                <div class="accordion-item">
-                    <div class="accordion-header">
-                        <h3>
-                            What is US-Council Certification and how does it differ from other cybersecurity
-                            certification?
-                        </h3>
+                @foreach ($faqs as $faq)
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <h3>{{ $faq->question }}</h3>
+                        </div>
+                        <div class="accordion-content">{!! $faq->answer !!}</div>
                     </div>
-                    <div class="accordion-content">
-                        US-Council Certification is a set of comprehensive programs aiming to create cybersecurity
-                        experts
-                        capable of defending against cyber threats. Unlike other cybersecurity certification, which
-                        focuses
-                        on ethical hacking, US-Council provides a broader approach towards cybersecurity education and
-                        awareness, including proactive defense strategies and security testing services.
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <div class="accordion-header" id="faq2">
-                        <h3>
-                            Why should I choose US-Council for my cybersecurity certifications?
-                        </h3>
-                    </div>
-                    <div class="accordion-content">
-                        Choosing US-Council for your cybersecurity certification ensures that you receive thorough
-                        education
-                        and awareness about the latest security measures and cyber threats. With certifications from
-                        US-Council, you gain access to free white papers, the opportunity to become an authorized
-                        partner,
-                        and insights from informative live webinars, all tailored to help you secure or perish in the
-                        face
-                        of cybercrime.
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>

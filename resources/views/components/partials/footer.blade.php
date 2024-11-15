@@ -6,73 +6,57 @@
                     <div class="zt-footer-widget">
                         <div class="zt-footer-logo-widget zt-headline pera-content">
                             <div class="zt-footer-logo">
-                                <a href="#"><img src="{{ asset('frontend/assets/img/logo.png') }}"
-                                        alt="Zoom Group company logo"></a>
+                                <a href="#"><img src="{{ asset(Storage::url($footer->logo)) }}"
+                                        alt="{{ $footer->logo_alt }}"></a>
                             </div>
-                            <p>At Zoom Technologies, we redefine education by seamlessly blending innovation,
-                                accessibility, and personalized learning.</p>
+                            <p>{{ $footer->content }}</p>
                             <div class="zt-footer-social ul-li">
                                 <ul>
-                                    <a href="https://www.facebook.com/ZoomTechnolgies" target="_blank"><i
-                                            class="fab fa-facebook-f"></i></a>
-                                    <a href="https://twitter.com/zoomgroupindia" target="_blank"><i
-                                            class="fab fa-twitter"></i></a>
-                                    <a href="https://www.linkedin.com/in/zoomtechnologies" target="_blank"><i
-                                            class="fab fa-linkedin"></i></a>
-                                    <a href="https://www.instagram.com/zoomtechnologies/" target="_blank"><i
-                                            class="fab fa-instagram"></i></a>
-                                    <a href="https://www.youtube.com/user/zoomtechnologies" target="_blank"><i
-                                            class="fab fa-youtube"></i></a>
+                                    @foreach ($footer->social_links as $social_link)
+                                        @php
+                                            $link = App\Models\SocialLink::find($social_link);
+                                        @endphp
+                                        <a href="{{ $link->redirect_url }}" target="_blank">{!! $link->icon !!}</a>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="zt-footer-widget">
-                        <div class="zt-footer-info-widget ul-li">
-                            <h3 class="widget-title">Registered Office:</h3>
-                            <ul>
-                                <li>
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <a href="#">ZOOM House, HDFC Bank Building, 5th Floor, Road # 12, Banjara
-                                        Hills, Hyderabad
-                                        - 500034, Telangana, India</a>
-                                </li>
-                                <li class="phone-icon-text">
-                                    <i class="fas fa-phone"></i><a href="#">+91 93911 91563</a><a
-                                        href="#">78933 99822</a>
-                                </li>
-                                <li>
-                                    <i class="fas fa-envelope"></i><a href="#">priya@zoomgroup.com</a>
-                                </li>
-                            </ul>
+                @foreach ($footer->footerOffice as $office)
+                    <div class="col-lg-3 col-md-6">
+                        <div class="zt-footer-widget">
+                            <div class="zt-footer-info-widget ul-li">
+                                <h3 class="widget-title">{{ $office->name }}:</h3>
+                                <ul>
+                                    <li>
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <a href="{{ $office->location_url }}">{{ $office->location }}</a>
+                                    </li>
+                                    <li class="phone-icon-text">
+                                        <i class="fas fa-phone"></i>
+                                        @foreach ($office->mobile as $mobile)
+                                            @php
+                                                $number = App\Models\MobileNumber::find($mobile)->number;
+                                            @endphp
+                                            <a class="mobile-link" href="tel:{{ $number }}"
+                                                data-full-number="{{ $number }}">{{ $number }}</a>
+                                        @endforeach
+                                    </li>
+                                    @foreach ($office->email as $email)
+                                        @php
+                                            $mail = App\Models\Email::find($email)->email;
+                                        @endphp
+                                        <li>
+                                            <i class="fas fa-envelope"></i><a
+                                                href="mailto:{{ $mail }}">{{ $mail }}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="zt-footer-widget">
-                        <div class="zt-footer-info-widget ul-li">
-                            <h3 class="widget-title">Head Office:</h3>
-                            <ul>
-                                <li>
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <a href="#"># 205, 2nd Floor, HUDA Maitrivanam, Ameerpet, Hyderabad -
-                                        500016,
-                                        Telangana,
-                                        India</a>
-                                </li>
-                                <li class="phone-icon-text">
-                                    <i class="fas fa-phone"></i><a href="#">+91 93911 91563</a><a
-                                        href="#">78933 99822</a>
-                                </li>
-                                <li>
-                                    <i class="fas fa-envelope"></i><a href="#">priya@zoomgroup.com</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
                 <div class="col-lg-3 col-md-6">
                     <div class="zt-footer-widget">
                         <div class="zt-footer-links-widget">
@@ -99,3 +83,12 @@
                         Technologies india private limited</a></span>. All Rights Reserved.</span></div>
     </div>
 </footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.mobile-link').forEach((link, index) => {
+            const fullNumber = link.getAttribute('data-full-number');
+            link.textContent = index > 0 ? fullNumber.replace(/^\+91/, '') : fullNumber;
+        });
+    });
+</script>

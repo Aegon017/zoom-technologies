@@ -2,13 +2,12 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SliderResource\Pages;
-use App\Filament\Resources\SliderResource\RelationManagers;
-use App\Models\Slider;
+use App\Filament\Resources\TestimonialSectionResource\Pages;
+use App\Filament\Resources\TestimonialSectionResource\RelationManagers;
+use App\Filament\Resources\TestimonialSectionResource\RelationManagers\TestimonialRelationManager;
+use App\Models\TestimonialSection;
 use Filament\Forms;
-use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -19,9 +18,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class SliderResource extends Resource
+class TestimonialSectionResource extends Resource
 {
-    protected static ?string $model = Slider::class;
+    protected static ?string $model = TestimonialSection::class;
     protected static ?string $navigationGroup = 'Home page';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -29,12 +28,13 @@ class SliderResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('title')->columnSpanFull()->required(),
-                RichEditor::make('content')->columnSpanFull()->required(),
-                FileUpload::make('image')->columnSpanFull()->required(),
-                TextInput::make('button_name')->required(),
-                TextInput::make('redirect_url'),
-                Checkbox::make('status')->required()
+                TextInput::make('title')
+                    ->required(),
+                TextInput::make('heading')
+                    ->required(),
+                FileUpload::make('image')
+                    ->columnSpanFull()
+                    ->required(),
             ]);
     }
 
@@ -42,8 +42,9 @@ class SliderResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('image')->width(200)->height(100),
+                ImageColumn::make('image')->height(120)->width(300),
                 TextColumn::make('title'),
+                TextColumn::make('heading')
             ])
             ->filters([
                 //
@@ -61,16 +62,16 @@ class SliderResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            TestimonialRelationManager::class
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSliders::route('/'),
-            'create' => Pages\CreateSlider::route('/create'),
-            'edit' => Pages\EditSlider::route('/{record}/edit'),
+            'index' => Pages\ListTestimonialSections::route('/'),
+            'create' => Pages\CreateTestimonialSection::route('/create'),
+            'edit' => Pages\EditTestimonialSection::route('/{record}/edit'),
         ];
     }
 }

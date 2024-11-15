@@ -2,14 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brochure;
+use App\Models\CorporateTraining;
 use App\Models\Course;
+use App\Models\FaqsSection;
+use App\Models\FeatureCard;
+use App\Models\FeatureSection;
+use App\Models\FreeMaterialSection;
 use App\Models\News;
 use App\Models\NewsCategory;
 use App\Models\Order;
 use App\Models\Package;
 use App\Models\PageMetaDetails;
 use App\Models\PageSchema;
+use App\Models\PromoSection;
 use App\Models\Slider;
+use App\Models\Testimonial;
+use App\Models\TestimonialSection;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,7 +29,16 @@ class FrontendController extends Controller
         $pageSchema = PageSchema::where('page_name', 'Home')->first();
         $metaDetail = PageMetaDetails::where('page_name', 'Home')->first();
         $sliders = Slider::where('status', 1)->get();
-        return view('pages.home', compact('metaDetail', 'pageSchema', 'sliders'));
+        $promoSections = PromoSection::all();
+        $featureSection = FeatureSection::find(1);
+        $featureCards = FeatureCard::all();
+        $freeMaterials = FreeMaterialSection::all();
+        $testimonialSection = TestimonialSection::find(1);
+        $testimonials = Testimonial::all();
+        $clients = CorporateTraining::all();
+        $faqs = FaqsSection::all();
+        $brochures = Brochure::all();
+        return view('pages.home', compact('metaDetail', 'pageSchema', 'sliders', 'promoSections', 'featureSection', 'featureCards', 'freeMaterials', 'testimonialSection', 'testimonials', 'clients', 'faqs', 'brochures'));
     }
 
     public function renderNewsList()

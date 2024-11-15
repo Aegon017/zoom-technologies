@@ -2,18 +2,17 @@
 
 namespace App\View\Components;
 
+use App\Models\StickyContact as ModelsStickyContact;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 class StickyContact extends Component
 {
-    /**
-     * Create a new component instance.
-     */
+    public $stickyContact;
     public function __construct()
     {
-        //
+        $this->stickyContact = ModelsStickyContact::find(1);
     }
 
     /**

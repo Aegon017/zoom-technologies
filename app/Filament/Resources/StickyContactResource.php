@@ -2,39 +2,34 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SliderResource\Pages;
-use App\Filament\Resources\SliderResource\RelationManagers;
-use App\Models\Slider;
+use App\Filament\Resources\StickyContactResource\Pages;
+use App\Filament\Resources\StickyContactResource\RelationManagers;
+use App\Models\Email;
+use App\Models\MobileNumber;
+use App\Models\StickyContact;
 use Filament\Forms;
-use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class SliderResource extends Resource
+class StickyContactResource extends Resource
 {
-    protected static ?string $model = Slider::class;
-    protected static ?string $navigationGroup = 'Home page';
+    protected static ?string $model = StickyContact::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('title')->columnSpanFull()->required(),
-                RichEditor::make('content')->columnSpanFull()->required(),
-                FileUpload::make('image')->columnSpanFull()->required(),
-                TextInput::make('button_name')->required(),
-                TextInput::make('redirect_url'),
-                Checkbox::make('status')->required()
+                Select::make('mobile')->options(MobileNumber::pluck('number', 'id'))->multiple()->searchable()->required(),
+                Select::make('email')->options(Email::pluck('email', 'id'))->multiple()->searchable()->required()->required(),
             ]);
     }
 
@@ -42,8 +37,8 @@ class SliderResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('image')->width(200)->height(100),
-                TextColumn::make('title'),
+                TextColumn::make('mobile')->getStateUsing(fn($record) => is_array($record->mobile) ? implode(', ', MobileNumber::whereIn('id', $record->mobile)->pluck('number')->toArray()) : ''),
+                TextColumn::make('email')->getStateUsing(fn($record) => is_array($record->email) ? implode(', ', Email::whereIn('id', $record->email)->pluck('email')->toArray()) : ''),
             ])
             ->filters([
                 //
@@ -68,9 +63,9 @@ class SliderResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSliders::route('/'),
-            'create' => Pages\CreateSlider::route('/create'),
-            'edit' => Pages\EditSlider::route('/{record}/edit'),
+            'index' => Pages\ListStickyContacts::route('/'),
+            'create' => Pages\CreateStickyContact::route('/create'),
+            'edit' => Pages\EditStickyContact::route('/{record}/edit'),
         ];
     }
 }
