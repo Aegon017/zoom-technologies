@@ -64,7 +64,18 @@ class OrderResource extends Resource
                 Fieldset::make('Course Details')->schema([
                     TextEntry::make('course_name'),
                     TextEntry::make('course_price')->prefix('Rs. ')->suffix('/-'),
-                    TextEntry::make('course_schedule')->label('Course Schedule')->getStateUsing(fn($record) => is_array($courseSchedule = json_decode(html_entity_decode($record->course_schedule), true)) && !empty($courseSchedule) ? collect($courseSchedule)->map(fn($item) => count($courseDetails = explode(',', $item)) === 2 ? "<strong>{$courseDetails[0]}</strong> - " . Carbon::parse(preg_replace('/\s+Online$|\s+Classroom$/', '', trim($courseDetails[1])))->format('l, F j, Y g:i A') : 'Invalid date')->implode('<br>') : (is_string($record->course_schedule) && !empty($record->course_schedule) ? htmlspecialchars($record->course_schedule) : 'No course schedule available.'))->html()
+                    TextEntry::make('order_schedules')
+                        ->label('Order Schedules')
+                        ->getStateUsing(function ($record) {
+                            $orderSchedules = OrderSchedule::where('order_id', $record->id)->get();
+                            return $orderSchedules->map(function ($schedule) {
+                                return 'Course Name: ' . $schedule->course_name . '<br>' .
+                                    'Start Date: ' . $schedule->start_date->format('F j, Y') . '<br>' .
+                                    'Start Time: ' . $schedule->time->format('g:i A') . '<br>' .
+                                    'End Time: ' . $schedule->end_time->format('g:i A') . '<br>' .
+                                    'Training Mode: ' . $schedule->training_mode;
+                            })->implode('<br><br>');
+                        })->html(),
                 ]),
                 Fieldset::make('Payment Details')->schema([
                     TextEntry::make('order_number'),
@@ -72,6 +83,7 @@ class OrderResource extends Resource
                     TextEntry::make('payu_id'),
                     TextEntry::make('payment_time')->getStateUsing(fn($record) => Carbon::parse($record->payment_time)->format('F j, Y g:i A')),
                     TextEntry::make('cgst')->label('C.GST')->prefix('Rs. ')->suffix('/-'),
+                    TextEntry::make('sgst')->label('S.GST')->prefix('Rs. ')->suffix('/-'),
                     TextEntry::make('amount')->label('Order Amount')->prefix('Rs. ')->suffix('/-'),
                     TextEntry::make('status'),
                     TextEntry::make('payment_desc'),

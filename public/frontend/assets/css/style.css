@@ -11797,3 +11797,60 @@ select:visited {
     height: 250px;
     width: 100%;
 }
+
+#checkoutpopup .text{
+    margin-top: 0.25rem;
+    font-size: 0.9rem;
+}
+
+#checkoutpopup .text-heading{
+    font-size: 1.2rem;
+}
+
+.payment-method .row{
+    padding:0 2rem 1rem 2rem;
+}
+
+.payment-method p{
+    padding-top: 1rem;
+}
+
+.payment-method .row input{
+    accent-color: black;
+    height: 1rem !important;
+    aspect-ratio: 1;
+}
+
+.payu-input input{
+    margin-top: 42px;
+}
+
+.payu-input label{
+    margin-left: 10px;
+}
+
+.payu-input label img{
+    width: 60px;
+    margin-top: 18px;
+}
+
+.paypal-input input{
+    margin-top: 38px;
+}
+
+.paypal-input label{
+    margin-left: 8px;
+}
+
+.stripe-input input{
+    margin-top: 40px;
+}
+
+.stripe-input label{
+    margin-left: 6px;
+}
+
+.stripe-input label img{
+    width: 80px;
+    margin-top: 8px;
+}

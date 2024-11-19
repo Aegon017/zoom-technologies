@@ -9,12 +9,14 @@ use Illuminate\Support\Facades\Auth;
 
 class CreateOrder
 {
-    public function execute($request, $tax, $modelFromProductType, $productType)
+    public function execute($request,$modelFromProductType, $productType)
     {
+        $SGST = Tax::where('name', 'SGST')->first()->rate;
+        $CGST = Tax::where('name', 'SGST')->first()->rate;
         $totalPrice = $request->amount;
-        $coursePrice = $totalPrice / (1 + ($tax->sgst + $tax->cgst) / 100);
-        $sgst = $coursePrice * ($tax->sgst / 100);
-        $cgst = $coursePrice * ($tax->cgst / 100);
+        $coursePrice = $totalPrice / (1 + ($SGST + $CGST) / 100);
+        $sgst = $coursePrice * ($SGST / 100);
+        $cgst = $coursePrice * ($CGST / 100);
         $model = $modelFromProductType->execute($productType);
         $item = $model::where('slug', $request->productinfo)->firstOrFail();
         return Order::firstOrNew(['transaction_id' => $request->txnid], [

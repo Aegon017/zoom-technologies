@@ -20,7 +20,7 @@
                 </p>
                 <div class="mb-8">
                     <div class="flex flex-col sm:flex-row mb-6">
-                        <img alt="{{ $order->course_thumbnail_alt }}" class="w-full object-cover sm:w-1/2 rounded-lg"
+                        <img alt="{{ $order->course_thumbnail_alt }}" class="w-full object-contain sm:w-1/2 object-top rounded-lg"
                             src="{{ asset(Storage::url($order->course_thumbnail)) }}" />
                         <div class="mt-4 sm:mt-0 sm:ml-6 w-full sm:w-2/3">
                             <h2 class="text-xl font-semibold mb-2">

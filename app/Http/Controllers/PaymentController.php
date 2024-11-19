@@ -11,7 +11,19 @@ use App\Models\Tax;
 use App\Services\PayU;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use PaypalServerSdkLib\Authentication\ClientCredentialsAuthCredentialsBuilder;
+use PaypalServerSdkLib\Controllers\OrdersController;
+use PaypalServerSdkLib\Environment;
+use PaypalServerSdkLib\Logging\LoggingConfigurationBuilder;
+use PaypalServerSdkLib\Logging\RequestLoggingConfigurationBuilder;
+use PaypalServerSdkLib\Logging\ResponseLoggingConfigurationBuilder;
+use PaypalServerSdkLib\Models\OAuthToken;
+use PaypalServerSdkLib\Models\Payer;
+use PaypalServerSdkLib\PaypalServerSdkClient;
+use PaypalServerSdkLib\PaypalServerSdkClientBuilder;
+use Psr\Log\LogLevel;
 
 class PaymentController extends Controller
 {
@@ -44,11 +56,11 @@ class PaymentController extends Controller
         $payu_obj->showPaymentForm($params);
     }
 
-    public function response(Request $request, CreateOrder $createOrder, SendEmails $sendEmails, Tax $tax, ModelFromProductType $modelFromProductType, AttachScheduleToOrder $attachScheduleToOrder, GenerateInvoice $generateInvoice)
+    public function response(Request $request, CreateOrder $createOrder, SendEmails $sendEmails, ModelFromProductType $modelFromProductType, AttachScheduleToOrder $attachScheduleToOrder, GenerateInvoice $generateInvoice)
     {
         $scheduleIDs = Session::get('scheduleIDs');
         $productType = Session::get('productType');
-        $order = $createOrder->execute($request, $tax, $modelFromProductType, $productType);
+        $order = $createOrder->execute($request, $modelFromProductType, $productType);
         $order->save();
         $attachScheduleToOrder->execute($scheduleIDs, $order);
         if ($order->status == 'success') {

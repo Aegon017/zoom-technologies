@@ -27,6 +27,7 @@ class OrderSchedule extends Model
         'day_off' => 'array',
         'start_date' => 'datetime',
         'time' => 'datetime',
+        'end_time' => 'datetime'
     ];
 
     public function order(): BelongsTo

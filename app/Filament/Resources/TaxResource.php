@@ -6,6 +6,7 @@ use App\Filament\Resources\TaxResource\Pages;
 use App\Filament\Resources\TaxResource\RelationManagers;
 use App\Models\Tax;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -25,7 +26,10 @@ class TaxResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')->label('Tax name'),
+                Select::make('name')->options([
+                    'SGST' => 'SGST',
+                    'CGST' => 'CGST'
+                ])->label('Tax name'),
                 TextInput::make('rate')->label('Tax rate')->suffix('%')
             ]);
     }
