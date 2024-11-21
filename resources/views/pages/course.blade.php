@@ -1,7 +1,4 @@
 <x-frontend-layout>
-    @php
-        $metaDetail = $course->metaDetail ?? ($package->metaDetail ?? null);
-    @endphp
     @if ($metaDetail != null)
         <x-slot:metaTitle>
             {{ $metaDetail->title }}
@@ -13,7 +10,6 @@
             {{ $metaDetail->description }}
         </x-slot>
     @endif
-
     @if ($pageSchema != null)
         <x-slot:localSchema>
             {!! $pageSchema->local_schema !!}
@@ -31,29 +27,41 @@
                         <div class="course-details-area">
                             <div class="course-details-content-wrapper">
                                 <x-on-page-menu />
-                                <x-overview :product />
-                                <x-curriculum :product :$packageCourses />
+                                <x-overview :$product />
+                                <div id="curriculum" class="zt-course-feature-box curriculum-wrapper">
+                                    <div class="section-title">
+                                        <h4>Curriculum</h4>
+                                    </div>
+
+                                    <div class="accordion">
+                                        @foreach ($packageCourses as $course)
+                                            <x-curriculum :$course />
+                                        @endforeach
+                                    </div>
+                                </div>
                                 <div id="schedule" class="zt-course-feature-box schedule-wrapper">
                                     <div class="section-title">
                                         <h4>Course Schedule</h4>
                                     </div>
-                                    <!-- Course Schedule -->
                                     <div class="course-schedule-wrapper">
                                         <p class="course-schedule-wrapper-heading">Course Schedule</p>
                                         <div class="course-schedule-wrapper-body py-3">
                                             <div class="row m-0 align-items-center">
                                                 <div class="col-12">
-                                                    <x-schedule-card :product :$packageCourses />
+                                                    @foreach ($packageCourses as $course)
+                                                        <h6 class="p-3 mt-3">{{ $course->name }}</h6>
+                                                        <div class="row m-0 batch-list">
+                                                            @foreach ($course->schedule as $schedule)
+                                                                <x-schedule-card :$schedule />
+                                                            @endforeach
+                                                        </div>
+                                                    @endforeach
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    @foreach ([$course ?? null, $package ?? null] as $item)
-                                        @if ($item && $item->guideline)
-                                            @foreach ($item->guideline as $guideline)
-                                                <x-guideline :$guideline />
-                                            @endforeach
-                                        @endif
+                                    @foreach ($product->guideline as $guideline)
+                                        <x-guideline :$guideline />
                                     @endforeach
                                 </div>
                                 <div id="study-material" class="zt-course-feature-box study-material-wrapper">
@@ -62,18 +70,9 @@
                                     </div>
                                     <div class="study-material-list mt-3">
                                         <div class="row">
-                                            @foreach ([$course->studyMaterial ?? null] as $materials)
-                                                @if ($materials)
-                                                    @foreach ($materials as $material)
-                                                        <x-study-material :$material />
-                                                    @endforeach
-                                                @endif
-                                            @endforeach
-                                            @foreach ($packageCourses as $packageCourse)
-                                                @foreach ($packageCourse->studyMaterial as $material)
-                                                    @if ($material)
-                                                        <x-study-material :$material />
-                                                    @endif
+                                            @foreach ($packageCourses as $course)
+                                                @foreach ($course->studyMaterial as $studyMaterial)
+                                                    <x-study-material :$studyMaterial />
                                                 @endforeach
                                             @endforeach
                                         </div>
@@ -85,12 +84,8 @@
                                     </div>
                                     <div class="study-material-list faq=list mt-3">
                                         <div class="accordion faq-accordion">
-                                            @foreach ([$course->faq ?? null, $package->faq ?? null] as $faqs)
-                                                @if ($faqs)
-                                                    @foreach ($faqs as $faq)
-                                                        <x-faqs :$faq />
-                                                    @endforeach
-                                                @endif
+                                            @foreach ($product->faq as $faq)
+                                                <x-faqs :$faq />
                                             @endforeach
                                         </div>
                                     </div>

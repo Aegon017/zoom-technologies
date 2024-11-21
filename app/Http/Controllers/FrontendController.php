@@ -77,9 +77,10 @@ class FrontendController extends Controller
         $course = Course::where('slug', $slug)->first();
         $product = $course ?? $package;
         $prices = $calculatePrice->execute($product->actual_price, $product->sale_price);
-        $packageCourses = optional($package)->courses ? Course::findMany($package->courses) : [];
+        $packageCourses = optional($package)->courses ? Course::findMany($package->courses) : [$course];
         $pageSchema = PageSchema::where('page_name', $product->name)->first();
-        return view('pages.course', compact('product', 'packageCourses', 'pageSchema', 'prices'));
+        $metaDetail = $product->metaDetail;
+        return view('pages.course', compact('product', 'packageCourses', 'pageSchema', 'prices','metaDetail'));
     }
 
     public function renderUpcomingBatches()

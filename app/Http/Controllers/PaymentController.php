@@ -24,8 +24,9 @@ class PaymentController extends Controller
     {
         $user = Auth::user();
         $usd_rate = Usd::find(1)->first()->value;
-        $usd = round(($request->amount / $usd_rate) * 100, 0);
+        $usd = round(($request->payable_price / $usd_rate) * 100, 0);
         $order = $createOrder->execute($request, $user->id, $usd);
+        dd($order);
         Session::put('order_id', $order->id);
         $scheduleIDs = array_values(array_filter($request->all(), fn($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
         $attachScheduleToOrder->execute($scheduleIDs, $order->id);

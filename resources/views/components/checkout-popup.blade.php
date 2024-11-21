@@ -20,42 +20,25 @@
                                     <h5 class="text">Total: ₹{{ number_format($prices['payablePrice']) }}</h5>
                                 </div>
                             </div>
-                            {{-- @if ($isPackage)
-                                @foreach ($packageCourses as $course)
-                                    <div class="my-4">
-                                        <label for="course-schedule{{ $course->id }}">Select {{ $course->name }}
-                                            Course Date & Time</label>
-                                        <select class="form-control mb-2" name="course_schedule{{ $course->id }}"
-                                            id="course-schedule{{ $course->id }}" required>
-                                            <option value="" selected>select schedule</option>
-                                            @foreach ($course->schedule as $schedule)
-                                                <option value="{{ $schedule->id }}">
-                                                    {{ \Carbon\Carbon::parse($schedule->start_date)->format('jS M Y') }}
-                                                    -
-                                                    {{ \Carbon\Carbon::parse($schedule->time)->format('g:i A') }} -
-                                                    {{ $schedule->training_mode }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                @endforeach
-                            @else
-                                <div class="pt-2">
-                                    <label for="course-schedule">Select Your Course Date & Time</label>
-                                    <select class="form-control mb-2" name="course_schedule" id="course-schedule"
-                                        required>
+                            @foreach ($packageCourses as $course)
+                                <div class="my-4">
+                                    <label for="course-schedule{{ $course->id }}">Select {{ $course->name }}
+                                        Course Date & Time</label>
+                                    <select class="form-control mb-2" name="course_schedule{{ $course->id }}"
+                                        id="course-schedule{{ $course->id }}" required>
                                         <option value="" selected>select schedule</option>
-                                        @foreach ($product->schedule as $schedule)
+                                        @foreach ($course->schedule as $schedule)
                                             <option value="{{ $schedule->id }}">
-                                                {{ \Carbon\Carbon::parse($schedule->start_date)->format('jS M Y') }} -
+                                                {{ \Carbon\Carbon::parse($schedule->start_date)->format('jS M Y') }}
+                                                -
                                                 {{ \Carbon\Carbon::parse($schedule->time)->format('g:i A') }} -
                                                 {{ $schedule->training_mode }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
-                            @endif --}}
-                            <input type="hidden" name="payablePrice" value="{{ $prices['payablePrice'] }}">
+                            @endforeach
+                            <input type="hidden" name="payable_price" value="{{ $prices['payablePrice'] }}">
                             <input type="hidden" name="product_type"
                                 value="{{ $product->courses ? 'package' : 'course' }}">
                             <input type="hidden" name="name" value="{{ $product->slug }}">

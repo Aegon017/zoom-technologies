@@ -13,6 +13,7 @@ class Footer extends Component
     public function __construct()
     {
         return $this->footer = FooterSection::find(1);
+        dd($this->footer);
     }
 
     public function render(): View|Closure|string

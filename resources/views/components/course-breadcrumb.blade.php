@@ -13,15 +13,10 @@
                             <li class="zt-breadcrumb-item active">Course</li>
                         </ul>
                         <h2 class="title">
-                            {{-- {!! isset($course)
-                                ? $course->name
-                                : ($package->overview->uscouncil_certified
-                                    ? '<img src="' .
-                                        asset('frontend/assets/img/us-council-white.png') .
-                                        '" alt="US Council Logo"> Certified ' .
-                                        $package->name .
-                                        ' Course'
-                                    : $package->name . ' Training') !!} --}}
+                            @if ($product->overview?->uscouncil_certified)
+                                <img src="{{ asset('frontend/assets/img/us-council-white.png') }}"
+                                    alt="US Council Logo">
+                            @endif
                             {{ $product->name }}
                         </h2>
                         <div class="description">{!! $product->short_description !!}</div>

@@ -24,6 +24,9 @@ class Schedule extends Model
 
     protected $casts = [
         'day_off' => 'array',
+        'start_date' => 'datetime',
+        'time' => 'datetime',
+        'end_time' => 'datetime'
     ];
 
     public function course(): BelongsTo

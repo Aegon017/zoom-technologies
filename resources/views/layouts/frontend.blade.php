@@ -7,9 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="{{ asset('frontend/assets/img/favicon.png') }}">
     <title>
-        {{ $metaTitle ??
-            'Online Training in India | Hyderabad, Vijayawada, Surat | CCNA, CCNP, CCIE, MCSE, MCSA,
-                                                                                                                                                                                                                                                                                                                Ethical Hacking, Cybersecurity, Cyber Security, Linux, VMware, Checkpoint, RHCE, Azure, AWS, Microsoft Training' }}
+        {{ $metaTitle ?? 'Online Training in India | Hyderabad, Vijayawada, Surat | CCNA, CCNP, CCIE, MCSE, MCSA, Ethical Hacking, Cybersecurity, Cyber Security, Linux, VMware, Checkpoint, RHCE, Azure, AWS, Microsoft Training' }}
     </title>
     @if (isset($metaKeywords))
         <meta name="keywords" content="{{ $metaKeywords }}">
