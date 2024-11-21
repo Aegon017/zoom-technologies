@@ -24,8 +24,8 @@ return new class extends Migration
             $table->string('training_mode');
             $table->boolean('placement');
             $table->boolean('certificate');
-            $table->mediumInteger('original_price')->nullable();
-            $table->mediumInteger('price');
+            $table->mediumInteger('sale_price')->nullable();
+            $table->mediumInteger('actual_price');
             $table->timestamps();
         });
     }

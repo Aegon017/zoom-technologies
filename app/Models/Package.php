@@ -24,8 +24,8 @@ class Package extends Model
         'training_mode',
         'placement',
         'certificate',
-        'original_price',
-        'price',
+        'sale_price',
+        'actual_price',
     ];
 
     protected $casts = [

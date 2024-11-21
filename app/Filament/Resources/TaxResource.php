@@ -26,11 +26,8 @@ class TaxResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('name')->options([
-                    'SGST' => 'SGST',
-                    'CGST' => 'CGST'
-                ])->label('Tax name'),
-                TextInput::make('rate')->label('Tax rate')->suffix('%')
+                TextInput::make('cgst')->label('CGST(%)')->suffix('%')->required(),
+                TextInput::make('sgst')->label('SGST(%)')->suffix('%')->required()
             ]);
     }
 
@@ -38,9 +35,8 @@ class TaxResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('#')->rowIndex(),
-                TextColumn::make('name')->label('Tax name')->searchable(),
-                TextColumn::make('rate')->label('Tax rate')->suffix('%'),
+                TextColumn::make('cgst')->label('CGST(%)')->suffix('%'),
+                TextColumn::make('sgst')->label('SGST(%)')->suffix('%')
             ])
             ->filters([
                 //
@@ -48,11 +44,7 @@ class TaxResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getRelations(): array

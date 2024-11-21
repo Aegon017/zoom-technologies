@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CalculatePrice;
 use App\Models\Brochure;
 use App\Models\CorporateTraining;
 use App\Models\Course;
@@ -70,13 +71,15 @@ class FrontendController extends Controller
         return view('pages.contact', compact('metaDetail', 'pageSchema'));
     }
 
-    public function renderCourse($slug)
+    public function renderCourse($slug, CalculatePrice $calculatePrice)
     {
         $package = Package::where('slug', $slug)->first();
         $course = Course::where('slug', $slug)->first();
+        $product = $course ?? $package;
+        $prices = $calculatePrice->execute($product->actual_price, $product->sale_price);
         $packageCourses = optional($package)->courses ? Course::findMany($package->courses) : [];
-        $pageSchema = PageSchema::where('page_name', 'Course list')->first();
-        return view('pages.course', compact('course', 'package', 'packageCourses', 'pageSchema'));
+        $pageSchema = PageSchema::where('page_name', $product->name)->first();
+        return view('pages.course', compact('product', 'packageCourses', 'pageSchema', 'prices'));
     }
 
     public function renderUpcomingBatches()

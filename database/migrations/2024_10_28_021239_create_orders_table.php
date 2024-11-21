@@ -15,13 +15,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('order_number');
-            $table->string('transaction_id');
-            $table->string('payu_id');
-            $table->string('payment_mode')->nullable();
-            $table->string('payment_time');
-            $table->string('payment_desc');
-            $table->mediumInteger('amount');
+            $table->string('payment_method');
             $table->string('status');
+            $table->string('payment_id')->nullable();
+            $table->string('payment_time')->nullable();
+            $table->string('payment_desc')->nullable();
+            $table->mediumInteger('amount')->nullable();
             $table->string('invoice')->nullable();
             $table->string('course_name');
             $table->string('course_thumbnail');

@@ -1,13 +1,3 @@
-@php
-    $isPackage = isset($item->courses);
-    $cgstRate = App\Models\Tax::where('name', 'CGST')->first()->rate ?? 0;
-    $sgstRate = App\Models\Tax::where('name', 'SGST')->first()->rate ?? 0;
-    $price = $item->original_price ?: $item->price;
-    $cgstAmount = ($price * $cgstRate) / 100;
-    $sgstAmount = ($price * $sgstRate) / 100;
-    $totalPrice = $price + $cgstAmount + $sgstAmount;
-@endphp
-
 <div class="modal zt-login-modal fade" id="checkoutpopup" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -18,16 +8,19 @@
                             @csrf
                             <div class="row">
                                 <div class="col-md-8">
-                                    <h5 class="font-weight-bold text-heading">{{ $item->name }}</h5>
+                                    <h5 class="font-weight-bold text-heading">{{ $product->name }}</h5>
                                 </div>
                                 <div class="col-md-4">
-                                    <h5 class="text-heading">Price: ₹{{ $price }}</h5>
-                                    <p class="text">CGST ({{ $cgstRate }}%): ₹{{ $cgstAmount }}</p>
-                                    <p class="text">SGST ({{ $sgstRate }}%): ₹{{ $sgstAmount }}</p>
-                                    <h5 class="text">Total: ₹{{ $totalPrice }}</h5>
+                                    <h5 class="text-heading">Price:
+                                        ₹{{ number_format($prices['salePrice'] ?? $prices['actualPrice']) }}</h5>
+                                    <p class="text">CGST ({{ $prices['cgstPercentage'] }}%):
+                                        ₹{{ number_format($prices['cgst']) }}</p>
+                                    <p class="text">SGST ({{ $prices['sgstPercentage'] }}%):
+                                        ₹{{ number_format($prices['sgst']) }}</p>
+                                    <h5 class="text">Total: ₹{{ number_format($prices['payablePrice']) }}</h5>
                                 </div>
                             </div>
-                            @if ($isPackage)
+                            {{-- @if ($isPackage)
                                 @foreach ($packageCourses as $course)
                                     <div class="my-4">
                                         <label for="course-schedule{{ $course->id }}">Select {{ $course->name }}
@@ -52,7 +45,7 @@
                                     <select class="form-control mb-2" name="course_schedule" id="course-schedule"
                                         required>
                                         <option value="" selected>select schedule</option>
-                                        @foreach ($item->schedule as $schedule)
+                                        @foreach ($product->schedule as $schedule)
                                             <option value="{{ $schedule->id }}">
                                                 {{ \Carbon\Carbon::parse($schedule->start_date)->format('jS M Y') }} -
                                                 {{ \Carbon\Carbon::parse($schedule->time)->format('g:i A') }} -
@@ -61,11 +54,11 @@
                                         @endforeach
                                     </select>
                                 </div>
-                            @endif
-                            <input type="hidden" name="amount" value="{{ $totalPrice }}" required>
-                            <input type="hidden" name="product_type" value="{{ $isPackage ? 'package' : 'course' }}"
-                                required>
-                            <input type="hidden" name="name" value="{{ $item->slug }}" required>
+                            @endif --}}
+                            <input type="hidden" name="payablePrice" value="{{ $prices['payablePrice'] }}">
+                            <input type="hidden" name="product_type"
+                                value="{{ $product->courses ? 'package' : 'course' }}">
+                            <input type="hidden" name="name" value="{{ $product->slug }}">
                             <div class="payment-method">
                                 <p class="font-weight-bold">Please select payment method</p>
                                 <div class="row">

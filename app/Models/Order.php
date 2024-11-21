@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
@@ -10,13 +11,12 @@ class Order extends Model
     protected $fillable = [
         'user_id',
         'order_number',
-        'transaction_id',
-        'payu_id',
-        'payment_mode',
+        'payment_method',
+        'status',
+        'payment_id',
         'payment_time',
         'payment_desc',
         'amount',
-        'status',
         'invoice',
         'course_name',
         'course_thumbnail',
@@ -25,24 +25,24 @@ class Order extends Model
         'course_duration_type',
         'course_price',
         'sgst',
-        'cgst',
+        'cgst'
     ];
 
     protected $casts = [
         'payment_time' => 'datetime',
     ];
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function course()
+    public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
     }
 
-    public function package()
+    public function package(): BelongsTo
     {
         return $this->belongsTo(Package::class);
     }

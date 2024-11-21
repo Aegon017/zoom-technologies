@@ -8,12 +8,12 @@ use App\Models\Schedule;
 
 class AttachScheduleToOrder
 {
-    public function execute($scheduleIDs, Order $order)
+    public function execute($scheduleIDs, $order_id)
     {
         foreach ($scheduleIDs as $scheduleId) {
             $schedule = Schedule::find($scheduleId);
             $orderSchedule = new OrderSchedule([
-                'order_id' => $order->id,
+                'order_id' => $order_id,
                 'course_name' => $schedule->course->name,
                 'start_date' => $schedule->start_date,
                 'time' => $schedule->time,

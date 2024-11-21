@@ -3,11 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\NewsCategoryResource\Pages;
-use App\Filament\Resources\NewsCategoryResource\RelationManagers;
 use App\Filament\Resources\NewsCategoryResource\RelationManagers\MetaDetailRelationManager;
-use App\Filament\Resources\NewsCategoryResource\RelationManagers\NewsRelationManager;
 use App\Models\NewsCategory;
-use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,8 +12,6 @@ use Filament\Tables;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class NewsCategoryResource extends Resource
 {

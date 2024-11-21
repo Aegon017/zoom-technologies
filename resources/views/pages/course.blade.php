@@ -22,7 +22,7 @@
             {!! $pageSchema->organization_schema !!}
         </x-slot>
     @endif
-    <x-course-breadcrumb :$course :$package />
+    <x-course-breadcrumb :$product />
     <section id="course-details" class="course-details-section">
         <div class="container">
             <div class="course-details-content">
@@ -31,8 +31,8 @@
                         <div class="course-details-area">
                             <div class="course-details-content-wrapper">
                                 <x-on-page-menu />
-                                <x-overview :$course :$package />
-                                <x-curriculum :$course :$package :$packageCourses />
+                                <x-overview :product />
+                                <x-curriculum :product :$packageCourses />
                                 <div id="schedule" class="zt-course-feature-box schedule-wrapper">
                                     <div class="section-title">
                                         <h4>Course Schedule</h4>
@@ -43,7 +43,7 @@
                                         <div class="course-schedule-wrapper-body py-3">
                                             <div class="row m-0 align-items-center">
                                                 <div class="col-12">
-                                                    <x-schedule-card :$course :$package :$packageCourses />
+                                                    <x-schedule-card :product :$packageCourses />
                                                 </div>
                                             </div>
                                         </div>
@@ -99,28 +99,12 @@
                         </div>
                     </div>
                     <div class="col-lg-4">
-                        @foreach ([$course, $package] as $item)
-                            @if ($item)
-                                <x-course-widget :$item />
-                            @endif
-                        @endforeach
+                        <x-course-widget :$prices :$product />
                     </div>
                 </div>
             </div>
         </div>
     </section>
     <x-related-courses />
-    @foreach ([$course, $package] as $item)
-        @if ($item)
-            @php
-                $totalPrice =
-                    ($item->original_price ? $item->original_price : $item->price) *
-                    (1 +
-                        ((App\Models\Tax::where('name', 'SGST')->first()->rate ?? 0) +
-                            (App\Models\Tax::where('name', 'SGST')->first()->rate ?? 0)) /
-                            100);
-            @endphp
-            <x-checkout-popup :$item :$totalPrice :$packageCourses />
-        @endif
-    @endforeach
+    <x-checkout-popup :$prices :$product :$packageCourses />
 </x-frontend-layout>

@@ -47,8 +47,8 @@ class PackageResource extends Resource
                         TextInput::make('duration')->required(),
                         Select::make('duration_type')->options(['Month' => 'Month', 'Week' => 'Week', 'Day' => 'Day'])->required(),
                         Select::make('training_mode')->multiple()->options(['Online' => 'Online', 'Classroom' => 'Classroom'])->columnSpanFull()->required(),
-                        TextInput::make('price')->label('Regular price')->prefix('Rs.')->required(),
-                        TextInput::make('original_price')->label('Offer price')->prefix('Rs.')
+                        TextInput::make('sale_price')->label('Sale price')->prefix('Rs.'),
+                        TextInput::make('actual_price')->label('Actual price')->prefix('Rs.')->required()
                     ])->columns(2),
                     Section::make('Placement & Certification')->schema([
                         Radio::make('placement')->boolean()->label('Placement assistance')->inline()->required(),
@@ -78,7 +78,8 @@ class PackageResource extends Resource
                 ImageColumn::make('thumbnail')->height(120)->width(204),
                 TextColumn::make('name')->searchable(),
                 TextColumn::make('training_mode'),
-                TextColumn::make('price'),
+                TextColumn::make('sale_price'),
+                TextColumn::make('actual_price')
             ])
             ->filters([
                 //
