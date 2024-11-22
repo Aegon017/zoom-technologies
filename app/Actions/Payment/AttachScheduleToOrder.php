@@ -14,6 +14,7 @@ class AttachScheduleToOrder
             $schedule = Schedule::find($scheduleId);
             $orderSchedule = new OrderSchedule([
                 'order_id' => $order_id,
+                'schedule_id' => $schedule->id,
                 'course_name' => $schedule->course->name,
                 'start_date' => $schedule->start_date,
                 'time' => $schedule->time,

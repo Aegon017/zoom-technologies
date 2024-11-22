@@ -10,6 +10,7 @@ class OrderSchedule extends Model
 {
     protected $fillable = [
         'order_id',
+        'schedule_id',
         'course_name',
         'start_date',
         'time',

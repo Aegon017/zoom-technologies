@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Events\MeetingCredentialsUpdatedEvent;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Log;
 
 class Schedule extends Model
 {
@@ -37,5 +39,14 @@ class Schedule extends Model
     public static function deletePastSchedules()
     {
         self::whereDate('start_date', '<', Carbon::today())->delete();
+    }
+
+    protected static function booted()
+    {
+        static::updated(function ($schedule) {
+            if ($schedule->isDirty(['zoom_meeting_url', 'meeting_id', 'meeting_password'])) {
+                event(new MeetingCredentialsUpdatedEvent($schedule));
+            }
+        });
     }
 }
