@@ -11789,8 +11789,8 @@ select:visited {
     position: relative;
 }
 
-.header-style-three.zt-sticky-menu .my-account .dropbtn i {
-    color: #000000;
+.header-style-three.zt-sticky-menu .home-icon-user {
+    color: #000000 !important;
 }
 
 .map iframe {
@@ -11853,4 +11853,12 @@ select:visited {
 .stripe-input label img{
     width: 80px;
     margin-top: 8px;
+}
+
+.list-style-none{
+    list-style: none;
+}
+
+.login-dropdown{
+    left:-110px;
 }

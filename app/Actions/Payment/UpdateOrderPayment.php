@@ -14,5 +14,6 @@ class UpdateOrderPayment
         $order->payment_desc = $request->field9;
         $order->amount = $request->amount;
         $order->status = $request->status;
+        $order->save();
     }
 }

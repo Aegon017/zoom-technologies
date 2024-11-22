@@ -6,23 +6,32 @@
                         alt="Zoom Group company logo"></a>
             </div>
             <div class="zt-header-cart-login float-right">
-                <div class="my-account pr-3">
-                    <a class="dropbtn"><i class="fas fa-user {{ request()->is('/') ? '' : 'text-dark' }}"></i></a>
-                    <div class="dropdown-content">
-                        @if (auth()->user())
-                            <a href="{{ route('dashboard') }}"><i class="far mr-2 fa-address-card"></i>My account</a>
-                            <a href="{{ route('profile.show') }}"><i class="far mr-2 fa-user"></i>Profile</a>
+                <li class="nav-item dropdown list-style-none">
+                    <a class="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user home-icon-user {{ request()->is('/') ? 'text-light' : 'text-dark' }}"></i>
+                    </a>
+                    <div class="dropdown-menu login-dropdown" aria-labelledby="navbarDropdown">
+                        @auth
+                            <a class="dropdown-item" href="#" style="padding-left: 19px"><i
+                                    class="fas fa-shopping-cart"></i> My Orders</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-bookmark"></i> My Courses</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-book"></i> Study Material</a>
+                            <a class="dropdown-item" href="{{ route('profile.show') }}"><i class="fas fa-id-badge"></i>
+                                Profile</a>
+                            <div class="dropdown-divider"></div>
                             <form method="POST" action="{{ route('logout') }}" x-data>
                                 @csrf
-                                <a class="logout-text" href="{{ route('logout') }}" @click.prevent="$root.submit();">
-                                    <i class="fas fa-sign-out-alt"></i> Logout
-                                </a>
+                                <a class="dropdown-item" href="{{ route('logout') }}" @click.prevent="$root.submit();"><i
+                                        class="fas fa-sign-out-alt"></i> Logout</a>
                             </form>
-                        @else
-                            <a href="{{ route('login') }}">Login</a>
-                        @endif
+                        @endauth
+                        @guest
+                            <a class="dropdown-item" href="{{ route('login') }}"><i class="fas fa-sign-in-alt"></i>
+                                Login</a>
+                        @endguest
                     </div>
-                </div>
+                </li>
             </div>
             <div class="zt-main-nav-wrap float-right">
                 <nav class="zt-main-navigation ul-li">

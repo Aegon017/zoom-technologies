@@ -80,7 +80,7 @@ class FrontendController extends Controller
         $packageCourses = optional($package)->courses ? Course::findMany($package->courses) : [$course];
         $pageSchema = PageSchema::where('page_name', $product->name)->first();
         $metaDetail = $product->metaDetail;
-        return view('pages.course', compact('product', 'packageCourses', 'pageSchema', 'prices','metaDetail'));
+        return view('pages.course', compact('product', 'packageCourses', 'pageSchema', 'prices', 'metaDetail'));
     }
 
     public function renderUpcomingBatches()
@@ -158,5 +158,10 @@ class FrontendController extends Controller
         $materials = Course::with('studyMaterial')->get()->flatMap->studyMaterial;
         $pageSchema = PageSchema::where('page_name', 'Study material')->first();
         return view('pages.free-ebooks', compact('metaDetail', 'materials', 'pageSchema'));
+    }
+
+    public function renderMyCourse($slug)
+    {
+        return view('pages.my-course');
     }
 }

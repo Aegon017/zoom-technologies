@@ -2,15 +2,12 @@
 
 namespace App\Services;
 
-use Illuminate\Http\Request;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
 
 class PayPalPayment
 {
-    public function __construct() {}
-
-    public function execute(Request $request, $user, $usd)
+    public function execute($user, $txnId, $usd, $productInfo)
     {
         Stripe::setApiKey(env('STRIPE_SECRET'));
         $session = Session::create([

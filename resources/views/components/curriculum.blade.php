@@ -16,7 +16,7 @@
         </div>
     </div>
     <div class="accordion-content">
-        @if ($course->overview->uscouncil_certified)
+        @if ($course->overview?->uscouncil_certified)
             <div class="voucher-promo">
                 <h4>
                     <strong class="txt-primary">+FREE</strong>

@@ -27,9 +27,9 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/my-account', [FrontendController::class, 'render_account'])->name('dashboard');
+    Route::get('/my-orders', [FrontendController::class, 'render_account'])->name('render.myOrders');
+    Route::get('/my-courses/{slug}', [FrontendController::class, 'renderMyCourse'])->name('render.myCourse');
     Route::get('/order-details/{id}', [FrontendController::class, 'order_details'])->name('order-details');
-    Route::get('/my-account', [FrontendController::class, 'render_account'])->name('dashboard');
     Route::post('/payment/initiate', [PaymentController::class, 'initiate'])->name('payment.initiate');
     Route::any('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
     Route::any('/payment/failure', [PaymentController::class, 'failure'])->name('payment.failure');

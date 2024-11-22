@@ -24,21 +24,23 @@ class PaymentController extends Controller
     {
         $user = Auth::user();
         $usd_rate = Usd::find(1)->first()->value;
-        $usd = round(($request->payable_price / $usd_rate) * 100, 0);
+        $txnId = uniqid();
+        $payablePrice = $request->payable_price;
+        $productInfo = $request->name;
+        $usd = round(($payablePrice / $usd_rate) * 100, 0);
         $order = $createOrder->execute($request, $user->id, $usd);
-        dd($order);
         Session::put('order_id', $order->id);
         $scheduleIDs = array_values(array_filter($request->all(), fn($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
         $attachScheduleToOrder->execute($scheduleIDs, $order->id);
         switch ($request->payment_method) {
             case 'payu':
-                $payUPayment->execute($request, $user);
+                $payUPayment->execute($user, $txnId, $payablePrice, $productInfo);
                 break;
             case 'paypal':
-                $payPalPayment->execute($request, $user, $usd);
+                $payPalPayment->execute($user, $txnId, $usd, $productInfo);
                 break;
             case 'stripe':
-                $stripePayment->execute($request, $user, $usd);
+                $stripePayment->execute($user, $txnId, $usd, $productInfo);
                 break;
             default:
                 echo 'Please choose a valid payment method';

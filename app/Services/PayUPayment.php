@@ -2,13 +2,11 @@
 
 namespace App\Services;
 
-use Illuminate\Http\Request;
-
 class PayUPayment
 {
     public function __construct() {}
 
-    public function execute(Request $request, $user)
+    public function execute($user, $txnId, $payablePrice, $productInfo)
     {
         $payu_obj = new PayU();
         $payu_obj->env_prod = config('services.payu.environment');
@@ -18,9 +16,9 @@ class PayUPayment
         $params = [
             "surl" => route('payment.success'),
             "furl" => route('payment.failure'),
-            "txnid" => uniqid(),
-            "amount" => $request->amount,
-            "productinfo" => $request->name,
+            "txnid" => $txnId,
+            "amount" => $payablePrice,
+            "productinfo" => $productInfo,
             "firstname" => $user->name,
             "lastname" => '',
             "zipcode" => '',
