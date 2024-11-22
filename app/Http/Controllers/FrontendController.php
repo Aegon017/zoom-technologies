@@ -18,6 +18,7 @@ use App\Models\PageMetaDetails;
 use App\Models\PageSchema;
 use App\Models\PromoSection;
 use App\Models\Slider;
+use App\Models\StudyMaterial;
 use App\Models\Testimonial;
 use App\Models\TestimonialSection;
 use Carbon\Carbon;
@@ -162,6 +163,9 @@ class FrontendController extends Controller
 
     public function renderMyCourse($slug)
     {
-        return view('pages.my-course');
+        $course = Course::where('slug', $slug)->with('studyMaterial')->first();
+        $studyMaterials = $course->studyMaterial;
+        $courseName = $course->name;
+        return view('pages.my-course', compact('studyMaterials', 'courseName'));
     }
 }

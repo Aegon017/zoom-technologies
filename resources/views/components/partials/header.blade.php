@@ -17,6 +17,7 @@
                                     class="fas fa-shopping-cart"></i> My Orders</a>
                             <a class="dropdown-item" href="#"><i class="fas fa-bookmark"></i> My Courses</a>
                             <a class="dropdown-item" href="#"><i class="fas fa-book"></i> Study Material</a>
+                            <x-student-courses />
                             <a class="dropdown-item" href="{{ route('profile.show') }}"><i class="fas fa-id-badge"></i>
                                 Profile</a>
                             <div class="dropdown-divider"></div>
