@@ -23,7 +23,7 @@ class PaymentController extends Controller
     public function initiate(Request $request, PayUPayment $payUPayment, PayPalPayment $payPalPayment, StripePayment $stripePayment, CreateOrder $createOrder, AttachScheduleToOrder $attachScheduleToOrder)
     {
         $user = Auth::user();
-        $usd_rate = Usd::find(1)->first()->value;
+        $usd_rate = Usd::first()->value ?? 0;
         $txnId = uniqid();
         $payablePrice = $request->payable_price;
         $productInfo = $request->name;

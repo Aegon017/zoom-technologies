@@ -14,18 +14,7 @@ return new class extends Migration
         Schema::create('order_schedules', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained()->cascadeOnDelete();
-            $table->unsignedBigInteger('schedule_id');
-            $table->string('course_name');
-            $table->date('start_date');
-            $table->time('time');
-            $table->time('end_time');
-            $table->tinyInteger('duration');
-            $table->string('duration_type');
-            $table->string('day_off');
-            $table->string('training_mode');
-            $table->string('zoom_meeting_url')->nullable();
-            $table->string('meeting_id')->nullable();
-            $table->string('meeting_password')->nullable();
+            $table->foreignId('schedule_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

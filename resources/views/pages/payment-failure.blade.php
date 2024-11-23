@@ -9,7 +9,7 @@
                         <p class="pt-3"><strong>{{ $order->payment_desc }}</strong></p>
                         <p><strong>Order No. :</strong> {{ $order->order_number }}</p>
                         <p><strong>Payment Id :</strong> {{ $order->payment_id }}</p>
-                        <a href="{{ route('dashboard') }}" class="btn btn-primary mt-3">Go to orders</a>
+                        <a href="{{ route('render.myOrders') }}" class="btn btn-primary mt-3">Go to orders</a>
                     </div>
                 </div>
             </div>

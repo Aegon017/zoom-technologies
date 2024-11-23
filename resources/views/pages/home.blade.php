@@ -60,34 +60,37 @@
     </section>
     <!---- Promo Section End ---->
     <!-- Start of Feature section -->
-    <section id="zt-feature" class="zt-feature-section zt-why-choose-us">
-        <div class="container">
-            <div class="zt-section-title text-center zt-headline zt-title-style-two position-relative">
-                <span>{{ $featureSection->title }}</span>
-                <h2>{{ $featureSection->heading }}</h2>
-                <p>{!! $featureSection->content !!}</p>
-            </div>
-            <div class="zt-feature-content">
-                <div class="row justify-content-center wow fadeInUp" data-wow-delay="0ms" data-wow-duration="1500ms">
-                    @foreach ($featureCards as $featureCard)
-                        <div class="col-lg-3 col-md-6 mb-4">
-                            <div class="zt-feature-innerbox position-relative">
-                                <div class="zt-feature-icon">
-                                    <i class="far fa-calendar-plus"></i>
-                                </div>
-                                <div class="zt-feature-text zt-headline pera-content">
-                                    <h3><span class="odometer"
-                                            data-count="{{ $featureCard->number }}">00</span><sup>+</sup></h3>
-                                    <h4>{{ $featureCard->title }}</h4>
-                                    <p>{{ $featureCard->content }}</p>
+    @if ($featureSection)
+        <section id="zt-feature" class="zt-feature-section zt-why-choose-us">
+            <div class="container">
+                <div class="zt-section-title text-center zt-headline zt-title-style-two position-relative">
+                    <span>{{ $featureSection->title }}</span>
+                    <h2>{{ $featureSection->heading }}</h2>
+                    <p>{!! $featureSection->content !!}</p>
+                </div>
+                <div class="zt-feature-content">
+                    <div class="row justify-content-center wow fadeInUp" data-wow-delay="0ms"
+                        data-wow-duration="1500ms">
+                        @foreach ($featureCards as $featureCard)
+                            <div class="col-lg-3 col-md-6 mb-4">
+                                <div class="zt-feature-innerbox position-relative">
+                                    <div class="zt-feature-icon">
+                                        <i class="far fa-calendar-plus"></i>
+                                    </div>
+                                    <div class="zt-feature-text zt-headline pera-content">
+                                        <h3><span class="odometer"
+                                                data-count="{{ $featureCard->number }}">00</span><sup>+</sup></h3>
+                                        <h4>{{ $featureCard->title }}</h4>
+                                        <p>{{ $featureCard->content }}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    @endif
     <!-- End of Feature section -->
     <!-- Start of course  section -->
     <x-featured-courses />
@@ -117,44 +120,46 @@
     </section>
     <!-- End of cta section -->
     <!-- Start of Testimonial section -->
-    <section id="zt-testimonial" class="zt-testimonial-section"
-        data-background="{{ Storage::url($testimonialSection->image) }}">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-5">
-                    <div class="zt-section-title zt-headline zt-title-style-two position-relative">
-                        <span>{{ $testimonialSection->title }}</span>
-                        <h2>{{ $testimonialSection->heading }}</h2>
-                    </div>
-                    <div class="zt-testimonial-content">
-                        <div id="zt-testimonial-slide" class="zt-testimonial-area owl-carousel">
-                            @foreach ($testimonials as $testimonial)
-                                <div class="zt-testimonial-item-wrap pera-content zt-headline">
-                                    <p>{!! $testimonial->content !!}</p>
-                                    <div class="zt-testimonial-author">
-                                        <div class="zt-testimonial-text">
-                                            <div class="zt-testimonial-rate ul-li">
-                                                <ul>
-                                                    <li><i class="fas fa-star"></i></li>
-                                                    <li><i class="fas fa-star"></i></li>
-                                                    <li><i class="fas fa-star"></i></li>
-                                                    <li><i class="fas fa-star"></i></li>
-                                                    <li><i class="fas fa-star"></i></li>
-                                                </ul>
+    @if ($testimonialSection)
+        <section id="zt-testimonial" class="zt-testimonial-section"
+            data-background="{{ Storage::url($testimonialSection->image) }}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-5">
+                        <div class="zt-section-title zt-headline zt-title-style-two position-relative">
+                            <span>{{ $testimonialSection->title }}</span>
+                            <h2>{{ $testimonialSection->heading }}</h2>
+                        </div>
+                        <div class="zt-testimonial-content">
+                            <div id="zt-testimonial-slide" class="zt-testimonial-area owl-carousel">
+                                @foreach ($testimonials as $testimonial)
+                                    <div class="zt-testimonial-item-wrap pera-content zt-headline">
+                                        <p>{!! $testimonial->content !!}</p>
+                                        <div class="zt-testimonial-author">
+                                            <div class="zt-testimonial-text">
+                                                <div class="zt-testimonial-rate ul-li">
+                                                    <ul>
+                                                        <li><i class="fas fa-star"></i></li>
+                                                        <li><i class="fas fa-star"></i></li>
+                                                        <li><i class="fas fa-star"></i></li>
+                                                        <li><i class="fas fa-star"></i></li>
+                                                        <li><i class="fas fa-star"></i></li>
+                                                    </ul>
+                                                </div>
+                                                <h4><a href="#">{{ $testimonial->name }}</a></h4>
+                                                <span>{{ $testimonial->location }}</span>
                                             </div>
-                                            <h4><a href="#">{{ $testimonial->name }}</a></h4>
-                                            <span>{{ $testimonial->location }}</span>
                                         </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            </div>
+                            <a href="{{ route('render.testimonials') }}" class="zt-btn-style-1 mt-3">View All</a>
                         </div>
-                        <a href="{{ route('render.testimonials') }}" class="zt-btn-style-1 mt-3">View All</a>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    @endif
     <!-- End of Testimonial section -->
     <!-- About Section -->
     <section id="about-page-about" class="about-page-about-section">

@@ -27,7 +27,7 @@ class StudentCourses extends Component
                 ];
             }
         }
-        $this->courses = $courses;
+        $this->courses = $courses??[];
     }
 
     public function render(): View|Closure|string

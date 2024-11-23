@@ -35,15 +35,10 @@ class CreateOrder
         }
         return Order::create([
             'user_id' => $userId,
+            'course_id' => $item->courses ? null : $item->id,
+            'package_id' => $item->courses ? $item->id : null,
             'order_number' => 'zt_' . $userId . now()->format('YmdHis'),
-            'payment_method' => $request->payment_method,
-            'amount' => $payablePrice,
-            'course_name' => $item->name,
-            'course_thumbnail' => $item->thumbnail,
-            'course_thumbnail_alt' => $item->thumbnail_alt,
-            'course_duration' => $item->duration,
-            'course_duration_type' => $item->duration_type,
-            'course_price' => $prices['actualPrice'],
+            'courseOrPackage_price' => $prices['actualPrice'],
             'sgst' => $prices['sgstPercentage'],
             'cgst' => $prices['cgstPercentage'],
         ]);
