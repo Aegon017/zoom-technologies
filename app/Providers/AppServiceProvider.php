@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\ManualOrderCreatedEvent;
 use App\Events\MeetingCredentialsUpdatedEvent;
+use App\Listeners\CreateOrderSendMail;
 use App\Listeners\SendMeetingCredentialsUpdatedEmail;
 use App\Models\Course;
 use App\Observers\CourseObserver;
@@ -29,6 +31,8 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(
             MeetingCredentialsUpdatedEvent::class,
             SendMeetingCredentialsUpdatedEmail::class,
+            ManualOrderCreatedEvent::class,
+            CreateOrderSendMail::class
         );
 
         // Livewire::setScriptRoute(function ($handle) {

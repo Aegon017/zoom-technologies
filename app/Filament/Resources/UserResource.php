@@ -8,9 +8,15 @@ use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Actions\ExportAction;
 use Filament\Forms;
+use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Tabs\Tab;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Resources\Components\Tab as ComponentsTab;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ExportAction as ActionsExportAction;
 use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Columns\TextColumn;
@@ -31,7 +37,15 @@ class UserResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([]);
+            ->schema([
+                TextInput::make('name'),
+                TextInput::make('email'),
+                Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->multiple()
+                    ->preload()
+                    ->searchable(),
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -49,7 +63,8 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                ActionsExportAction::make()->exporter(UserExporter::class)
+                ActionsExportAction::make()->exporter(UserExporter::class),
+                EditAction::make()
             ])
             ->bulkActions([
                 ExportBulkAction::make()->exporter(UserExporter::class)
@@ -67,6 +82,8 @@ class UserResource extends Resource
     {
         return [
             'index' => Pages\ListUsers::route('/'),
+            'create' => Pages\CreateUser::route('/create'),
+            'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 }

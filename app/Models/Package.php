@@ -57,4 +57,9 @@ class Package extends Model
     {
         return $this->hasMany(Faq::class);
     }
+
+    public function order(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
 }

@@ -16,28 +16,29 @@
                 </div>
                 <p class="text-gray-600 mb-1"><strong>Order number:</strong> {{ $order->order_number }}</p>
                 <p class="text-gray-600 mb-8"><strong>Date & time:</strong>
-                    {!! \Carbon\Carbon::parse($order->payment_time)->format('F j, Y, g:i A') !!}
+                    {!! $order->payment->date->format('F j Y') !!}, {!! $order->payment->time->format('h i:A') !!}
                 </p>
                 <div class="mb-8">
                     <div class="flex flex-col sm:flex-row mb-6">
-                        <img alt="{{ $order->course_thumbnail_alt }}" class="w-full object-contain sm:w-1/2 object-top rounded-lg"
-                            src="{{ asset(Storage::url($order->course_thumbnail)) }}" />
+                        <img alt="{{ $order->course->thumbnail_alt }}"
+                            class="w-full object-contain sm:w-1/2 object-top rounded-lg"
+                            src="{{ asset(Storage::url($order->course->thumbnail)) }}" />
                         <div class="mt-4 sm:mt-0 sm:ml-6 w-full sm:w-2/3">
                             <h2 class="text-xl font-semibold mb-2">
-                                {{ $order->course_name }}
+                                {{ $order->course->name }}
                             </h2>
-                            <p><strong>Price:</strong> Rs. {{ $order->course_price }}/-</p>
-                            <p><strong>Duration:</strong>{{ $order->course_duration }}
-                                {{ $order->course_duration_type }}</p>
+                            <p><strong>Price:</strong> Rs. {{ $order->courseOrPackage_price }}/-</p>
+                            <p><strong>Duration:</strong>{{ $order->course->duration }}
+                                {{ $order->course->duration_type }}</p>
                             <div class="flex flex-col sm:flex-row justify-between my-4">
                                 <div class="mb-4 sm:mb-0">
                                     <p class="text-gray-600">
                                         <strong class="mb-4">Course schedule:</strong>
-                                        @foreach ($order->orderSchedule as $schedules)
-                                            <br><strong>Course name:</strong>{{ $schedules->course_name }} <br>
-                                            <strong>Batch:</strong>{{ $schedules->start_date->format('d M Y') }}
-                                            {{ $schedules->time->format('h:i A') }} <br>
-                                            <strong>Training mode:</strong>{{ $schedules->training_mode }}
+                                        @foreach ($order->schedule as $schedule)
+                                            <br><strong>Course name:</strong>{{ $schedule->course->name }} <br>
+                                            <strong>Batch:</strong>{{ $schedule->start_date->format('d M Y') }}
+                                            {{ $schedule->time->format('h:i A') }} <br>
+                                            <strong>Training mode:</strong>{{ $schedule->training_mode }}
                                             <p></p>
                                         @endforeach
                                     </p>
@@ -62,14 +63,11 @@
                         </div>
                         <div class="mb-4 sm:mb-0">
                             <h3 class="font-semibold mb-2">Order Summary</h3>
-                            <p class="text-gray-600"><strong>Payment status</strong>: {{ $order->status }}</p>
-                            <p class="text-gray-600"><strong>Transaction Status</strong>: {{ $order->payment_desc }}
+                            <p class="text-gray-600"><strong>Payment status</strong>: {{ $order->payment->status }}</p>
+                            <p class="text-gray-600"><strong>Payment Status</strong>: {{ $order->payment->description }}
                             </p>
-                            <p class="text-gray-600"><strong>Transaction Id:</strong>
-                                {{ $order->transaction_id }}
-                            </p>
-                            <p class="text-gray-600"><strong>Payu Id:</strong>
-                                {{ $order->payu_id }}
+                            <p class="text-gray-600"><strong>Payment Id:</strong>
+                                {{ $order->payment->payment_id }}
                             </p>
                         </div>
                     </div>
@@ -78,19 +76,19 @@
                     </div>
                     <div class="flex justify-between text-gray-600 mb-2">
                         <span>Subtotal</span>
-                        <span>Rs. {{ $order->course_price }}/-</span>
+                        <span>Rs. {{ $order->courseOrPackage_price }}/-</span>
                     </div>
                     <div class="flex justify-between text-gray-600 mb-2">
-                        <span>C.GST({{ (100 * $order->cgst) / $order->course_price }}%)</span>
+                        <span>C.GST({{ (100 * $order->cgst) / $order->courseOrPackage_price }}%)</span>
                         <span>Rs. {{ $order->cgst }}/-</span>
                     </div>
                     <div class="flex justify-between text-gray-600 mb-2">
-                        <span>S.GST({{ (100 * $order->sgst) / $order->course_price }}%)</span>
+                        <span>S.GST({{ (100 * $order->sgst) / $order->courseOrPackage_price }}%)</span>
                         <span>Rs. {{ $order->sgst }}/-</span>
                     </div>
                     <div class="flex justify-between font-semibold text-gray-900">
                         <span>Order total</span>
-                        <span>Rs. {{ $order->amount }}/-</span>
+                        <span>Rs. {{ $order->payment->amount }}/-</span>
                     </div>
                 </div>
             </div>

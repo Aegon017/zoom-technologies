@@ -84,28 +84,28 @@
         <div class="company-logo">
             <img alt="Logo" class="logo" src="{{ asset('frontend/assets/img/logo.png') }}" />
         </div>
-        <h3 class="mt-3">Your Training Session Details - {{ $order->course_name }}</h3>
+        <h3 class="mt-3">Your Training Session Details - {{ $order->course->name }}</h3>
     </div>
 
     <div class="content">
         <p>Dear <strong>{{ $order->user->name }}</strong>,</p>
         <p>We are pleased to inform you that your order with order number:
-            <strong>{{ $order->order_number }}</strong>, placed on <strong>{{ $order->payment_time }}</strong>, has
+            <strong>{{ $order->order_number }}</strong>, placed on <strong>{{ $order->payment->date->format('d M Y') }} {{ $order->payment->time->format('h:i A') }}</strong>, has
             been successfully processed.
         </p>
         <p>This email contains the details of your upcoming training sessions. Please find the
-            <strong>{{ $order->course_name }}</strong> course session information below:
+            <strong>{{ $order->course->name }}</strong> course session information below:
         </p>
-        @foreach ($order->orderSchedule as $schedules)
-            <h3>{{ $schedules->course_name }}:</h3>
-            <p>Batch: {{ $schedules->start_date->format('d M Y') }} {{ $schedules->time->format('h:i A') }}</p>
-            <p>Training Mode: {{ $schedules->training_mode }}</p>
-            @if ($schedules->training_mode == 'Online')
-                @if ($schedules->zoom_meeting_url && $schedules->meeting_id && $schedules->meeting_password)
-                    <p>Zoom Meeting Link: <a href="{{ $schedules->zoom_meeting_url }}">Click here to join
+        @foreach ($order->schedule as $schedule)
+            <h3>{{ $schedule->course->name }}:</h3>
+            <p>Batch: {{ $schedule->start_date->format('d M Y') }} {{ $schedule->time->format('h:i A') }}</p>
+            <p>Training Mode: {{ $schedule->training_mode }}</p>
+            @if ($schedule->training_mode == 'Online')
+                @if ($schedule->zoom_meeting_url && $schedule->meeting_id && $schedule->meeting_password)
+                    <p>Zoom Meeting Link: <a href="{{ $schedule->zoom_meeting_url }}">Click here to join
                             the meeting</a></p>
-                    <p>Meeting ID: {{ $schedules->meeting_id }}</p>
-                    <p>Meeting Password: {{ $schedules->meeting_password }}</a></p>
+                    <p>Meeting ID: {{ $schedule->meeting_id }}</p>
+                    <p>Meeting Password: {{ $schedule->meeting_password }}</a></p>
                 @else
                     <p><strong>Zoom details are missing. Please contact our customer support.</strong></p>
                 @endif

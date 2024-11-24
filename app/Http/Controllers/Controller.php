@@ -150,7 +150,7 @@ abstract class Controller
 //             'course_thumbnail_alt' => $item->thumbnail_alt,
 //             'course_duration' => $item->duration,
 //             'course_duration_type' => $item->duration_type,
-//             'course_price' => $coursePrice,
+//             'courseOrPackage_price' => $coursePrice,
 //             'sgst' => $sgst,
 //             'cgst' => $cgst,
 //         ]);

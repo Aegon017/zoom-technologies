@@ -29,13 +29,16 @@ class SendMeetingCredentialsUpdatedEmail
         $user = 'kondanagamalleswararao016@gmail.com';
         $scheduleId = $event->schedule->id;
         $orderSchedules = OrderSchedule::where('schedule_id', $scheduleId)->get();
+        $users = [];
         foreach ($orderSchedules as $orderSchedule) {
-            if ($orderSchedule->order->status == 'success') {
+            if ($orderSchedule->order->payment->status == 'success') {
                 $users[$orderSchedule->order->user->name] = $orderSchedule->order->user->email;
             }
         }
-        foreach ($users as $user) {
-            Mail::to($user)->send(new UpdatedMeetingMail($subject, $event->schedule));
+        if ($users) {
+            foreach ($users as $user) {
+                Mail::to($user)->send(new UpdatedMeetingMail($subject, $event->schedule));
+            }
         }
     }
 }

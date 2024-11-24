@@ -26,21 +26,21 @@
             @foreach ($orders as $order)
                 <tr class="bg-white border-b border-gray-700 hover:bg-gray-50">
                     <td class="p-4">
-                        <img src="{{ asset(Storage::url($order->course_thumbnail)) }}"
-                            alt="{{ $order->course_thumbnail_alt }}"
+                        <img src="{{ asset(Storage::url($order->course->thumbnail)) }}"
+                            alt="{{ $order->course->thumbnail_alt }}"
                             class="w-16 md:w-44 max-w-full max-h-full rounded-lg">
                     </td>
                     <td class="py-4 font-semibold text-gray-900">
-                        {{ $order->course_name }}
+                        {{ $order->course->name }}
                     </td>
                     <td class="px-6 py-4">
-                        Rs. {{ $order->course_price }}/-
+                        Rs. {{ $order->courseOrPackage_price }}/-
                     </td>
                     <td class="px-6 py-4 font-semibold">
                         {!! \Carbon\Carbon::parse($order->payment_time)->format('F j, Y, g:i A') !!}
                     </td>
                     <td class="px-6 py-4">
-                        {{ $order->status }}
+                        {{ $order->payment->status }}
                     </td>
                     <td class="px-6 py-4">
                         <a class="font-bold hover:text-orange-500 px-2 py-2 rounded"

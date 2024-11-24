@@ -15,13 +15,15 @@ use App\Services\StripePayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Srmklive\PayPal\Services\PayPal;
 use Stripe\Checkout\Session as CheckoutSession;
 use Stripe\Stripe;
 
 class PaymentController extends Controller
 {
-    public function initiate(Request $request, PayUPayment $payUPayment, PayPalPayment $payPalPayment, StripePayment $stripePayment, CreateOrder $createOrder, AttachScheduleToOrder $attachScheduleToOrder)
+    public function initiate(Request $request, PayUPayment $payUPayment, CreateOrder $createOrder, AttachScheduleToOrder $attachScheduleToOrder)
     {
+
         $user = Auth::user();
         $usd_rate = Usd::first()->value ?? 0;
         $txnId = uniqid();
@@ -37,10 +39,64 @@ class PaymentController extends Controller
                 $payUPayment->execute($user, $txnId, $payablePrice, $productInfo);
                 break;
             case 'paypal':
-                $payPalPayment->execute($user, $txnId, $usd, $productInfo);
+                $provider = new PayPal();
+                $provider->setApiCredentials(config('paypal'));
+                $paypalToken = $provider->getAccessToken();
+
+                $response = $provider->createOrder([
+                    "intent" => "CAPTURE",
+                    "application_context" => [
+                        "return_url" => route('payment.success'),
+                        "cancel_url" => route('payment.failure'),
+                    ],
+                    "purchase_units" => [
+                        0 => [
+                            "amount" => [
+                                "currency_code" => "USD",
+                                "value" => "100.00"
+                            ]
+                        ]
+                    ]
+                ]);
+
+                if (isset($response['id']) && $response['id'] != null) {
+
+                    foreach ($response['links'] as $links) {
+                        if ($links['rel'] == 'approve') {
+                            return redirect()->away($links['href']);
+                        }
+                    }
+
+                    return redirect()
+                        ->route('cancel.payment')
+                        ->with('error', 'Something went wrong.');
+                } else {
+                    return redirect()
+                        ->route('create.payment')
+                        ->with('error', $response['message'] ?? 'Something went wrong.');
+                }
                 break;
             case 'stripe':
-                $stripePayment->execute($user, $txnId, $usd, $productInfo);
+                Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+                $checkoutSession = CheckoutSession::create([
+                    'payment_method_types' => ['card'],
+                    'line_items' => [
+                        [
+                            'price_data' => [
+                                'currency' => 'usd',
+                                'product_data' => [
+                                    'name' => $request->name,
+                                ],
+                                'unit_amount' => $usd,
+                            ],
+                            'quantity' => 1,
+                        ],
+                    ],
+                    'mode' => 'payment',
+                    'success_url' => route('payment.success'),
+                    'cancel_url' => route('payment.failure'),
+                ]);
+                return redirect($checkoutSession->url);
                 break;
             default:
                 echo 'Please choose a valid payment method';
@@ -50,6 +106,9 @@ class PaymentController extends Controller
 
     public function success(Request $request, PaymentResponse $paymentResponse)
     {
+        Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+        $sessionId = $request->get('session_id');
+
         $order_id = Session::get('order_id');
         $order = Order::find($order_id);
         $paymentResponse->execute($request, $order);

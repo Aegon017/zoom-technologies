@@ -43,7 +43,7 @@ class OrderMail extends Mailable
     public function attachments(): array
     {
         $order = $this->order;
-        if ($order->status == 'success') {
+        if ($order->payment->status == 'success') {
 
             return [
                 Attachment::fromPath(asset($order->invoice))

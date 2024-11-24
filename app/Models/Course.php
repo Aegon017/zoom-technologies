@@ -71,4 +71,14 @@ class Course extends Model
     {
         return $this->hasMany(Faq::class);
     }
+
+    public function order(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function manualOrder(): HasMany
+    {
+        return $this->hasMany(ManualOrder::class);
+    }
 }

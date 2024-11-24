@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained()->cascadeOnDelete();
             $table->string('payment_id');
             $table->string('method');
-            $table->string('mode');
+            $table->string('mode')->nullable();
             $table->string('description');
             $table->date('date');
             $table->time('time');

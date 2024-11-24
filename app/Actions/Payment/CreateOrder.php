@@ -39,8 +39,8 @@ class CreateOrder
             'package_id' => $item->courses ? $item->id : null,
             'order_number' => 'zt_' . $userId . now()->format('YmdHis'),
             'courseOrPackage_price' => $prices['actualPrice'],
-            'sgst' => $prices['sgstPercentage'],
-            'cgst' => $prices['cgstPercentage'],
+            'sgst' => $prices['sgst'],
+            'cgst' => $prices['cgst'],
         ]);
     }
 }

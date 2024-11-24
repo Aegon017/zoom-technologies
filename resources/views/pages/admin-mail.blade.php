@@ -124,51 +124,49 @@
         <div class="company-logo">
             <img alt="Logo" class="logo" src="{{ asset('frontend/assets/img/logo.png') }}" />
         </div>
-        <h3 class="mt-3">New Enrollment Notification for {{ $order->course_name }}</h3>
+        <h3 class="mt-3">New Enrollment Notification for {{ $order->course->name }}</h3>
     </div>
 
     <div class="content">
         <p>Dear Admin,</p>
-        <p>We are pleased to inform you that a new student has enrolled in your {{ $order->course_name }} course:</p>
-        @foreach ($order->orderSchedule as $schedules)
+        <p>We are pleased to inform you that a new student has enrolled in your {{ $order->course->name }} course:</p>
+        @foreach ($order->schedule as $schedule)
             <br>
-            <p><strong>Course Name : </strong>{{ $schedules->course_name }}</p>
-            <p><strong>Batch : </strong>{{ $schedules->start_date->format('d M Y') }}
-                {{ $schedules->time->format('h:i A') }}
+            <p><strong>Course Name : </strong>{{ $schedule->course->name }}</p>
+            <p><strong>Batch : </strong>{{ $schedule->start_date->format('d M Y') }}
+                {{ $schedule->time->format('h:i A') }}
             </p>
-            <p><strong>Training mode : </strong>{{ $schedules->training_mode }}</p>
+            <p><strong>Training mode : </strong>{{ $schedule->training_mode }}</p>
             <hr>
         @endforeach
         <p><strong>Enrolled Student:</strong> {{ $order->user->name }}</p>
         <p><strong>Student email:</strong> {{ $order->user->email }}</p>
         <p><strong>Student phone:</strong> {{ $order->user->phone }}</p>
         <p><strong>Order ID:</strong> {{ $order->order_number }}</p>
-        <p><strong>Payu ID:</strong> {{ $order->payu_id }}</p>
-        <p><strong>Transaction ID:</strong> {{ $order->transaction_id }}</p>
-        <p><strong>Enrollment Date:</strong> {{ $order->payment_time }}</p>
+        <p><strong>Enrollment Date:</strong> {{ today()->format('d M Y') }}</p>
         <p><strong>Payment Details:</strong></p>
         <table>
             <tbody>
                 <tr>
                     <td>Price:</td>
-                    <td>Rs. {{ $order->course_price }}/-</td>
+                    <td>Rs. {{ $order->courseOrPackage_price }}/-</td>
                 </tr>
                 <tr>
                     <td>Payment Method:</td>
                     <td>
-                        {{ $order->payment_mode ?? 'none' }}
+                        {{ $order->payment->mode ?? 'none' }}
                     </td>
                 </tr>
                 <tr>
                     <td>Taxes (18%):</td>
                     <td>
-                        C.GST({{ (100 * $order->cgst) / $order->course_price }}%): Rs. {{ $order->cgst }}/-<br>
-                        S.GST({{ (100 * $order->sgst) / $order->course_price }}%): Rs. {{ $order->sgst }}/-
+                        C.GST({{ (100 * $order->cgst) / $order->courseOrPackage_price }}%): Rs. {{ $order->cgst }}/-<br>
+                        S.GST({{ (100 * $order->sgst) / $order->courseOrPackage_price }}%): Rs. {{ $order->sgst }}/-
                     </td>
                 </tr>
                 <tr>
                     <td>Total Amount:</td>
-                    <td>Rs. {{ $order->amount }}/-</td>
+                    <td>Rs. {{ $order->payment->amount }}/-</td>
                 </tr>
             </tbody>
         </table>

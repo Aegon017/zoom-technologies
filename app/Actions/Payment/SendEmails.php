@@ -13,10 +13,10 @@ class SendEmails
     public function execute(Order $order)
     {
         $to = $order->user->email;
-        $orderMailSubject = "Payment {$order->status} on your order with Zoom Technologies";
+        $orderMailSubject = "Payment {$order->payment->status} on your order with Zoom Technologies";
         Mail::to($to)->send(new OrderMail($orderMailSubject, $order));
 
-        if ($order->status === 'success') {
+        if ($order->payment->status === 'success') {
             $adminEmail = 'kondanagamalleswararao016@gmail.com';
             $adminMailSubject = "New Enrollment";
             Mail::to($adminEmail)->send(new AdminMail($adminMailSubject, $order));

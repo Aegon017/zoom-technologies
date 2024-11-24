@@ -19,6 +19,11 @@ class Payment extends Model
         'amount',
     ];
 
+    protected $casts = [
+        'time' => 'datetime',
+        'date' => 'datetime'
+    ];
+
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);

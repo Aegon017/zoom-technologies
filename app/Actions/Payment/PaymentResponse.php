@@ -3,6 +3,7 @@
 namespace App\Actions\Payment;
 
 use App\Models\Order;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 
 class PaymentResponse
@@ -12,9 +13,35 @@ class PaymentResponse
         $generateInvoice = new GenerateInvoice();
         $sendEmails = new SendEmails();
         $updateOrderPayment = new UpdateOrderPayment();
-        $updateOrderPayment->execute($request, $order);
+        switch ('payu') {
+            case 'payu':
+                $paymentId = $request->mihpayid;
+                $method = 'payu';
+                $mode = $request->mode;
+                $description = $request->field9;
+                $date = $request->addedon;
+                $time = $request->addedon;
+                $status = $request->status;
+                $amount = $request->amount;
+                break;
+            case 'paypal':
+                break;
+            case 'stripe':
+                break;
+        }
+        $data = [
+            'paymentId' => $paymentId,
+            'method' => $method,
+            'mode' => $mode,
+            'description' => $description,
+            'date' => $date,
+            'time' => $time,
+            'status' => $status,
+            'amount' => $amount,
+        ];
+        $updateOrderPayment->execute($order->id, $data);
         if ($request->status == 'success') {
-            $order->invoice = $generateInvoice->execute($order->id);
+            $order->invoice = $generateInvoice->execute($order);
             $order->save();
         }
         $sendEmails->execute($order);

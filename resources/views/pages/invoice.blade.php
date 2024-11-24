@@ -84,7 +84,8 @@
                                 <img src="data:image/png;base64,{{ base64_encode(file_get_contents(asset('frontend/assets/img/logo.png'))) }}"
                                     style="width: 100%; max-width: 150px;" alt="Logo" />
                             </td>
-                            <td>{{ $order->order_number }}<br />{{ $order->payment_time->format('d M, Y, h:i') }}
+                            <td>{{ $order->order_number }}<br />{{ $order->payment->date->format('d M Y') }}
+                                {{ $order->payment->time->format('h:i A') }}
                             </td>
                         </tr>
                     </table>
@@ -115,7 +116,8 @@
                     <table>
                         <tr>
                             <td>
-                                <h3 style="margin-block:0.5rem">{{ $order->payment_time->format('d M, Y, h:i') }}</h3>
+                                <h3 style="margin-block:0.5rem">{{ $order->payment->date->format('d M Y') }}
+                                    {{ $order->payment->time->format('h:i A') }}</h3>
                                 <div>{{ $order->user->name }} <br />{{ $order->user->email }}
                                     <br />{{ $order->user->phone }}
                                 </div>
@@ -131,19 +133,19 @@
                         <tr>
                             <td>
                                 <div style="text-align: center">
-                                    <strong>Course name:</strong> {{ $order->course_name }} <br>
-                                    <strong>Course duration:</strong> {{ $order->course_duration }}
-                                    {{ $order->course_duration_type }} <br>
+                                    <strong>Course name:</strong> {{ $order->course->name }} <br>
+                                    <strong>Course duration:</strong> {{ $order->course->duration }}
+                                    {{ $order->course->duration_type }} <br>
                                 </div>
                                 <div style="margin-top:1.5rem">
                                     <h3 style="margin-block: 0.5rem">Course Schedule:</h3>
-                                    @foreach ($order->orderSchedule as $schedules)
-                                        <strong>Course name:</strong> {{ $schedules->course_name }} <br>
-                                        <strong>Course duration:</strong>
-                                        {{ $schedules->duration }}{{ $schedules->duration_type }} <br>
-                                        <strong>Batch:</strong>{{ $schedules->start_date->format('d M Y') }}
-                                        {{ $schedules->time->format('h:i A') }} <br>
-                                        <strong>Training mode:</strong>{{ $schedules->training_mode }}
+                                    @foreach ($order->schedule as $schedule)
+                                        <strong>Course name : </strong>{{ $schedule->course->name }}<br>
+                                        <strong>Course duration : </strong>
+                                        {{ $schedule->duration }}{{ $schedule->duration_type }} <br>
+                                        <strong>Batch : </strong>{{ $schedule->start_date->format('d M Y') }}
+                                        {{ $schedule->time->format('h:i A') }}<br>
+                                        <strong>Training mode:</strong>{{ $schedule->training_mode }}
                                         <p></p>
                                     @endforeach
                                 </div>
@@ -165,13 +167,13 @@
                                 <span><b>Price :</b> &nbsp;&nbsp;</span>
                             </td>
                             <td style="text-align: end">
-                                <div>Rs. {{ $order->course_price }}/-</div>
+                                <div>Rs. {{ $order->courseOrPackage_price }}/-</div>
                             </td>
                         </tr>
                         <tr>
                             <td style="width:60%;"></td>
                             <td style="text-align: end">
-                                <span><b>S.GST({{ (100 * $order->sgst) / $order->course_price }}%) :</b>
+                                <span><b>S.GST({{ (100 * $order->sgst) / $order->courseOrPackage_price }}%) :</b>
                                     &nbsp;&nbsp;</span>
                             </td>
                             <td style="text-align: end">
@@ -182,7 +184,7 @@
                         <tr>
                             <td style="width:60%;"></td>
                             <td style="text-align: end">
-                                <span><b>C.GST({{ (100 * $order->cgst) / $order->course_price }}%) :</b>
+                                <span><b>C.GST({{ (100 * $order->cgst) / $order->courseOrPackage_price }}%) :</b>
                                     &nbsp;&nbsp;</span>
                             </td>
                             <td style="text-align: end">
@@ -195,7 +197,7 @@
                                 <span><b>Total :</b></span>
                             </td>
                             <td style="text-align: end">
-                                <div>Rs. {{ $order->amount }}/-</div>
+                                <div>Rs. {{ $order->payment->amount }}/-</div>
                             </td>
                         </tr>
                     </table>

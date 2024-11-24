@@ -81,14 +81,15 @@
         <div class="company-logo">
             <img alt="Logo" class="logo" src="{{ asset('frontend/assets/img/logo.png') }}" />
         </div>
-        <h3 class="mt-3">Order payment {{ $order->status }} notification</h3>
+        <h3 class="mt-3">Order payment {{ $order->payment->status }} notification</h3>
     </div>
 
-    @if ($order->status == 'success')
+    @if ($order->payment->status == 'success')
         <div class="content">
             <p>Dear <strong>{{ $order->user->name }}</strong>,</p>
-            <p>We are pleased to inform you that your order <a href="#">with transaction Id:
-                    {{ $order->transaction_id }}</a> placed on {{ $order->payment_time }} has been successfully
+            <p>We are pleased to inform you that your order <a href="#">with order number:
+                    {{ $order->order_number }}</a> placed on {{ $order->payment->date->format('d M Y') }}
+                {{ $order->payment->time->format('h:i A') }} has been successfully
                 processed.</p>
             <p>Here are the details of your order:</p>
 
@@ -101,8 +102,8 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{ $order->course_name }}</td>
-                        <td>Rs. {{ $order->course_price }}/-</td>
+                        <td>{{ $order->course->name }}</td>
+                        <td>Rs. {{ $order->course->actual_price }}/-</td>
                     </tr>
                 </tbody>
             </table>
@@ -116,12 +117,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($order->orderSchedule as $schedules)
+                    @foreach ($order->schedule as $schedule)
                         <tr>
-                            <td>{{ $schedules->course_name }}</td>
-                            <td>{{ $schedules->start_date->format('d M Y') }} {{ $schedules->time->format('h:i A') }}
+                            <td>{{ $schedule->course->name }}</td>
+                            <td>{{ $schedule->start_date->format('d M Y') }} {{ $schedule->time->format('h:i A') }}
                             </td>
-                            <td>{{ $schedules->training_mode }}</td>
+                            <td>{{ $schedule->training_mode }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -131,22 +132,24 @@
                 <tbody>
                     <tr>
                         <td>Subtotal:</td>
-                        <td>Rs. {{ $order->course_price }}/-</td>
+                        <td>Rs. {{ $order->course->actual_price }}/-</td>
                     </tr>
                     <tr>
-                        <td>Payment Method:</td>
-                        <td>{{ $order->payment_mode ?? 'None' }}</td>
+                        <td>Payment mode:</td>
+                        <td>{{ $order->payment->mode ?? 'None' }}</td>
                     </tr>
                     <tr>
                         <td>Taxes (18%):</td>
                         <td>
-                            C.GST({{ (100 * $order->cgst) / $order->course_price }}%): Rs. {{ $order->cgst }}/-<br>
-                            S.GST({{ (100 * $order->sgst) / $order->course_price }}%): Rs. {{ $order->sgst }}/-
+                            C.GST({{ 100 / ($order->course->actual_price / $order->cgst) }}%): Rs.
+                            {{ $order->cgst }}/-<br>
+                            S.GST({{ 100 / ($order->course->actual_price / $order->sgst) }}%): Rs.
+                            {{ $order->sgst }}/-
                         </td>
                     </tr>
                     <tr>
                         <td>Total:</td>
-                        <td>Rs. {{ $order->amount }}/-</td>
+                        <td>Rs. {{ $order->payment->amount }}/-</td>
                     </tr>
                 </tbody>
             </table>
@@ -157,9 +160,11 @@
     @else
         <div class="content">
             <p>Dear <strong>{{ $order->user->name }}</strong>,</p>
-            <p>We regret to inform you that your order <a href="#">with transaction Id:
-                    {{ $order->transaction_id }}</a> placed on {{ $order->payment_time }} has not been processed due
-                to a payment {{ $order->status }}. This occurred because of {{ $order->payment_desc }}.</p>
+            <p>We regret to inform you that your order <a href="#">with order number:
+                    {{ $order->order_number }}</a> placed on {{ $order->payment->date->format('d M Y') }}
+                {{ $order->payment->time->format('h:i A') }} has not been processed due
+                to a payment {{ $order->payment->status }}. This occurred because of
+                {{ $order->payment->description }}.</p>
             <p>Here are the details of your order:</p>
 
             <table class="table">
@@ -171,8 +176,8 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{ $order->course_name }}</td>
-                        <td>Rs. {{ $order->course_price }}/-</td>
+                        <td>{{ $order->course->name }}</td>
+                        <td>Rs. {{ $order->course->actual_price }}/-</td>
                     </tr>
                 </tbody>
             </table>
@@ -186,12 +191,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($order->orderSchedule as $schedules)
+                    @foreach ($order->schedule as $schedule)
                         <tr>
-                            <td>{{ $schedules->course_name }}</td>
-                            <td>{{ $schedules->start_date->format('d M Y') }} {{ $schedules->time->format('h:i A') }}
+                            <td>{{ $schedule->course->name }}</td>
+                            <td>{{ $schedule->start_date->format('d M Y') }} {{ $schedule->time->format('h:i A') }}
                             </td>
-                            <td>{{ $schedules->training_mode }}</td>
+                            <td>{{ $schedule->training_mode }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -201,22 +206,24 @@
                 <tbody>
                     <tr>
                         <td>Subtotal:</td>
-                        <td>Rs. {{ $order->course_price }}/-</td>
+                        <td>Rs. {{ $order->course->actual_price }}/-</td>
                     </tr>
                     <tr>
-                        <td>Payment Method:</td>
-                        <td>{{ $order->payment_mode ?? 'None' }}</td>
+                        <td>Payment mode:</td>
+                        <td>{{ $order->payment->mode ?? 'None' }}</td>
                     </tr>
                     <tr>
                         <td>Taxes (18%):</td>
                         <td>
-                            C.GST({{ (100 * $order->cgst) / $order->course_price }}%): Rs. {{ $order->cgst }}/-<br>
-                            S.GST({{ (100 * $order->sgst) / $order->course_price }}%): Rs. {{ $order->sgst }}/-
+                            C.GST({{ 100 / ($order->course->actual_price / $order->cgst) }}%): Rs.
+                            {{ $order->cgst }}/-<br>
+                            S.GST({{ 100 / ($order->course->actual_price / $order->sgst) }}%): Rs.
+                            {{ $order->sgst }}/-
                         </td>
                     </tr>
                     <tr>
                         <td>Total:</td>
-                        <td>Rs. {{ $order->amount }}/-</td>
+                        <td>Rs. {{ $order->payment->amount }}/-</td>
                     </tr>
                 </tbody>
             </table>

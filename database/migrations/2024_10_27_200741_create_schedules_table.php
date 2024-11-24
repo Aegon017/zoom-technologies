@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('zoom_meeting_url')->nullable();
             $table->string('meeting_id')->nullable();
             $table->string('meeting_password')->nullable();
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

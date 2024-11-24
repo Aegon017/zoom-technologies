@@ -101,7 +101,7 @@ class PaypalController extends Controller
                 'user_id' => auth()->id(),
                 'course_name' => $transaction->getDescription(),
                 'course_schedule' => $course_schedule,
-                'course_price' => $transaction->getAmount()->getTotal(),
+                'courseOrPackage_price' => $transaction->getAmount()->getTotal(),
                 'status' => $status, // Save the actual status here
                 'payment_mode' => 'paypal',
                 'txn_id' => $txnId,
@@ -119,7 +119,7 @@ class PaypalController extends Controller
         // Retrieve course schedule, name, and price if previously stored
         $course_schedule = Session::get('course_schedule', 'N/A');
         $course_name = $request->input('course_name', 'Unknown Course');
-        $course_price = $request->input('amount', 0); // Retrieve the actual course price
+        $courseOrPackage_price = $request->input('amount', 0); // Retrieve the actual course price
         $txnId = $request->input('paymentId', 'N/A'); // Transaction ID if available
 
         // Create a failed order entry with the actual price
@@ -127,7 +127,7 @@ class PaypalController extends Controller
             'user_id' => auth()->id(),
             'course_name' => $course_name,
             'course_schedule' => $course_schedule,
-            'course_price' => $course_price, // Use actual price even if the transaction failed
+            'courseOrPackage_price' => $courseOrPackage_price, // Use actual price even if the transaction failed
             'status' => 'failed',
             'payment_mode' => 'paypal',
             'txn_id' => $txnId,

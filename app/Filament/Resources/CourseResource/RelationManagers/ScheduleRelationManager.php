@@ -11,6 +11,7 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -81,7 +82,12 @@ class ScheduleRelationManager extends RelationManager
                 TextColumn::make('training_mode')
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->options([
+                        true => 'Active',
+                        false => 'Expired',
+                    ])
+                    ->default(true)
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
