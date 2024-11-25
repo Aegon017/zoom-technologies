@@ -4,14 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Exports\OrderExporter;
 use App\Filament\Resources\OrderResource\Pages;
-use App\Models\Course;
 use App\Models\Order;
-use App\Models\OrderSchedule;
-use App\Models\Package;
-use App\Models\Schedule;
-use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Fieldset;
 use Filament\Infolists\Components\TextEntry;
@@ -19,7 +13,6 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\Action as ActionsAction;
 use Filament\Tables\Actions\BulkAction;
-use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
@@ -27,11 +20,9 @@ use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Log;
 use ZipArchive;
 
-class OrderResource extends Resource implements HasShieldPermissions
+class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
 
