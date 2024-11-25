@@ -26,6 +26,10 @@ class User extends Authenticatable implements MustVerifyEmail, FilamentUser
     use HasRoles;
     use HasPanelShield;
 
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return str_ends_with($this->email, '@zoomgroup.com') && $this->hasVerifiedEmail();
+    }
     /**
      * The attributes that are mass assignable.
      *
