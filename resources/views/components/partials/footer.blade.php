@@ -1,4 +1,4 @@
-@if ($footer)
+@if (isset($footer) && $footer)
     <footer id="zt-footer" class="zt-footer-section-2 footer-style-2">
         <div class="container">
             <div class="zt-footer-content-wrap">
