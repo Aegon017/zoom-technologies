@@ -14,13 +14,17 @@ class AttendingCertificateMail extends Mailable
     use Queueable, SerializesModels;
     public $subject;
     public $pdfFileName;
+    public $userName;
+    public $courseName;
     /**
      * Create a new message instance.
      */
-    public function __construct($pdfFileName, $subject)
+    public function __construct($pdfFileName, $subject, $userName, $courseName)
     {
         $this->subject = $subject;
         $this->pdfFileName = $pdfFileName;
+        $this->userName = $userName;
+        $this->courseName = $courseName;
     }
 
     /**

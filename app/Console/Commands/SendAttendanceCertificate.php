@@ -78,7 +78,7 @@ class SendAttendanceCertificate extends Command
                 $pdfPath = public_path($pdfFileName);
                 $pdf->save($pdfPath);
                 $subject = 'Certificate of Attendance';
-                Mail::to($data['userEmail'])->send(new AttendingCertificateMail($pdfFileName, $subject));
+                Mail::to($data['userEmail'])->send(new AttendingCertificateMail($pdfFileName, $subject, $userName, $courseName));
             }
         }
     }
