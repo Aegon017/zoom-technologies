@@ -13,9 +13,9 @@
                     </a>
                     <div class="dropdown-menu login-dropdown" aria-labelledby="navbarDropdown">
                         @auth
-                            <a class="dropdown-item" href="#" style="padding-left: 19px"><i
+                            <a class="dropdown-item" href="{{route('render.myOrders')}}" style="padding-left: 19px"><i
                                     class="fas fa-shopping-cart"></i> My Orders</a>
-                            <a class="dropdown-item" href="#"><i class="fas fa-bookmark"></i> My Courses</a>
+                            <a class="dropdown-item" href="{{route('render.myOrders')}}"><i class="fas fa-bookmark"></i> My Courses</a>
                             <a class="dropdown-item" href="#"><i class="fas fa-book"></i> Study Material</a>
                             <x-student-courses />
                             <a class="dropdown-item" href="{{ route('profile.show') }}"><i class="fas fa-id-badge"></i>
