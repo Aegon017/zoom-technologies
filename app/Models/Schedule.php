@@ -49,11 +49,6 @@ class Schedule extends Model
         return $this->hasOne(OrderSchedule::class);
     }
 
-    public static function deletePastSchedules()
-    {
-        self::whereDate('start_date', '<', today())->delete();
-    }
-
     protected static function booted()
     {
         static::updated(function ($schedule) {
