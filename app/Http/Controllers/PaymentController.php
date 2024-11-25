@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Session;
 use Srmklive\PayPal\Services\PayPal;
 use Stripe\Checkout\Session as CheckoutSession;
 use Stripe\Stripe;
+use Stripe\StripeClient;
 
 class PaymentController extends Controller
 {
@@ -53,7 +54,7 @@ class PaymentController extends Controller
                         0 => [
                             "amount" => [
                                 "currency_code" => "USD",
-                                "value" => "100.00"
+                                "value" => $usd
                             ]
                         ]
                     ]
@@ -78,25 +79,25 @@ class PaymentController extends Controller
                 break;
             case 'stripe':
                 Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
-                $checkoutSession = CheckoutSession::create([
+                $session = CheckoutSession::create([
                     'payment_method_types' => ['card'],
                     'line_items' => [
                         [
                             'price_data' => [
                                 'currency' => 'usd',
                                 'product_data' => [
-                                    'name' => $request->name,
+                                    'name' => $productInfo,
                                 ],
                                 'unit_amount' => $usd,
                             ],
                             'quantity' => 1,
-                        ],
+                        ]
                     ],
                     'mode' => 'payment',
-                    'success_url' => route('payment.success'),
+                    'success_url' => route('payment.success') . '?session_id={CHECKOUT_SESSION_ID}',
                     'cancel_url' => route('payment.failure'),
                 ]);
-                return redirect($checkoutSession->url);
+                return redirect($session->url);
                 break;
             default:
                 echo 'Please choose a valid payment method';
@@ -108,6 +109,14 @@ class PaymentController extends Controller
     {
         Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
         $sessionId = $request->get('session_id');
+        try {
+            $session = CheckoutSession::retrieve($sessionId);
+            if ($session->payment_status === 'paid') {
+                dd($session);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
 
         $order_id = Session::get('order_id');
         $order = Order::find($order_id);
@@ -117,6 +126,16 @@ class PaymentController extends Controller
 
     public function failure(Request $request, PaymentResponse $paymentResponse)
     {
+        Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+        $sessionId = $request->get('session_id');
+        try {
+            $session = CheckoutSession::retrieve($sessionId);
+            if ($session->payment_status === 'paid') {
+                dd($session);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
         $order_id = Session::get('order_id');
         $order = Order::find($order_id);
         $paymentResponse->execute($request, $order);

@@ -36,8 +36,7 @@ class OrderResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-            ]);
+            ->schema([]);
     }
 
     public static function infolist(Infolist $infolist): Infolist
@@ -107,29 +106,29 @@ class OrderResource extends Resource
                     ->relationship('course', 'name')
                     ->searchable()
                     ->preload(),
-                SelectFilter::make('schedule.training_mode')
+                SelectFilter::make('schedule.training_mode')->label('Training mode')
                     ->relationship('schedule', 'training_mode')
                     ->searchable()
                     ->preload(),
-                Filter::make('order_date_range')
-                    ->label('Order Date Range')
-                    ->form([
-                        DatePicker::make('start_date')->label('Start Date'),
-                        DatePicker::make('end_date')->label('End Date'),
-                    ])
-                    ->query(function ($query, $data) {
-                        if (!empty($data['start_date']) && !empty($data['end_date'])) {
-                            $query->whereHas('payment', function ($query) use ($data) {
-                                $query->whereBetween('payments.date', [$data['start_date'], $data['end_date']]);
-                            });
-                        }
-                    }),
+                // Filter::make('order_date_range')
+                //     ->label('Order Date Range')
+                //     ->form([
+                //         DatePicker::make('start_date')->label('Start Date'),
+                //         DatePicker::make('end_date')->label('End Date'),
+                //     ])
+                //     ->query(function ($query, $data) {
+                //         if (!empty($data['start_date']) && !empty($data['end_date'])) {
+                //             $query->whereHas('payment', function ($query) use ($data) {
+                //                 $query->whereBetween('payments.date', [$data['start_date'], $data['end_date']]);
+                //             });
+                //         }
+                //     }),
 
-                SelectFilter::make('schedule.start_date')
+                SelectFilter::make('schedule.start_date')->label('Batch date')
                     ->relationship('schedule', 'start_date')
                     ->searchable()
                     ->preload(),
-                SelectFilter::make('schedule.time')
+                SelectFilter::make('schedule.time')->label('Batch time')
                     ->relationship('schedule', 'time')
                     ->searchable()
                     ->preload(),
