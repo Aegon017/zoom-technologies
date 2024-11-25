@@ -28,6 +28,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/my-orders', [FrontendController::class, 'render_account'])->name('render.myOrders');
+    Route::get('/my-courses', [FrontendController::class, 'renderCourses'])->name('render.userCourses');
     Route::get('/my-courses/{slug}', [FrontendController::class, 'renderMyCourse'])->name('render.myCourse');
     Route::get('/order-details/{id}', [FrontendController::class, 'order_details'])->name('order-details');
     Route::post('/payment/initiate', [PaymentController::class, 'initiate'])->name('payment.initiate');

@@ -168,4 +168,8 @@ class FrontendController extends Controller
         $courseName = $course->name;
         return view('pages.my-course', compact('studyMaterials', 'courseName'));
     }
+
+    public function renderCourses(){
+        return view('pages.user-study-materail');
+    }
 }
