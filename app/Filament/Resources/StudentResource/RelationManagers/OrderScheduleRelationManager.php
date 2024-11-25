@@ -30,6 +30,7 @@ class OrderScheduleRelationManager extends RelationManager
                         })
                     )
                     ->searchable()
+                    ->columnSpanFull()
             ]);
     }
 
