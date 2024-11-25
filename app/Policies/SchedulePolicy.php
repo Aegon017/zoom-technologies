@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Order;
+use App\Models\Schedule;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class OrderPolicy
+class SchedulePolicy
 {
     use HandlesAuthorization;
 
@@ -15,15 +15,15 @@ class OrderPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_student');
+        return $user->can('view_any_batch');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Order $order): bool
+    public function view(User $user, Schedule $schedule): bool
     {
-        return $user->can('view_student');
+        return $user->can('view_batch');
     }
 
     /**
@@ -31,23 +31,23 @@ class OrderPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_student');
+        return $user->can('create_batch');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Order $order): bool
+    public function update(User $user, Schedule $schedule): bool
     {
-        return $user->can('update_student');
+        return $user->can('update_batch');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Order $order): bool
+    public function delete(User $user, Schedule $schedule): bool
     {
-        return $user->can('delete_student');
+        return $user->can('delete_batch');
     }
 
     /**
@@ -55,15 +55,15 @@ class OrderPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_student');
+        return $user->can('delete_any_batch');
     }
 
     /**
      * Determine whether the user can permanently delete.
      */
-    public function forceDelete(User $user, Order $order): bool
+    public function forceDelete(User $user, Schedule $schedule): bool
     {
-        return $user->can('force_delete_student');
+        return $user->can('force_delete_batch');
     }
 
     /**
@@ -71,15 +71,15 @@ class OrderPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_student');
+        return $user->can('force_delete_any_batch');
     }
 
     /**
      * Determine whether the user can restore.
      */
-    public function restore(User $user, Order $order): bool
+    public function restore(User $user, Schedule $schedule): bool
     {
-        return $user->can('restore_student');
+        return $user->can('restore_batch');
     }
 
     /**
@@ -87,15 +87,15 @@ class OrderPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_student');
+        return $user->can('restore_any_batch');
     }
 
     /**
      * Determine whether the user can replicate.
      */
-    public function replicate(User $user, Order $order): bool
+    public function replicate(User $user, Schedule $schedule): bool
     {
-        return $user->can('replicate_student');
+        return $user->can('replicate_batch');
     }
 
     /**
@@ -103,6 +103,6 @@ class OrderPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_student');
+        return $user->can('reorder_batch');
     }
 }

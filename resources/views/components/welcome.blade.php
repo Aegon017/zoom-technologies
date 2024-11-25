@@ -37,7 +37,7 @@
                         Rs. {{ $order->courseOrPackage_price }}/-
                     </td>
                     <td class="px-6 py-4 font-semibold">
-                        {!! \Carbon\Carbon::parse($order->payment_time)->format('F j, Y, g:i A') !!}
+                        {{ $order->payment->date->format('d M Y') }}, {{ $order->payment->time->format('h:i A') }}
                     </td>
                     <td class="px-6 py-4">
                         {{ $order->payment->status }}

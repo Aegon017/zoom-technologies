@@ -7,7 +7,7 @@
                     <div class="card-body text-center pb-5 pt-3">
                         <h4>Payment Success</h4>
                         <p class="pt-3"><strong>Order No. :</strong> {{ $order->order_number }}</p>
-                        <p><strong>Payment Id:</strong> {{ $order->payment_id }}</p>
+                        <p><strong>Payment Id:</strong> {{ $order->payment->payment_id }}</p>
                         <a href="{{ route('render.myOrders') }}" class="btn btn-primary mt-3">Go to orders</a>
                     </div>
                 </div>
