@@ -8,6 +8,7 @@ use App\Actions\Payment\GenerateInvoice;
 use App\Actions\Payment\PaymentResponse;
 use App\Actions\Payment\SendEmails;
 use App\Actions\Payment\UpdateOrderPayment;
+use App\Models\Currency;
 use App\Models\Order;
 use App\Models\Usd;
 use App\Services\PayUPayment;
@@ -26,7 +27,7 @@ class PaymentController extends Controller
         Session::put('paymentMethod', $request->payment_method);
         $paymentMethod = Session::get('paymentMethod');
         $user = Auth::user();
-        $usd_rate = Usd::first()->value ?? 0;
+        $usd_rate = Currency::where('name', 'USD')->first()->value;
         $txnId = uniqid();
         $payablePrice = $request->payable_price;
         $productInfo = $request->name;

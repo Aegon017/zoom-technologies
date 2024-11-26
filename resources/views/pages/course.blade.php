@@ -72,7 +72,9 @@
                                         <div class="row">
                                             @foreach ($packageCourses as $course)
                                                 @foreach ($course->studyMaterial as $studyMaterial)
-                                                    <x-study-material :$studyMaterial />
+                                                    @if ($studyMaterial->subscription === 'Free')
+                                                        <x-study-material :$studyMaterial />
+                                                    @endif
                                                 @endforeach
                                             @endforeach
                                         </div>
