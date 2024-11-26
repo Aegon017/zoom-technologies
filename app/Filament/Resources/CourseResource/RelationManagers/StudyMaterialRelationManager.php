@@ -4,6 +4,7 @@ namespace App\Filament\Resources\CourseResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -24,7 +25,11 @@ class StudyMaterialRelationManager extends RelationManager
             ->schema([
                 TextInput::make('name')->required(),
                 TextInput::make('material_url'),
-                TextInput::make('image_alt')->columnSpanFull()->required(),
+                Select::make('subscription')->options([
+                    'Free' => 'Free',
+                    'Paid' => 'Paid'
+                ]),
+                TextInput::make('image_alt')->required(),
                 FileUpload::make('image')->disk('public')->directory('study_materials/courses')->preserveFilenames()->columnSpanFull()->required(),
             ]);
     }
