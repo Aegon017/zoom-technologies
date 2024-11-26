@@ -3,12 +3,10 @@
 namespace App\Models;
 
 use App\Events\MeetingCredentialsUpdatedEvent;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Schedule extends Model
 {
@@ -52,7 +50,7 @@ class Schedule extends Model
 
     protected static function booted()
     {
-        
+
         static::updated(function ($schedule) {
             if ($schedule->isDirty(['zoom_meeting_url', 'meeting_id', 'meeting_password'])) {
                 event(new MeetingCredentialsUpdatedEvent($schedule));
