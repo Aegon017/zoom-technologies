@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Events\MeetingCredentialsUpdatedEvent;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -23,7 +24,7 @@ class Schedule extends Model
         'zoom_meeting_url',
         'meeting_id',
         'meeting_password',
-        'status'
+        'status',
     ];
 
     protected static function expireSchedule()
@@ -51,6 +52,7 @@ class Schedule extends Model
 
     protected static function booted()
     {
+        
         static::updated(function ($schedule) {
             if ($schedule->isDirty(['zoom_meeting_url', 'meeting_id', 'meeting_password'])) {
                 event(new MeetingCredentialsUpdatedEvent($schedule));

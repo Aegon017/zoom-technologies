@@ -103,7 +103,7 @@
                 <tbody>
                     <tr>
                         <td>{{ $order->course->name }}</td>
-                        <td>Rs. {{ $order->course->actual_price }}/-</td>
+                        <td>{{$order->payment->currency}} {{ $order->course->actual_price }}/-</td>
                     </tr>
                 </tbody>
             </table>
@@ -132,7 +132,7 @@
                 <tbody>
                     <tr>
                         <td>Subtotal:</td>
-                        <td>Rs. {{ $order->course->actual_price }}/-</td>
+                        <td>{{$order->payment->currency}} {{ $order->course->actual_price }}/-</td>
                     </tr>
                     <tr>
                         <td>Payment mode:</td>
@@ -141,15 +141,15 @@
                     <tr>
                         <td>Taxes (18%):</td>
                         <td>
-                            C.GST({{ 100 / ($order->course->actual_price / $order->cgst) }}%): Rs.
+                            C.GST({{ 100 / ($order->course->actual_price / $order->cgst) }}%): {{$order->payment->currency}}
                             {{ $order->cgst }}/-<br>
-                            S.GST({{ 100 / ($order->course->actual_price / $order->sgst) }}%): Rs.
+                            S.GST({{ 100 / ($order->course->actual_price / $order->sgst) }}%): {{$order->payment->currency}}
                             {{ $order->sgst }}/-
                         </td>
                     </tr>
                     <tr>
                         <td>Total:</td>
-                        <td>Rs. {{ $order->payment->amount }}/-</td>
+                        <td>{{$order->payment->currency}} {{ $order->payment->amount }}/-</td>
                     </tr>
                 </tbody>
             </table>
@@ -177,7 +177,7 @@
                 <tbody>
                     <tr>
                         <td>{{ $order->course->name }}</td>
-                        <td>Rs. {{ $order->course->actual_price }}/-</td>
+                        <td>{{$order->payment->currency}} {{ $order->course->actual_price }}/-</td>
                     </tr>
                 </tbody>
             </table>
@@ -206,7 +206,7 @@
                 <tbody>
                     <tr>
                         <td>Subtotal:</td>
-                        <td>Rs. {{ $order->course->actual_price }}/-</td>
+                        <td>{{$order->payment->currency}} {{ $order->course->actual_price }}/-</td>
                     </tr>
                     <tr>
                         <td>Payment mode:</td>
@@ -215,15 +215,15 @@
                     <tr>
                         <td>Taxes (18%):</td>
                         <td>
-                            C.GST({{ 100 / ($order->course->actual_price / $order->cgst) }}%): Rs.
+                            C.GST({{ 100 / ($order->course->actual_price / $order->cgst) }}%): {{$order->payment->currency}}
                             {{ $order->cgst }}/-<br>
-                            S.GST({{ 100 / ($order->course->actual_price / $order->sgst) }}%): Rs.
+                            S.GST({{ 100 / ($order->course->actual_price / $order->sgst) }}%): {{$order->payment->currency}}
                             {{ $order->sgst }}/-
                         </td>
                     </tr>
                     <tr>
                         <td>Total:</td>
-                        <td>Rs. {{ $order->payment->amount }}/-</td>
+                        <td>{{$order->payment->currency}} {{ $order->payment->amount }}/-</td>
                     </tr>
                 </tbody>
             </table>

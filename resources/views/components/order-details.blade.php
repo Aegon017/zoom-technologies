@@ -27,7 +27,8 @@
                             <h2 class="text-xl font-semibold mb-2">
                                 {{ $order->course->name }}
                             </h2>
-                            <p><strong>Price:</strong> Rs. {{ $order->courseOrPackage_price }}/-</p>
+                            <p><strong>Price:</strong> {{ $order->payment->currency }}
+                                {{ $order->courseOrPackage_price }}</p>
                             <p><strong>Duration:</strong>{{ $order->course->duration }}
                                 {{ $order->course->duration_type }}</p>
                             <div class="flex flex-col sm:flex-row justify-between my-4">
@@ -64,7 +65,8 @@
                         <div class="mb-4 sm:mb-0">
                             <h3 class="font-semibold mb-2">Order Summary</h3>
                             <p class="text-gray-600"><strong>Payment status</strong>: {{ $order->payment->status }}</p>
-                            <p class="text-gray-600"><strong>Payment Status</strong>: {{ $order->payment->description }}
+                            <p class="text-gray-600"><strong>Payment Status</strong>:
+                                {{ $order->payment->description }}
                             </p>
                             <p class="text-gray-600"><strong>Payment Id:</strong>
                                 {{ $order->payment->payment_id }}
@@ -76,19 +78,19 @@
                     </div>
                     <div class="flex justify-between text-gray-600 mb-2">
                         <span>Subtotal</span>
-                        <span>Rs. {{ $order->courseOrPackage_price }}/-</span>
+                        <span>{{ $order->payment->currency }} {{ $order->courseOrPackage_price }}</span>
                     </div>
                     <div class="flex justify-between text-gray-600 mb-2">
                         <span>C.GST({{ (100 * $order->cgst) / $order->courseOrPackage_price }}%)</span>
-                        <span>Rs. {{ $order->cgst }}/-</span>
+                        <span>{{ $order->payment->currency }} {{ $order->cgst }}</span>
                     </div>
                     <div class="flex justify-between text-gray-600 mb-2">
                         <span>S.GST({{ (100 * $order->sgst) / $order->courseOrPackage_price }}%)</span>
-                        <span>Rs. {{ $order->sgst }}/-</span>
+                        <span>{{ $order->payment->currency }} {{ $order->sgst }}</span>
                     </div>
                     <div class="flex justify-between font-semibold text-gray-900">
                         <span>Order total</span>
-                        <span>Rs. {{ $order->payment->amount }}/-</span>
+                        <span>{{ $order->payment->currency }} {{ $order->payment->amount }}</span>
                     </div>
                 </div>
             </div>

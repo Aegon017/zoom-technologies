@@ -13,22 +13,14 @@ class PaymentResponse
         $generateInvoice = new GenerateInvoice();
         $sendEmails = new SendEmails();
         $updateOrderPayment = new UpdateOrderPayment();
-        switch ('payu') {
-            case 'payu':
-                $paymentId = $request->mihpayid;
-                $method = 'payu';
-                $mode = $request->mode;
-                $description = $request->field9;
-                $date = $request->addedon;
-                $time = $request->addedon;
-                $status = $request->status;
-                $amount = $request->amount;
-                break;
-            case 'paypal':
-                break;
-            case 'stripe':
-                break;
-        }
+        $paymentId = $request->mihpayid;
+        $method = 'payu';
+        $mode = $request->mode;
+        $description = $request->field9;
+        $date = $request->addedon;
+        $time = $request->addedon;
+        $status = $request->status;
+        $amount = $request->amount;
         $data = [
             'paymentId' => $paymentId,
             'method' => $method,
@@ -38,6 +30,7 @@ class PaymentResponse
             'time' => $time,
             'status' => $status,
             'amount' => $amount,
+            'currency' => 'Rs'
         ];
         $updateOrderPayment->execute($order->id, $data);
         if ($request->status == 'success') {

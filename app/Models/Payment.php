@@ -17,6 +17,7 @@ class Payment extends Model
         'time',
         'status',
         'amount',
+        'currency'
     ];
 
     protected $casts = [

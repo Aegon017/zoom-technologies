@@ -149,7 +149,7 @@
             <tbody>
                 <tr>
                     <td>Price:</td>
-                    <td>Rs. {{ $order->courseOrPackage_price }}/-</td>
+                    <td>{{$order->payment->currency}} {{ $order->courseOrPackage_price }}/-</td>
                 </tr>
                 <tr>
                     <td>Payment Method:</td>
@@ -160,13 +160,13 @@
                 <tr>
                     <td>Taxes (18%):</td>
                     <td>
-                        C.GST({{ (100 * $order->cgst) / $order->courseOrPackage_price }}%): Rs. {{ $order->cgst }}/-<br>
-                        S.GST({{ (100 * $order->sgst) / $order->courseOrPackage_price }}%): Rs. {{ $order->sgst }}/-
+                        C.GST({{ (100 * $order->cgst) / $order->courseOrPackage_price }}%): {{$order->payment->currency}} {{ $order->cgst }}/-<br>
+                        S.GST({{ (100 * $order->sgst) / $order->courseOrPackage_price }}%): {{$order->payment->currency}} {{ $order->sgst }}/-
                     </td>
                 </tr>
                 <tr>
                     <td>Total Amount:</td>
-                    <td>Rs. {{ $order->payment->amount }}/-</td>
+                    <td>{{$order->payment->currency}} {{ $order->payment->amount }}/-</td>
                 </tr>
             </tbody>
         </table>

@@ -124,16 +124,18 @@ class OrderResource extends Resource
                 //         }
                 //     }),
 
-                SelectFilter::make('schedule.start_date')->label('Batch date')
+                SelectFilter::make('schedule.start_date')
+                    ->label('Batch date')
                     ->relationship('schedule', 'start_date')
                     ->searchable()
                     ->preload(),
+
                 SelectFilter::make('schedule.time')->label('Batch time')
                     ->relationship('schedule', 'time')
                     ->searchable()
                     ->preload(),
 
-            ], layout: FiltersLayout::AboveContent)->filtersFormColumns(3)
+            ], layout: FiltersLayout::AboveContent)->filtersFormColumns(2)
             ->actions([
                 // ExportAction::make()->exporter(OrderExporter::class),
                 ActionsAction::make('invoice')
@@ -182,25 +184,6 @@ class OrderResource extends Resource
     {
         return [
             'index' => Pages\ListOrders::route('/'),
-        ];
-    }
-
-    public static function getPermissionPrefixes(): array
-    {
-        return [
-            'view',
-            'view_any',
-            'create',
-            'update',
-            'restore',
-            'restore_any',
-            'replicate',
-            'reorder',
-            'delete',
-            'delete_any',
-            'force_delete',
-            'force_delete_any',
-            'invoice.download' => 'Download Invoices',
         ];
     }
 }

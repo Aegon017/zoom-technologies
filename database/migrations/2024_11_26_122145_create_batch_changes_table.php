@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('order_schedules', function (Blueprint $table) {
+        Schema::create('batch_changes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('schedule_id')->constrained()->cascadeOnDelete();
-            $table->string('admin_name')->nullable();
-            $table->string('admin_email')->nullable();
-            $table->string('ip_address')->nullable();
-            $table->string('proof')->nullable();
+            $table->string('ip_address');
+            $table->string('proof');
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('order_schedules');
+        Schema::dropIfExists('batch_changes');
     }
 };

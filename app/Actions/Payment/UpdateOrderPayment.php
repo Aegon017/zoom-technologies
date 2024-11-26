@@ -20,6 +20,7 @@ class UpdateOrderPayment
         $payment->time = $data['time'];
         $payment->status = $data['status'];
         $payment->amount = $data['amount'];
+        $payment->currency = $data['currency'];
         $payment->save();
     }
 }

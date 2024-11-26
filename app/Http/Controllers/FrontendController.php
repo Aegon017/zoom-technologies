@@ -113,7 +113,7 @@ class FrontendController extends Controller
 
     public function render_account()
     {
-        $orders = Order::with('course')->where('user_id', Auth::id())->latest()->get();
+        $orders = Order::where('user_id', Auth::id())->latest()->get();
         return view('dashboard', compact('orders'));
     }
 

@@ -167,7 +167,7 @@
                                 <span><b>Price :</b> &nbsp;&nbsp;</span>
                             </td>
                             <td style="text-align: end">
-                                <div>Rs. {{ $order->courseOrPackage_price }}/-</div>
+                                <div>{{ $order->payment->currency }} {{ $order->courseOrPackage_price }}/-</div>
                             </td>
                         </tr>
                         <tr>
@@ -177,7 +177,7 @@
                                     &nbsp;&nbsp;</span>
                             </td>
                             <td style="text-align: end">
-                                <div>Rs. {{ $order->sgst }}/-</div>
+                                <div>{{ $order->payment->currency }} {{ $order->sgst }}/-</div>
                             </td>
                         </tr>
 
@@ -188,7 +188,7 @@
                                     &nbsp;&nbsp;</span>
                             </td>
                             <td style="text-align: end">
-                                <div>Rs. {{ $order->cgst }}/-</div>
+                                <div>{{ $order->payment->currency }} {{ $order->cgst }}/-</div>
                             </td>
                         </tr>
                         <tr>
@@ -197,7 +197,7 @@
                                 <span><b>Total :</b></span>
                             </td>
                             <td style="text-align: end">
-                                <div>Rs. {{ $order->payment->amount }}/-</div>
+                                <div>{{ $order->payment->currency }} {{ $order->payment->amount }}/-</div>
                             </td>
                         </tr>
                     </table>

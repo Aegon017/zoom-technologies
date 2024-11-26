@@ -34,7 +34,7 @@
                         {{ $order->course->name }}
                     </td>
                     <td class="px-6 py-4">
-                        Rs. {{ $order->courseOrPackage_price }}/-
+                        {{ $order->payment->currency }} {{ $order->courseOrPackage_price }}
                     </td>
                     <td class="px-6 py-4 font-semibold">
                         {{ $order->payment->date->format('d M Y') }}, {{ $order->payment->time->format('h:i A') }}

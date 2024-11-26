@@ -48,6 +48,7 @@ class CreateOrderSendMail
             'time' => now(),
             'status' => 'success',
             'amount' => $event->manualOrder->amount,
+            'currency' => 'Rs'
         ];
         $updateOrderPayment = new UpdateOrderPayment();
         $updateOrderPayment->execute($order->id, $data);

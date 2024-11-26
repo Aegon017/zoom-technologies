@@ -22,6 +22,7 @@ return new class extends Migration
             $table->time('time');
             $table->string('status');
             $table->mediumInteger('amount');
+            $table->string('currency')->default('Rs');
             $table->timestamps();
         });
     }
