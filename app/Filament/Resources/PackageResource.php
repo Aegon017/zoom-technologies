@@ -30,7 +30,7 @@ use Illuminate\Support\Str;
 class PackageResource extends Resource
 {
     protected static ?string $model = Package::class;
-
+    protected static ?string $navigationGroup = 'Courses & Packages';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-group';
     protected static ?string $navigationLabel = 'Courses package';
     protected static ?int $navigationSort = 4;

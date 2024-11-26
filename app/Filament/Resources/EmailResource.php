@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class EmailResource extends Resource
 {
     protected static ?string $model = Email::class;
-
+    protected static ?string $navigationGroup = 'Contact Details';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

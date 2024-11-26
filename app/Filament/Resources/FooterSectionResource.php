@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class FooterSectionResource extends Resource
 {
     protected static ?string $model = FooterSection::class;
+    protected static ?string $navigationGroup = 'Home page';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

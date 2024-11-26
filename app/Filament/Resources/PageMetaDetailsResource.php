@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class PageMetaDetailsResource extends Resource
 {
     protected static ?string $model = PageMetaDetails::class;
-
+    protected static ?string $navigationGroup = 'SEO Settings';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?int $navigationSort = 8;
     public static function form(Form $form): Form

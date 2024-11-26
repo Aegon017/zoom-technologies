@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('taxes', function (Blueprint $table) {
             $table->id();
-            $table->tinyInteger('cgst');
-            $table->tinyInteger('sgst');
+            $table->string('name');
+            $table->mediumInteger('value');
             $table->timestamps();
         });
     }

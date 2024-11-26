@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class SocialLinkResource extends Resource
 {
     protected static ?string $model = SocialLink::class;
-
+    protected static ?string $navigationGroup = 'Home page';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

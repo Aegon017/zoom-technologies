@@ -21,13 +21,15 @@ class TaxResource extends Resource
     protected static ?string $model = Tax::class;
     protected static ?int $navigationSort = 10;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Currencies & Taxes';
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('cgst')->label('CGST(%)')->suffix('%')->required(),
-                TextInput::make('sgst')->label('SGST(%)')->suffix('%')->required()
+                TextInput::make('name')->required(),
+                TextInput::make('value')->suffix('%')->required()
             ]);
     }
 
@@ -35,8 +37,8 @@ class TaxResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('cgst')->label('CGST(%)')->suffix('%'),
-                TextColumn::make('sgst')->label('SGST(%)')->suffix('%')
+                TextColumn::make('name')->searchable(),
+                TextColumn::make('value')->suffix('%')
             ])
             ->filters([
                 //

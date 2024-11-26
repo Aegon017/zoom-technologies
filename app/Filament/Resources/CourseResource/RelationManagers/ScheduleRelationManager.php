@@ -2,19 +2,19 @@
 
 namespace App\Filament\Resources\CourseResource\RelationManagers;
 
-use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Form;
+use Filament\Resources\Components\Tab;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ScheduleRelationManager extends RelationManager
 {
@@ -52,8 +52,8 @@ class ScheduleRelationManager extends RelationManager
                     ->hidden(fn($get) => $get('training_mode') !== 'Online')
                     ->required(),
                 DatePicker::make('start_date')->native(false)->minDate(now())->required(),
-                TimePicker::make('time')->label('Start time')->seconds(false)->required(),
-                TimePicker::make('end_time')->seconds(false)->required(),
+                TimePicker::make('time')->seconds(false)->native(false)->label('Start time')->seconds(false)->required(),
+                TimePicker::make('end_time')->seconds(false)->native(false)->required(),
                 TextInput::make('duration')->required(),
                 Select::make('duration_type')->options(['Month' => 'Month', 'Week' => 'Week', 'Day' => 'Day'])->required(),
                 Select::make('day_off')
@@ -77,20 +77,14 @@ class ScheduleRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('#')->rowIndex(),
                 TextColumn::make('start_date')->searchable()->date(),
-                TextColumn::make('time'),
-                TextColumn::make('end_time'),
+                TextColumn::make('time')->time('h:i A'),
+                TextColumn::make('end_time')->time('h:i A'),
                 TextColumn::make('training_mode')
             ])
-            ->filters([
-                SelectFilter::make('status')
-                    ->options([
-                        true => 'Active',
-                        false => 'Expired',
-                    ])
-                    ->default(true)
-            ])
+            ->filters([])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->visible(fn() => request()->input('components.0.updates.activeTab', 'true') === 'true')
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -101,5 +95,19 @@ class ScheduleRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+    public function getTabs(): array
+    {
+        return [
+            'false' => Tab::make('Past Schedules')
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', false)),
+            'true' => Tab::make('Upcoming Schedules')
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', true)),
+        ];
+    }
+
+    public function getDefaultActiveTab(): string | int | null
+    {
+        return 'true';
     }
 }

@@ -32,7 +32,7 @@ use Illuminate\Support\Str;
 class CourseResource extends Resource
 {
     protected static ?string $model = Course::class;
-
+    protected static ?string $navigationGroup = 'Courses & Packages';
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
     protected static ?int $navigationSort = 3;
     public static function form(Form $form): Form

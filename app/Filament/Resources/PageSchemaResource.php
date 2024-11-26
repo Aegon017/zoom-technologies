@@ -27,6 +27,7 @@ class PageSchemaResource extends Resource
     protected static ?string $model = PageSchema::class;
     protected static ?int $navigationSort = 9;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'SEO Settings';
 
     public static function form(Form $form): Form
     {

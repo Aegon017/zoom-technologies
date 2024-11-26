@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class MobileNumberResource extends Resource
 {
     protected static ?string $model = MobileNumber::class;
-
+    protected static ?string $navigationGroup = 'Contact Details';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

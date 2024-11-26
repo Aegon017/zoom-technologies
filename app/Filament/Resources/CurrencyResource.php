@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UsdResource\Pages;
-use App\Filament\Resources\UsdResource\RelationManagers;
-use App\Models\Usd;
+use App\Filament\Resources\CurrencyResource\Pages;
+use App\Filament\Resources\CurrencyResource\RelationManagers;
+use App\Models\Currency;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -15,17 +15,18 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class UsdResource extends Resource
+class CurrencyResource extends Resource
 {
-    protected static ?string $model = Usd::class;
-
+    protected static ?string $model = Currency::class;
+    protected static ?string $navigationGroup = 'Currencies & Taxes';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('value')->prefix('$')->required()->numeric(),
+                TextInput::make('name')->required(),
+                TextInput::make('value')->required()->numeric(),
             ]);
     }
 
@@ -33,7 +34,8 @@ class UsdResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('value')->prefix("$")->numeric(),
+                TextColumn::make('name')->searchable(),
+                TextColumn::make('value'),
             ])
             ->filters([
                 //
@@ -41,7 +43,11 @@ class UsdResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([]);
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
     }
 
     public static function getRelations(): array
@@ -54,9 +60,9 @@ class UsdResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsds::route('/'),
-            'create' => Pages\CreateUsd::route('/create'),
-            'edit' => Pages\EditUsd::route('/{record}/edit'),
+            'index' => Pages\ListCurrencies::route('/'),
+            'create' => Pages\CreateCurrency::route('/create'),
+            'edit' => Pages\EditCurrency::route('/{record}/edit'),
         ];
     }
 }

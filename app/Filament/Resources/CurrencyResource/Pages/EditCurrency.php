@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\BatchResource\Pages;
+namespace App\Filament\Resources\CurrencyResource\Pages;
 
-use App\Filament\Resources\BatchResource;
+use App\Filament\Resources\CurrencyResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditBatch extends EditRecord
+class EditCurrency extends EditRecord
 {
-    protected static string $resource = BatchResource::class;
+    protected static string $resource = CurrencyResource::class;
 
     protected function getHeaderActions(): array
     {
