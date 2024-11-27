@@ -26,12 +26,12 @@
             @foreach ($orders as $order)
                 <tr class="bg-white border-b border-gray-700 hover:bg-gray-50">
                     <td class="p-4">
-                        <img src="{{ asset(Storage::url($order->course->thumbnail)) }}"
-                            alt="{{ $order->course->thumbnail_alt }}"
+                        <img src="{{ asset(Storage::url($order->course->thumbnail ?? $order->package->thumbnail)) }}"
+                            alt="{{ $order->course->thumbnail_alt ?? $order->package->thumbnail_alt }}"
                             class="w-16 md:w-44 max-w-full max-h-full rounded-lg">
                     </td>
                     <td class="py-4 font-semibold text-gray-900">
-                        {{ $order->course->name }}
+                        {{ $order->course->name ?? $order->package->name }}
                     </td>
                     <td class="px-6 py-4">
                         {{ $order->payment->currency }} {{ $order->courseOrPackage_price }}

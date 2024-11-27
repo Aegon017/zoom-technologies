@@ -124,12 +124,13 @@
         <div class="company-logo">
             <img alt="Logo" class="logo" src="{{ asset('frontend/assets/img/logo.png') }}" />
         </div>
-        <h3 class="mt-3">New Enrollment Notification for {{ $order->course->name }}</h3>
+        <h3 class="mt-3">New Enrollment Notification for {{ $order->course->name ?? $order->package->name }}</h3>
     </div>
 
     <div class="content">
         <p>Dear Admin,</p>
-        <p>We are pleased to inform you that a new student has enrolled in your {{ $order->course->name }} course:</p>
+        <p>We are pleased to inform you that a new student has enrolled in your
+            {{ $order->course->name ?? $order->package->name }} course:</p>
         @foreach ($order->schedule as $schedule)
             <br>
             <p><strong>Course Name : </strong>{{ $schedule->course->name }}</p>
@@ -149,7 +150,7 @@
             <tbody>
                 <tr>
                     <td>Price:</td>
-                    <td>{{$order->payment->currency}} {{ $order->courseOrPackage_price }}/-</td>
+                    <td>{{ $order->payment->currency }} {{ $order->courseOrPackage_price }}/-</td>
                 </tr>
                 <tr>
                     <td>Payment Method:</td>
@@ -158,15 +159,17 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Taxes (18%):</td>
+                    <td>Taxes:</td>
                     <td>
-                        C.GST({{ (100 * $order->cgst) / $order->courseOrPackage_price }}%): {{$order->payment->currency}} {{ $order->cgst }}/-<br>
-                        S.GST({{ (100 * $order->sgst) / $order->courseOrPackage_price }}%): {{$order->payment->currency}} {{ $order->sgst }}/-
+                        C.GST({{ (100 * $order->cgst) / $order->courseOrPackage_price }}%):
+                        {{ $order->payment->currency }} {{ $order->cgst }}/-<br>
+                        S.GST({{ (100 * $order->sgst) / $order->courseOrPackage_price }}%):
+                        {{ $order->payment->currency }} {{ $order->sgst }}/-
                     </td>
                 </tr>
                 <tr>
                     <td>Total Amount:</td>
-                    <td>{{$order->payment->currency}} {{ $order->payment->amount }}/-</td>
+                    <td>{{ $order->payment->currency }} {{ $order->payment->amount }}/-</td>
                 </tr>
             </tbody>
         </table>

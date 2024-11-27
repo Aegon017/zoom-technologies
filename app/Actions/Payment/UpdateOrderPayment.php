@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class UpdateOrderPayment
 {
-    public function execute($order_id, $data)
+public function execute($order_id, $data)
     {
         $payment = new Payment();
         $payment->order_id = $order_id;

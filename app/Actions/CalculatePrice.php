@@ -9,8 +9,8 @@ class CalculatePrice
     public function execute($actualPrice, $salePrice)
     {
         $tax = Tax::first();
-        $cgstPercentage = $tax ? $tax->cgst : 0;
-        $sgstPercentage = $tax ? $tax->sgst : 0;
+        $cgstPercentage = Tax::where('name', 'CGST')->first()->value ?? 0;
+        $sgstPercentage = Tax::where('name', 'SGST')->first()->value ?? 0;
         if ($salePrice) {
             $cgst = $salePrice * ($cgstPercentage / 100);
             $sgst = $salePrice * ($sgstPercentage / 100);

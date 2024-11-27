@@ -117,7 +117,7 @@ abstract class Controller
 //     {
 //         $order = $this->findOrCreateOrder($request);
 //         $order->save();
-//         if ($order->status == 'success') {
+//         if ($order->payment->status == 'success') {
 //             $order->invoice = $this->generateInvoice($order);
 //         }
 //         $this->attachSchedulesToOrder($order);
@@ -201,10 +201,10 @@ abstract class Controller
 //     public function sendOrderEmails(Order $order): void
 //     {
 //         $to = $order->user->email;
-//         $subject = "Payment {$order->status} on your order with Zoom Technologies";
+//         $subject = "Payment {$order->payment->status} on your order with Zoom Technologies";
 //         Mail::to($to)->send(new OrderMail($subject, $order));
 
-//         if ($order->status === 'success') {
+//         if ($order->payment->status === 'success') {
 //             $adminEmail = 'kondanagamalleswararao016@gmail.com';
 //             Mail::to($adminEmail)->send(new AdminMail("New Enrollment", $order));
 //             Mail::to($to)->send(new MeetingMail($order));

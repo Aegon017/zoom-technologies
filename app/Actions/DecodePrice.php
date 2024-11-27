@@ -8,9 +8,10 @@ class DecodePrice
 {
     public function execute($payablePrice)
     {
-        $tax = Tax::first();
-        $cgstPercentage = $tax->cgst;
-        $sgstPercentage = $tax->sgst;
+        $cgst = Tax::where('name', 'CGST')->first()->value;
+        $sgst = Tax::where('name', 'SGST')->first()->value;
+        $cgstPercentage = $cgst;
+        $sgstPercentage = $sgst;
         $actualPrice = $payablePrice / (1 + ($cgstPercentage + $sgstPercentage) / 100);
         $cgst = $actualPrice * ($cgstPercentage / 100);
         $sgst = $actualPrice * ($sgstPercentage / 100);

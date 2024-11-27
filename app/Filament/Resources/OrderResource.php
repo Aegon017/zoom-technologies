@@ -5,7 +5,10 @@ namespace App\Filament\Resources;
 use App\Filament\Exports\OrderExporter;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Models\Order;
+use App\Models\Schedule;
+use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Fieldset;
 use Filament\Infolists\Components\TextEntry;
@@ -90,7 +93,12 @@ class OrderResource extends Resource
                 TextColumn::make('#')->rowIndex(),
                 TextColumn::make('order_number')->searchable(),
                 TextColumn::make('user.name')->searchable(),
-                TextColumn::make('course.name'),
+                TextColumn::make('combined')
+                    ->label('Course and Package Name')
+                    ->getStateUsing(function ($record) {
+                        $course =  $record->course->name ?? $record->package->name;
+                        return $course;
+                    }),
                 TextColumn::make('payment.amount')->label('Order Amount')->prefix('Rs. ')->suffix('/-'),
                 TextColumn::make('payment.date')->label('Payment date')->date(),
                 TextColumn::make('payment.time')->label('Payment time')->time("h:i A"),
@@ -105,9 +113,19 @@ class OrderResource extends Resource
                 SelectFilter::make('course.name')
                     ->relationship('course', 'name')
                     ->searchable()
-                    ->preload(),
-                SelectFilter::make('schedule.training_mode')->label('Training mode')
+                    ->preload()->columnSpan(2),
+                SelectFilter::make('package.name')
+                    ->relationship('package', 'name')
+                    ->searchable()
+                    ->preload()->columnSpan(2),
+                SelectFilter::make('schedule.training_mode')
+                    ->label('Training mode')
                     ->relationship('schedule', 'training_mode')
+                    ->options(
+                        Schedule::select('training_mode')
+                            ->distinct()
+                            ->pluck('training_mode')
+                    )
                     ->searchable()
                     ->preload(),
                 // Filter::make('order_date_range')
@@ -124,18 +142,26 @@ class OrderResource extends Resource
                 //         }
                 //     }),
 
-                SelectFilter::make('schedule.start_date')
-                    ->label('Batch date')
+                SelectFilter::make('schedule.start_date')->label('Batch date')
                     ->relationship('schedule', 'start_date')
+                    ->getOptionLabelFromRecordUsing(
+                        fn($record) =>
+                        Carbon::parse($record->time)->format('h:i A')
+                    )
                     ->searchable()
                     ->preload(),
 
-                SelectFilter::make('schedule.time')->label('Batch time')
+                SelectFilter::make('schedule.time')
+                    ->label('Batch time')
                     ->relationship('schedule', 'time')
+                    ->getOptionLabelFromRecordUsing(
+                        fn($record) =>
+                        Carbon::parse($record->time)->format('h:i A')
+                    )
                     ->searchable()
                     ->preload(),
 
-            ], layout: FiltersLayout::AboveContent)->filtersFormColumns(2)
+            ], layout: FiltersLayout::AboveContent)->filtersFormColumns(4)
             ->actions([
                 // ExportAction::make()->exporter(OrderExporter::class),
                 ActionsAction::make('invoice')

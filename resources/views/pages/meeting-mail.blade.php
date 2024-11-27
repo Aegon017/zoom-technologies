@@ -84,17 +84,18 @@
         <div class="company-logo">
             <img alt="Logo" class="logo" src="{{ asset('frontend/assets/img/logo.png') }}" />
         </div>
-        <h3 class="mt-3">Your Training Session Details - {{ $order->course->name }}</h3>
+        <h3 class="mt-3">Your Training Session Details - {{ $order->course->name ?? $order->package->name }}</h3>
     </div>
 
     <div class="content">
         <p>Dear <strong>{{ $order->user->name }}</strong>,</p>
         <p>We are pleased to inform you that your order with order number:
-            <strong>{{ $order->order_number }}</strong>, placed on <strong>{{ $order->payment->date->format('d M Y') }} {{ $order->payment->time->format('h:i A') }}</strong>, has
+            <strong>{{ $order->order_number }}</strong>, placed on <strong>{{ $order->payment->date->format('d M Y') }}
+                {{ $order->payment->time->format('h:i A') }}</strong>, has
             been successfully processed.
         </p>
         <p>This email contains the details of your upcoming training sessions. Please find the
-            <strong>{{ $order->course->name }}</strong> course session information below:
+            <strong>{{ $order->course->name ?? $order->package->name }}</strong> course session information below:
         </p>
         @foreach ($order->schedule as $schedule)
             <h3>{{ $schedule->course->name }}:</h3>

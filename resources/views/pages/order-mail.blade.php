@@ -102,8 +102,9 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{ $order->course->name }}</td>
-                        <td>{{$order->payment->currency}} {{ $order->course->actual_price }}/-</td>
+                        <td>{{ $order->course->name ?? $order->package->name }}</td>
+                        <td>{{ $order->payment->currency }}
+                            {{ $order->course->actual_price ?? $order->package->actual_price }}/-</td>
                     </tr>
                 </tbody>
             </table>
@@ -132,24 +133,27 @@
                 <tbody>
                     <tr>
                         <td>Subtotal:</td>
-                        <td>{{$order->payment->currency}} {{ $order->course->actual_price }}/-</td>
+                        <td>{{ $order->payment->currency }}
+                            {{ $order->course->actual_price ?? $order->package->actual_price }}/-</td>
                     </tr>
                     <tr>
                         <td>Payment mode:</td>
                         <td>{{ $order->payment->mode ?? 'None' }}</td>
                     </tr>
                     <tr>
-                        <td>Taxes (18%):</td>
+                        <td>Taxes:</td>
                         <td>
-                            C.GST({{ 100 / ($order->course->actual_price / $order->cgst) }}%): {{$order->payment->currency}}
+                            C.GST({{ 100 / ($order->course->actual_price ?? $order->package->actual_price / $order->cgst) }}%):
+                            {{ $order->payment->currency }}
                             {{ $order->cgst }}/-<br>
-                            S.GST({{ 100 / ($order->course->actual_price / $order->sgst) }}%): {{$order->payment->currency}}
+                            S.GST({{ 100 / ($order->course->actual_price ?? $order->package->actual_price / $order->sgst) }}%):
+                            {{ $order->payment->currency }}
                             {{ $order->sgst }}/-
                         </td>
                     </tr>
                     <tr>
                         <td>Total:</td>
-                        <td>{{$order->payment->currency}} {{ $order->payment->amount }}/-</td>
+                        <td>{{ $order->payment->currency }} {{ $order->payment->amount }}/-</td>
                     </tr>
                 </tbody>
             </table>
@@ -176,8 +180,9 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{ $order->course->name }}</td>
-                        <td>{{$order->payment->currency}} {{ $order->course->actual_price }}/-</td>
+                        <td>{{ $order->course->name ?? $order->package->name }}</td>
+                        <td>{{ $order->payment->currency }}
+                            {{ $order->course->actual_price ?? $order->package->actual_price }}/-</td>
                     </tr>
                 </tbody>
             </table>
@@ -206,24 +211,27 @@
                 <tbody>
                     <tr>
                         <td>Subtotal:</td>
-                        <td>{{$order->payment->currency}} {{ $order->course->actual_price }}/-</td>
+                        <td>{{ $order->payment->currency }}
+                            {{ $order->course->actual_price ?? $order->package->actual_price }}/-</td>
                     </tr>
                     <tr>
                         <td>Payment mode:</td>
                         <td>{{ $order->payment->mode ?? 'None' }}</td>
                     </tr>
                     <tr>
-                        <td>Taxes (18%):</td>
+                        <td>Taxes:</td>
                         <td>
-                            C.GST({{ 100 / ($order->course->actual_price / $order->cgst) }}%): {{$order->payment->currency}}
+                            C.GST({{ 100 / ($order->course->actual_price ?? $order->package->actual_price / $order->cgst) }}%):
+                            {{ $order->payment->currency }}
                             {{ $order->cgst }}/-<br>
-                            S.GST({{ 100 / ($order->course->actual_price / $order->sgst) }}%): {{$order->payment->currency}}
+                            S.GST({{ 100 / ($order->course->actual_price ?? $order->package->actual_price / $order->sgst) }}%):
+                            {{ $order->payment->currency }}
                             {{ $order->sgst }}/-
                         </td>
                     </tr>
                     <tr>
                         <td>Total:</td>
-                        <td>{{$order->payment->currency}} {{ $order->payment->amount }}/-</td>
+                        <td>{{ $order->payment->currency }} {{ $order->payment->amount }}/-</td>
                     </tr>
                 </tbody>
             </table>

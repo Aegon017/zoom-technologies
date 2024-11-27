@@ -133,9 +133,11 @@
                         <tr>
                             <td>
                                 <div style="text-align: center">
-                                    <strong>Course name:</strong> {{ $order->course->name }} <br>
-                                    <strong>Course duration:</strong> {{ $order->course->duration }}
-                                    {{ $order->course->duration_type }} <br>
+                                    <strong>Course name:</strong> {{ $order->course->name ?? $order->package->name }}
+                                    <br>
+                                    <strong>Course duration:</strong>
+                                    {{ $order->course->duration ?? $order->package->duration }}
+                                    {{ $order->course->duration_type ?? $order->package->duration_type }} <br>
                                 </div>
                                 <div style="margin-top:1.5rem">
                                     <h3 style="margin-block: 0.5rem">Course Schedule:</h3>

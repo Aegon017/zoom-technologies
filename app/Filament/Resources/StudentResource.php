@@ -9,6 +9,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class StudentResource extends Resource
@@ -25,29 +27,36 @@ class StudentResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-            ]);
+            ->schema([]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('user.name'),
-                TextColumn::make('user.email'),
-                TextColumn::make('course.name')
+                TextColumn::make('user.name')->searchable(),
+                TextColumn::make('user.email')->searchable(),
+                TextColumn::make('combined')
+                    ->label('Course and Package Name')
+                    ->getStateUsing(function ($record) {
+                        $course =  $record->course->name ?? $record->package->name;
+                        return $course;
+                    })->searchable(),
             ])
             ->filters([
-                //
-            ])
+                SelectFilter::make('course.name')
+                    ->relationship('course', 'name')
+                    ->searchable()
+                    ->preload(),
+                SelectFilter::make('package.name')
+                    ->relationship('package', 'name')
+                    ->searchable()
+                    ->preload()
+            ], layout: FiltersLayout::AboveContent)->filtersFormColumns(2)
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getRelations(): array

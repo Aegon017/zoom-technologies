@@ -10,7 +10,7 @@
             <div class="max-w-4xl mx-auto bg-white p-4 sm:p-8 rounded-lg shadow">
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-2xl font-semibold">Order Details</h1>
-                    @if ($order->status == 'success')
+                    @if ($order->payment->status == 'success')
                         <a class="text-blue-600" href="{{ asset($order->invoice) }}" target="_blank">View invoice →</a>
                     @endif
                 </div>
@@ -20,17 +20,19 @@
                 </p>
                 <div class="mb-8">
                     <div class="flex flex-col sm:flex-row mb-6">
-                        <img alt="{{ $order->course->thumbnail_alt }}"
-                            class="w-full object-contain sm:w-1/2 object-top rounded-lg"
-                            src="{{ asset(Storage::url($order->course->thumbnail)) }}" />
+                        <div class="mt-4 sm:mt-0 sm:ml-6 w-full sm:w-2/3">
+                            <img alt="{{ $order->course->thumbnail_alt ?? $order->package->thumbnail_alt }}"
+                                class="w-full object-contain object-top rounded-lg"
+                                src="{{ asset(Storage::url($order->course->thumbnail ?? $order->package->thumbnail)) }}" />
+                        </div>
                         <div class="mt-4 sm:mt-0 sm:ml-6 w-full sm:w-2/3">
                             <h2 class="text-xl font-semibold mb-2">
-                                {{ $order->course->name }}
+                                {{ $order->course->name ?? $order->package->name }}
                             </h2>
                             <p><strong>Price:</strong> {{ $order->payment->currency }}
                                 {{ $order->courseOrPackage_price }}</p>
-                            <p><strong>Duration:</strong>{{ $order->course->duration }}
-                                {{ $order->course->duration_type }}</p>
+                            <p><strong>Duration:</strong>{{ $order->course->duration ?? $order->package->duration }}
+                                {{ $order->course->duration_type ?? $order->package->duration_type }}</p>
                             <div class="flex flex-col sm:flex-row justify-between my-4">
                                 <div class="mb-4 sm:mb-0">
                                     <p class="text-gray-600">
