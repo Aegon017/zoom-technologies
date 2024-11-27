@@ -78,8 +78,10 @@
                                         <i class="far fa-calendar-plus"></i>
                                     </div>
                                     <div class="zt-feature-text zt-headline pera-content">
-                                        <h3><span class="odometer"
-                                                data-count="{{ $featureCard->number }}">00</span><sup>+</sup></h3>
+                                        @if ($featureCard->number)
+                                            <h3><span class="odometer"
+                                                    data-count="{{ $featureCard->number }}">00</span><sup>+</sup></h3>
+                                        @endif
                                         <h4>{{ $featureCard->title }}</h4>
                                         <p>{{ $featureCard->content }}</p>
                                     </div>
