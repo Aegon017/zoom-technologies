@@ -39,10 +39,10 @@
                             <div class="accordion">
                                 <div class="accordion-item">
                                     <div class="accordion-header">
-                                        <h3>{{ $sub->module_name }}</h3>
+                                        <h3>{{ $sub->name }}</h3>
                                     </div>
                                     <div class="accordion-content">
-                                        {!! $sub->module_content !!}
+                                        {!! $sub->content !!}
                                     </div>
                                 </div>
                             </div>

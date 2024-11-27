@@ -28,7 +28,7 @@ class StudyMaterialRelationManager extends RelationManager
                 Select::make('subscription')->options([
                     'Free' => 'Free',
                     'Paid' => 'Paid'
-                ]),
+                ])->required(),
                 TextInput::make('image_alt')->required(),
                 FileUpload::make('image')->disk('public')->directory('study_materials/courses')->preserveFilenames()->columnSpanFull()->required(),
             ]);
