@@ -9,15 +9,22 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ManualOrder extends Model
 {
     protected $fillable = [
-        'user_id',
+        'user_name',
+        'user_email',
+        'user_phone',
         'course_id',
         'package_id',
         'schedule_id',
+        'packageSchedule_id',
         'course_price',
         'cgst',
         'sgst',
         'amount',
         'payment_mode'
+    ];
+
+    protected $casts = [
+        'packageSchedule_id' => 'array'
     ];
 
     public function course(): BelongsTo

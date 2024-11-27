@@ -8,9 +8,12 @@ use App\Actions\Payment\GenerateInvoice;
 use App\Actions\Payment\SendEmails;
 use App\Actions\Payment\UpdateOrderPayment;
 use App\Events\ManualOrderCreatedEvent;
+use App\Mail\UserEnrollMail;
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Mail;
 
 class CreateOrderSendMail
 {
@@ -27,7 +30,18 @@ class CreateOrderSendMail
      */
     public function handle(ManualOrderCreatedEvent $event): void
     {
-        $userId = $event->manualOrder->user_id;
+        $userName = $event->manualOrder->user_name;
+        $userEmail = $event->manualOrder->user_email;
+        $userPhone = $event->manualOrder->user_phone;
+        $password = uniqid(8);
+        $user = new User();
+        $user->name = $userName;
+        $user->email = $userEmail;
+        $user->phone = $userPhone;
+        $user->password = $password;
+        $user->save();
+        Mail::to($userEmail)->send(new UserEnrollMail($user, $password));
+        $userId = $user->id;
         $order = new Order();
         $order->user_id = $userId;
         $order->course_id = $event->manualOrder->course_id;

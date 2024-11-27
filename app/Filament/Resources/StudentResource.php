@@ -41,7 +41,7 @@ class StudentResource extends Resource
                     ->getStateUsing(function ($record) {
                         $course =  $record->course->name ?? $record->package->name;
                         return $course;
-                    })->searchable(),
+                    }),
             ])
             ->filters([
                 SelectFilter::make('course.name')

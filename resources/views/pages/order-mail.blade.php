@@ -143,10 +143,10 @@
                     <tr>
                         <td>Taxes:</td>
                         <td>
-                            C.GST({{ 100 / ($order->course->actual_price ?? $order->package->actual_price / $order->cgst) }}%):
+                            C.GST({{ 100 / (($order->course->actual_price ?? $order->package->actual_price) / $order->cgst) }}%):
                             {{ $order->payment->currency }}
                             {{ $order->cgst }}/-<br>
-                            S.GST({{ 100 / ($order->course->actual_price ?? $order->package->actual_price / $order->sgst) }}%):
+                            S.GST({{ 100 / (($order->course->actual_price ?? $order->package->actual_price) / $order->sgst) }}%):
                             {{ $order->payment->currency }}
                             {{ $order->sgst }}/-
                         </td>
@@ -221,12 +221,10 @@
                     <tr>
                         <td>Taxes:</td>
                         <td>
-                            C.GST({{ 100 / ($order->course->actual_price ?? $order->package->actual_price / $order->cgst) }}%):
-                            {{ $order->payment->currency }}
-                            {{ $order->cgst }}/-<br>
-                            S.GST({{ 100 / ($order->course->actual_price ?? $order->package->actual_price / $order->sgst) }}%):
-                            {{ $order->payment->currency }}
-                            {{ $order->sgst }}/-
+                            C.GST({{ (100 * $order->cgst) / $order->courseOrPackage_price }}%):
+                            {{ $order->payment->currency }} {{ $order->cgst }}/-<br>
+                            S.GST({{ (100 * $order->sgst) / $order->courseOrPackage_price }}%):
+                            {{ $order->payment->currency }} {{ $order->sgst }}/-
                         </td>
                     </tr>
                     <tr>

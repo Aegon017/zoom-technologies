@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Mail\ScheduleUpdatedMail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Request;
 
 class OrderSchedule extends Model
@@ -27,6 +29,9 @@ class OrderSchedule extends Model
                 $orderSchedule->admin_name = $admin->name;
                 $orderSchedule->admin_email = $admin->email;
                 $orderSchedule->ip_address = Request::ip();
+                $user = $orderSchedule->order->user;
+                $order = $orderSchedule->order;
+                Mail::to($user->email)->send(new ScheduleUpdatedMail($order));
             }
         });
     }

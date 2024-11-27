@@ -121,11 +121,6 @@ class OrderResource extends Resource
                 SelectFilter::make('schedule.training_mode')
                     ->label('Training mode')
                     ->relationship('schedule', 'training_mode')
-                    ->options(
-                        Schedule::select('training_mode')
-                            ->distinct()
-                            ->pluck('training_mode')
-                    )
                     ->searchable()
                     ->preload(),
                 // Filter::make('order_date_range')
@@ -142,22 +137,14 @@ class OrderResource extends Resource
                 //         }
                 //     }),
 
-                SelectFilter::make('schedule.start_date')->label('Batch date')
+                SelectFilter::make('schedule.start_date')
+                    ->label('Batch Date')
                     ->relationship('schedule', 'start_date')
-                    ->getOptionLabelFromRecordUsing(
-                        fn($record) =>
-                        Carbon::parse($record->time)->format('h:i A')
-                    )
                     ->searchable()
                     ->preload(),
-
                 SelectFilter::make('schedule.time')
                     ->label('Batch time')
                     ->relationship('schedule', 'time')
-                    ->getOptionLabelFromRecordUsing(
-                        fn($record) =>
-                        Carbon::parse($record->time)->format('h:i A')
-                    )
                     ->searchable()
                     ->preload(),
 

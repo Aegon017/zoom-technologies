@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('manual_orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('user_name');
+            $table->string('user_email');
+            $table->string('user_phone');
             $table->foreignId('course_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('package_id')->nullable()->constrained()->cascadeOnDelete();
-            $table->foreignId('schedule_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('schedule_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->string('packageSchedule_id')->nullable();
             $table->mediumInteger('course_price');
             $table->mediumInteger('cgst');
             $table->mediumInteger('sgst');
