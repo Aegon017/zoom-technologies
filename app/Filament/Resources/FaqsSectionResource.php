@@ -35,7 +35,7 @@ class FaqsSectionResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('question')->searchable(),
+                TextColumn::make('question')->wrap()->searchable(),
                 TextColumn::make('answer')->html()->wrap(),
             ])
             ->filters([

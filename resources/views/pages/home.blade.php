@@ -124,7 +124,7 @@
     <!-- Start of Testimonial section -->
     @if ($testimonialSection)
         <section id="zt-testimonial" class="zt-testimonial-section"
-            data-background="{{ Storage::url($testimonialSection->image) }}">
+            data-background="{{ asset(Storage::url($testimonialSection->image)) }}">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-5">
