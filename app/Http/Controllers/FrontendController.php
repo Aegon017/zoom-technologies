@@ -10,6 +10,7 @@ use App\Models\FaqsSection;
 use App\Models\FeatureCard;
 use App\Models\FeatureSection;
 use App\Models\FreeMaterialSection;
+use App\Models\MemorableMoments;
 use App\Models\News;
 use App\Models\NewsCategory;
 use App\Models\Order;
@@ -143,7 +144,8 @@ class FrontendController extends Controller
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Memorable moments')->first();
         $pageSchema = PageSchema::where('page_name', 'Memorable moments')->first();
-        return view('pages.memorable-moments', compact('metaDetail', 'pageSchema'));
+        $moments = MemorableMoments::all();
+        return view('pages.memorable-moments', compact('metaDetail', 'pageSchema', 'moments'));
     }
 
     public function renderFranchisee()
@@ -169,7 +171,8 @@ class FrontendController extends Controller
         return view('pages.my-course', compact('studyMaterials', 'courseName'));
     }
 
-    public function renderCourses(){
+    public function renderCourses()
+    {
         return view('pages.user-study-materail');
     }
 }

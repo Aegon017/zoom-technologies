@@ -69,6 +69,7 @@ class AdminPanelProvider extends PanelProvider
                 'Offline Enrolls',
                 'Courses & Packages',
                 'News',
+                'Pages',
                 'Home page',
                 'Contact Details',
                 'Currencies & Taxes',
