@@ -84,8 +84,8 @@
                                 <img src="data:image/png;base64,{{ base64_encode(file_get_contents(asset('frontend/assets/img/logo.png'))) }}"
                                     style="width: 100%; max-width: 150px;" alt="Logo" />
                             </td>
-                            <td>{{ $order->order_number }}<br />{{ $order->payment->date->format('d M Y') }}
-                                {{ $order->payment->time->format('h:i A') }}
+                            <td>{{ $order->order_number }}<br />{{ $order->payment->date }}
+                                {{ $order->payment->time }}
                             </td>
                         </tr>
                     </table>
@@ -116,8 +116,8 @@
                     <table>
                         <tr>
                             <td>
-                                <h3 style="margin-block:0.5rem">{{ $order->payment->date->format('d M Y') }}
-                                    {{ $order->payment->time->format('h:i A') }}</h3>
+                                <h3 style="margin-block:0.5rem">{{ $order->payment->date }}
+                                    {{ $order->payment->time }}</h3>
                                 <div>{{ $order->user->name }} <br />{{ $order->user->email }}
                                     <br />{{ $order->user->phone }}
                                 </div>
@@ -145,8 +145,8 @@
                                         <strong>Course name : </strong>{{ $schedule->course->name }}<br>
                                         <strong>Course duration : </strong>
                                         {{ $schedule->duration }}{{ $schedule->duration_type }} <br>
-                                        <strong>Batch : </strong>{{ $schedule->start_date->format('d M Y') }}
-                                        {{ $schedule->time->format('h:i A') }}<br>
+                                        <strong>Batch : </strong>{{ $schedule->start_date }}
+                                        {{ $schedule->time }}<br>
                                         <strong>Training mode:</strong>{{ $schedule->training_mode }}
                                         <p></p>
                                     @endforeach

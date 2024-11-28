@@ -23,7 +23,7 @@
                 <div class="batch-date">
                     <i class="fas fa-calendar"></i>
                     @if ($latest_schedule)
-                        {{ \Carbon\Carbon::parse($latest_schedule->start_date)->format('d M Y') }}
+                        {{ \Carbon\Carbon::parse($latest_schedule->start_date) }}
                     @else
                         No upcoming date
                     @endif
@@ -73,7 +73,7 @@
                     <div class="batch-date">
                         <i class="fas fa-calendar"></i>
                         @if ($latest_schedule)
-                            {{ \Carbon\Carbon::parse($latest_schedule->start_date)->format('d M Y') }}
+                            {{ \Carbon\Carbon::parse($latest_schedule->start_date) }}
                         @else
                             No upcoming date
                         @endif

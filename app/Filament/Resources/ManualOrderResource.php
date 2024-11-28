@@ -209,7 +209,7 @@ class ManualOrderResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('user_name')->label('User name'),
-                TextColumn::make('user_email')->label('User email'),
+                TextColumn::make('user_email')->label('User email')->searchable(),
                 TextColumn::make('user_phone')->label('User phone'),
                 TextColumn::make('combined')
                     ->label('Course and Package Name')
@@ -220,9 +220,7 @@ class ManualOrderResource extends Resource
                 TextColumn::make('payment_mode'),
                 TextColumn::make('amount'),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
                 Action::make('proof')
                     ->label('download proof')

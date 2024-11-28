@@ -90,8 +90,8 @@
     <div class="content">
         <p>Dear <strong>{{ $order->user->name }}</strong>,</p>
         <p>We are pleased to inform you that your order with order number:
-            <strong>{{ $order->order_number }}</strong>, placed on <strong>{{ $order->payment->date->format('d M Y') }}
-                {{ $order->payment->time->format('h:i A') }}</strong>, has
+            <strong>{{ $order->order_number }}</strong>, placed on <strong>{{ $order->payment->date }}
+                {{ $order->payment->time }}</strong>, has
             been successfully processed.
         </p>
         <p>This email contains the details of your upcoming training sessions. Please find the
@@ -99,7 +99,7 @@
         </p>
         @foreach ($order->schedule as $schedule)
             <h3>{{ $schedule->course->name }}:</h3>
-            <p>Batch: {{ $schedule->start_date->format('d M Y') }} {{ $schedule->time->format('h:i A') }}</p>
+            <p>Batch: {{ $schedule->start_date }} {{ $schedule->time }}</p>
             <p>Training Mode: {{ $schedule->training_mode }}</p>
             @if ($schedule->training_mode == 'Online')
                 @if ($schedule->zoom_meeting_url && $schedule->meeting_id && $schedule->meeting_password)

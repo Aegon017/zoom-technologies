@@ -1,7 +1,7 @@
 @php
-    $startDate = $schedule->start_date->format('jS M Y');
-    $startTime = $schedule->time->format('g:i A');
-    $endTime = $schedule->end_time->format('g:i A');
+    $startDate = $schedule->start_date;
+    $startTime = $schedule->time;
+    $endTime = $schedule->end_time;
     $timeDiff = (new DateTime($schedule->time))->diff(new DateTime($schedule->end_time));
     $hoursPerDay = $timeDiff->h + $timeDiff->i / 60;
     $daysOff = implode(', ', $schedule->day_off);

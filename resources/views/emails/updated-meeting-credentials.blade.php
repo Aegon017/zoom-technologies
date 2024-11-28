@@ -88,7 +88,7 @@
     </div>
 
     <div class="content">
-        <p>Batch: {{ $schedule->start_date->format('d M Y') }} {{ $schedule->time->format('h:i A') }}</p>
+        <p>Batch: {{ $schedule->start_date }} {{ $schedule->time }}</p>
         <p>Training Mode: {{ $schedule->training_mode }}</p>
         @if ($schedule->training_mode == 'Online')
             @if ($schedule->zoom_meeting_url && $schedule->meeting_id && $schedule->meeting_password)

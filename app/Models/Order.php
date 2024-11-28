@@ -50,4 +50,9 @@ class Order extends Model
     {
         return $this->belongsTo(Package::class);
     }
+
+    public function getFormattedStartDateAttribute()
+    {
+        return \Carbon\Carbon::parse($this->start_date)->format('Y-m-d');
+    }
 }

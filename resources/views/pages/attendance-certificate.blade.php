@@ -86,8 +86,8 @@
             <p><strong>{{ $userName }}</strong></p>
             <p>For attending the course</p>
             <p><strong>{{ $courseName }}</strong></p>
-            <p>Batch: <strong>{{ $batchDate->format('d M Y') }},
-                    {{ $batchTime->format('h:i A') }}</strong></p>
+            <p>Batch: <strong>{{ $batchDate }},
+                    {{ $batchTime }}</strong></p>
             <p>Training mode: <strong>{{ $trainingMode }}</strong></p>
         </div>
 
@@ -99,7 +99,7 @@
                 <p><strong>Instructor</strong></p>
             </div>
             <div class="date">
-                <p>{{ today()->format('d M Y') }}</p>
+                <p>{{ today() }}</p>
             </div>
         </div>
     </div>

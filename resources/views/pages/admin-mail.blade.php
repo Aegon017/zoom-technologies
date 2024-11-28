@@ -134,8 +134,8 @@
         @foreach ($order->schedule as $schedule)
             <br>
             <p><strong>Course Name : </strong>{{ $schedule->course->name }}</p>
-            <p><strong>Batch : </strong>{{ $schedule->start_date->format('d M Y') }}
-                {{ $schedule->time->format('h:i A') }}
+            <p><strong>Batch : </strong>{{ $schedule->start_date }}
+                {{ $schedule->time }}
             </p>
             <p><strong>Training mode : </strong>{{ $schedule->training_mode }}</p>
             <hr>
@@ -144,7 +144,7 @@
         <p><strong>Student email:</strong> {{ $order->user->email }}</p>
         <p><strong>Student phone:</strong> {{ $order->user->phone }}</p>
         <p><strong>Order ID:</strong> {{ $order->order_number }}</p>
-        <p><strong>Enrollment Date:</strong> {{ today()->format('d M Y') }}</p>
+        <p><strong>Enrollment Date:</strong> {{ today() }}</p>
         <p><strong>Payment Details:</strong></p>
         <table>
             <tbody>

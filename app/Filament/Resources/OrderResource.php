@@ -70,13 +70,13 @@ class OrderResource extends Resource
                                 return implode(', ', [
                                     'Course: ' . optional($schedule->course)->name ?? 'N/A',
                                     'Start Date: ' . ($schedule->start_date
-                                        ? \Carbon\Carbon::parse($schedule->start_date)->format('d M Y')
+                                        ? \Carbon\Carbon::parse($schedule->start_date)
                                         : 'N/A'),
                                     'Start Time: ' . ($schedule->time
-                                        ? \Carbon\Carbon::parse($schedule->time)->format('h:i A')
+                                        ? \Carbon\Carbon::parse($schedule->time)
                                         : 'N/A'),
                                     'End Time: ' . ($schedule->end_time
-                                        ? \Carbon\Carbon::parse($schedule->end_time)->format('h:i A')
+                                        ? \Carbon\Carbon::parse($schedule->end_time)
                                         : 'N/A'),
                                     'Duration: ' . ($schedule->duration
                                         ? $schedule->duration . ' ' . $schedule->duration_type
@@ -155,7 +155,6 @@ class OrderResource extends Resource
                 //             });
                 //         }
                 //     }),
-
                 SelectFilter::make('schedule.start_date')
                     ->label('Batch Date')
                     ->relationship('schedule', 'start_date')

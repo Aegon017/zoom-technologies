@@ -34,9 +34,6 @@ class Schedule extends Model
 
     protected $casts = [
         'day_off' => 'array',
-        'start_date' => 'datetime',
-        'time' => 'datetime',
-        'end_time' => 'datetime'
     ];
 
     public function course(): BelongsTo
@@ -66,11 +63,21 @@ class Schedule extends Model
 
     public function getFormattedScheduleAttribute()
     {
-        return $this->course->name . ' - ' . $this->start_date->format('d M Y') . ' ' . $this->time->format('h:i A') . ' - ' . $this->training_mode;
+        return $this->course->name . ' - ' . $this->start_date . ' ' . $this->time . ' - ' . $this->training_mode;
     }
 
-    public function getFormattedStartDateAttribute()
+    public function getStartDateAttribute($value)
     {
-        return Carbon::parse($this->start_date)->format('d M Y');
+        return Carbon::parse($value)->format('d M Y');
+    }
+
+    public function getTimeAttribute($value)
+    {
+        return Carbon::parse($value)->format('h:i A');
+    }
+
+    public function getEndTimeAttribute($value)
+    {
+        return Carbon::parse($value)->format('h:i A');
     }
 }

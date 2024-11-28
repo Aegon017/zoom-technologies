@@ -16,7 +16,7 @@
                 </div>
                 <p class="text-gray-600 mb-1"><strong>Order number:</strong> {{ $order->order_number }}</p>
                 <p class="text-gray-600 mb-8"><strong>Date & time:</strong>
-                    {!! $order->payment->date->format('F j Y') !!}, {!! $order->payment->time->format('h i:A') !!}
+                    {!! $order->payment->date !!}, {!! $order->payment->time !!}
                 </p>
                 <div class="mb-8">
                     <div class="flex flex-col sm:flex-row mb-6">
@@ -39,8 +39,8 @@
                                         <strong class="mb-4">Course schedule:</strong>
                                         @foreach ($order->schedule as $schedule)
                                             <br><strong>Course name:</strong>{{ $schedule->course->name }} <br>
-                                            <strong>Batch:</strong>{{ $schedule->start_date->format('d M Y') }}
-                                            {{ $schedule->time->format('h:i A') }} <br>
+                                            <strong>Batch:</strong>{{ $schedule->start_date }}
+                                            {{ $schedule->time }} <br>
                                             <strong>Training mode:</strong>{{ $schedule->training_mode }}
                                             <p></p>
                                         @endforeach

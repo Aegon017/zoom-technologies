@@ -29,7 +29,7 @@ class OrderScheduleRelationManager extends RelationManager
                     ->options(
                         Schedule::all()->mapWithKeys(function ($schedule) {
                             return [
-                                $schedule->id => "{$schedule->course->name} - {$schedule->start_date->format('d M Y')} - {$schedule->time->format('h:i A')} ({$schedule->training_mode})"
+                                $schedule->id => "{$schedule->course->name} - {$schedule->start_date} - {$schedule->time} ({$schedule->training_mode})"
                             ];
                         })
                     )

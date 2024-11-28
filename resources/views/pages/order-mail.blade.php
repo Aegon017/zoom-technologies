@@ -88,8 +88,8 @@
         <div class="content">
             <p>Dear <strong>{{ $order->user->name }}</strong>,</p>
             <p>We are pleased to inform you that your order <a href="#">with order number:
-                    {{ $order->order_number }}</a> placed on {{ $order->payment->date->format('d M Y') }}
-                {{ $order->payment->time->format('h:i A') }} has been successfully
+                    {{ $order->order_number }}</a> placed on {{ $order->payment->date }}
+                {{ $order->payment->time }} has been successfully
                 processed.</p>
             <p>Here are the details of your order:</p>
 
@@ -121,7 +121,7 @@
                     @foreach ($order->schedule as $schedule)
                         <tr>
                             <td>{{ $schedule->course->name }}</td>
-                            <td>{{ $schedule->start_date->format('d M Y') }} {{ $schedule->time->format('h:i A') }}
+                            <td>{{ $schedule->start_date }} {{ $schedule->time }}
                             </td>
                             <td>{{ $schedule->training_mode }}</td>
                         </tr>
@@ -165,8 +165,8 @@
         <div class="content">
             <p>Dear <strong>{{ $order->user->name }}</strong>,</p>
             <p>We regret to inform you that your order <a href="#">with order number:
-                    {{ $order->order_number }}</a> placed on {{ $order->payment->date->format('d M Y') }}
-                {{ $order->payment->time->format('h:i A') }} has not been processed due
+                    {{ $order->order_number }}</a> placed on {{ $order->payment->date }}
+                {{ $order->payment->time }} has not been processed due
                 to a payment {{ $order->payment->status }}. This occurred because of
                 {{ $order->payment->description }}.</p>
             <p>Here are the details of your order:</p>
@@ -199,7 +199,7 @@
                     @foreach ($order->schedule as $schedule)
                         <tr>
                             <td>{{ $schedule->course->name }}</td>
-                            <td>{{ $schedule->start_date->format('d M Y') }} {{ $schedule->time->format('h:i A') }}
+                            <td>{{ $schedule->start_date }} {{ $schedule->time }}
                             </td>
                             <td>{{ $schedule->training_mode }}</td>
                         </tr>

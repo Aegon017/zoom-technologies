@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -20,13 +21,18 @@ class Payment extends Model
         'currency'
     ];
 
-    protected $casts = [
-        'time' => 'datetime',
-        'date' => 'datetime'
-    ];
-
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
+    }
+
+    public function getDateAttribute($value)
+    {
+        return Carbon::parse($value)->format('d M Y');
+    }
+
+    public function getTimeAttribute($value)
+    {
+        return Carbon::parse($value)->format('h:i A');
     }
 }
