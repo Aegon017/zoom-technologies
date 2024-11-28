@@ -8,9 +8,11 @@ use App\Models\Order;
 use App\Models\Schedule;
 use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Fieldset;
+use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
@@ -56,16 +58,33 @@ class OrderResource extends Resource
                     TextEntry::make('courseOrPackage_price')->prefix('Rs. ')->suffix('/-'),
                 ]),
                 Fieldset::make('Batches')->schema([
-                    Fieldset::make('')->schema([
-                        TextEntry::make('OrderSchedule.schedule.course.name')->label('Course name'),
-                        TextEntry::make('OrderSchedule.schedule.start_date')->label('Start date')->date(),
-                        TextEntry::make('OrderSchedule.schedule.time')->label('Start time')->time('h:i A'),
-                        TextEntry::make('OrderSchedule.schedule.end_time')->label('End time')->time('h:i A'),
-                        TextEntry::make('duration_combined')
-                            ->label('Duration')
-                            ->getStateUsing(fn($record) => optional($record->orderSchedule->first()->schedule)->duration . ' ' . optional($record->orderSchedule->first()->schedule)->duration_type ?: 'N/A'),
-                        TextEntry::make('OrderSchedule.schedule.training_mode')->label('Training mode'),
-                    ])
+                    TextEntry::make('orderSchedule')
+                        ->label('')
+                        ->listWithLineBreaks()
+                        ->getStateUsing(function ($record) {
+                            if (!$record->orderSchedule || $record->orderSchedule->isEmpty()) {
+                                return ['No Schedules Available'];
+                            }
+                            return $record->orderSchedule->map(function ($orderSchedule) {
+                                $schedule = $orderSchedule->schedule; // Assuming schedule is a relationship on OrderSchedule
+                                return implode(', ', [
+                                    'Course: ' . optional($schedule->course)->name ?? 'N/A',
+                                    'Start Date: ' . ($schedule->start_date
+                                        ? \Carbon\Carbon::parse($schedule->start_date)->format('d M Y')
+                                        : 'N/A'),
+                                    'Start Time: ' . ($schedule->time
+                                        ? \Carbon\Carbon::parse($schedule->time)->format('h:i A')
+                                        : 'N/A'),
+                                    'End Time: ' . ($schedule->end_time
+                                        ? \Carbon\Carbon::parse($schedule->end_time)->format('h:i A')
+                                        : 'N/A'),
+                                    'Duration: ' . ($schedule->duration
+                                        ? $schedule->duration . ' ' . $schedule->duration_type
+                                        : 'N/A'),
+                                    'Training Mode: ' . optional($schedule)->training_mode ?? 'N/A',
+                                ]);
+                            })->toArray();
+                        }),
                 ]),
                 Fieldset::make('Payment Details')->schema([
                     TextEntry::make('order_number'),

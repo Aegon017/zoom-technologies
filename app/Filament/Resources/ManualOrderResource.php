@@ -8,15 +8,22 @@ use App\Models\ManualOrder;
 use App\Models\Package;
 use App\Models\Schedule;
 use App\Models\Tax;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Fieldset;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class ManualOrderResource extends Resource
 {
@@ -25,6 +32,10 @@ class ManualOrderResource extends Resource
     protected static ?string $navigationLabel = 'Manual Enroll';
     protected static ?string $label = 'Manual Enroll';
     protected static ?string $slug = 'manual-enroll';
+    public static function canEdit(Model $record): bool
+    {
+        return false;
+    }
     public static function form(Form $form): Form
     {
         return $form
@@ -124,14 +135,23 @@ class ManualOrderResource extends Resource
                                 Select::make('packageSchedule_id')
                                     ->label('Schedule')
                                     ->options(function ($get) {
-                                        if ($get('packageCourses')) {
-                                            $packageCourses = $get('packageCourses');
-                                            foreach ($packageCourses as $course) {
-                                                $course_id = $course->id;
-                                                $schedule = Schedule::where('course_id',  $course_id)->get()->pluck('formatted_schedule', 'id');
+                                        if ($get('package_id')) {
+                                            // Get the package
+                                            $package = Package::find($get('package_id'));
+
+                                            if ($package) {
+                                                // Get all course IDs in the package
+                                                $courseIds = $package->courses;
+
+                                                // Retrieve schedules for all courses in the package
+                                                $schedules = Schedule::whereIn('course_id', $courseIds)
+                                                    ->get()
+                                                    ->pluck('formatted_schedule', 'id');
+
+                                                return $schedules;
                                             }
-                                            return $schedule;
                                         }
+
                                         return [];
                                     })
                                     ->searchable()
@@ -178,6 +198,7 @@ class ManualOrderResource extends Resource
                                     'UPI' => 'UPI',
                                     'Cheque' => 'Cheque'
                                 ])->required(),
+                                FileUpload::make('proof')->required()
                             ])
                     ])->columns(2)->columnSpanFull(),
             ]);
@@ -187,20 +208,29 @@ class ManualOrderResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('user.name')->label('User name'),
-                TextColumn::make('user.email')->label('User email'),
-                TextColumn::make('user.phone')->label('User phone'),
-                TextColumn::make('course.name'),
-                TextColumn::make('schedule.start_date')->label('Batch date'),
-                TextColumn::make('schedule.time')->label('Batch time'),
-                TextColumn::make('schedule.training_mode')->label('Training mode'),
+                TextColumn::make('user_name')->label('User name'),
+                TextColumn::make('user_email')->label('User email'),
+                TextColumn::make('user_phone')->label('User phone'),
+                TextColumn::make('combined')
+                    ->label('Course and Package Name')
+                    ->getStateUsing(function ($record) {
+                        $course =  $record->course->name ?? $record->package->name;
+                        return $course;
+                    }),
                 TextColumn::make('payment_mode'),
                 TextColumn::make('amount'),
             ])
             ->filters([
                 //
             ])
-            ->actions([])
+            ->actions([
+                Action::make('proof')
+                    ->label('download proof')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->action(function ($record) {
+                        return response()->download(storage_path("app/public/{$record->proof}"));
+                    }),
+            ])
             ->bulkActions([]);
     }
 

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->mediumInteger('sgst');
             $table->mediumInteger('amount');
             $table->string('payment_mode');
+            $table->string('proof');
             $table->timestamps();
         });
     }

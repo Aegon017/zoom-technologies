@@ -20,7 +20,8 @@ class ManualOrder extends Model
         'cgst',
         'sgst',
         'amount',
-        'payment_mode'
+        'payment_mode',
+        'proof'
     ];
 
     protected $casts = [
@@ -30,6 +31,11 @@ class ManualOrder extends Model
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
+    }
+
+    public function package(): BelongsTo
+    {
+        return $this->belongsTo(Package::class);
     }
 
     public function schedule(): BelongsTo

@@ -44,15 +44,22 @@ class CreateOrderSendMail
         $userId = $user->id;
         $order = new Order();
         $order->user_id = $userId;
-        $order->course_id = $event->manualOrder->course_id;
+        $order->course_id = $event->manualOrder->package_id ? null : $event->manualOrder->course_id;
+        $order->package_id = $event->manualOrder->package_id;
         $order->order_number = 'zt_' . $userId . now()->format('YmdHis');
         $order->courseOrPackage_price = $event->manualOrder->course_price;
         $order->cgst = $event->manualOrder->cgst;
         $order->sgst = $event->manualOrder->sgst;
         $order->save();
-        $scheduleIDs[] = $event->manualOrder->schedule_id;
-        $attachScheduleToOrder = new AttachScheduleToOrder();
-        $attachScheduleToOrder->execute($scheduleIDs, $order->id);
+        if ($event->manualOrder->package_id) {
+            $scheduleIDs = $event->manualOrder->packageSchedule_id;
+            $attachScheduleToOrder = new AttachScheduleToOrder();
+            $attachScheduleToOrder->execute($scheduleIDs, $order->id);
+        } else {
+            $scheduleIDs[] = $event->manualOrder->schedule_id;
+            $attachScheduleToOrder = new AttachScheduleToOrder();
+            $attachScheduleToOrder->execute($scheduleIDs, $order->id);
+        }
         $data = [
             'paymentId' => 'N/A',
             'method' => 'Counsellor',
