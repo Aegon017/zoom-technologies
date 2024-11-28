@@ -15,7 +15,7 @@ class ManualOrderPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_manual::order');
+        return $user->can('view_any_single::course');
     }
 
     /**
@@ -23,7 +23,7 @@ class ManualOrderPolicy
      */
     public function view(User $user, ManualOrder $manualOrder): bool
     {
-        return $user->can('view_manual::order');
+        return $user->can('view_single::course');
     }
 
     /**
@@ -31,7 +31,7 @@ class ManualOrderPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_manual::order');
+        return $user->can('create_single::course');
     }
 
     /**
@@ -39,7 +39,7 @@ class ManualOrderPolicy
      */
     public function update(User $user, ManualOrder $manualOrder): bool
     {
-        return $user->can('update_manual::order');
+        return $user->can('update_single::course');
     }
 
     /**
@@ -47,7 +47,7 @@ class ManualOrderPolicy
      */
     public function delete(User $user, ManualOrder $manualOrder): bool
     {
-        return $user->can('delete_manual::order');
+        return $user->can('delete_single::course');
     }
 
     /**
@@ -55,7 +55,7 @@ class ManualOrderPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_manual::order');
+        return $user->can('delete_any_single::course');
     }
 
     /**
@@ -63,7 +63,7 @@ class ManualOrderPolicy
      */
     public function forceDelete(User $user, ManualOrder $manualOrder): bool
     {
-        return $user->can('force_delete_manual::order');
+        return $user->can('force_delete_single::course');
     }
 
     /**
@@ -71,7 +71,7 @@ class ManualOrderPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_manual::order');
+        return $user->can('force_delete_any_single::course');
     }
 
     /**
@@ -79,7 +79,7 @@ class ManualOrderPolicy
      */
     public function restore(User $user, ManualOrder $manualOrder): bool
     {
-        return $user->can('restore_manual::order');
+        return $user->can('restore_single::course');
     }
 
     /**
@@ -87,7 +87,7 @@ class ManualOrderPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_manual::order');
+        return $user->can('restore_any_single::course');
     }
 
     /**
@@ -95,7 +95,7 @@ class ManualOrderPolicy
      */
     public function replicate(User $user, ManualOrder $manualOrder): bool
     {
-        return $user->can('replicate_manual::order');
+        return $user->can('replicate_single::course');
     }
 
     /**
@@ -103,6 +103,6 @@ class ManualOrderPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_manual::order');
+        return $user->can('reorder_single::course');
     }
 }

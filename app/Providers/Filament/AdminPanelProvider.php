@@ -57,13 +57,23 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                
+
             ])
             ->plugins([
                 FilamentShieldPlugin::make(),
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->navigationGroups([
+                'Offline Enrolls',
+                'Courses & Packages',
+                'News',
+                'Home page',
+                'Contact Details',
+                'Currencies & Taxes',
+                'SEO Settings',
+                'Filament Shield'
             ]);
     }
 }

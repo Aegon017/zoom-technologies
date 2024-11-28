@@ -19,7 +19,7 @@ class StudentResource extends Resource
     protected static ?string $label = 'Students';
     protected static ?string $navigationLabel = 'Students';
     public static ?string $slug = 'students';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';

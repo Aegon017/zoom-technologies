@@ -32,7 +32,8 @@ class OrderResource extends Resource
     protected static ?string $model = Order::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
+    protected static ?string $navigationLabel = 'Course Orders';
     public static function canCreate(): bool
     {
         return false;

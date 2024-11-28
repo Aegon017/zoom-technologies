@@ -26,12 +26,15 @@ class OrderScheduleRelationManager extends RelationManager
         return $form
             ->schema([
                 Select::make('schedule_id')
+                    ->label('Schedule')
                     ->options(
-                        Schedule::all()->mapWithKeys(function ($schedule) {
-                            return [
-                                $schedule->id => "{$schedule->course->name} - {$schedule->start_date} - {$schedule->time} ({$schedule->training_mode})"
-                            ];
-                        })
+                        Schedule::where('course_id', $this->ownerRecord->course_id)
+                            ->get()
+                            ->mapWithKeys(function ($schedule) {
+                                return [
+                                    $schedule->id => "{$schedule->course->name} - {$schedule->start_date} - {$schedule->time} ({$schedule->training_mode})"
+                                ];
+                            })
                     )
                     ->searchable()
                     ->columnSpanFull(),

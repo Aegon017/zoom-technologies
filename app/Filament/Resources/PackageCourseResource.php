@@ -2,36 +2,47 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ManualOrderResource\Pages;
+use App\Filament\Resources\PackageCourseResource\Pages;
+use App\Filament\Resources\PackageCourseResource\RelationManagers;
 use App\Models\Course;
 use App\Models\ManualOrder;
 use App\Models\Package;
+use App\Models\PackageCourse;
 use App\Models\Schedule;
 use App\Models\Tax;
+use App\Models\User;
+use Filament\Actions\Action as FilamentActionsAction;
+use Filament\Forms;
+use Filament\Forms\Components\Actions\Action as ActionsAction;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Infolists\Components\Fieldset;
-use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
+use Filament\Notifications\Notification;
+use Filament\Resources\Pages\CreateRecord;
 use Filament\Resources\Resource;
+use Filament\Tables;
 use Filament\Tables\Actions\Action;
-use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ManualOrderResource extends Resource
+
+class PackageCourseResource extends Resource
 {
     protected static ?string $model = ManualOrder::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Manual Enroll';
-    protected static ?string $label = 'Manual Enroll';
-    protected static ?string $slug = 'manual-enroll';
+    protected static ?string $navigationLabel = 'Package Course Enroll';
+    protected static ?string $label = 'Package Course Enroll';
+    protected static ?string $slug = 'package-course-enroll';
+    protected static ?string $navigationGroup = 'Offline Enrolls';
     public static function canEdit(Model $record): bool
     {
         return false;
@@ -45,58 +56,32 @@ class ManualOrderResource extends Resource
                         Tab::make('User Details')
                             ->schema([
                                 TextInput::make('user_name'),
-                                TextInput::make('user_email'),
-                                TextInput::make('user_phone'),
-                            ]),
-                        Tab::make('Course Details')
-                            ->schema([
-                                Select::make('course_id')
-                                    ->label('Course')
-                                    ->options(Course::all()->pluck('name', 'id'))
-                                    ->searchable()
+                                TextInput::make('user_email')
+                                    ->unique(User::class, 'email', ignoreRecord: true)
+                                    ->live()
                                     ->reactive()
-                                    ->afterStateUpdated(function ($state, $set) {
-                                        $set('schedule_id', null);
-                                        $set('course_price', null);
-                                        $set('cgst', null);
-                                        $set('sgst', null);
-                                        $set('amount', null);
-                                        if ($state) {
-                                            $course = Course::find($state);
-                                            if ($course) {
-                                                $set('course_price', $course->actual_price);
-                                                $cgstPercentage = Tax::where('name', 'CGST')->first()->value;
-                                                $sgstPercentage = Tax::where('name', 'SGST')->first()->value;
-                                                if ($cgstPercentage && $sgstPercentage) {
-                                                    $cgst = $course->actual_price * ($cgstPercentage / 100);
-                                                    $sgst = $course->actual_price * ($sgstPercentage / 100);
-                                                    $set('cgst', $cgst);
-                                                    $set('sgst', $sgst);
-                                                    $amount = $course->actual_price + $cgst + $sgst;
-                                                    $set('amount', $amount);
-                                                    $set('cgst_percentage', $cgstPercentage);
-                                                    $set('sgst_percentage', $sgstPercentage);
-                                                }
-                                            }
+                                    ->afterStateUpdated(function ($state, callable $get) {
+                                        if (User::where('email', $state)->exists()) {
+                                            Notification::make()
+                                                ->title('Email already exists')
+                                                ->body('The email you entered is already registered. Please use a different email.')
+                                                ->danger()
+                                                ->send();
                                         }
                                     }),
-                                Select::make('schedule_id')
-                                    ->label('Schedule')
-                                    ->options(function ($get) {
-                                        if ($get('course_id')) {
-                                            $courseId = $get('course_id');
-                                            if ($courseId) {
-                                                return Schedule::where('course_id', $courseId)
-                                                    ->get()
-                                                    ->pluck('formatted_schedule', 'id');
-                                            }
+                                TextInput::make('user_phone')
+                                    ->unique(User::class, 'phone', ignoreRecord: true)
+                                    ->live()
+                                    ->reactive()
+                                    ->afterStateUpdated(function ($state, callable $get) {
+                                        if (User::where('phone', $state)->exists()) {
+                                            Notification::make()
+                                                ->title('Phone number already exists')
+                                                ->body('The phone number you entered is already registered. Please use a different phone number.')
+                                                ->danger()
+                                                ->send();
                                         }
-                                        return [];
-                                    })
-                                    ->searchable()
-                                    ->disabled(function ($get) {
-                                        return !$get('course_id');
-                                    })
+                                    }),
                             ]),
                         Tab::make('Package Details')
                             ->schema([
@@ -106,13 +91,11 @@ class ManualOrderResource extends Resource
                                     ->searchable()
                                     ->reactive()
                                     ->afterStateUpdated(function ($state, $set) {
-                                        $set('schedule_id', null);
                                         $set('course_price', null);
                                         $set('cgst', null);
                                         $set('sgst', null);
                                         $set('amount', null);
                                         $set('packageCourses', null);
-
                                         if ($state) {
                                             $package = Package::find($state);
                                             if ($package) {
@@ -127,29 +110,28 @@ class ManualOrderResource extends Resource
                                                 $set('amount', $amount);
                                                 $set('cgst_percentage', $cgstPercentage);
                                                 $set('sgst_percentage', $sgstPercentage);
-                                                $packageCourses = Course::findMany($package->courses);
-                                                $set('packageCourses', $packageCourses);
                                             }
                                         }
+                                    }),
+                                Select::make('training_mode')
+                                    ->options([
+                                        'Online' => 'Online',
+                                        'Classroom' => 'Classroom'
+                                    ])
+                                    ->afterStateUpdated(function ($state, $set) {
+                                        $set('training_mode', $state);
+                                    })
+                                    ->disabled(function ($get) {
+                                        return !$get('package_id');
                                     }),
                                 Select::make('packageSchedule_id')
                                     ->label('Schedule')
                                     ->options(function ($get) {
                                         if ($get('package_id')) {
-                                            // Get the package
-                                            $package = Package::find($get('package_id'));
-
-                                            if ($package) {
-                                                // Get all course IDs in the package
-                                                $courseIds = $package->courses;
-
-                                                // Retrieve schedules for all courses in the package
-                                                $schedules = Schedule::whereIn('course_id', $courseIds)
-                                                    ->get()
-                                                    ->pluck('formatted_schedule', 'id');
-
-                                                return $schedules;
-                                            }
+                                            $trainingMode = $get('training_mode');
+                                            $courseIds = Package::find($get('package_id'))->courses;
+                                            $schedules = Schedule::whereIn('course_id', $courseIds)->where('training_mode', $trainingMode)->get()->pluck('formatted_package_schedule', 'id');
+                                            return $schedules;
                                         }
 
                                         return [];
@@ -165,11 +147,11 @@ class ManualOrderResource extends Resource
                                 TextInput::make('course_price')
                                     ->label('Course price')
                                     ->numeric()
-                                    ->required()
+
                                     ->readOnly()
                                     ->default(function ($get) {
                                         return $get('course_price');
-                                    })->required(),
+                                    }),
 
                                 TextInput::make('cgst')
                                     ->helperText(function ($get) {
@@ -177,8 +159,7 @@ class ManualOrderResource extends Resource
                                         return "CGST - {$cgstPercentage}%";
                                     })
                                     ->label('CGST')
-                                    ->readOnly()
-                                    ->required(),
+                                    ->readOnly(),
 
                                 TextInput::make('sgst')
                                     ->helperText(function ($get) {
@@ -186,19 +167,17 @@ class ManualOrderResource extends Resource
                                         return "SGST - {$sgstPercentage}%";
                                     })
                                     ->label('SGST')
-                                    ->readOnly()
-                                    ->required(),
+                                    ->readOnly(),
 
                                 TextInput::make('amount')
                                     ->label('Total Amount')
-                                    ->readOnly()
-                                    ->required(),
+                                    ->readOnly(),
                                 Select::make('payment_mode')->options([
                                     'Cash' => 'Cash',
                                     'UPI' => 'UPI',
                                     'Cheque' => 'Cheque'
-                                ])->required(),
-                                FileUpload::make('proof')->required()
+                                ]),
+                                FileUpload::make('proof')
                             ])
                     ])->columns(2)->columnSpanFull(),
             ]);
@@ -211,12 +190,7 @@ class ManualOrderResource extends Resource
                 TextColumn::make('user_name')->label('User name'),
                 TextColumn::make('user_email')->label('User email')->searchable(),
                 TextColumn::make('user_phone')->label('User phone'),
-                TextColumn::make('combined')
-                    ->label('Course and Package Name')
-                    ->getStateUsing(function ($record) {
-                        $course =  $record->course->name ?? $record->package->name;
-                        return $course;
-                    }),
+                TextColumn::make('package.name'),
                 TextColumn::make('payment_mode'),
                 TextColumn::make('amount'),
             ])
@@ -229,7 +203,8 @@ class ManualOrderResource extends Resource
                         return response()->download(storage_path("app/public/{$record->proof}"));
                     }),
             ])
-            ->bulkActions([]);
+            ->bulkActions([])
+            ->modifyQueryUsing(fn(Builder $query) => $query->whereNotNull('package_id'));
     }
 
     public static function getRelations(): array
@@ -242,9 +217,9 @@ class ManualOrderResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListManualOrders::route('/'),
-            'create' => Pages\CreateManualOrder::route('/create'),
-            'edit' => Pages\EditManualOrder::route('/{record}/edit'),
+            'index' => Pages\ListPackageCourses::route('/'),
+            'create' => Pages\CreatePackageCourse::route('/create'),
+            'edit' => Pages\EditPackageCourse::route('/{record}/edit'),
         ];
     }
 }
