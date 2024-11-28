@@ -30,8 +30,9 @@
                 @foreach ($moments as $moment)
                     <div class="grid-item image-text-card">
                         <div class="img">
-                            <a class="zt-photo-popup" data-lightbox="mmoments" href="{{ asset($moment->image) }}">
-                                <img src="{{ asset($moment->image) }}" alt="{{ $moment->image_alt }}">
+                            <a class="zt-photo-popup" data-lightbox="mmoments"
+                                href="{{ asset(Storage::url($moment->image)) }}">
+                                <img src="{{ asset(Storage::url($moment->image)) }}" alt="{{ $moment->image_alt }}">
                             </a>
                         </div>
                         <div class="content">
