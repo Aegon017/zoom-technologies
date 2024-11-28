@@ -141,10 +141,8 @@ class PaymentController extends Controller
                     'currency' => 'USD',
                 ];
                 $updateOrderPayment->execute($order->id, $data);
-                if ($request->status == 'success') {
-                    $order->invoice = $generateInvoice->execute($order);
-                    $order->save();
-                }
+                $order->invoice = $generateInvoice->execute($order);
+                $order->save();
                 $sendEmails->execute($order);
                 break;
 
@@ -174,10 +172,8 @@ class PaymentController extends Controller
                     'currency' => 'USD',
                 ];
                 $updateOrderPayment->execute($order->id, $data);
-                if ($request->status == 'success') {
-                    $order->invoice = $generateInvoice->execute($order);
-                    $order->save();
-                }
+                $order->invoice = $generateInvoice->execute($order);
+                $order->save();
                 $sendEmails->execute($order);
                 break;
             default:
