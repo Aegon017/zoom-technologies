@@ -159,7 +159,7 @@ class PaymentController extends Controller
                 $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
                 $response = $stripe->checkout->sessions->retrieve($request->session_id);
                 $paymentId = $response->payment_intent;
-                $method = 'stripte';
+                $method = 'stripe';
                 $mode = 'Card';
                 $description = 'Payment success';
                 $date = today();

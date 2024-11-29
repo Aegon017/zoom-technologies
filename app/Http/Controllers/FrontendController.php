@@ -184,6 +184,7 @@ class FrontendController extends Controller
         $course = Course::where('slug', $slug)->with('studyMaterial')->first();
         $studyMaterials = $course->studyMaterial->where('subscription', 'Paid');
         $courseName = $course->name;
+
         return view('pages.my-course', compact('studyMaterials', 'courseName'));
     }
 
