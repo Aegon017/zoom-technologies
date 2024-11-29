@@ -63,12 +63,12 @@ class Schedule extends Model
 
     public function getFormattedScheduleAttribute()
     {
-        return $this->start_date . ', ' . $this->time;
+        return $this->start_date.', '.$this->time;
     }
 
     public function getFormattedPackageScheduleAttribute()
     {
-        return $this->course->name . ' - ' . $this->start_date . ', ' . $this->time;
+        return $this->course->name.' - '.$this->start_date.', '.$this->time;
     }
 
     public function getStartDateAttribute($value)

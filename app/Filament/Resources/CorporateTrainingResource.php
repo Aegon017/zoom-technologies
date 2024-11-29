@@ -3,9 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CorporateTrainingResource\Pages;
-use App\Filament\Resources\CorporateTrainingResource\RelationManagers;
 use App\Models\CorporateTraining;
-use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -14,13 +12,13 @@ use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CorporateTrainingResource extends Resource
 {
     protected static ?string $model = CorporateTraining::class;
+
     protected static ?string $navigationGroup = 'Home page';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

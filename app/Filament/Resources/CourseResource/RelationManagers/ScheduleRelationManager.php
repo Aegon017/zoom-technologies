@@ -38,16 +38,16 @@ class ScheduleRelationManager extends RelationManager
                     }),
                 TextInput::make('zoom_meeting_url')
                     ->label('Zoom Meeting URL')
-                    ->hidden(fn($get) => $get('training_mode') !== 'Online')
+                    ->hidden(fn ($get) => $get('training_mode') !== 'Online')
                     ->url()
                     ->required(),
                 TextInput::make('meeting_id')
                     ->label('Meeting ID')
-                    ->hidden(fn($get) => $get('training_mode') !== 'Online')
+                    ->hidden(fn ($get) => $get('training_mode') !== 'Online')
                     ->required(),
                 TextInput::make('meeting_password')
                     ->label('Meeting Password')
-                    ->hidden(fn($get) => $get('training_mode') !== 'Online')
+                    ->hidden(fn ($get) => $get('training_mode') !== 'Online')
                     ->required(),
                 DatePicker::make('start_date')->native(false)->minDate(now())->required(),
                 TimePicker::make('time')->seconds(false)->native(false)->label('Start time')->seconds(false)->required(),
@@ -76,29 +76,30 @@ class ScheduleRelationManager extends RelationManager
                 TextColumn::make('start_date')->searchable()->date(),
                 TextColumn::make('time')->time('h:i A'),
                 TextColumn::make('end_time')->time('h:i A'),
-                TextColumn::make('training_mode')
+                TextColumn::make('training_mode'),
             ])
             ->filters([])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->visible(fn() => request()->input('components.0.updates.activeTab', 'true') === 'true')
+                    ->visible(fn () => request()->input('components.0.updates.activeTab', 'true') === 'true'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([]);
     }
+
     public function getTabs(): array
     {
         return [
             'false' => Tab::make('Past Schedules')
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', false)),
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', false)),
             'true' => Tab::make('Upcoming Schedules')
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', true)),
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', true)),
         ];
     }
 
-    public function getDefaultActiveTab(): string | int | null
+    public function getDefaultActiveTab(): string|int|null
     {
         return 'true';
     }

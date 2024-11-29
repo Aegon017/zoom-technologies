@@ -10,6 +10,6 @@ class PageMetaDetails extends Model
         'page_name',
         'title',
         'keywords',
-        'description'
+        'description',
     ];
 }

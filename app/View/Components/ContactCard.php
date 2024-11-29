@@ -9,8 +9,8 @@ use Illuminate\View\Component;
 
 class ContactCard extends Component
 {
-
     public $locations;
+
     public function __construct()
     {
         $this->locations = ContactLocation::all();

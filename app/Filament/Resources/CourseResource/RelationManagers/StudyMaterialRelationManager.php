@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\CourseResource\RelationManagers;
 
-use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -12,8 +11,6 @@ use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class StudyMaterialRelationManager extends RelationManager
 {
@@ -27,7 +24,7 @@ class StudyMaterialRelationManager extends RelationManager
                 TextInput::make('material_url'),
                 Select::make('subscription')->options([
                     'Free' => 'Free',
-                    'Paid' => 'Paid'
+                    'Paid' => 'Paid',
                 ])->required(),
                 TextInput::make('image_alt')->required(),
                 FileUpload::make('image')->disk('public')->directory('study_materials/courses')->preserveFilenames()->columnSpanFull()->required(),

@@ -14,22 +14,24 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements MustVerifyEmail, FilamentUser
+class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     use HasApiTokens;
 
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
+
+    use HasPanelShield;
     use HasProfilePhoto;
+    use HasRoles;
     use Notifiable;
     use TwoFactorAuthenticatable;
-    use HasRoles;
-    use HasPanelShield;
 
     public function canAccessPanel(Panel $panel): bool
     {
         return str_ends_with($this->email, '@zoomgroup.com') && $this->hasVerifiedEmail();
     }
+
     /**
      * The attributes that are mass assignable.
      *

@@ -3,9 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PageMetaDetailsResource\Pages;
-use App\Filament\Resources\PageMetaDetailsResource\RelationManagers;
 use App\Models\PageMetaDetails;
-use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -15,15 +13,17 @@ use Filament\Tables;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PageMetaDetailsResource extends Resource
 {
     protected static ?string $model = PageMetaDetails::class;
+
     protected static ?string $navigationGroup = 'SEO Settings';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     protected static ?int $navigationSort = 8;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -41,7 +41,7 @@ class PageMetaDetailsResource extends Resource
                 ])->required(),
                 TextInput::make('title')->required(),
                 Textarea::make('keywords')->rows(7)->required(),
-                Textarea::make('description')->rows(7)->required()
+                Textarea::make('description')->rows(7)->required(),
             ]);
     }
 
@@ -52,14 +52,14 @@ class PageMetaDetailsResource extends Resource
                 TextColumn::make('page_name')->searchable(),
                 TextColumn::make('title')->wrap()->lineClamp(4),
                 TextColumn::make('keywords')->wrap()->lineClamp(4),
-                TextColumn::make('description')->wrap()->lineClamp(4)
+                TextColumn::make('description')->wrap()->lineClamp(4),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                DeleteAction::make()
+                DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

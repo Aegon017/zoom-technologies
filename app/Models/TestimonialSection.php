@@ -10,7 +10,7 @@ class TestimonialSection extends Model
     protected $fillable = [
         'title',
         'heading',
-        'image'
+        'image',
     ];
 
     public function testimonial(): HasMany

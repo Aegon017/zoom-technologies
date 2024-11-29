@@ -6,12 +6,10 @@ use App\Events\ManualOrderCreatedEvent;
 use App\Events\MeetingCredentialsUpdatedEvent;
 use App\Listeners\CreateOrderSendMail;
 use App\Listeners\SendMeetingCredentialsUpdatedEmail;
-use App\Models\Course;
-use App\Observers\CourseObserver;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
-use Illuminate\Support\Facades\Route;
 
 class AppServiceProvider extends ServiceProvider
 {

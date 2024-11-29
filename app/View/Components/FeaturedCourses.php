@@ -11,6 +11,7 @@ use Illuminate\View\Component;
 class FeaturedCourses extends Component
 {
     public $items;
+
     public function __construct()
     {
         $this->items = Course::all()->concat(Package::all());

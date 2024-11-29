@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Models\News;
 use Livewire\Component;
 
 class NewsCard extends Component

@@ -3,30 +3,28 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PageSchemaResource\Pages;
-use App\Filament\Resources\PageSchemaResource\RelationManagers;
 use App\Models\Course;
 use App\Models\News;
 use App\Models\NewsCategory;
 use App\Models\Package;
 use App\Models\PageSchema;
-use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PageSchemaResource extends Resource
 {
     protected static ?string $model = PageSchema::class;
+
     protected static ?int $navigationSort = 9;
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     protected static ?string $navigationGroup = 'SEO Settings';
 
     public static function form(Form $form): Form
@@ -47,16 +45,16 @@ class PageSchemaResource extends Resource
                             'Study material' => 'Study material',
                         ],
                         Course::pluck('name', 'name')->mapWithKeys(function ($item, $key) {
-                            return [$key => 'Course - ' . $item];
+                            return [$key => 'Course - '.$item];
                         })->toArray(),
                         Package::pluck('name', 'name')->mapWithKeys(function ($item, $key) {
-                            return [$key => 'Package - ' . $item];
+                            return [$key => 'Package - '.$item];
                         })->toArray(),
                         News::pluck('name', 'name')->mapWithKeys(function ($item, $key) {
-                            return [$key => 'News - ' . $item];
+                            return [$key => 'News - '.$item];
                         })->toArray(),
                         NewsCategory::pluck('name', 'name')->mapWithKeys(function ($item, $key) {
-                            return [$key => 'News category - ' . $item];
+                            return [$key => 'News category - '.$item];
                         })->toArray()
                     )
                 )->searchable()->required()->columnSpanFull(),

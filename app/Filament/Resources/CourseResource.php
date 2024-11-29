@@ -32,9 +32,13 @@ use Illuminate\Support\Str;
 class CourseResource extends Resource
 {
     protected static ?string $model = Course::class;
+
     protected static ?string $navigationGroup = 'Courses & Packages';
+
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
+
     protected static ?int $navigationSort = 3;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -42,19 +46,19 @@ class CourseResource extends Resource
                 Group::make()->schema([
                     Section::make('Course Details')->schema([
                         TextInput::make('name')->live(onBlur: true)
-                            ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
+                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
                         TextInput::make('slug')->prefix('training/india/')->required(),
                         RichEditor::make('short_description')->columnSpanFull()->required(),
                         TextInput::make('duration')->required(),
                         Select::make('duration_type')->options(['Month' => 'Month', 'Week' => 'Week', 'Day' => 'Day'])->required(),
                         Select::make('training_mode')->multiple()->options(['Online' => 'Online', 'Classroom' => 'Classroom'])->columnSpanFull()->required(),
                         TextInput::make('sale_price')->label('Sale price')->prefix('Rs.'),
-                        TextInput::make('actual_price')->label('Actual price')->prefix('Rs.')->required()
+                        TextInput::make('actual_price')->label('Actual price')->prefix('Rs.')->required(),
                     ])->columns(2),
                     Section::make('Placement & Certification')->schema([
                         Radio::make('placement')->boolean()->label('Placement assistance')->inline()->required(),
-                        Radio::make('certificate')->boolean()->inline()->required()
-                    ])
+                        Radio::make('certificate')->boolean()->inline()->required(),
+                    ]),
                 ])->columnSpan(2),
                 Group::make()->schema([
                     Section::make('Course Media')->schema([
@@ -63,7 +67,7 @@ class CourseResource extends Resource
                         FileUpload::make('image')->disk('public')->directory('images/courses')->preserveFilenames()->columnSpanFull()->required(),
                         TextInput::make('image_alt')->columnSpanFull()->required(),
                         FileUpload::make('outline_pdf')->label('Outline Pdf')->disk('public')->directory('outline_PDFs')->preserveFilenames(),
-                        TextInput::make('video_link')->required()
+                        TextInput::make('video_link')->required(),
                     ]),
                 ]),
             ])->columns(3);
@@ -78,14 +82,14 @@ class CourseResource extends Resource
                 TextColumn::make('name')->searchable(),
                 TextColumn::make('training_mode'),
                 TextColumn::make('sale_price'),
-                TextColumn::make('actual_price')
+                TextColumn::make('actual_price'),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                DeleteAction::make()
+                DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -104,7 +108,7 @@ class CourseResource extends Resource
             ScheduleRelationManager::class,
             GuidelineRelationManager::class,
             StudyMaterialRelationManager::class,
-            FaqRelationManager::class
+            FaqRelationManager::class,
         ];
     }
 

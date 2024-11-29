@@ -13,7 +13,7 @@ class StudyMaterial extends Model
         'image',
         'image_alt',
         'material_url',
-        'subscription'
+        'subscription',
     ];
 
     public function course(): BelongsTo

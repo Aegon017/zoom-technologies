@@ -3,21 +3,19 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\SocialLinkResource\Pages;
-use App\Filament\Resources\SocialLinkResource\RelationManagers;
 use App\Models\SocialLink;
-use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SocialLinkResource extends Resource
 {
     protected static ?string $model = SocialLink::class;
+
     protected static ?string $navigationGroup = 'Home page';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

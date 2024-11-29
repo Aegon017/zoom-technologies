@@ -2,13 +2,13 @@
 
 namespace App\Livewire;
 
-use App\Models\News;
 use App\Models\NewsCategory as ModelsNewsCategory;
 use Livewire\Component;
 
 class NewsCategory extends Component
 {
     public $newsCategories;
+
     public function mount()
     {
         $this->newsCategories = ModelsNewsCategory::all();

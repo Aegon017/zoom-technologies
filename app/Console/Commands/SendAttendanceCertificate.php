@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Mail;
 
 class SendAttendanceCertificate extends Command
 {
-
     /**
      * The name and signature of the console command.
      *
@@ -25,7 +24,6 @@ class SendAttendanceCertificate extends Command
      * @var string
      */
     protected $description = 'Send attending certificate through email notification to students when batch is completed';
-
 
     /**
      * Execute the console command.
@@ -74,7 +72,7 @@ class SendAttendanceCertificate extends Command
                 ];
 
                 $pdf = Pdf::loadView('pages.attendance-certificate', $data);
-                $pdfFileName = 'certificates/certificate_' . time() . '.pdf';
+                $pdfFileName = 'certificates/certificate_'.time().'.pdf';
                 $pdfPath = public_path($pdfFileName);
                 $pdf->save($pdfPath);
                 $subject = 'Certificate of Attendance';

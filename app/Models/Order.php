@@ -18,7 +18,7 @@ class Order extends Model
         'courseOrPackage_price',
         'cgst',
         'sgst',
-        'invoice'
+        'invoice',
     ];
 
     public function payment(): HasOne

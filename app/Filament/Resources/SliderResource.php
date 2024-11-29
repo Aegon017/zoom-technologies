@@ -3,9 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\SliderResource\Pages;
-use App\Filament\Resources\SliderResource\RelationManagers;
 use App\Models\Slider;
-use Filament\Forms;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
@@ -16,13 +14,13 @@ use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SliderResource extends Resource
 {
     protected static ?string $model = Slider::class;
+
     protected static ?string $navigationGroup = 'Home page';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -34,7 +32,7 @@ class SliderResource extends Resource
                 FileUpload::make('image')->columnSpanFull()->required(),
                 TextInput::make('button_name')->required(),
                 TextInput::make('redirect_url'),
-                Checkbox::make('status')->required()
+                Checkbox::make('status')->required(),
             ]);
     }
 

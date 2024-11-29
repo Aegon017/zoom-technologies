@@ -11,7 +11,7 @@ class Guideline extends Model
         'course_id',
         'package_id',
         'title',
-        'content'
+        'content',
     ];
 
     public function course(): BelongsTo

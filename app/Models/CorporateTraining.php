@@ -9,6 +9,6 @@ class CorporateTraining extends Model
     protected $fillable = [
         'image',
         'image_alt',
-        'redirect_url'
+        'redirect_url',
     ];
 }

@@ -20,7 +20,9 @@ class MemorableMomentsResource extends Resource
     protected static ?string $model = MemorableMoments::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-camera';
+
     protected static ?string $navigationGroup = 'Pages';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -37,14 +39,14 @@ class MemorableMomentsResource extends Resource
             ->columns([
                 TextColumn::make('#')->rowIndex(),
                 ImageColumn::make('image'),
-                TextColumn::make('content')->wrap()
+                TextColumn::make('content')->wrap(),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 EditAction::make(),
-                DeleteAction::make()
+                DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

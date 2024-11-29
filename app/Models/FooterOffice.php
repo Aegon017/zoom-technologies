@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class FooterOffice extends Model
 {
@@ -15,13 +14,13 @@ class FooterOffice extends Model
         'location_url',
         'mobile',
         'landline',
-        'email'
+        'email',
     ];
 
     protected $casts = [
         'mobile' => 'array',
         'landline' => 'array',
-        'email' => 'array'
+        'email' => 'array',
     ];
 
     public function footerSection(): BelongsTo

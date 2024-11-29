@@ -2,19 +2,15 @@
 
 namespace App\Filament\Resources\PackageResource\RelationManagers;
 
-use Filament\Forms;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class OverviewRelationManager extends RelationManager
 {
@@ -29,10 +25,10 @@ class OverviewRelationManager extends RelationManager
                 ])->columnSpan(2),
                 Group::make()->schema([
                     Section::make('U.S. Council')->schema([
-                        Radio::make('uscouncil_certified')->label("U.S. Council Certified")->boolean()->inline()
-                            ->inlineLabel(false)->required()
-                    ])
-                ])
+                        Radio::make('uscouncil_certified')->label('U.S. Council Certified')->boolean()->inline()
+                            ->inlineLabel(false)->required(),
+                    ]),
+                ]),
             ])->columns(3);
     }
 

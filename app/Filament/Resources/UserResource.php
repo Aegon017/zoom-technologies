@@ -4,36 +4,30 @@ namespace App\Filament\Resources;
 
 use App\Filament\Exports\UserExporter;
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
-use Filament\Actions\ExportAction;
-use Filament\Forms;
-use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Resources\Components\Tab as ComponentsTab;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ExportAction as ActionsExportAction;
 use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-users';
+
     protected static ?int $navigationSort = 1;
 
     public static function canCreate(): bool
     {
         return false;
     }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -52,7 +46,7 @@ class UserResource extends Resource
     {
         return $table
             ->headerActions([
-                ActionsExportAction::make()->exporter(UserExporter::class)
+                ActionsExportAction::make()->exporter(UserExporter::class),
             ])
             ->columns([
                 TextColumn::make('name'),
@@ -64,10 +58,10 @@ class UserResource extends Resource
             ])
             ->actions([
                 ActionsExportAction::make()->exporter(UserExporter::class),
-                EditAction::make()
+                EditAction::make(),
             ])
             ->bulkActions([
-                ExportBulkAction::make()->exporter(UserExporter::class)
+                ExportBulkAction::make()->exporter(UserExporter::class),
             ]);
     }
 

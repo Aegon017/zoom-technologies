@@ -10,6 +10,7 @@ use Illuminate\View\Component;
 class NewsCategories extends Component
 {
     public $newsCategory;
+
     public function __construct()
     {
         $this->newsCategory = NewsCategory::all();

@@ -3,15 +3,11 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\SingleCourseResource\Pages;
-use App\Filament\Resources\SingleCourseResource\RelationManagers;
 use App\Models\Course;
 use App\Models\ManualOrder;
-use App\Models\Package;
 use App\Models\Schedule;
-use App\Models\SingleCourse;
 use App\Models\Tax;
 use App\Models\User;
-use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
@@ -20,29 +16,31 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SingleCourseResource extends Resource
 {
     protected static ?string $model = ManualOrder::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     protected static ?string $navigationLabel = 'Single Course Enroll';
+
     protected static ?string $label = 'Single Course Enroll';
+
     protected static ?string $slug = 'single-course-enroll';
+
     protected static ?string $navigationGroup = 'Offline Enrolls';
 
     public static function canEdit(Model $record): bool
     {
         return false;
     }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -113,13 +111,13 @@ class SingleCourseResource extends Resource
 
                                     ->options([
                                         'Online' => 'Online',
-                                        'Classroom' => 'Classroom'
+                                        'Classroom' => 'Classroom',
                                     ])
                                     ->afterStateUpdated(function ($state, $set) {
                                         $set('training_mode', $state);
                                     })
                                     ->disabled(function ($get) {
-                                        return !$get('course_id');
+                                        return ! $get('course_id');
                                     }),
                                 Select::make('schedule_id')
 
@@ -132,12 +130,13 @@ class SingleCourseResource extends Resource
                                                 return Schedule::where('course_id', $courseId)->where('training_mode', $trainingMode)->get()->pluck('formatted_schedule', 'id');
                                             }
                                         }
+
                                         return [];
                                     })
                                     ->searchable()
                                     ->disabled(function ($get) {
-                                        return !$get('course_id');
-                                    })
+                                        return ! $get('course_id');
+                                    }),
                             ]),
                         Tab::make('Price Details')
                             ->schema([
@@ -153,6 +152,7 @@ class SingleCourseResource extends Resource
                                 TextInput::make('cgst')
                                     ->helperText(function ($get) {
                                         $cgstPercentage = $get('cgst_percentage');
+
                                         return "CGST - {$cgstPercentage}%";
                                     })
                                     ->label('CGST')
@@ -161,6 +161,7 @@ class SingleCourseResource extends Resource
                                 TextInput::make('sgst')
                                     ->helperText(function ($get) {
                                         $sgstPercentage = $get('sgst_percentage');
+
                                         return "SGST - {$sgstPercentage}%";
                                     })
                                     ->label('SGST')
@@ -172,10 +173,10 @@ class SingleCourseResource extends Resource
                                 Select::make('payment_mode')->options([
                                     'Cash' => 'Cash',
                                     'UPI' => 'UPI',
-                                    'Cheque' => 'Cheque'
+                                    'Cheque' => 'Cheque',
                                 ]),
-                                FileUpload::make('proof')
-                            ])
+                                FileUpload::make('proof'),
+                            ]),
                     ])->columns(2)->columnSpanFull(),
             ]);
     }
@@ -201,7 +202,7 @@ class SingleCourseResource extends Resource
                     }),
             ])
             ->bulkActions([])
-            ->modifyQueryUsing(fn(Builder $query) => $query->whereNotNull('course_id'));
+            ->modifyQueryUsing(fn (Builder $query) => $query->whereNotNull('course_id'));
     }
 
     public static function getRelations(): array

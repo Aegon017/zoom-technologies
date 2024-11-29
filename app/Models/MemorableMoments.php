@@ -9,6 +9,6 @@ class MemorableMoments extends Model
     protected $fillable = [
         'image',
         'image_alt',
-        'content'
+        'content',
     ];
 }

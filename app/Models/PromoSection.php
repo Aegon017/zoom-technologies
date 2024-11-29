@@ -9,6 +9,6 @@ class PromoSection extends Model
     protected $fillable = [
         'title',
         'content',
-        'redirect_link'
+        'redirect_link',
     ];
 }

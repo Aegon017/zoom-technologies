@@ -11,7 +11,9 @@ use Illuminate\Queue\SerializesModels;
 class ManualOrderCreatedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
     public $manualOrder;
+
     /**
      * Create a new event instance.
      */
@@ -19,7 +21,6 @@ class ManualOrderCreatedEvent
     {
         $this->manualOrder = $manualOrder;
     }
-
 
     /**
      * Get the channels the event should broadcast on.

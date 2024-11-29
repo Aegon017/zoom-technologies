@@ -24,18 +24,18 @@ class PayPalService
                     [
                         'amount' => [
                             'currency_code' => $orderData['currency'] ?? 'USD',
-                            'value' => $orderData['total']
+                            'value' => $orderData['total'],
                         ],
-                        'description' => $orderData['description'] ?? 'Order Description'
-                    ]
-                ]
+                        'description' => $orderData['description'] ?? 'Order Description',
+                    ],
+                ],
             ]);
 
             return $order;
         } catch (\Exception $e) {
             return [
                 'error' => true,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ];
         }
     }
@@ -44,11 +44,12 @@ class PayPalService
     {
         try {
             $result = $this->provider->capturePaymentOrder($orderId);
+
             return $result;
         } catch (\Exception $e) {
             return [
                 'error' => true,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ];
         }
     }
@@ -57,11 +58,12 @@ class PayPalService
     {
         try {
             $order = $this->provider->showOrderDetails($orderId);
+
             return $order;
         } catch (\Exception $e) {
             return [
                 'error' => true,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ];
         }
     }

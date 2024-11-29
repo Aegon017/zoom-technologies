@@ -16,14 +16,18 @@ use Filament\Tables\Table;
 class NewsCategoryResource extends Resource
 {
     protected static ?string $model = NewsCategory::class;
+
     protected static ?string $navigationGroup = 'News';
+
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
+
     protected static ?int $navigationSort = 5;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('name')->label('News category')->required()
+                TextInput::make('name')->label('News category')->required(),
             ]);
     }
 
@@ -32,14 +36,14 @@ class NewsCategoryResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('#')->rowIndex(),
-                TextColumn::make('name')->label('News category')
+                TextColumn::make('name')->label('News category'),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                DeleteAction::make()
+                DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

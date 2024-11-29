@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\BrochureResource\Pages;
 
 use App\Filament\Resources\BrochureResource;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateBrochure extends CreateRecord

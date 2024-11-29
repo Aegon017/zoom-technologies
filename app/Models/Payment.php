@@ -18,7 +18,7 @@ class Payment extends Model
         'time',
         'status',
         'amount',
-        'currency'
+        'currency',
     ];
 
     public function order(): BelongsTo

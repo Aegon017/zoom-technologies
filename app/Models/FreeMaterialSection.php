@@ -11,6 +11,6 @@ class FreeMaterialSection extends Model
         'title',
         'content',
         'button_name',
-        'redirect_url'
+        'redirect_url',
     ];
 }

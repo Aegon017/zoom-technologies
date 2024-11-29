@@ -32,22 +32,22 @@ class PaypalController extends Controller
         // Save course schedule in the session
         Session::put('course_schedule', $request->course_schedule);
 
-        $payer = new Payer();
+        $payer = new Payer;
         $payer->setPaymentMethod('paypal');
 
-        $amount = new Amount();
+        $amount = new Amount;
         $amount->setTotal($request->amount);
         $amount->setCurrency('USD');
 
-        $transaction = new Transaction();
+        $transaction = new Transaction;
         $transaction->setAmount($amount);
         $transaction->setDescription($request->name);
 
-        $redirectUrls = new RedirectUrls();
+        $redirectUrls = new RedirectUrls;
         $redirectUrls->setReturnUrl(route('payment.success'))
             ->setCancelUrl(route('payment.failure'));
 
-        $payment = new Payment();
+        $payment = new Payment;
         $payment->setIntent('sale')
             ->setPayer($payer)
             ->setTransactions([$transaction])
@@ -55,6 +55,7 @@ class PaypalController extends Controller
 
         try {
             $payment->create($this->apiContext);
+
             return redirect()->away($payment->getApprovalLink());
         } catch (\Exception $ex) {
             return back()->withErrors('Something went wrong with the payment.');
@@ -73,7 +74,7 @@ class PaypalController extends Controller
 
         try {
             $payment = Payment::get($paymentId, $this->apiContext);
-            $execution = new PaymentExecution();
+            $execution = new PaymentExecution;
             $execution->setPayerId($payerId);
             $result = $payment->execute($execution, $this->apiContext);
 
@@ -91,8 +92,9 @@ class PaypalController extends Controller
                 }
             }
 
-            if (!$txnId) {
+            if (! $txnId) {
                 \Log::error('Transaction ID not found in related resources');
+
                 return redirect()->route('payment.failure')->withErrors('Transaction ID not found.');
             }
 
@@ -109,7 +111,8 @@ class PaypalController extends Controller
 
             return view('frontend.pages.payment.success', compact('order'));
         } catch (\Exception $ex) {
-            \Log::error('Payment execution failed: ' . $ex->getMessage());
+            \Log::error('Payment execution failed: '.$ex->getMessage());
+
             return redirect()->route('payment.failure')->withErrors('Payment failed. Please try again.');
         }
     }
@@ -137,6 +140,6 @@ class PaypalController extends Controller
         Session::forget('course_schedule');
 
         // Pass the order to the failure view
-        return view("frontend.pages.payment.failure", compact('order'));
+        return view('frontend.pages.payment.failure', compact('order'));
     }
 }

@@ -21,11 +21,11 @@ class ManualOrder extends Model
         'sgst',
         'amount',
         'payment_mode',
-        'proof'
+        'proof',
     ];
 
     protected $casts = [
-        'packageSchedule_id' => 'array'
+        'packageSchedule_id' => 'array',
     ];
 
     public function course(): BelongsTo

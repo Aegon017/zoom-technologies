@@ -3,19 +3,14 @@
 namespace App\Filament\Resources\StudentResource\RelationManagers;
 
 use App\Models\Schedule;
-use Filament\Actions\Action;
-use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
-use Filament\Infolists\Infolist;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Actions\Action as ActionsAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class OrderScheduleRelationManager extends RelationManager
 {
@@ -32,7 +27,7 @@ class OrderScheduleRelationManager extends RelationManager
                             ->get()
                             ->mapWithKeys(function ($schedule) {
                                 return [
-                                    $schedule->id => "{$schedule->course->name} - {$schedule->start_date} - {$schedule->time} ({$schedule->training_mode})"
+                                    $schedule->id => "{$schedule->course->name} - {$schedule->start_date} - {$schedule->time} ({$schedule->training_mode})",
                                 ];
                             })
                     )
@@ -52,7 +47,7 @@ class OrderScheduleRelationManager extends RelationManager
                 TextColumn::make('schedule.training_mode')->label('training_mode'),
                 TextColumn::make('admin_name')->label('changed_by'),
                 TextColumn::make('admin_email')->label('Email'),
-                TextColumn::make('ip_address')->label('IP Address')
+                TextColumn::make('ip_address')->label('IP Address'),
             ])
             ->filters([
                 //

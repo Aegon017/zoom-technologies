@@ -12,7 +12,7 @@ class FeatureCard extends Model
         'icon',
         'number',
         'title',
-        'content'
+        'content',
     ];
 
     public function featureSection(): BelongsTo

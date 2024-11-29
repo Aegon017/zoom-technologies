@@ -3,9 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BrochureResource\Pages;
-use App\Filament\Resources\BrochureResource\RelationManagers;
 use App\Models\Brochure;
-use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -13,13 +11,13 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class BrochureResource extends Resource
 {
     protected static ?string $model = Brochure::class;
+
     protected static ?string $navigationGroup = 'Home page';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -35,7 +33,7 @@ class BrochureResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->searchable()
+                TextColumn::make('name')->searchable(),
             ])
             ->filters([
                 //

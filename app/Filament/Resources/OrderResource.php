@@ -6,13 +6,9 @@ use App\Filament\Exports\OrderExporter;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Models\Order;
 use App\Models\Schedule;
-use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Fieldset;
-use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
@@ -32,8 +28,11 @@ class OrderResource extends Resource
     protected static ?string $model = Order::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
+
     protected static ?int $navigationSort = 3;
+
     protected static ?string $navigationLabel = 'Course Orders';
+
     public static function canCreate(): bool
     {
         return false;
@@ -63,26 +62,28 @@ class OrderResource extends Resource
                         ->label('')
                         ->listWithLineBreaks()
                         ->getStateUsing(function ($record) {
-                            if (!$record->orderSchedule || $record->orderSchedule->isEmpty()) {
+                            if (! $record->orderSchedule || $record->orderSchedule->isEmpty()) {
                                 return ['No Schedules Available'];
                             }
+
                             return $record->orderSchedule->map(function ($orderSchedule) {
                                 $schedule = $orderSchedule->schedule; // Assuming schedule is a relationship on OrderSchedule
+
                                 return implode(', ', [
-                                    'Course: ' . optional($schedule->course)->name ?? 'N/A',
-                                    'Start Date: ' . ($schedule->start_date
+                                    'Course: '.optional($schedule->course)->name ?? 'N/A',
+                                    'Start Date: '.($schedule->start_date
                                         ? \Carbon\Carbon::parse($schedule->start_date)
                                         : 'N/A'),
-                                    'Start Time: ' . ($schedule->time
+                                    'Start Time: '.($schedule->time
                                         ? \Carbon\Carbon::parse($schedule->time)
                                         : 'N/A'),
-                                    'End Time: ' . ($schedule->end_time
+                                    'End Time: '.($schedule->end_time
                                         ? \Carbon\Carbon::parse($schedule->end_time)
                                         : 'N/A'),
-                                    'Duration: ' . ($schedule->duration
-                                        ? $schedule->duration . ' ' . $schedule->duration_type
+                                    'Duration: '.($schedule->duration
+                                        ? $schedule->duration.' '.$schedule->duration_type
                                         : 'N/A'),
-                                    'Training Mode: ' . optional($schedule)->training_mode ?? 'N/A',
+                                    'Training Mode: '.optional($schedule)->training_mode ?? 'N/A',
                                 ]);
                             })->toArray();
                         }),
@@ -107,7 +108,7 @@ class OrderResource extends Resource
     {
         return $table
             ->headerActions([
-                ExportAction::make()->exporter(OrderExporter::class)
+                ExportAction::make()->exporter(OrderExporter::class),
             ])
             ->columns([
                 TextColumn::make('#')->rowIndex(),
@@ -116,15 +117,16 @@ class OrderResource extends Resource
                 TextColumn::make('combined')
                     ->label('Course and Package Name')
                     ->getStateUsing(function ($record) {
-                        $course =  $record->course->name ?? $record->package->name;
+                        $course = $record->course->name ?? $record->package->name;
+
                         return $course;
                     }),
                 TextColumn::make('payment.amount')->label('Order Amount')->prefix('Rs. ')->suffix('/-'),
                 TextColumn::make('payment.date')->label('Payment date')->date(),
-                TextColumn::make('payment.time')->label('Payment time')->time("h:i A"),
+                TextColumn::make('payment.time')->label('Payment time')->time('h:i A'),
                 TextColumn::make('payment.status')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'success' => 'success',
                         'failure' => 'danger',
                     }),
@@ -189,7 +191,7 @@ class OrderResource extends Resource
                         if (file_exists($zipFileName)) {
                             unlink($zipFileName);
                         }
-                        if ($zip->open($zipFileName, ZipArchive::CREATE) === TRUE) {
+                        if ($zip->open($zipFileName, ZipArchive::CREATE) === true) {
                             foreach ($records as $record) {
                                 $filePath = public_path($record->invoice);
                                 if (file_exists($filePath) && is_file($filePath)) {
@@ -197,11 +199,12 @@ class OrderResource extends Resource
                                 }
                             }
                             $zip->close();
+
                             return response()->download($zipFileName)->deleteFileAfterSend(true);
                         } else {
                             return back()->with('error', 'Unable to create the ZIP file.');
                         }
-                    })
+                    }),
             ]);
     }
 

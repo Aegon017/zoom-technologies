@@ -30,7 +30,7 @@ class Package extends Model
 
     protected $casts = [
         'training_mode' => 'array',
-        'courses' => 'array'
+        'courses' => 'array',
     ];
 
     public function course()

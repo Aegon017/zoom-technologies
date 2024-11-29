@@ -8,11 +8,11 @@ class StickyContact extends Model
 {
     protected $fillable = [
         'mobile',
-        'email'
+        'email',
     ];
 
     protected $casts = [
         'mobile' => 'array',
-        'email' => 'array'
+        'email' => 'array',
     ];
 }

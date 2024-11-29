@@ -14,7 +14,7 @@ class MetaDetails extends Model
         'news_id',
         'title',
         'keywords',
-        'description'
+        'description',
     ];
 
     public function course(): BelongsTo

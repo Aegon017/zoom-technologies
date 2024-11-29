@@ -3,17 +3,11 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PackageCourseResource\Pages;
-use App\Filament\Resources\PackageCourseResource\RelationManagers;
-use App\Models\Course;
 use App\Models\ManualOrder;
 use App\Models\Package;
-use App\Models\PackageCourse;
 use App\Models\Schedule;
 use App\Models\Tax;
 use App\Models\User;
-use Filament\Actions\Action as FilamentActionsAction;
-use Filament\Forms;
-use Filament\Forms\Components\Actions\Action as ActionsAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
@@ -21,32 +15,32 @@ use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
-use Filament\Resources\Pages\CreateRecord;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Enums\FiltersLayout;
-use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-
 
 class PackageCourseResource extends Resource
 {
     protected static ?string $model = ManualOrder::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     protected static ?string $navigationLabel = 'Package Course Enroll';
+
     protected static ?string $label = 'Package Course Enroll';
+
     protected static ?string $slug = 'package-course-enroll';
+
     protected static ?string $navigationGroup = 'Offline Enrolls';
+
     public static function canEdit(Model $record): bool
     {
         return false;
     }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -116,13 +110,13 @@ class PackageCourseResource extends Resource
                                 Select::make('training_mode')
                                     ->options([
                                         'Online' => 'Online',
-                                        'Classroom' => 'Classroom'
+                                        'Classroom' => 'Classroom',
                                     ])
                                     ->afterStateUpdated(function ($state, $set) {
                                         $set('training_mode', $state);
                                     })
                                     ->disabled(function ($get) {
-                                        return !$get('package_id');
+                                        return ! $get('package_id');
                                     }),
                                 Select::make('packageSchedule_id')
                                     ->label('Schedule')
@@ -131,6 +125,7 @@ class PackageCourseResource extends Resource
                                             $trainingMode = $get('training_mode');
                                             $courseIds = Package::find($get('package_id'))->courses;
                                             $schedules = Schedule::whereIn('course_id', $courseIds)->where('training_mode', $trainingMode)->get()->pluck('formatted_package_schedule', 'id');
+
                                             return $schedules;
                                         }
 
@@ -139,8 +134,8 @@ class PackageCourseResource extends Resource
                                     ->searchable()
                                     ->multiple()
                                     ->disabled(function ($get) {
-                                        return !$get('package_id');
-                                    })
+                                        return ! $get('package_id');
+                                    }),
                             ]),
                         Tab::make('Price Details')
                             ->schema([
@@ -156,6 +151,7 @@ class PackageCourseResource extends Resource
                                 TextInput::make('cgst')
                                     ->helperText(function ($get) {
                                         $cgstPercentage = $get('cgst_percentage');
+
                                         return "CGST - {$cgstPercentage}%";
                                     })
                                     ->label('CGST')
@@ -164,6 +160,7 @@ class PackageCourseResource extends Resource
                                 TextInput::make('sgst')
                                     ->helperText(function ($get) {
                                         $sgstPercentage = $get('sgst_percentage');
+
                                         return "SGST - {$sgstPercentage}%";
                                     })
                                     ->label('SGST')
@@ -175,10 +172,10 @@ class PackageCourseResource extends Resource
                                 Select::make('payment_mode')->options([
                                     'Cash' => 'Cash',
                                     'UPI' => 'UPI',
-                                    'Cheque' => 'Cheque'
+                                    'Cheque' => 'Cheque',
                                 ]),
-                                FileUpload::make('proof')
-                            ])
+                                FileUpload::make('proof'),
+                            ]),
                     ])->columns(2)->columnSpanFull(),
             ]);
     }
@@ -204,7 +201,7 @@ class PackageCourseResource extends Resource
                     }),
             ])
             ->bulkActions([])
-            ->modifyQueryUsing(fn(Builder $query) => $query->whereNotNull('package_id'));
+            ->modifyQueryUsing(fn (Builder $query) => $query->whereNotNull('package_id'));
     }
 
     public static function getRelations(): array

@@ -11,7 +11,7 @@ class Testimonial extends Model
         'testimonial_section_id',
         'content',
         'name',
-        'location'
+        'location',
     ];
 
     public function testimonialSection(): BelongsTo

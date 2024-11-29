@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
@@ -13,8 +12,11 @@ use Illuminate\Queue\SerializesModels;
 class OrderMail extends Mailable
 {
     use Queueable, SerializesModels;
+
     public $subject;
+
     public $order;
+
     public function __construct($orderMailSubject, $order)
     {
         $this->subject = $orderMailSubject;
@@ -46,7 +48,7 @@ class OrderMail extends Mailable
         if ($order->payment->status == 'success') {
 
             return [
-                Attachment::fromPath(asset($order->invoice))
+                Attachment::fromPath(asset($order->invoice)),
             ];
         } else {
             return [];

@@ -12,10 +12,15 @@ use Illuminate\Queue\SerializesModels;
 class AttendingCertificateMail extends Mailable
 {
     use Queueable, SerializesModels;
+
     public $subject;
+
     public $pdfFileName;
+
     public $userName;
+
     public $courseName;
+
     /**
      * Create a new message instance.
      */
@@ -32,7 +37,7 @@ class AttendingCertificateMail extends Mailable
      */
     public function envelope(): Envelope
     {
-        return new Envelope();
+        return new Envelope;
     }
 
     /**
@@ -53,7 +58,7 @@ class AttendingCertificateMail extends Mailable
     public function attachments(): array
     {
         return [
-            Attachment::fromPath(asset($this->pdfFileName))
+            Attachment::fromPath(asset($this->pdfFileName)),
         ];
     }
 }

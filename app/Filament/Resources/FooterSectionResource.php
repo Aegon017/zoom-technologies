@@ -3,11 +3,9 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\FooterSectionResource\Pages;
-use App\Filament\Resources\FooterSectionResource\RelationManagers;
 use App\Filament\Resources\FooterSectionResource\RelationManagers\FooterOfficeRelationManager;
 use App\Models\FooterSection;
 use App\Models\SocialLink;
-use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -18,12 +16,11 @@ use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class FooterSectionResource extends Resource
 {
     protected static ?string $model = FooterSection::class;
+
     protected static ?string $navigationGroup = 'Home page';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -62,7 +59,7 @@ class FooterSectionResource extends Resource
     public static function getRelations(): array
     {
         return [
-            FooterOfficeRelationManager::class
+            FooterOfficeRelationManager::class,
         ];
     }
 

@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\PackageResource\RelationManagers;
 
-use Filament\Forms;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -10,8 +9,6 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class GuidelineRelationManager extends RelationManager
 {
@@ -22,7 +19,7 @@ class GuidelineRelationManager extends RelationManager
         return $form
             ->schema([
                 TextInput::make('title')->required(),
-                RichEditor::make('content')->required()
+                RichEditor::make('content')->required(),
             ])->columns(1);
     }
 
@@ -32,7 +29,7 @@ class GuidelineRelationManager extends RelationManager
             ->recordTitleAttribute('title')
             ->columns([
                 TextColumn::make('title')->wrap(),
-                TextColumn::make('content')->wrap()->html()
+                TextColumn::make('content')->wrap()->html(),
             ])
             ->filters([
                 //

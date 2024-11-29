@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\CourseResource\RelationManagers;
 
-use Filament\Forms;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\RichEditor;
@@ -14,8 +13,6 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class OverviewRelationManager extends RelationManager
 {
@@ -30,12 +27,12 @@ class OverviewRelationManager extends RelationManager
                 ])->columnSpan(2),
                 Group::make()->schema([
                     Section::make('U.S. Council')->schema([
-                        Radio::make('uscouncil_certified')->label("U.S. Council Certified")->boolean()->inline()->live()
+                        Radio::make('uscouncil_certified')->label('U.S. Council Certified')->boolean()->inline()->live()
                             ->inlineLabel(false)->required(),
-                        TextInput::make('note')->label('Note')->hidden(fn(Get $get): bool => ! $get('uscouncil_certified')),
-                        TextInput::make('voucher_value')->prefix('$')->hidden(fn(Get $get): bool => ! $get('uscouncil_certified'))
-                    ])
-                ])
+                        TextInput::make('note')->label('Note')->hidden(fn (Get $get): bool => ! $get('uscouncil_certified')),
+                        TextInput::make('voucher_value')->prefix('$')->hidden(fn (Get $get): bool => ! $get('uscouncil_certified')),
+                    ]),
+                ]),
             ])->columns(3);
     }
 

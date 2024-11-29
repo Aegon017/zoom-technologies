@@ -11,7 +11,7 @@ class Faq extends Model
         'course_id',
         'package_id',
         'question',
-        'answer'
+        'answer',
     ];
 
     public function course(): BelongsTo

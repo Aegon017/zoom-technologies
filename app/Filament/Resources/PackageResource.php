@@ -7,7 +7,6 @@ use App\Filament\Resources\PackageResource\RelationManagers\FaqRelationManager;
 use App\Filament\Resources\PackageResource\RelationManagers\GuidelineRelationManager;
 use App\Filament\Resources\PackageResource\RelationManagers\MetaDetailRelationManager;
 use App\Filament\Resources\PackageResource\RelationManagers\OverviewRelationManager;
-use App\Filament\Resources\PackageResource\RelationManagers\StudyMaterialRelationManager;
 use App\Models\Course;
 use App\Models\Package;
 use Filament\Forms\Components\FileUpload;
@@ -30,10 +29,15 @@ use Illuminate\Support\Str;
 class PackageResource extends Resource
 {
     protected static ?string $model = Package::class;
+
     protected static ?string $navigationGroup = 'Courses & Packages';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-group';
+
     protected static ?string $navigationLabel = 'Courses package';
+
     protected static ?int $navigationSort = 4;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -41,19 +45,19 @@ class PackageResource extends Resource
                 Group::make()->schema([
                     Section::make('Courses package details')->schema([
                         TextInput::make('name')->live(onBlur: true)
-                            ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
+                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
                         TextInput::make('slug')->prefix('training/india/')->required(),
                         RichEditor::make('short_description')->columnSpanFull()->required(),
                         TextInput::make('duration')->required(),
                         Select::make('duration_type')->options(['Month' => 'Month', 'Week' => 'Week', 'Day' => 'Day'])->required(),
                         Select::make('training_mode')->multiple()->options(['Online' => 'Online', 'Classroom' => 'Classroom'])->columnSpanFull()->required(),
                         TextInput::make('sale_price')->label('Sale price')->prefix('Rs.'),
-                        TextInput::make('actual_price')->label('Actual price')->prefix('Rs.')->required()
+                        TextInput::make('actual_price')->label('Actual price')->prefix('Rs.')->required(),
                     ])->columns(2),
                     Section::make('Placement & Certification')->schema([
                         Radio::make('placement')->boolean()->label('Placement assistance')->inline()->required(),
-                        Radio::make('certificate')->boolean()->inline()->required()
-                    ])
+                        Radio::make('certificate')->boolean()->inline()->required(),
+                    ]),
                 ])->columnSpan(2),
                 Group::make()->schema([
                     Section::make('Courses package media')->schema([
@@ -61,11 +65,11 @@ class PackageResource extends Resource
                         TextInput::make('thumbnail_alt')->columnSpanFull()->required(),
                         FileUpload::make('image')->disk('public')->directory('images/packages')->preserveFilenames()->columnSpanFull()->required(),
                         TextInput::make('image_alt')->columnSpanFull()->required(),
-                        TextInput::make('video_link')->required()
+                        TextInput::make('video_link')->required(),
                     ]),
                     Section::make('Courses')->schema([
-                        Select::make('courses')->label('Select courses')->multiple()->options(Course::all()->pluck('name', 'id'))->searchable()
-                    ])
+                        Select::make('courses')->label('Select courses')->multiple()->options(Course::all()->pluck('name', 'id'))->searchable(),
+                    ]),
                 ]),
             ])->columns(3);
     }
@@ -79,14 +83,14 @@ class PackageResource extends Resource
                 TextColumn::make('name')->searchable(),
                 TextColumn::make('training_mode'),
                 TextColumn::make('sale_price'),
-                TextColumn::make('actual_price')
+                TextColumn::make('actual_price'),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                DeleteAction::make()
+                DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -101,7 +105,7 @@ class PackageResource extends Resource
             MetaDetailRelationManager::class,
             OverviewRelationManager::class,
             GuidelineRelationManager::class,
-            FaqRelationManager::class
+            FaqRelationManager::class,
         ];
     }
 

@@ -16,10 +16,15 @@ use Filament\Tables\Table;
 class StudentResource extends Resource
 {
     protected static ?string $model = Order::class;
+
     protected static ?string $label = 'Students';
+
     protected static ?string $navigationLabel = 'Students';
+
     public static ?string $slug = 'students';
+
     protected static ?int $navigationSort = 2;
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function canCreate(): bool
@@ -42,7 +47,8 @@ class StudentResource extends Resource
                 TextColumn::make('combined')
                     ->label('Course and Package Name')
                     ->getStateUsing(function ($record) {
-                        $course =  $record->course->name ?? $record->package->name;
+                        $course = $record->course->name ?? $record->package->name;
+
                         return $course;
                     }),
             ])
@@ -54,7 +60,7 @@ class StudentResource extends Resource
                 SelectFilter::make('package.name')
                     ->relationship('package', 'name')
                     ->searchable()
-                    ->preload()
+                    ->preload(),
             ], layout: FiltersLayout::AboveContent)->filtersFormColumns(2)
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -65,7 +71,7 @@ class StudentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            OrderScheduleRelationManager::class
+            OrderScheduleRelationManager::class,
         ];
     }
 

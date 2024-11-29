@@ -7,7 +7,6 @@ use Stripe\Stripe;
 
 class StripePayment
 {
-
     public function execute($user, $txnId, $usd, $productInfo)
     {
         Stripe::setApiKey(env('STRIPE_SECRET'));
@@ -30,6 +29,7 @@ class StripePayment
                 'success_url' => route('payment.success'),
                 'cancel_url' => route('payment.failure'),
             ]);
+
             return redirect($checkoutSession->url);
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);

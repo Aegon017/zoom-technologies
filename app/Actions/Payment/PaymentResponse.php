@@ -3,16 +3,15 @@
 namespace App\Actions\Payment;
 
 use App\Models\Order;
-use App\Models\Payment;
 use Illuminate\Http\Request;
 
 class PaymentResponse
 {
     public function execute(Request $request, Order $order)
     {
-        $generateInvoice = new GenerateInvoice();
-        $sendEmails = new SendEmails();
-        $updateOrderPayment = new UpdateOrderPayment();
+        $generateInvoice = new GenerateInvoice;
+        $sendEmails = new SendEmails;
+        $updateOrderPayment = new UpdateOrderPayment;
         $paymentId = $request->mihpayid;
         $method = 'payu';
         $mode = $request->mode;
@@ -30,7 +29,7 @@ class PaymentResponse
             'time' => $time,
             'status' => $status,
             'amount' => $amount,
-            'currency' => 'Rs'
+            'currency' => 'Rs',
         ];
         $updateOrderPayment->execute($order->id, $data);
         if ($request->status == 'success') {

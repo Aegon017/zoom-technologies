@@ -18,9 +18,9 @@ class SendEmails
 
         if ($order->payment->status === 'success') {
             $adminEmail = 'kondanagamalleswararao016@gmail.com';
-            $adminMailSubject = "New Enrollment";
+            $adminMailSubject = 'New Enrollment';
             Mail::to($adminEmail)->send(new AdminMail($adminMailSubject, $order));
-            $meetingMailSubject = "Zoom Technologies Training Session Details";
+            $meetingMailSubject = 'Zoom Technologies Training Session Details';
             Mail::to($to)->send(new MeetingMail($meetingMailSubject, $order));
         }
     }

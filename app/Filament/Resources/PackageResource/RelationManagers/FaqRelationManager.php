@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\PackageResource\RelationManagers;
 
-use Filament\Forms;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -10,8 +9,6 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class FaqRelationManager extends RelationManager
 {
@@ -22,7 +19,7 @@ class FaqRelationManager extends RelationManager
         return $form
             ->schema([
                 TextInput::make('question')->required(),
-                Textarea::make('answer')->rows(7)->required()
+                Textarea::make('answer')->rows(7)->required(),
             ])->columns(1);
     }
 
@@ -32,7 +29,7 @@ class FaqRelationManager extends RelationManager
             ->recordTitleAttribute('question')
             ->columns([
                 TextColumn::make('question')->wrap()->searchable(),
-                TextColumn::make('answer')->wrap()
+                TextColumn::make('answer')->wrap(),
             ])
             ->filters([
                 //

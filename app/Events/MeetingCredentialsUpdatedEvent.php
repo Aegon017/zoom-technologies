@@ -11,7 +11,9 @@ use Illuminate\Queue\SerializesModels;
 class MeetingCredentialsUpdatedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
     public $schedule;
+
     /**
      * Create a new event instance.
      */

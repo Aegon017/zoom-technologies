@@ -10,6 +10,7 @@ use Illuminate\View\Component;
 class StickyContact extends Component
 {
     public $stickyContact;
+
     public function __construct()
     {
         $this->stickyContact = ModelsStickyContact::find(1);

@@ -28,7 +28,7 @@ class CalculatePrice
             'sgst' => $sgst,
             'salePrice' => $salePrice,
             'actualPrice' => $actualPrice,
-            'payablePrice' => $payablePrice
+            'payablePrice' => $payablePrice,
         ];
     }
 }

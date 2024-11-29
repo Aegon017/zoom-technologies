@@ -8,6 +8,6 @@ class Brochure extends Model
 {
     protected $fillable = [
         'name',
-        'brochure'
+        'brochure',
     ];
 }

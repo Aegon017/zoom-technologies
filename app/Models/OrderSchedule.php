@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Mail\ScheduleUpdatedMail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Request;
@@ -18,7 +17,7 @@ class OrderSchedule extends Model
         'admin_name',
         'admin_email',
         'ip_address',
-        'proof'
+        'proof',
     ];
 
     protected static function booted()
@@ -35,6 +34,7 @@ class OrderSchedule extends Model
             }
         });
     }
+
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);

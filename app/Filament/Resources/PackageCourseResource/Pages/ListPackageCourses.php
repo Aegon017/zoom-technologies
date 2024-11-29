@@ -5,8 +5,6 @@ namespace App\Filament\Resources\PackageCourseResource\Pages;
 use App\Filament\Resources\PackageCourseResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 
 class ListPackageCourses extends ListRecords
 {
@@ -18,5 +16,4 @@ class ListPackageCourses extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
-
 }

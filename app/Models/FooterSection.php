@@ -11,7 +11,7 @@ class FooterSection extends Model
         'logo',
         'logo_alt',
         'content',
-        'social_links'
+        'social_links',
     ];
 
     protected $casts = [

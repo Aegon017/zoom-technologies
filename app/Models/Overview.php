@@ -13,7 +13,7 @@ class Overview extends Model
         'content',
         'uscouncil_certified',
         'note',
-        'voucher_value'
+        'voucher_value',
     ];
 
     public function course(): BelongsTo

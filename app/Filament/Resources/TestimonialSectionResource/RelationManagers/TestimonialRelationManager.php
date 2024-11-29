@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\TestimonialSectionResource\RelationManagers;
 
-use Filament\Forms;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -10,8 +9,6 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TestimonialRelationManager extends RelationManager
 {
@@ -23,7 +20,7 @@ class TestimonialRelationManager extends RelationManager
             ->schema([
                 RichEditor::make('content')->columnSpanFull()->required(),
                 TextInput::make('name')->required(),
-                TextInput::make('location')->required()
+                TextInput::make('location')->required(),
             ]);
     }
 
@@ -34,7 +31,7 @@ class TestimonialRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('content')->html()->wrap(),
                 TextColumn::make('name')->searchable(),
-                TextColumn::make('location')->searchable()
+                TextColumn::make('location')->searchable(),
             ])
             ->filters([
                 //

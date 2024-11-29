@@ -11,8 +11,11 @@ use Illuminate\Queue\SerializesModels;
 class UpdatedMeetingMail extends Mailable
 {
     use Queueable, SerializesModels;
+
     public $schedule;
+
     public $subject;
+
     /**
      * Create a new message instance.
      */

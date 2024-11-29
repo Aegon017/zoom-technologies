@@ -10,7 +10,6 @@ use App\Actions\Payment\SendEmails;
 use App\Actions\Payment\UpdateOrderPayment;
 use App\Models\Currency;
 use App\Models\Order;
-use App\Models\Usd;
 use App\Services\PayUPayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,31 +34,31 @@ class PaymentController extends Controller
         Session::put('usd', $usd);
         $order = $createOrder->execute($request, $user->id, $usd);
         Session::put('order_id', $order->id);
-        $scheduleIDs = array_values(array_filter($request->all(), fn($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
+        $scheduleIDs = array_values(array_filter($request->all(), fn ($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
         $attachScheduleToOrder->execute($scheduleIDs, $order->id);
         switch ($paymentMethod) {
             case 'payu':
                 $payUPayment->execute($user, $txnId, $payablePrice, $productInfo);
                 break;
             case 'paypal':
-                $provider = new PayPal();
+                $provider = new PayPal;
                 $provider->setApiCredentials(config('paypal'));
                 $paypalToken = $provider->getAccessToken();
 
                 $response = $provider->createOrder([
-                    "intent" => "CAPTURE",
-                    "application_context" => [
-                        "return_url" => route('payment.success'),
-                        "cancel_url" => route('payment.failure'),
+                    'intent' => 'CAPTURE',
+                    'application_context' => [
+                        'return_url' => route('payment.success'),
+                        'cancel_url' => route('payment.failure'),
                     ],
-                    "purchase_units" => [
+                    'purchase_units' => [
                         [
-                            "amount" => [
-                                "currency_code" => "USD",
-                                "value" => $usd
-                            ]
-                        ]
-                    ]
+                            'amount' => [
+                                'currency_code' => 'USD',
+                                'value' => $usd,
+                            ],
+                        ],
+                    ],
                 ]);
 
                 if (isset($response['id']) && $response['id'] != null) {
@@ -89,12 +88,13 @@ class PaymentController extends Controller
                                 'unit_amount' => $usd * 100,
                             ],
                             'quantity' => 1,
-                        ]
+                        ],
                     ],
                     'mode' => 'payment',
-                    'success_url' => route('payment.success') . '?session_id={CHECKOUT_SESSION_ID}',
+                    'success_url' => route('payment.success').'?session_id={CHECKOUT_SESSION_ID}',
                     'cancel_url' => route('payment.failure'),
                 ]);
+
                 return redirect($session->url);
                 break;
             default:
@@ -114,7 +114,7 @@ class PaymentController extends Controller
                 break;
 
             case 'paypal':
-                $provider = new PayPal();
+                $provider = new PayPal;
                 $provider->setApiCredentials(config('paypal'));
                 $provider->getAccessToken();
                 $response = $provider->capturePaymentOrder($request->token);
@@ -126,9 +126,9 @@ class PaymentController extends Controller
                 $time = now();
                 $status = 'success';
                 $amount = Session::get('usd');
-                $generateInvoice = new GenerateInvoice();
-                $sendEmails = new SendEmails();
-                $updateOrderPayment = new UpdateOrderPayment();
+                $generateInvoice = new GenerateInvoice;
+                $sendEmails = new SendEmails;
+                $updateOrderPayment = new UpdateOrderPayment;
                 $data = [
                     'paymentId' => $paymentId,
                     'method' => $method,
@@ -157,9 +157,9 @@ class PaymentController extends Controller
                 $time = now();
                 $status = 'success';
                 $amount = Session::get('usd');
-                $generateInvoice = new GenerateInvoice();
-                $sendEmails = new SendEmails();
-                $updateOrderPayment = new UpdateOrderPayment();
+                $generateInvoice = new GenerateInvoice;
+                $sendEmails = new SendEmails;
+                $updateOrderPayment = new UpdateOrderPayment;
                 $data = [
                     'paymentId' => $paymentId,
                     'method' => $method,
@@ -180,6 +180,7 @@ class PaymentController extends Controller
                 echo 'Please choose a valid payment method';
                 break;
         }
+
         return view('pages.payment-success', compact('order'));
     }
 
@@ -193,7 +194,7 @@ class PaymentController extends Controller
                 $paymentResponse->execute($request, $order);
                 break;
             case 'paypal':
-                $provider = new PayPal();
+                $provider = new PayPal;
                 $provider->setApiCredentials(config('paypal'));
                 $provider->getAccessToken();
                 $response = $provider->capturePaymentOrder($request->token);
@@ -205,8 +206,8 @@ class PaymentController extends Controller
                 $time = now();
                 $status = 'failure';
                 $amount = Session::get('usd');
-                $sendEmails = new SendEmails();
-                $updateOrderPayment = new UpdateOrderPayment();
+                $sendEmails = new SendEmails;
+                $updateOrderPayment = new UpdateOrderPayment;
                 $data = [
                     'paymentId' => $paymentId,
                     'method' => $method,
@@ -231,8 +232,8 @@ class PaymentController extends Controller
                 $time = now();
                 $status = 'failure';
                 $amount = Session::get('usd');
-                $sendEmails = new SendEmails();
-                $updateOrderPayment = new UpdateOrderPayment();
+                $sendEmails = new SendEmails;
+                $updateOrderPayment = new UpdateOrderPayment;
                 $data = [
                     'paymentId' => $paymentId,
                     'method' => $method,
@@ -252,6 +253,7 @@ class PaymentController extends Controller
                 echo 'Please choose a valid payment method';
                 break;
         }
+
         return view('pages.payment-failure', compact('order'));
     }
 }

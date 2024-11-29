@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\NewsCategoryResource\RelationManagers;
 
-use Filament\Forms;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -10,8 +9,6 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class MetaDetailRelationManager extends RelationManager
 {
@@ -23,7 +20,7 @@ class MetaDetailRelationManager extends RelationManager
             ->schema([
                 TextInput::make('title')->required()->columnSpanFull(),
                 Textarea::make('keywords')->rows(7)->required(),
-                Textarea::make('description')->rows(7)->required()
+                Textarea::make('description')->rows(7)->required(),
             ]);
     }
 
@@ -34,7 +31,7 @@ class MetaDetailRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('title')->wrap(),
                 TextColumn::make('keywords')->wrap(),
-                TextColumn::make('description')->wrap()
+                TextColumn::make('description')->wrap(),
             ])
             ->filters([
                 //

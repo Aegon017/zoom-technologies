@@ -19,7 +19,6 @@ use App\Models\PageMetaDetails;
 use App\Models\PageSchema;
 use App\Models\PromoSection;
 use App\Models\Slider;
-use App\Models\StudyMaterial;
 use App\Models\Testimonial;
 use App\Models\TestimonialSection;
 use Carbon\Carbon;
@@ -41,6 +40,7 @@ class FrontendController extends Controller
         $clients = CorporateTraining::all();
         $faqs = FaqsSection::all();
         $brochures = Brochure::all();
+
         return view('pages.home', compact('metaDetail', 'pageSchema', 'sliders', 'promoSections', 'featureSection', 'featureCards', 'freeMaterials', 'testimonialSection', 'testimonials', 'clients', 'faqs', 'brochures'));
     }
 
@@ -49,6 +49,7 @@ class FrontendController extends Controller
         $news = News::all();
         $metaDetail = PageMetaDetails::where('page_name', 'News list')->first();
         $pageSchema = PageSchema::where('page_name', 'News list')->first();
+
         return view('pages.news-list', compact('news', 'metaDetail', 'pageSchema'));
     }
 
@@ -56,6 +57,7 @@ class FrontendController extends Controller
     {
         $metaDetail = News::where('slug', $slug)->first()->metaDetail;
         $pageSchema = PageSchema::where('page_name', $metaDetail->name)->first();
+
         return view('pages.news', compact('slug', 'metaDetail', 'pageSchema'));
     }
 
@@ -63,6 +65,7 @@ class FrontendController extends Controller
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Course list')->first();
         $pageSchema = PageSchema::where('page_name', 'Course list')->first();
+
         return view('pages.course-list', compact('metaDetail', 'pageSchema'));
     }
 
@@ -70,6 +73,7 @@ class FrontendController extends Controller
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Contact')->first();
         $pageSchema = PageSchema::where('page_name', 'Contact')->first();
+
         return view('pages.contact', compact('metaDetail', 'pageSchema'));
     }
 
@@ -82,6 +86,7 @@ class FrontendController extends Controller
         $packageCourses = optional($package)->courses ? Course::findMany($package->courses) : [$course];
         $pageSchema = PageSchema::where('page_name', $product->name)->first();
         $metaDetail = $product->metaDetail;
+
         return view('pages.course', compact('product', 'packageCourses', 'pageSchema', 'prices', 'metaDetail'));
     }
 
@@ -90,7 +95,8 @@ class FrontendController extends Controller
         $metaDetail = PageMetaDetails::where('page_name', 'Upcoming schedule')->first();
         $latestSchedules = Course::with('schedule')->get()->map(function ($course) {
             $latestSchedule = $course->schedule->firstWhere('start_date', '>=', Carbon::today());
-            return ['item' => $course, 'latest_schedule' => $latestSchedule,];
+
+            return ['item' => $course, 'latest_schedule' => $latestSchedule];
         });
 
         $packages = Package::all();
@@ -109,18 +115,21 @@ class FrontendController extends Controller
             ] : null;
         })->filter()->values()->all();
         $pageSchema = PageSchema::where('page_name', 'Upcoming schedule')->first();
+
         return view('pages.upcoming-batches', compact('latestSchedules', 'metaDetail', 'latestPackageSchedules', 'pageSchema'));
     }
 
     public function render_account()
     {
         $orders = Order::where('user_id', Auth::id())->latest()->get();
+
         return view('dashboard', compact('orders'));
     }
 
     public function order_details($id)
     {
         $order = Order::find($id);
+
         return view('components.order-details', compact('order'));
     }
 
@@ -130,6 +139,7 @@ class FrontendController extends Controller
         $news = $newsCategory->news ?? collect();
         $metaDetail = $newsCategory->metaDetail;
         $pageSchema = PageSchema::where('page_name', $newsCategory->name)->first();
+
         return view('pages.news-list', compact('news', 'metaDetail', 'pageSchema'));
     }
 
@@ -137,6 +147,7 @@ class FrontendController extends Controller
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Testimonials')->first();
         $pageSchema = PageSchema::where('page_name', 'Testimonials')->first();
+
         return view('pages.testimonials', compact('metaDetail', 'pageSchema'));
     }
 
@@ -145,6 +156,7 @@ class FrontendController extends Controller
         $metaDetail = PageMetaDetails::where('page_name', 'Memorable moments')->first();
         $pageSchema = PageSchema::where('page_name', 'Memorable moments')->first();
         $moments = MemorableMoments::all();
+
         return view('pages.memorable-moments', compact('metaDetail', 'pageSchema', 'moments'));
     }
 
@@ -152,6 +164,7 @@ class FrontendController extends Controller
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Franchisee')->first();
         $pageSchema = PageSchema::where('page_name', 'Franchisee')->first();
+
         return view('pages.franchisee', compact('metaDetail', 'pageSchema'));
     }
 
@@ -160,6 +173,7 @@ class FrontendController extends Controller
         $metaDetail = PageMetaDetails::where('page_name', 'Study material')->first();
         $materials = Course::with('studyMaterial')->get()->flatMap->studyMaterial;
         $pageSchema = PageSchema::where('page_name', 'Study material')->first();
+
         return view('pages.free-ebooks', compact('metaDetail', 'materials', 'pageSchema'));
     }
 
@@ -168,6 +182,7 @@ class FrontendController extends Controller
         $course = Course::where('slug', $slug)->with('studyMaterial')->first();
         $studyMaterials = $course->studyMaterial;
         $courseName = $course->name;
+
         return view('pages.my-course', compact('studyMaterials', 'courseName'));
     }
 

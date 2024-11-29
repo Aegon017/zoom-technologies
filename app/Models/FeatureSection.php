@@ -10,7 +10,7 @@ class FeatureSection extends Model
     protected $fillable = [
         'title',
         'heading',
-        'content'
+        'content',
     ];
 
     public function featureCard(): HasMany

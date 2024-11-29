@@ -4,7 +4,6 @@ namespace App\Filament\Resources\FooterSectionResource\RelationManagers;
 
 use App\Models\Email;
 use App\Models\MobileNumber;
-use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -12,8 +11,6 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class FooterOfficeRelationManager extends RelationManager
 {
@@ -39,8 +36,8 @@ class FooterOfficeRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('name'),
                 TextColumn::make('location')->wrap(),
-                TextColumn::make('mobile')->getStateUsing(fn($record) => is_array($record->mobile) ? implode(', ', MobileNumber::whereIn('id', $record->mobile)->pluck('number')->toArray()) : '')->wrap(),
-                TextColumn::make('email')->getStateUsing(fn($record) => is_array($record->email) ? implode(', ', Email::whereIn('id', $record->email)->pluck('email')->toArray()) : '')->wrap(),
+                TextColumn::make('mobile')->getStateUsing(fn ($record) => is_array($record->mobile) ? implode(', ', MobileNumber::whereIn('id', $record->mobile)->pluck('number')->toArray()) : '')->wrap(),
+                TextColumn::make('email')->getStateUsing(fn ($record) => is_array($record->email) ? implode(', ', Email::whereIn('id', $record->email)->pluck('email')->toArray()) : '')->wrap(),
             ])
             ->filters([
                 //

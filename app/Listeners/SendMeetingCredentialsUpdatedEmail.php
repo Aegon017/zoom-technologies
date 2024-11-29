@@ -3,11 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\MeetingCredentialsUpdatedEvent;
-use App\Mail\MeetingMail;
 use App\Mail\UpdatedMeetingMail;
 use App\Models\OrderSchedule;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
 
 class SendMeetingCredentialsUpdatedEmail
