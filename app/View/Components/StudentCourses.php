@@ -19,8 +19,8 @@ class StudentCourses extends Component
         $orders = Order::where('user_id', $user->id)->get();
         foreach ($orders as $order) {
             if ($order->payment->status == 'success') {
-                $course_name = $order->course_name;
-                $course_slug = Str::slug($order->course_name);
+                $course_name = $order->course->name;
+                $course_slug = Str::slug($order->course->name);
                 $courses[$course_name] ??= [
                     'courseName' => $course_name,
                     'courseSlug' => $course_slug,
