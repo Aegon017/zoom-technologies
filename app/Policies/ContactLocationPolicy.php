@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\ContactLocation;
 use App\Models\User;
+use App\Models\ContactLocation;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ContactLocationPolicy

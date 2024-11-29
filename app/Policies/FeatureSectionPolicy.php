@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\FeatureSection;
 use App\Models\User;
+use App\Models\FeatureSection;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class FeatureSectionPolicy

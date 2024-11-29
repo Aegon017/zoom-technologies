@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\FreeMaterialSection;
 use App\Models\User;
+use App\Models\FreeMaterialSection;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class FreeMaterialSectionPolicy

@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\SocialLink;
 use App\Models\User;
+use App\Models\SocialLink;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class SocialLinkPolicy
