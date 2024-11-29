@@ -103,8 +103,7 @@
                 <tbody>
                     <tr>
                         <td>{{ $order->course->name ?? $order->package->name }}</td>
-                        <td>{{ $order->payment->currency }}
-                            {{ $order->course->actual_price ?? $order->package->actual_price }}/-</td>
+                        <td>Rs {{ $order->course->actual_price ?? $order->package->actual_price }}/-</td>
                     </tr>
                 </tbody>
             </table>
@@ -133,8 +132,7 @@
                 <tbody>
                     <tr>
                         <td>Subtotal:</td>
-                        <td>{{ $order->payment->currency }}
-                            {{ $order->course->actual_price ?? $order->package->actual_price }}/-</td>
+                        <td>Rs {{ $order->course->actual_price ?? $order->package->actual_price }}/-</td>
                     </tr>
                     <tr>
                         <td>Payment mode:</td>
@@ -143,10 +141,10 @@
                     <tr>
                         <td>Taxes:</td>
                         <td>
-                            C.GST({{ 100 / (($order->course->actual_price ?? $order->package->actual_price) / $order->cgst) }}%):
+                            C.GST({{ (100 * $order->cgst) / $order->courseOrPackage_price }}%):
                             {{ $order->payment->currency }}
                             {{ $order->cgst }}/-<br>
-                            S.GST({{ 100 / (($order->course->actual_price ?? $order->package->actual_price) / $order->sgst) }}%):
+                            S.GST({{ (100 * $order->sgst) / $order->courseOrPackage_price }}%):
                             {{ $order->payment->currency }}
                             {{ $order->sgst }}/-
                         </td>
@@ -181,8 +179,7 @@
                 <tbody>
                     <tr>
                         <td>{{ $order->course->name ?? $order->package->name }}</td>
-                        <td>{{ $order->payment->currency }}
-                            {{ $order->course->actual_price ?? $order->package->actual_price }}/-</td>
+                        <td>Rs {{ $order->course->actual_price ?? $order->package->actual_price }}/-</td>
                     </tr>
                 </tbody>
             </table>
@@ -211,8 +208,7 @@
                 <tbody>
                     <tr>
                         <td>Subtotal:</td>
-                        <td>{{ $order->payment->currency }}
-                            {{ $order->course->actual_price ?? $order->package->actual_price }}/-</td>
+                        <td>Rs {{ $order->course->actual_price ?? $order->package->actual_price }}/-</td>
                     </tr>
                     <tr>
                         <td>Payment mode:</td>

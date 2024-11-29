@@ -9,7 +9,6 @@ use App\Actions\Payment\PaymentResponse;
 use App\Actions\Payment\SendEmails;
 use App\Actions\Payment\UpdateOrderPayment;
 use App\Models\Currency;
-use App\Models\Order;
 use App\Services\PayUPayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,30 +20,32 @@ use Stripe\StripeClient;
 
 class PaymentController extends Controller
 {
-    public function initiate(Request $request, PayUPayment $payUPayment, CreateOrder $createOrder, AttachScheduleToOrder $attachScheduleToOrder)
+    public function initiate(Request $request)
     {
-        Session::put('paymentMethod', $request->payment_method);
-        $paymentMethod = Session::get('paymentMethod');
         $user = Auth::user();
-        $usd_rate = Currency::where('name', 'USD')->first()->value;
-        $txnId = uniqid();
         $payablePrice = $request->payable_price;
+        $productType = $request->product_type;
         $productInfo = $request->name;
-        $usd = round(($payablePrice / $usd_rate), 0);
-        Session::put('usd', $usd);
-        $order = $createOrder->execute($request, $user->id, $usd);
-        Session::put('order_id', $order->id);
         $scheduleIDs = array_values(array_filter($request->all(), fn ($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
-        $attachScheduleToOrder->execute($scheduleIDs, $order->id);
-        switch ($paymentMethod) {
+        Session::put('paymentMethod', $request->payment_method);
+        Session::put('userID', $user->id);
+        Session::put('scheduleIDs', $scheduleIDs);
+        session::put('productName', $productInfo);
+        Session::put('payablePrice', $payablePrice);
+        Session::put('productType', $productType);
+        switch ($request->payment_method) {
             case 'payu':
+                $txnId = uniqid();
+                $payUPayment = new PayUPayment;
                 $payUPayment->execute($user, $txnId, $payablePrice, $productInfo);
                 break;
             case 'paypal':
                 $provider = new PayPal;
                 $provider->setApiCredentials(config('paypal'));
                 $paypalToken = $provider->getAccessToken();
-
+                $usd_rate = Currency::where('name', 'USD')->first()->value;
+                $usd = ceil($payablePrice / $usd_rate);
+                Session::put('usd', $usd);
                 $response = $provider->createOrder([
                     'intent' => 'CAPTURE',
                     'application_context' => [
@@ -76,7 +77,10 @@ class PaymentController extends Controller
                 break;
             case 'stripe':
                 Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
-                $session = CheckoutSession::create([
+                $usd_rate = Currency::where('name', 'USD')->first()->value;
+                $usd = ceil($payablePrice / $usd_rate);
+                Session::put('usd', $usd);
+                $checkoutSession = CheckoutSession::create([
                     'payment_method_types' => ['card'],
                     'line_items' => [
                         [
@@ -95,7 +99,7 @@ class PaymentController extends Controller
                     'cancel_url' => route('payment.failure'),
                 ]);
 
-                return redirect($session->url);
+                return redirect($checkoutSession->url);
                 break;
             default:
                 echo 'Please choose a valid payment method';
@@ -103,16 +107,21 @@ class PaymentController extends Controller
         }
     }
 
-    public function success(Request $request, PaymentResponse $paymentResponse)
+    public function success(Request $request)
     {
+        $createOrder = new CreateOrder;
+        $attachScheduleToOrder = new AttachScheduleToOrder;
+        $paymentResponse = new PaymentResponse;
         $paymentMethod = Session::get('paymentMethod');
-        $order_id = Session::get('order_id');
-        $order = Order::find($order_id);
+        $userID = Session::get('userID');
+        $usd = Session::get('usd');
+        $scheduleIDs = Session::get('scheduleIDs');
+        $order = $createOrder->execute($userID, $usd);
+        $attachScheduleToOrder->execute($scheduleIDs, $order->id);
         switch ($paymentMethod) {
             case 'payu':
                 $paymentResponse->execute($request, $order);
                 break;
-
             case 'paypal':
                 $provider = new PayPal;
                 $provider->setApiCredentials(config('paypal'));
@@ -184,11 +193,17 @@ class PaymentController extends Controller
         return view('pages.payment-success', compact('order'));
     }
 
-    public function failure(Request $request, PaymentResponse $paymentResponse)
+    public function failure(Request $request)
     {
+        $createOrder = new CreateOrder;
+        $attachScheduleToOrder = new AttachScheduleToOrder;
+        $paymentResponse = new PaymentResponse;
         $paymentMethod = Session::get('paymentMethod');
-        $order_id = Session::get('order_id');
-        $order = Order::find($order_id);
+        $userID = Session::get('userID');
+        $usd = Session::get('usd');
+        $scheduleIDs = Session::get('scheduleIDs');
+        $order = $createOrder->execute($userID, $usd);
+        $attachScheduleToOrder->execute($scheduleIDs, $order->id);
         switch ($paymentMethod) {
             case 'payu':
                 $paymentResponse->execute($request, $order);
@@ -247,10 +262,6 @@ class PaymentController extends Controller
                 ];
                 $updateOrderPayment->execute($order->id, $data);
                 $sendEmails->execute($order);
-                break;
-
-            default:
-                echo 'Please choose a valid payment method';
                 break;
         }
 

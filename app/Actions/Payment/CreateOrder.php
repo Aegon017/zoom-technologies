@@ -4,17 +4,19 @@ namespace App\Actions\Payment;
 
 use App\Actions\DecodePrice;
 use App\Models\Order;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class CreateOrder
 {
-    public function execute(Request $request, $userId, $usd)
+    public function execute($userID, $usd)
     {
-        $payablePrice = $request->payable_price;
-        $productType = $request->product_type;
+        $paymentMethod = Session::get('paymentMethod');
+        $productName = Session::get('productName');
+        $productType = Session::get('productType');
+        $payablePrice = Session::get('payablePrice');
         $model = (new ModelFromProductType)->execute($productType);
-        $item = $model::where('slug', $request->name)->firstOrFail();
-        switch ($request->payment_method) {
+        $item = $model::where('slug', $productName)->firstOrFail();
+        switch ($paymentMethod) {
             case 'payu':
                 $payablePrice = $payablePrice;
                 $prices = (new DecodePrice)->execute($payablePrice);
@@ -33,10 +35,10 @@ class CreateOrder
         }
 
         return Order::create([
-            'user_id' => $userId,
+            'user_id' => $userID,
             'course_id' => $item->courses ? null : $item->id,
             'package_id' => $item->courses ? $item->id : null,
-            'order_number' => 'zt_'.$userId.now()->format('YmdHis'),
+            'order_number' => 'zt_'.$userID.now()->format('YmdHis'),
             'courseOrPackage_price' => $prices['actualPrice'],
             'sgst' => $prices['sgst'],
             'cgst' => $prices['cgst'],
