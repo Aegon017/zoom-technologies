@@ -2,20 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TaxResource\Pages;
-use App\Models\Tax;
-use Filament\Forms\Components\TextInput;
+use App\Filament\Resources\PaymentGatewayResource\Pages;
+use App\Models\PaymentGateway;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class TaxResource extends Resource
+class PaymentGatewayResource extends Resource
 {
-    protected static ?string $model = Tax::class;
-
-    protected static ?int $navigationSort = 10;
+    protected static ?string $model = PaymentGateway::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -25,8 +23,11 @@ class TaxResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')->required(),
-                TextInput::make('value')->suffix('%')->required(),
+                Select::make('gateway')->label('Select Payment Gateways')->options([
+                    'PayU' => 'PayU',
+                    'Stripe' => 'Stripe',
+                    'PayPal' => 'PayPal',
+                ])->multiple()->required(),
             ]);
     }
 
@@ -34,8 +35,7 @@ class TaxResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->searchable(),
-                TextColumn::make('value')->suffix('%'),
+                TextColumn::make('gateway')->searchable(),
             ])
             ->filters([
                 //
@@ -43,7 +43,11 @@ class TaxResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([]);
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
     }
 
     public static function getRelations(): array
@@ -56,9 +60,9 @@ class TaxResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTaxes::route('/'),
-            'create' => Pages\CreateTax::route('/create'),
-            'edit' => Pages\EditTax::route('/{record}/edit'),
+            'index' => Pages\ListPaymentGateways::route('/'),
+            'create' => Pages\CreatePaymentGateway::route('/create'),
+            'edit' => Pages\EditPaymentGateway::route('/{record}/edit'),
         ];
     }
 }

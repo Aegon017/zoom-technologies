@@ -70,7 +70,7 @@ class AdminPanelProvider extends PanelProvider
                 'Pages',
                 'Home page',
                 'Contact Details',
-                'Currencies & Taxes',
+                'Payment Settings',
                 'SEO Settings',
                 'Filament Shield',
             ]);

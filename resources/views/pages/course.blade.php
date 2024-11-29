@@ -103,5 +103,5 @@
         </div>
     </section>
     <x-related-courses />
-    <x-checkout-popup :$prices :$product :$packageCourses />
+    <x-checkout-popup :$prices :$product :$packageCourses :$paymentGateway />
 </x-frontend-layout>

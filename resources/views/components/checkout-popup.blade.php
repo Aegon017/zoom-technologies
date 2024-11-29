@@ -45,30 +45,36 @@
                             <div class="payment-method">
                                 <p class="font-weight-bold">Please select payment method</p>
                                 <div class="row">
-                                    <div class="form-check col-md-6 payu-input">
-                                        <input class="form-check-input" type="radio" value="payu"
-                                            name="payment_method" id="payu" checked>
-                                        <label class="form-check-label" for="payu">
-                                            <img src="{{ asset('frontend/assets/img/icon/payu-icon.png') }}"
-                                                alt="payu">
-                                        </label>
-                                    </div>
-                                    <div class="form-check col-md-6 paypal-input">
-                                        <input class="form-check-input" type="radio" value="paypal"
-                                            name="payment_method" id="paypal">
-                                        <label class="form-check-label" for="paypal">
-                                            <img src="{{ asset('frontend/assets/img/icon/paypal-icon.png') }}"
-                                                alt="paypal">
-                                        </label>
-                                    </div>
-                                    <div class="form-check col-md-6 stripe-input">
-                                        <input class="form-check-input" type="radio" value="stripe"
-                                            name="payment_method" id="stripe">
-                                        <label class="form-check-label" for="stripe">
-                                            <img src="{{ asset('frontend/assets/img/icon/stripe-icon.png') }}"
-                                                alt="stripe">
-                                        </label>
-                                    </div>
+                                    @if (in_array('PayU', $paymentGateway->gateway))
+                                        <div class="form-check col-md-6 payu-input">
+                                            <input class="form-check-input" type="radio" value="payu"
+                                                name="payment_method" id="payu" checked>
+                                            <label class="form-check-label" for="payu">
+                                                <img src="{{ asset('frontend/assets/img/icon/payu-icon.png') }}"
+                                                    alt="payu">
+                                            </label>
+                                        </div>
+                                    @endif
+                                    @if (in_array('PayPal', $paymentGateway->gateway))
+                                        <div class="form-check col-md-6 paypal-input">
+                                            <input class="form-check-input" type="radio" value="paypal"
+                                                name="payment_method" id="paypal">
+                                            <label class="form-check-label" for="paypal">
+                                                <img src="{{ asset('frontend/assets/img/icon/paypal-icon.png') }}"
+                                                    alt="paypal">
+                                            </label>
+                                        </div>
+                                    @endif
+                                    @if (in_array('Stripe', $paymentGateway->gateway))
+                                        <div class="form-check col-md-6 stripe-input">
+                                            <input class="form-check-input" type="radio" value="stripe"
+                                                name="payment_method" id="stripe">
+                                            <label class="form-check-label" for="stripe">
+                                                <img src="{{ asset('frontend/assets/img/icon/stripe-icon.png') }}"
+                                                    alt="stripe">
+                                            </label>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                             <button class="btn btn-dark mb-2 w-100">Buy Now</button>
