@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Exports\OrderExporter;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Models\Order;
-use App\Models\Schedule;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Fieldset;
@@ -21,6 +20,7 @@ use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use ZipArchive;
 
 class OrderResource extends Resource
@@ -55,38 +55,40 @@ class OrderResource extends Resource
                 ]),
                 Fieldset::make('Course Details')->schema([
                     TextEntry::make('course.name'),
-                    TextEntry::make('courseOrPackage_price')->prefix('Rs. ')->suffix('/-'),
+                    TextEntry::make('courseOrPackage_price')
+                        ->formatStateUsing(fn ($state, $record) => $record->payment->currency.' '.$state),
                 ]),
                 Fieldset::make('Batches')->schema([
                     TextEntry::make('orderSchedule')
                         ->label('')
                         ->listWithLineBreaks()
-                        ->getStateUsing(function ($record) {
-                            if (! $record->orderSchedule || $record->orderSchedule->isEmpty()) {
-                                return ['No Schedules Available'];
-                            }
+                        ->getStateUsing(
+                            fn ($record) => $record->orderSchedule->isEmpty()
+                                ? ['🚫 No Schedules Available']
+                                : $record->orderSchedule
+                                    ->map(function ($os) {
+                                        $s = $os->schedule;
 
-                            return $record->orderSchedule->map(function ($orderSchedule) {
-                                $schedule = $orderSchedule->schedule; // Assuming schedule is a relationship on OrderSchedule
-
-                                return implode(', ', [
-                                    'Course: '.optional($schedule->course)->name ?? 'N/A',
-                                    'Start Date: '.($schedule->start_date
-                                        ? \Carbon\Carbon::parse($schedule->start_date)
-                                        : 'N/A'),
-                                    'Start Time: '.($schedule->time
-                                        ? \Carbon\Carbon::parse($schedule->time)
-                                        : 'N/A'),
-                                    'End Time: '.($schedule->end_time
-                                        ? \Carbon\Carbon::parse($schedule->end_time)
-                                        : 'N/A'),
-                                    'Duration: '.($schedule->duration
-                                        ? $schedule->duration.' '.$schedule->duration_type
-                                        : 'N/A'),
-                                    'Training Mode: '.optional($schedule)->training_mode ?? 'N/A',
-                                ]);
-                            })->toArray();
-                        }),
+                                        return $s ? [
+                                            '📚 Course: '.($s->course?->name ?? 'N/A'),
+                                            '📅 Date: '.(
+                                                $s->start_date
+                                                ? \Carbon\Carbon::parse($s->start_date)->format('d M Y')
+                                                : 'Unscheduled'
+                                            ),
+                                            '⏰ Time: '.(
+                                                $s->time
+                                                ? \Carbon\Carbon::parse($s->time)->format('h:i A')
+                                                : 'TBD'
+                                            ),
+                                            '🌐 Mode: '.($s->training_mode ?? 'Unspecified'),
+                                        ] : ['⚠️ Invalid Schedule'];
+                                    })
+                                    ->flatten()
+                                    ->filter()
+                                    ->toArray()
+                        )
+                        ->placeholder('No schedule information'),
                 ]),
                 Fieldset::make('Payment Details')->schema([
                     TextEntry::make('order_number'),
@@ -96,9 +98,15 @@ class OrderResource extends Resource
                     TextEntry::make('payment.date')->label('Date')->date(),
                     TextEntry::make('payment.time')->label('Time')->time('h:i A'),
                     TextEntry::make('payment.description')->label('Description'),
-                    TextEntry::make('cgst')->label('C.GST')->prefix('Rs. ')->suffix('/-'),
-                    TextEntry::make('sgst')->label('S.GST')->prefix('Rs. ')->suffix('/-'),
-                    TextEntry::make('payment.amount')->label('Order Amount')->prefix('Rs. ')->suffix('/-'),
+                    TextEntry::make('cgst')
+                        ->formatStateUsing(fn ($state, $record) => $record->payment->currency.' '.$state)
+                        ->label('C.GST'),
+                    TextEntry::make('sgst')
+                        ->formatStateUsing(fn ($state, $record) => $record->payment->currency.' '.$state)
+                        ->label('S.GST'),
+                    TextEntry::make('payment.amount')
+                        ->formatStateUsing(fn ($state, $record) => $record->payment->currency.' '.$state)
+                        ->label('Order Amount'),
                     TextEntry::make('payment.status'),
                 ]),
             ]);
@@ -121,9 +129,11 @@ class OrderResource extends Resource
 
                         return $course;
                     }),
-                TextColumn::make('payment.amount')->label('Order Amount')->prefix('Rs. ')->suffix('/-'),
-                TextColumn::make('payment.date')->label('Payment date')->date(),
-                TextColumn::make('payment.time')->label('Payment time')->time('h:i A'),
+                TextColumn::make('payment.amount')
+                    ->label('Order Amount')
+                    ->formatStateUsing(fn ($state, $record) => $record->payment->currency.' '.$state),
+                TextColumn::make('payment.date')->label('Payment date'),
+                TextColumn::make('payment.time')->label('Payment time'),
                 TextColumn::make('payment.status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -133,10 +143,12 @@ class OrderResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('course.name')
+                    ->label('Single course')
                     ->relationship('course', 'name')
                     ->searchable()
                     ->preload()->columnSpan(2),
                 SelectFilter::make('package.name')
+                    ->label('Package course')
                     ->relationship('package', 'name')
                     ->searchable()
                     ->preload()->columnSpan(2),
@@ -145,19 +157,6 @@ class OrderResource extends Resource
                     ->relationship('schedule', 'training_mode')
                     ->searchable()
                     ->preload(),
-                // Filter::make('order_date_range')
-                //     ->label('Order Date Range')
-                //     ->form([
-                //         DatePicker::make('start_date')->label('Start Date'),
-                //         DatePicker::make('end_date')->label('End Date'),
-                //     ])
-                //     ->query(function ($query, $data) {
-                //         if (!empty($data['start_date']) && !empty($data['end_date'])) {
-                //             $query->whereHas('payment', function ($query) use ($data) {
-                //                 $query->whereBetween('payments.date', [$data['start_date'], $data['end_date']]);
-                //             });
-                //         }
-                //     }),
                 SelectFilter::make('schedule.start_date')
                     ->label('Batch Date')
                     ->relationship('schedule', 'start_date')
@@ -168,10 +167,27 @@ class OrderResource extends Resource
                     ->relationship('schedule', 'time')
                     ->searchable()
                     ->preload(),
+                Filter::make('order_date_range')
+                    ->label('Order Date Range')
+                    ->form([
+                        DatePicker::make('start_date')->label('Start Date'),
+                        DatePicker::make('end_date')->label('End Date'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['start_date'] && $data['end_date'],
+                            fn (Builder $query): Builder => $query->whereHas(
+                                'payment',
+                                fn (Builder $query): Builder => $query->whereBetween(
+                                    'payments.date',
+                                    [$data['start_date'], $data['end_date']]
+                                )
+                            )
+                        );
+                    }),
 
-            ], layout: FiltersLayout::AboveContent)->filtersFormColumns(4)
+            ], layout: FiltersLayout::AboveContentCollapsible)->filtersFormColumns(4)
             ->actions([
-                // ExportAction::make()->exporter(OrderExporter::class),
                 ActionsAction::make('invoice')
                     ->label('Download Invoice')
                     ->icon('heroicon-o-arrow-down-tray')
@@ -181,7 +197,6 @@ class OrderResource extends Resource
                 ViewAction::make(),
             ])
             ->bulkActions([
-                // ExportBulkAction::make(OrderExporter::class),
                 BulkAction::make('invoice')
                     ->label('Download Invoices')
                     ->icon('heroicon-o-arrow-down-tray')
@@ -205,7 +220,7 @@ class OrderResource extends Resource
                             return back()->with('error', 'Unable to create the ZIP file.');
                         }
                     }),
-            ]);
+            ])->defaultSort('created_at', 'desc');
     }
 
     public static function getRelations(): array

@@ -54,10 +54,12 @@ class StudentResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('course.name')
+                    ->label('Single course')
                     ->relationship('course', 'name')
                     ->searchable()
                     ->preload(),
                 SelectFilter::make('package.name')
+                    ->label('Package course')
                     ->relationship('package', 'name')
                     ->searchable()
                     ->preload(),

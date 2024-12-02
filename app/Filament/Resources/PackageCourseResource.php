@@ -170,9 +170,10 @@ class PackageCourseResource extends Resource
                                     ->label('Total Amount')
                                     ->readOnly(),
                                 Select::make('payment_mode')->options([
-                                    'Cash' => 'Cash',
+                                    'Bank transfer' => 'Bank transfer',
                                     'UPI' => 'UPI',
-                                    'Cheque' => 'Cheque',
+                                    'POS' => 'POS',
+                                    'Cash' => 'Cash',
                                 ]),
                                 FileUpload::make('proof'),
                             ]),

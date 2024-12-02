@@ -14,6 +14,7 @@ use Filament\Tables\Actions\ExportAction as ActionsExportAction;
 use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 
 class UserResource extends Resource
 {
@@ -23,17 +24,14 @@ class UserResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    public static function canCreate(): bool
-    {
-        return false;
-    }
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('name'),
                 TextInput::make('email'),
+                PhoneInput::make('phone'),
+                TextInput::make('password')->password(),
                 Select::make('roles')
                     ->relationship('roles', 'name')
                     ->multiple()

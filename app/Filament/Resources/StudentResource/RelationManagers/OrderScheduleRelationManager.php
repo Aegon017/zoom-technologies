@@ -40,6 +40,7 @@ class OrderScheduleRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->heading('')
             ->recordTitleAttribute('id')
             ->columns([
                 TextColumn::make('schedule.start_date')->date()->label('Batch date'),
