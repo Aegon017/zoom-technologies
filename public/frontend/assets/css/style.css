@@ -11899,14 +11899,46 @@ select:visited {
     font-weight: 500 !important;
 }
 
-.batch-select {
+.batch-select,
+.billing-fields {
     border-radius: 50dvh;
-    border-color: #c5c5c5;
+    border-color: #d6bdb6;
     border-width: 2px;
 }
 
 .batch-select:focus,
-.batch-select:focus-within {
+.batch-select:focus-within,
+.billing-fields:focus,
+.billing-fields:focus-within {
     border-color: #fd5222;
     border-width: 2px;
+}
+
+.checkout-section {
+    background-color: #f6f6f6;
+}
+
+.bg-orange {
+    background-color: #fd5222;
+}
+
+.payment-select {
+    accent-color: #fd5222;
+    width: 1rem;
+    aspect-ratio: 1;
+}
+
+.border-radius-md {
+    border-radius: 2.5rem;
+    overflow: hidden;
+}
+
+.border-rounded {
+    border-radius: 50dvh;
+}
+
+.paynow-btn {
+    margin: auto;
+    width: 0;
+    padding: 0.75rem 6rem 0.75rem 2.5rem;
 }

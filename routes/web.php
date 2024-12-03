@@ -32,10 +32,13 @@ Route::middleware([
     Route::get('/my-courses', [FrontendController::class, 'renderCourses'])->name('render.userCourses');
     Route::get('/my-courses/{slug}', [FrontendController::class, 'renderMyCourse'])->name('render.myCourse');
     Route::get('/order-details/{id}', [FrontendController::class, 'order_details'])->name('order-details');
+
     Route::post('/payment/initiate', [PaymentController::class, 'initiate'])->name('payment.initiate');
     Route::any('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
     Route::any('/payment/failure', [PaymentController::class, 'failure'])->name('payment.failure');
 });
+
+Route::post('checkout', [FrontendController::class, 'checkout'])->name('checkout');
 
 Route::get('/storage-link', function () {
     $target = storage_path('app/public');

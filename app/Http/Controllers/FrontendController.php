@@ -199,4 +199,9 @@ class FrontendController extends Controller
         $thankyou = Thankyou::first();
         return view('pages.thankyou', compact('thankyou'));
     }
+
+    public function checkout()
+    {
+        return view('pages.checkout');
+    }
 }

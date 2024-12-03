@@ -7,7 +7,7 @@
             <div class="position-relative">
                 <div class="text-center pera-content">
                     <div class="modal-body text-left">
-                        <form action="{{ route('payment.initiate') }}" method="POST">
+                        <form action="{{ route('checkout') }}" method="POST">
                             @csrf
                             {{-- <div class="row">
                                 <div class="col-md-8">
