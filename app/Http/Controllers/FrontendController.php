@@ -22,6 +22,7 @@ use App\Models\PromoSection;
 use App\Models\Slider;
 use App\Models\Testimonial;
 use App\Models\TestimonialSection;
+use App\Models\Thankyou;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -191,5 +192,11 @@ class FrontendController extends Controller
     public function renderCourses()
     {
         return view('pages.user-study-materail');
+    }
+
+    public function renderThankyou()
+    {
+        $thankyou = Thankyou::first();
+        return view('pages.thankyou', compact('thankyou'));
     }
 }

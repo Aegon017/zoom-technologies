@@ -11,6 +11,7 @@ Route::prefix('/news')->group(function () {
     Route::get('/{slug}', [FrontendController::class, 'renderNews'])->name('render.news');
     Route::get('/category/{category}', [FrontendController::class, 'renderNewsCategory'])->name('news.category');
 });
+Route::get('/thankyou', [FrontendController::class, 'renderThankyou'])->name('thankyou');
 Route::prefix('/training/india')->group(function () {
     Route::get('/courses', [FrontendController::class, 'renderCourseList'])->name('render.course.list');
     Route::get('/{slug}', [FrontendController::class, 'renderCourse'])->name('render.course');
@@ -38,7 +39,7 @@ Route::middleware([
 
 Route::get('/storage-link', function () {
     $target = storage_path('app/public');
-    $link = $_SERVER['DOCUMENT_ROOT'].'/zoom-technologies/public/storage';
+    $link = $_SERVER['DOCUMENT_ROOT'] . '/zoom-technologies/public/storage';
     symlink($target, $link);
 });
 

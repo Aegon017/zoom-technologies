@@ -13,6 +13,7 @@ class Schedule extends Model
 {
     protected $fillable = [
         'course_id',
+        'timezone_id',
         'start_date',
         'time',
         'end_time',
@@ -25,6 +26,11 @@ class Schedule extends Model
         'meeting_password',
         'status',
     ];
+
+    public function timezone(): BelongsTo
+    {
+        return $this->belongsTo(Timezone::class);
+    }
 
     protected static function expireSchedule()
     {
@@ -63,12 +69,12 @@ class Schedule extends Model
 
     public function getFormattedScheduleAttribute()
     {
-        return $this->start_date.', '.$this->time;
+        return $this->start_date . ', ' . $this->time;
     }
 
     public function getFormattedPackageScheduleAttribute()
     {
-        return $this->course->name.' - '.$this->start_date.', '.$this->time;
+        return $this->course->name . ' - ' . $this->start_date . ', ' . $this->time;
     }
 
     public function getStartDateAttribute($value)

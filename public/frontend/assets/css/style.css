@@ -8556,15 +8556,17 @@ select:visited {
 .zt-login-modal .modal-content {
     border: none;
     overflow: hidden;
-    border-radius: 10px;
+    border-radius: 1.5rem;
 }
 
 .zt-login-modal .modal-dialog {
     max-width: 570px;
+    -webkit-transform: translate(0, 20dvh);
+    transform: translate(0, 20dvh) !important;
 }
 
 .zt-login-modal .modal-body {
-    padding: 50px;
+    padding: 3rem;
 }
 
 .zt-modal-header {
@@ -11798,67 +11800,113 @@ select:visited {
     width: 100%;
 }
 
-#checkoutpopup .text{
+#checkoutpopup .text {
     margin-top: 0.25rem;
     font-size: 0.9rem;
 }
 
-#checkoutpopup .text-heading{
+#checkoutpopup .text-heading {
     font-size: 1.2rem;
 }
 
-.payment-method .row{
-    padding:0 2rem 1rem 2rem;
+.payment-method .row {
+    padding: 0 2rem 1rem 2rem;
 }
 
-.payment-method p{
+.payment-method p {
     padding-top: 1rem;
 }
 
-.payment-method .row input{
+.payment-method .row input {
     accent-color: black;
     height: 1rem !important;
     aspect-ratio: 1;
 }
 
-.payu-input input{
+.payu-input input {
     margin-top: 42px;
 }
 
-.payu-input label{
+.payu-input label {
     margin-left: 10px;
 }
 
-.payu-input label img{
+.payu-input label img {
     width: 60px;
     margin-top: 18px;
 }
 
-.paypal-input input{
+.paypal-input input {
     margin-top: 38px;
 }
 
-.paypal-input label{
+.paypal-input label {
     margin-left: 8px;
 }
 
-.stripe-input input{
+.stripe-input input {
     margin-top: 40px;
 }
 
-.stripe-input label{
+.stripe-input label {
     margin-left: 6px;
 }
 
-.stripe-input label img{
+.stripe-input label img {
     width: 80px;
     margin-top: 8px;
 }
 
-.list-style-none{
+.list-style-none {
     list-style: none;
 }
 
-.login-dropdown{
-    left:-110px;
+.login-dropdown {
+    left: -110px;
+}
+
+.modal-content {
+    position: relative;
+}
+
+.model-cross {
+    color: #fd5222;
+    position: absolute;
+    top: 1.3rem;
+    right: 1.5rem;
+    font-size: 1.3rem;
+    z-index: 1;
+    opacity: 1;
+}
+
+.model-cross:hover {
+    color: #cf3d14;
+    opacity: 1;
+}
+
+.continue-btn {
+    background-color: #fd5222;
+    color: white;
+    border-radius: 50dvh;
+}
+
+.continue-btn:hover {
+    background-color: #cf3d14;
+    color: white;
+}
+
+.batch-label {
+    font-weight: 500 !important;
+}
+
+.batch-select {
+    border-radius: 50dvh;
+    border-color: #c5c5c5;
+    border-width: 2px;
+}
+
+.batch-select:focus,
+.batch-select:focus-within {
+    border-color: #fd5222;
+    border-width: 2px;
 }
