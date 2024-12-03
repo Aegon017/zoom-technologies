@@ -1,4 +1,9 @@
 <x-guest-layout>
+    <style>
+        .iti {
+            width: 100%;
+        }
+    </style>
     <x-authentication-card>
         <x-slot name="logo">
             <x-authentication-card-logo />
@@ -23,10 +28,10 @@
 
             <div class="mt-4">
                 <x-label for="phone" value="{{ __('Phone') }}" />
-                <x-input id="phone" maxlength="10" class="block mt-1 w-full" type="tel" name="phone"
-                    :value="old('phone')" required autocomplete="phone" />
+                <x-input id="phone_number" class="block mt-1 w-full" type="tel" name="phone_number"
+                    :value="old('phone_number')" required autocomplete="phone_number" />
+                <input type="hidden" name="phone" id="phone" :value="old('phone')" />s
             </div>
-
             <div class="mt-4">
                 <x-label for="password" value="{{ __('Password') }}" />
                 <x-input id="password" class="block mt-1 w-full" type="password" name="password" required
@@ -78,4 +83,55 @@
             </div>
         </form>
     </x-authentication-card>
+    <div class="mt-4">
+        <x-label for="phone_number" value="{{ __('Phone') }}" />
+
+        <!-- Phone input field with country code selector -->
+        <x-input id="phone_number" class="block mt-1 w-full" type="tel" name="phone_number" :value="old('phone_number')"
+            required autocomplete="phone_number" />
+
+        <!-- Hidden input to store the full phone number (including country code) -->
+        <input type="hidden" name="phone" id="phone" :value="old('phone')" />
+    </div>
+
+    <!-- Add the JS script to handle phone number input and update hidden field -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var input = document.querySelector("#phone_number");
+            var iti = intlTelInput(input, {
+                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js" // Optional: For validation
+            });
+
+            // When the form is submitted, set the hidden input with the full phone number (including country code)
+            document.querySelector("form").addEventListener("submit", function() {
+                // Get the full phone number including country code and set it to the hidden input
+                document.querySelector("#phone").value = iti.getNumber();
+            });
+        });
+    </script>
+    <div class="mt-4">
+        <x-label for="phone_number" value="{{ __('Phone') }}" />
+
+        <!-- Phone input field with country code selector -->
+        <x-input id="phone_number" class="block mt-1 w-full" type="tel" name="phone_number" :value="old('phone_number')"
+            required autocomplete="phone_number" />
+
+        <!-- Hidden input to store the full phone number (including country code) -->
+        <input type="hidden" name="phone" id="phone" :value="old('phone')" />
+    </div>
+
+    <!-- Add the JS script to handle phone number input and update hidden field -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var input = document.querySelector("#phone_number");
+            var iti = intlTelInput(input, {
+                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js" // Optional: For validation
+            });
+
+            document.querySelector("form").addEventListener("submit", function() {
+                document.querySelector("#phone").value = iti.getNumber();
+            });
+        });
+    </script>
+
 </x-guest-layout>
