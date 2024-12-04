@@ -8,6 +8,7 @@ use App\Actions\Payment\GenerateInvoice;
 use App\Actions\Payment\PaymentResponse;
 use App\Actions\Payment\SendEmails;
 use App\Actions\Payment\UpdateOrderPayment;
+use App\Models\Address;
 use App\Models\Currency;
 use App\Services\PayUPayment;
 use Illuminate\Http\Request;
@@ -26,13 +27,15 @@ class PaymentController extends Controller
         $payablePrice = $request->payable_price;
         $productType = $request->product_type;
         $productInfo = $request->name;
-        $scheduleIDs = array_values(array_filter($request->all(), fn ($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
+        $selectedAddress = $request->selected_address;
+        $scheduleIDs = Session::get('scheduleIDs');
         Session::put('paymentMethod', $request->payment_method);
         Session::put('userID', $user->id);
         Session::put('scheduleIDs', $scheduleIDs);
         session::put('productName', $productInfo);
         Session::put('payablePrice', $payablePrice);
         Session::put('productType', $productType);
+        Session::put('selectedAddress', $selectedAddress);
         switch ($request->payment_method) {
             case 'payu':
                 $txnId = uniqid();
@@ -95,7 +98,7 @@ class PaymentController extends Controller
                         ],
                     ],
                     'mode' => 'payment',
-                    'success_url' => route('payment.success').'?session_id={CHECKOUT_SESSION_ID}',
+                    'success_url' => route('payment.success') . '?session_id={CHECKOUT_SESSION_ID}',
                     'cancel_url' => route('payment.failure'),
                 ]);
 
@@ -150,7 +153,9 @@ class PaymentController extends Controller
                     'currency' => 'USD',
                 ];
                 $updateOrderPayment->execute($order->id, $data);
-                $order->invoice = $generateInvoice->execute($order);
+                $selectedAddress = Session::get('selectedAddress');
+                $address = Address::find($selectedAddress);
+                $order->invoice = $generateInvoice->execute($order, $address);
                 $order->save();
                 $sendEmails->execute($order);
                 break;
@@ -181,7 +186,9 @@ class PaymentController extends Controller
                     'currency' => 'USD',
                 ];
                 $updateOrderPayment->execute($order->id, $data);
-                $order->invoice = $generateInvoice->execute($order);
+                $selectedAddress = Session::get('selectedAddress');
+                $address = Address::find($selectedAddress);
+                $order->invoice = $generateInvoice->execute($order, $address);
                 $order->save();
                 $sendEmails->execute($order);
                 break;

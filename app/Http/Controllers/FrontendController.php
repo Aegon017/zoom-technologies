@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\CalculatePrice;
+use App\Models\Address;
 use App\Models\Brochure;
 use App\Models\CorporateTraining;
 use App\Models\Course;
@@ -24,7 +25,9 @@ use App\Models\Testimonial;
 use App\Models\TestimonialSection;
 use App\Models\Thankyou;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class FrontendController extends Controller
 {
@@ -200,8 +203,24 @@ class FrontendController extends Controller
         return view('pages.thankyou', compact('thankyou'));
     }
 
-    public function checkout()
+    public function checkout(Request $request)
     {
-        return view('pages.checkout');
+        $scheduleIDs = array_values(array_filter($request->all(), fn($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
+        Session::put('scheduleIDs', $scheduleIDs);
+        return view('pages.checkout', compact('request'));
+    }
+
+    public function addressStore(Request $request)
+    {
+        $address = new Address();
+        $address->user_id = Auth::id();
+        $address->address = $request->address;
+        $address->city = $request->city;
+        $address->state = $request->state;
+        $address->zip_code = $request->zip_code;
+        $address->country = $request->country;
+        $address->zip_code = $request->zip_code;
+        $address->save();
+        return redirect()->intended();
     }
 }

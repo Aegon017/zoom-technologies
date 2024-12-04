@@ -119,7 +119,11 @@
                                 <h3 style="margin-block:0.5rem">{{ $order->payment->date }}
                                     {{ $order->payment->time }}</h3>
                                 <div>{{ $order->user->name }} <br />{{ $order->user->email }}
-                                    <br />{{ $order->user->phone }}
+                                    <br />{{ $order->user->phone }} <br>{{ $address->address }} <br>
+                                    {{ $address->city }} <br>
+                                    {{ $address->state }} <br>
+                                    {{ $address->zip_code }} <br>
+                                    {{ $address->country }} <br>
                                 </div>
                             </td>
                         </tr>

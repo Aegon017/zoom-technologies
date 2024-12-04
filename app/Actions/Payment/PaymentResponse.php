@@ -2,8 +2,10 @@
 
 namespace App\Actions\Payment;
 
+use App\Models\Address;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class PaymentResponse
 {
@@ -33,7 +35,9 @@ class PaymentResponse
         ];
         $updateOrderPayment->execute($order->id, $data);
         if ($request->status == 'success') {
-            $order->invoice = $generateInvoice->execute($order);
+            $selectedAddress = Session::get('selectedAddress');
+            $address = Address::find($selectedAddress);
+            $order->invoice = $generateInvoice->execute($order, $address);
             $order->save();
         }
         $sendEmails->execute($order);
