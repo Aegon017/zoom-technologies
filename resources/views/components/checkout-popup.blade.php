@@ -17,15 +17,17 @@
                                         id="course-schedule{{ $course->id }}" required>
                                         <option value="" selected>select schedule</option>
                                         @foreach ($course->schedule as $schedule)
-                                            <option value="{{ $schedule->id }}">
-                                                {{ \Carbon\Carbon::parse($schedule->start_date)->format('jS M Y') }}
-                                                -
-                                                {{ \Carbon\Carbon::parse($schedule->time)->format('g:i A') }} (
-                                                {{ $schedule->timezone->offset }} -
-                                                {{ $schedule->timezone->abbreviation }} )
-                                                -
-                                                {{ $schedule->training_mode }}
-                                            </option>
+                                            @if ($schedule->status == true)
+                                                <option value="{{ $schedule->id }}">
+                                                    {{ \Carbon\Carbon::parse($schedule->start_date)->format('jS M Y') }}
+                                                    -
+                                                    {{ \Carbon\Carbon::parse($schedule->time)->format('g:i A') }} (
+                                                    {{ $schedule->timezone->offset }} -
+                                                    {{ $schedule->timezone->abbreviation }} )
+                                                    -
+                                                    {{ $schedule->training_mode }}
+                                                </option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
