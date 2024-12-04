@@ -75,6 +75,14 @@ class SingleCourseResource extends Resource
                                         }
                                     }),
                             ]),
+                        Tab::make('Address Details')
+                            ->schema([
+                                TextInput::make('address'),
+                                TextInput::make('city'),
+                                TextInput::make('state'),
+                                TextInput::make('zip_code'),
+                                TextInput::make('country'),
+                            ]),
                         Tab::make('Course Details')
                             ->schema([
                                 Select::make('course_id')
@@ -203,7 +211,7 @@ class SingleCourseResource extends Resource
                     }),
             ])
             ->bulkActions([])
-            ->modifyQueryUsing(fn (Builder $query) => $query->whereNotNull('course_id'));
+            ->modifyQueryUsing(fn(Builder $query) => $query->whereNotNull('course_id'));
     }
 
     public static function getRelations(): array

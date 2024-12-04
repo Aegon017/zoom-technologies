@@ -26,6 +26,11 @@ return new class extends Migration
             $table->mediumInteger('amount');
             $table->string('payment_mode');
             $table->string('proof');
+            $table->string('address');
+            $table->string('city');
+            $table->string('state');
+            $table->string('zip_code');
+            $table->string('country');
             $table->timestamps();
         });
     }

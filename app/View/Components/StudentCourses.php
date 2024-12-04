@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use App\Models\Course;
 use App\Models\Order;
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -19,15 +20,13 @@ class StudentCourses extends Component
         $orders = Order::where('user_id', $user->id)->get();
         foreach ($orders as $order) {
             if ($order->payment->status == 'success') {
-                $course_name = $order->course->name;
-                $course_slug = Str::slug($order->course->name);
-                $courses[$course_name] ??= [
-                    'courseName' => $course_name,
-                    'courseSlug' => $course_slug,
+                $course_id = $order->course_id;
+                $courses[$course_id] ??= [
+                    'course_id' => $course_id,
                 ];
             }
         }
-        $this->courses = $courses ?? [];
+        $this->courses = Course::findMany($courses ?? []);
     }
 
     public function render(): View|Closure|string

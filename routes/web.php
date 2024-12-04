@@ -4,6 +4,7 @@ use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\PaymentController;
 use Filament\Actions\Exports\Http\Controllers\DownloadExport;
 use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Fortify;
 
 Route::get('/', [FrontendController::class, 'renderHome'])->name('render.home');
 Route::prefix('/news')->group(function () {
@@ -11,9 +12,13 @@ Route::prefix('/news')->group(function () {
     Route::get('/{slug}', [FrontendController::class, 'renderNews'])->name('render.news');
     Route::get('/category/{category}', [FrontendController::class, 'renderNewsCategory'])->name('news.category');
 });
-Route::post('checkout', [FrontendController::class, 'checkout'])->name('checkout');
+
+Route::get('/email-verified', [FrontendController::class, 'emailVerified'])->name('email.verified');
+Route::get('/checkout', [FrontendController::class, 'checkout'])->name('checkout');
 Route::post('/address/store', [FrontendController::class, 'addressStore'])->name('address.store');
 Route::get('/thankyou', [FrontendController::class, 'renderThankyou'])->name('thankyou');
+
+
 Route::prefix('/training/india')->group(function () {
     Route::get('/courses', [FrontendController::class, 'renderCourseList'])->name('render.course.list');
     Route::get('/{slug}', [FrontendController::class, 'renderCourse'])->name('render.course');

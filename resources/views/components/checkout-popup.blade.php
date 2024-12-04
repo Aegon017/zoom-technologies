@@ -7,8 +7,7 @@
             <div class="position-relative">
                 <div class="text-center pera-content">
                     <div class="modal-body text-left">
-                        <form action="{{ route('checkout') }}" method="POST">
-                            @csrf
+                        <form action="{{ route('checkout') }}">
                             @foreach ($packageCourses as $course)
                                 <div class="my-3">
                                     <label for="course-schedule" class="batch-label">Select Batch</label>

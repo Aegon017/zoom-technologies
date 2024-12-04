@@ -186,7 +186,7 @@ class FrontendController extends Controller
     public function renderMyCourse($slug)
     {
         $course = Course::where('slug', $slug)->with('studyMaterial')->first();
-        $studyMaterials = $course->studyMaterial->where('subscription', 'Paid');
+        $studyMaterials = $course->studyMaterial;
         $courseName = $course->name;
 
         return view('pages.my-course', compact('studyMaterials', 'courseName'));
@@ -221,6 +221,11 @@ class FrontendController extends Controller
         $address->country = $request->country;
         $address->zip_code = $request->zip_code;
         $address->save();
-        return redirect()->intended();
+        return redirect()->back();
+    }
+
+    public function emailVerified()
+    {
+        return view('pages.email-verified');
     }
 }

@@ -22,6 +22,11 @@ class ManualOrder extends Model
         'amount',
         'payment_mode',
         'proof',
+        'address',
+        'city',
+        'state',
+        'zip_code',
+        'country',
     ];
 
     protected $casts = [

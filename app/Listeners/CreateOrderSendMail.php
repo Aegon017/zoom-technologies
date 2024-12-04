@@ -8,6 +8,7 @@ use App\Actions\Payment\SendEmails;
 use App\Actions\Payment\UpdateOrderPayment;
 use App\Events\ManualOrderCreatedEvent;
 use App\Mail\UserEnrollMail;
+use App\Models\Address;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
@@ -39,11 +40,19 @@ class CreateOrderSendMail
         $user->save();
         Mail::to($userEmail)->send(new UserEnrollMail($user, $password));
         $userId = $user->id;
+        $address = Address::create([
+            'user_id' => $userId,
+            'address' => $event->manualOrder->address,
+            'city' => $event->manualOrder->city,
+            'state' => $event->manualOrder->state,
+            'country' => $event->manualOrder->country,
+            'zip_code' => $event->manualOrder->zip_code,
+        ]);
         $order = new Order;
         $order->user_id = $userId;
         $order->course_id = $event->manualOrder->package_id ? null : $event->manualOrder->course_id;
         $order->package_id = $event->manualOrder->package_id;
-        $order->order_number = 'zt_'.$userId.now()->format('YmdHis');
+        $order->order_number = 'zt_' . $userId . now()->format('YmdHis');
         $order->courseOrPackage_price = $event->manualOrder->course_price;
         $order->cgst = $event->manualOrder->cgst;
         $order->sgst = $event->manualOrder->sgst;
@@ -71,7 +80,7 @@ class CreateOrderSendMail
         $updateOrderPayment = new UpdateOrderPayment;
         $updateOrderPayment->execute($order->id, $data);
         $generateInvoice = new GenerateInvoice;
-        $order->invoice = $generateInvoice->execute($order);
+        $order->invoice = $generateInvoice->execute($order, $address);
         $order->save();
         $sendEmails = new SendEmails;
         $sendEmails->execute($order);

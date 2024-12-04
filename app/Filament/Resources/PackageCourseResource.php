@@ -77,6 +77,14 @@ class PackageCourseResource extends Resource
                                         }
                                     }),
                             ]),
+                        Tab::make('Address Details')
+                            ->schema([
+                                TextInput::make('address'),
+                                TextInput::make('city'),
+                                TextInput::make('state'),
+                                TextInput::make('zip_code'),
+                                TextInput::make('country'),
+                            ]),
                         Tab::make('Package Details')
                             ->schema([
                                 Select::make('package_id')
@@ -202,7 +210,7 @@ class PackageCourseResource extends Resource
                     }),
             ])
             ->bulkActions([])
-            ->modifyQueryUsing(fn (Builder $query) => $query->whereNotNull('package_id'));
+            ->modifyQueryUsing(fn(Builder $query) => $query->whereNotNull('package_id'));
     }
 
     public static function getRelations(): array

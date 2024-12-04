@@ -50,7 +50,7 @@
                 <span>Price: <strong><i
                             class="fas fa-rupee-sign"></i>{{ number_format($prices['salePrice'] ?? $prices['actualPrice']) }}</strong></span>
                 <div class="payment-button">
-                    <button data-toggle="modal" data-target="#checkoutpopup">Buy Now</button>
+                    <button data-toggle="modal" data-target="#checkoutpopup" class="continue-btn">Buy Now</button>
                 </div>
             </div>
             <div class="note-box">
