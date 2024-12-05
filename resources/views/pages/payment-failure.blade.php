@@ -1,5 +1,10 @@
 <x-frontend-layout>
-    <section class="response-section py-5">
+    @php
+        $pageBackground = 'frontend/assets/img/banner/contact-us-banner.jpg';
+        $pageTitle = 'Payment Failure';
+    @endphp
+    <x-page-breadcrumb :pageBackground="$pageBackground" :pageTitle="$pageTitle" />
+    <section class="response-section course-page-course-section py-5">
         <div class="container">
             <div class="response-card">
                 <div class="card alert-danger">
@@ -15,4 +20,5 @@
             </div>
         </div>
     </section>
+    <x-related-courses />
 </x-frontend-layout>

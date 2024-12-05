@@ -10,6 +10,7 @@ use App\Actions\Payment\SendEmails;
 use App\Actions\Payment\UpdateOrderPayment;
 use App\Models\Address;
 use App\Models\Currency;
+use App\Models\Thankyou;
 use App\Services\PayUPayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -121,6 +122,7 @@ class PaymentController extends Controller
         $scheduleIDs = Session::get('scheduleIDs');
         $order = $createOrder->execute($userID, $usd);
         $attachScheduleToOrder->execute($scheduleIDs, $order->id);
+        $thankyou = Thankyou::first();
         switch ($paymentMethod) {
             case 'payu':
                 $paymentResponse->execute($request, $order);
@@ -197,7 +199,7 @@ class PaymentController extends Controller
                 break;
         }
 
-        return view('pages.payment-success', compact('order'));
+        return view('pages.payment-success', compact('order', 'thankyou'));
     }
 
     public function failure(Request $request)

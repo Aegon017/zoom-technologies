@@ -5,6 +5,14 @@
         </div>
         <div class="card-body px-5 my-3">
             <form wire:submit="register">
+                @if ($errorMessage)
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>{{ $errorMessage }}</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
                 <div class="form-group">
                     <label for="name">Full Name</label>
                     <input wire:model="fullName" type="text" class="form-control billing-fields" id="name"
@@ -24,8 +32,7 @@
                 </div>
                 @if ($status !== true)
                     <button type="submit" class="btn btn-primary btn-block continue-btn border-0">
-                        <div class="d-flex justify-content-center"><span class="loader"
-                                wire:loading></span><span>Register</span>
+                        <div class="d-flex justify-content-center"><span>Register</span>
                         </div>
                     </button>
                 @endif

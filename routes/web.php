@@ -16,8 +16,6 @@ Route::prefix('/news')->group(function () {
 Route::get('/email-verified', [FrontendController::class, 'emailVerified'])->name('email.verified');
 Route::get('/checkout', [FrontendController::class, 'checkout'])->name('checkout');
 Route::post('/address/store', [FrontendController::class, 'addressStore'])->name('address.store');
-Route::get('/thankyou', [FrontendController::class, 'renderThankyou'])->name('thankyou');
-
 
 Route::prefix('/training/india')->group(function () {
     Route::get('/courses', [FrontendController::class, 'renderCourseList'])->name('render.course.list');
@@ -41,8 +39,8 @@ Route::middleware([
     Route::get('/order-details/{id}', [FrontendController::class, 'order_details'])->name('order-details');
 
     Route::post('/payment/initiate', [PaymentController::class, 'initiate'])->name('payment.initiate');
-    Route::any('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
-    Route::any('/payment/failure', [PaymentController::class, 'failure'])->name('payment.failure');
+    Route::any('/payment/success', [PaymentController::class, 'success'])->name('payment.success')->middleware('prevent.refresh');;
+    Route::any('/payment/failure', [PaymentController::class, 'failure'])->name('payment.failure')->middleware('prevent.refresh');;
 });
 
 Route::get('/storage-link', function () {

@@ -5,23 +5,26 @@
         </div>
         <div class="card-body px-5 my-3">
             @csrf
-            @foreach (auth()->user()->addresses as $address)
-                <div class="d-flex justify-content-between mb-5">
-                    <div class="form-check">
-                        <input wire:model='' class="form-check-input payment-select" type="radio" name="selected_address"
-                            id="address_{{ $address->id }}" value="{{ $address->id }}" required checked>
-                        <label class="form-check-label" for="address_{{ $address->id }}">
-                            {{ $address->address }}, {{ $address->city }},
-                            {{ $address->state }},
-                            {{ $address->zip_code }}, {{ $address->country }}
-                        </label>
+            @if (auth()->user())
+                @foreach (auth()->user()->addresses as $address)
+                    <div class="d-flex justify-content-between mb-5">
+                        <div class="form-check">
+                            <input x-model="selectedAddress" class="form-check-input payment-select" type="radio"
+                                name="selected_address" id="address_{{ $address->id }}" value="{{ $address->id }}"
+                                required checked>
+                            <label class="form-check-label" for="address_{{ $address->id }}">
+                                {{ $address->address }}, {{ $address->city }},
+                                {{ $address->state }},
+                                {{ $address->zip_code }}, {{ $address->country }}
+                            </label>
+                        </div>
+                        <div>
+                            <a href="" wire:click.prevent='delete({{ $address->id }})'
+                                class="text-danger bg-transparent border-0"><i class="fas fa-trash"></i></a>
+                        </div>
                     </div>
-                    <div>
-                        <a href="" wire:click.prevent='delete({{ $address->id }})'
-                            class="text-danger bg-transparent border-0"><i class="fas fa-trash"></i></a>
-                    </div>
-                </div>
-            @endforeach
+                @endforeach
+            @endif
             <button wire:click.prevent="toggleAddressForm" class="continue-btn btn w-100">Add Address</button>
         </div>
     </div>

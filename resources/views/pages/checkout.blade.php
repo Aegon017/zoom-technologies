@@ -4,7 +4,7 @@
         $pageTitle = 'Checkout';
     @endphp
     <x-page-breadcrumb :pageBackground="$pageBackground" :pageTitle="$pageTitle" />
-    <div class="checkout-section py-5">
+    <div class="checkout-section py-5" x-data="{ selectedAddress: '' }">
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
@@ -18,15 +18,10 @@
                     </div>
                     <!-- New User Details Form -->
                     <livewire:user-register />
-
                     <!-- Payment Section -->
                     <form action="{{ route('payment.initiate') }}" method="POST">
                         @csrf
-                        @auth
-                            @if (auth()->user())
-                                <livewire:user-address />
-                            @endif
-                        @endauth
+                        <livewire:user-address />
                         <div class="card mb-4 border-radius-md">
                             <div class="card-header bg-orange text-white py-3 px-5">
                                 <h5 class="mb-0 text-orange">Payment</h5>
@@ -61,19 +56,10 @@
                                 <input type="hidden" name="payable_price" value="{{ $request->payable_price }}">
                                 <input type="hidden" name="product_type" value="{{ $request->product_type }}">
                                 <input type="hidden" name="name" value="{{ $request->name }}">
-                                @if (auth()->user() && auth()->user()->email_verified_at && !auth()->user()?->addresses->isEmpty())
-                                    <button type="submit"
-                                        class="btn btn-primary btn-block paynow-btn continue-btn border-0">
-                                        Pay Now
-                                    </button>
-                                @else
-                                    <button disabled type="submit" data-toggle="tooltip" data-placement="top"
-                                        title="{{ !auth()->user()?->addresses->isEmpty() ? 'Please add user details' : 'please add address' }}"
-                                        class="btn
-                                        btn-primary btn-block paynow-btn continue-btn border-0">
-                                        Pay Now
-                                    </button>
-                                @endif
+                                <button :disabled="!selectedAddress" type="submit"
+                                    class="btn btn-primary btn-block paynow-btn continue-btn border-0">
+                                    Pay Now
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -116,6 +102,9 @@
                                 </li>
                             </ul>
                         </div>
+                    </div>
+                    <div class="mt-3 text-center">
+                        {!! $thankyou->content !!}
                     </div>
                 </div>
             </div>

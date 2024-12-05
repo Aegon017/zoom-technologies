@@ -17,8 +17,20 @@ class UserRegister extends Component
     public $fullName = '';
     public $status = false;
     public $successMessage = '';
+    public $errorMessage = null;
     public function register()
     {
+        $existingEmail = User::where('email', $this->email)->first();
+        if ($existingEmail) {
+            $this->errorMessage = 'The email address is already registered.';
+            return;
+        }
+
+        $existingPhone = User::where('phone', $this->phone)->first();
+        if ($existingPhone) {
+            $this->errorMessage = 'The phone number is already registered.';
+            return;
+        }
         $user = new User();
         $user->email = $this->email;
         $user->phone = $this->phone;

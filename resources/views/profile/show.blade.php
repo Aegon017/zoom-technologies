@@ -12,6 +12,11 @@
 
                 <x-section-border />
             @endif
+            @if (!Auth::user()->addresses->isEmpty())
+                <div class="mt-10 sm:mt-0">
+                    <livewire:update-address-form />
+                </div>
+            @endif
 
             @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
                 <div class="mt-10 sm:mt-0">
@@ -33,13 +38,13 @@
                 @livewire('profile.logout-other-browser-sessions-form')
             </div>
 
-            @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
+            {{-- @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
                 <x-section-border />
 
                 <div class="mt-10 sm:mt-0">
                     @livewire('profile.delete-user-form')
                 </div>
-            @endif
+            @endif --}}
         </div>
     </div>
 </x-app-layout>
