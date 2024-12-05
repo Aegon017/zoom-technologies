@@ -17,6 +17,7 @@ class PreventRefresh
     public function handle(Request $request, Closure $next)
     {
         if (Session::has('page_refreshed')) {
+            Session::forget('page_refreshed');
             return redirect('/expired');
         }
         Session::put('page_refreshed', true);
