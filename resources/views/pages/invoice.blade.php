@@ -116,14 +116,21 @@
                     <table>
                         <tr>
                             <td>
-                                <h3 style="margin-block:0.5rem">{{ $order->payment->date }}
-                                    {{ $order->payment->time }}</h3>
-                                <div>{{ $order->user->name }} <br />{{ $order->user->email }}
-                                    <br />{{ $order->user->phone }} <br>{{ $address->address }} <br>
-                                    {{ $address->city }} <br>
-                                    {{ $address->state }} <br>
-                                    {{ $address->zip_code }} <br>
-                                    {{ $address->country }} <br>
+                                <h3 style="margin-block:0.5rem">Customer Details</h3>
+                                <div style="display: flex; justify-content:space-between;">
+                                    <div style="flex:10"><strong>Name:</strong> {{ $order->user->name }}
+                                        <br /><strong>Email:</strong>
+                                        {{ $order->user->email }}
+                                        <br /><strong>Phone:</strong> {{ $order->user->phone }}
+                                    </div>
+                                    <div style="flex:2">
+                                        <strong>Address:</strong> {{ $address->address }}
+                                        <br>
+                                        <strong>City:</strong> {{ $address->city }} <br>
+                                        <strong>State:</strong> {{ $address->state }} <br>
+                                        <strong>Zip code:</strong> {{ $address->zip_code }} <br>
+                                        <strong>Country:</strong> {{ $address->country }} <br>
+                                    </div>
                                 </div>
                             </td>
                         </tr>

@@ -22,11 +22,15 @@ class ListOrders extends ListRecords
     public function getTabs(): array
     {
         return [
-            'all' => Tab::make(),
             'success' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('payment', fn ($query) => $query->where('status', 'success'))),
+                ->modifyQueryUsing(fn(Builder $query) => $query->whereHas('payment', fn($query) => $query->where('status', 'success'))),
             'failure' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('payment', fn ($query) => $query->where('status', 'failure'))),
+                ->modifyQueryUsing(fn(Builder $query) => $query->whereHas('payment', fn($query) => $query->where('status', 'failure'))),
         ];
+    }
+
+    public function getDefaultActiveTab(): string | int | null
+    {
+        return "success";
     }
 }
