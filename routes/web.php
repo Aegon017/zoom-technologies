@@ -2,12 +2,8 @@
 
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\PaymentController;
-use App\Models\Address;
-use App\Models\Order;
 use Filament\Actions\Exports\Http\Controllers\DownloadExport;
 use Illuminate\Support\Facades\Route;
-use Illuminate\View\View;
-use Laravel\Fortify\Fortify;
 
 Route::get('/', [FrontendController::class, 'renderHome'])->name('render.home');
 Route::prefix('/news')->group(function () {
@@ -42,13 +38,13 @@ Route::middleware([
     Route::get('/order-details/{id}', [FrontendController::class, 'order_details'])->name('order-details');
 
     Route::post('/payment/initiate', [PaymentController::class, 'initiate'])->name('payment.initiate');
-    Route::any('/payment/success', [PaymentController::class, 'success'])->name('payment.success')->middleware('prevent.refresh');;
-    Route::any('/payment/failure', [PaymentController::class, 'failure'])->name('payment.failure')->middleware('prevent.refresh');;
+    Route::any('/payment/success', [PaymentController::class, 'success'])->name('payment.success')->middleware('prevent.refresh');
+    Route::any('/payment/failure', [PaymentController::class, 'failure'])->name('payment.failure')->middleware('prevent.refresh');
 });
 
 Route::get('/storage-link', function () {
     $target = storage_path('app/public');
-    $link = $_SERVER['DOCUMENT_ROOT'] . '/zoom-technologies/public/storage';
+    $link = $_SERVER['DOCUMENT_ROOT'].'/zoom-technologies/public/storage';
     symlink($target, $link);
 });
 

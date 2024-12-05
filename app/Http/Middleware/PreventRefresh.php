@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use Symfony\Component\HttpFoundation\Response;
 
 class PreventRefresh
 {
@@ -18,9 +17,11 @@ class PreventRefresh
     {
         if (Session::has('page_refreshed')) {
             Session::forget('page_refreshed');
+
             return redirect('/expired');
         }
         Session::put('page_refreshed', true);
+
         return $next($request);
     }
 }

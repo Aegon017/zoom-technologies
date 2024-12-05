@@ -10,7 +10,7 @@ class Timezone extends Model
     protected $fillable = [
         'timezone_name',
         'offset',
-        'abbreviation'
+        'abbreviation',
     ];
 
     public function schedule(): HasMany

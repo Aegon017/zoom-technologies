@@ -7,7 +7,6 @@ use App\Models\Order;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use Illuminate\View\Component;
 
 class StudentCourses extends Component

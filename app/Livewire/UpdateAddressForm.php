@@ -3,19 +3,24 @@
 namespace App\Livewire;
 
 use App\Models\Address;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class UpdateAddressForm extends Component
 {
     public $addresses = [];
-    public $addressId = "";
-    public $address = "";
-    public $city = "";
-    public $state = "";
-    public $zip_code = "";
-    public $country = "";
+
+    public $addressId = '';
+
+    public $address = '';
+
+    public $city = '';
+
+    public $state = '';
+
+    public $zip_code = '';
+
+    public $country = '';
 
     public function mount()
     {
@@ -48,8 +53,10 @@ class UpdateAddressForm extends Component
         $address = Address::find($this->addressId);
         $address->delete();
         $this->dispatch('deleted');
+
         return redirect('/user/profile');
     }
+
     public function render()
     {
         return view('livewire.update-address-form');

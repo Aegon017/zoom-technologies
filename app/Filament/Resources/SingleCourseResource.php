@@ -211,7 +211,7 @@ class SingleCourseResource extends Resource
                     }),
             ])
             ->bulkActions([])
-            ->modifyQueryUsing(fn(Builder $query) => $query->whereNotNull('course_id'));
+            ->modifyQueryUsing(fn (Builder $query) => $query->whereNotNull('course_id'));
     }
 
     public static function getRelations(): array

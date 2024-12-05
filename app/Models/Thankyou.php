@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Thankyou extends Model
 {
@@ -13,7 +12,7 @@ class Thankyou extends Model
         'heading',
         'sub_heading',
         'email',
-        'mobile'
+        'mobile',
     ];
 
     protected $casts = [

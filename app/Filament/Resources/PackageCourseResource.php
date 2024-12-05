@@ -210,7 +210,7 @@ class PackageCourseResource extends Resource
                     }),
             ])
             ->bulkActions([])
-            ->modifyQueryUsing(fn(Builder $query) => $query->whereNotNull('package_id'));
+            ->modifyQueryUsing(fn (Builder $query) => $query->whereNotNull('package_id'));
     }
 
     public static function getRelations(): array

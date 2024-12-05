@@ -3,30 +3,28 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ThankyouResource\Pages;
-use App\Filament\Resources\ThankyouResource\RelationManagers;
 use App\Models\Email;
 use App\Models\MobileNumber;
 use App\Models\Thankyou;
-use Filament\Forms;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ThankyouResource extends Resource
 {
     protected static ?string $model = Thankyou::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     protected static ?string $navigationGroup = 'Pages';
+
     protected static ?string $navigationLabel = 'Thankyou';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -48,8 +46,8 @@ class ThankyouResource extends Resource
                 TextColumn::make('content'),
                 TextColumn::make('heading'),
                 TextColumn::make('sub_heading'),
-                TextColumn::make('email')->getStateUsing(fn($record) => is_array($record->email) ? implode(', ', Email::whereIn('id', $record->email)->pluck('email')->toArray()) : ''),
-                TextColumn::make('mobile')->getStateUsing(fn($record) => is_array($record->mobile) ? implode(', ', MobileNumber::whereIn('id', $record->mobile)->pluck('number')->toArray()) : '')
+                TextColumn::make('email')->getStateUsing(fn ($record) => is_array($record->email) ? implode(', ', Email::whereIn('id', $record->email)->pluck('email')->toArray()) : ''),
+                TextColumn::make('mobile')->getStateUsing(fn ($record) => is_array($record->mobile) ? implode(', ', MobileNumber::whereIn('id', $record->mobile)->pluck('number')->toArray()) : ''),
             ])
             ->filters([
                 //

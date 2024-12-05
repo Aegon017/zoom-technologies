@@ -8,20 +8,26 @@ use Livewire\Component;
 
 class UserAddress extends Component
 {
-    public $showAddressForm  = false;
+    public $showAddressForm = false;
+
     public $fAddress = '';
+
     public $city = '';
+
     public $state = '';
+
     public $zipCode = '';
+
     public $country = '';
+
     public function toggleAddressForm()
     {
-        $this->showAddressForm = !$this->showAddressForm;
+        $this->showAddressForm = ! $this->showAddressForm;
     }
 
     public function save()
     {
-        $address = new Address();
+        $address = new Address;
         $address->user_id = Auth::user()->id;
         $address->address = $this->fAddress;
         $address->city = $this->city;
@@ -38,6 +44,7 @@ class UserAddress extends Component
         $address = Address::find($id);
         $address->delete();
     }
+
     public function render()
     {
         return view('livewire.user-address');
