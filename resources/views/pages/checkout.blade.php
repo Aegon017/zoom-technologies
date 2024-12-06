@@ -10,8 +10,36 @@
                 <div class="col-md-8">
                     <!-- Buttons for user selection -->
                     <div class="d-flex justify-content-between mb-4 gap-5">
+                        @php
+                            $request = request(); // Get the current Laravel request object
+
+                            // Convert the request data to an array
+                            $requestData = $request->all();
+
+                            // Filter values that contain "course_schedule"
+                            $course_schedule_values = array_filter(
+                                $requestData,
+                                function ($key) {
+                                    return strpos($key, 'course_schedule') !== false; // Check if the key contains 'course_schedule'
+                                },
+                                ARRAY_FILTER_USE_KEY,
+                            );
+                        @endphp
                         @guest
-                            <a href="{{ route('login') }}" class="px-3 py-2 bg-dark continue-btn">Already Registered</a>
+                            <form action="{{ route('checkout.course') }}">
+                                <input type="hidden" name="payable_price" value="{{ $request->payable_price }}">
+                                <input type="hidden" name="product_type" value="{{ $request->product_type }}">
+                                <input type="hidden" name="name" value="{{ $request->name }}">
+                                <input type="hidden" name="actualName" value="{{ $request->actualName }}">
+                                <input type="hidden" name="coursePrice" value="{{ $request->coursePrice }}">
+                                <input type="hidden" name="cgst" value="{{ $request->cgst }}">
+                                <input type="hidden" name="sgst" value="{{ $request->sgst }}">
+                                <input type="hidden" name="payablePrice" value="{{ $request->payablePrice }}">
+                                <button class="px-3 py-2 bg-dark continue-btn">Already Registered</button>
+                                @foreach ($course_schedule_values as $key => $value)
+                                    <input type="hidden" name="{{ $key }}" value="{{ $value }}" />
+                                @endforeach
+                            </form>
                             <button type="button" class="btn px-3 py-2 continue-btn" id="new-user-btn">New
                                 User</button>
                         @endguest
