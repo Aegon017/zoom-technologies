@@ -199,30 +199,9 @@ class FrontendController extends Controller
 
     public function checkout(Request $request)
     {
-        $scheduleIDs = array_values(array_filter($request->all(), fn ($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
+        $scheduleIDs = array_values(array_filter($request->all(), fn($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
         Session::put('scheduleIDs', $scheduleIDs);
         $thankyou = Thankyou::first();
-
         return view('pages.checkout', compact('request', 'thankyou'));
-    }
-
-    public function addressStore(Request $request)
-    {
-        $address = new Address;
-        $address->user_id = Auth::id();
-        $address->address = $request->address;
-        $address->city = $request->city;
-        $address->state = $request->state;
-        $address->zip_code = $request->zip_code;
-        $address->country = $request->country;
-        $address->zip_code = $request->zip_code;
-        $address->save();
-
-        return redirect()->back();
-    }
-
-    public function emailVerified()
-    {
-        return view('pages.email-verified');
     }
 }

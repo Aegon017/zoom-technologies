@@ -35,6 +35,8 @@
                             <input type="hidden" name="product_type"
                                 value="{{ $product->courses ? 'package' : 'course' }}">
                             <input type="hidden" name="name" value="{{ $product->slug }}">
+                            <input type="hidden" name="thumbnail" value="{{ $product->thumbnail }}">
+                            <input type="hidden" name="thumbnail_alt" value="{{ $product->thumbnail_alt }}">
                             <input type="hidden" name="actualName" value="{{ $product->name }}">
                             <input type="hidden" name="coursePrice"
                                 value="{{ $prices['salePrice'] ?? $prices['actualPrice'] }}">

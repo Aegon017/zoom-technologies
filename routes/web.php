@@ -38,10 +38,12 @@ Route::middleware([
     Route::get('/order-details/{id}', [FrontendController::class, 'order_details'])->name('order-details');
     Route::get('/checkout/course', [FrontendController::class, 'checkout'])->name('checkout.course');
 
-    Route::post('/payment/initiate', [PaymentController::class, 'initiate'])->name('payment.initiate');
+
     Route::any('/payment/success', [PaymentController::class, 'success'])->name('payment.success')->middleware('prevent.refresh');
     Route::any('/payment/failure', [PaymentController::class, 'failure'])->name('payment.failure')->middleware('prevent.refresh');
 });
+
+Route::post('/payment/initiate', [PaymentController::class, 'initiate'])->name('payment.initiate');
 
 Route::get('/storage-link', function () {
     $target = storage_path('app/public');
