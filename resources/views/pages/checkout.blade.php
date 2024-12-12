@@ -1,8 +1,4 @@
-<x-frontend-layout>
-    @php
-        $pageBackground = 'frontend/assets/img/banner/contact-us-banner.jpg';
-        $pageTitle = 'Checkout';
-    @endphp
+{{-- <x-frontend-layout>
     @php
         $request = request();
         $requestData = $request->all();
@@ -14,112 +10,6 @@
             ARRAY_FILTER_USE_KEY,
         );
     @endphp
-    <style>
-        .form-control {
-            position: relative;
-        }
-
-        .note p {
-            color: #888888;
-            font-size: 15px;
-            margin-bottom: 0.5rem;
-            margin-top: 1rem;
-        }
-
-        .form-control:focus {
-            border: 1px solid #fd5222;
-        }
-
-        .form-control i {
-            position: absolute;
-            top: 50%;
-            left: 15px;
-            transform: translateY(-50%);
-        }
-
-        .checkout-lists {
-            display: flex;
-            flex-direction: column;
-            row-gap: 15px;
-            margin-bottom: 40px;
-        }
-
-        .card {
-            display: flex;
-            column-gap: 15px;
-        }
-
-        .card-image img {
-            width: 100%;
-            object-fit: fill;
-            border-radius: 10px;
-        }
-
-        .card-name {
-            font-weight: 600;
-        }
-
-        .card-details {
-            padding: 1rem;
-        }
-
-        .card-details .card-price span {
-            text-decoration: line-through;
-            margin-left: 10px;
-        }
-
-        .checkout-shipping,
-        .checkout-total {
-            display: flex;
-            justify-content: space-between;
-            padding: 5px 0;
-            border-top: 1px solid #BDBDBD;
-            height: 2rem;
-        }
-
-        button {
-            background: #fd5222;
-            color: white;
-            border: 2px solid #fd5222;
-            padding: 8px 32px;
-            font-size: 1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            margin: 5px;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-        }
-
-        button:hover {
-            background: #db3000;
-            transform: translateY(-2px);
-        }
-
-        .login-btn {
-            background-color: transparent;
-            border: none;
-            color: #555555;
-            transform: none !important;
-            padding: 0;
-            margin: 0;
-            margin-bottom: 20px;
-        }
-
-        .login-btn:hover {
-            background-color: transparent;
-        }
-
-        .login-btn span {
-            color: #fd5222;
-            text-decoration: underline;
-        }
-
-        .login-btn span:hover {
-            color: #db3000;
-            text-decoration: underline;
-        }
-    </style>
     <x-page-breadcrumb :pageBackground="$pageBackground" :pageTitle="$pageTitle" />
     <div class="container mt-5">
         @guest
@@ -140,85 +30,192 @@
                 @endforeach
             </form>
         @endguest
-        <main class="row">
-            <!-- Checkout Form -->
-            <section class="col-lg-6 col-md-6">
-                <form action="{{ route('payment.initiate') }}" method="POST">
-                    @csrf
-                    <livewire:user-register />
-                    @if (Auth::user() && Auth::user()->addresses && Auth::user()->email_verified_at)
-                        <div class="pb-5 pt-3">
-                            <h6>Select payment method: </h6>
-                            <div class="row pb-3 px-5 justify-content-center">
-                                <div class="form-check col-md-4 pl-5 payu-input">
-                                    <input class="form-check-input payment-select" type="radio" value="payu"
-                                        name="payment_method" id="payu" checked>
-                                    <label class="form-check-label" for="payu">
-                                        <img src="{{ asset('frontend/assets/img/icon/payu-icon.png') }}"
-                                            alt="payu">
-                                    </label>
-                                </div>
-                                <div class="form-check col-md-4 pl-5 paypal-input">
-                                    <input class="form-check-input payment-select" type="radio" value="paypal"
-                                        name="payment_method" id="paypal">
-                                    <label class="form-check-label" for="paypal">
-                                        <img src="{{ asset('frontend/assets/img/icon/paypal-icon.png') }}"
-                                            alt="paypal">
-                                    </label>
-                                </div>
-                                <div class="form-check col-md-4 pl-5 stripe-input">
-                                    <input class="form-check-input payment-select" type="radio" value="stripe"
-                                        name="payment_method" id="stripe">
-                                    <label class="form-check-label" for="stripe">
-                                        <img src="{{ asset('frontend/assets/img/icon/stripe-icon.png') }}"
-                                            alt="stripe">
-                                    </label>
-                                </div>
-                            </div>
-                            <input type="hidden" name="payable_price" value="{{ $request->payable_price }}">
-                            <input type="hidden" name="product_type" value="{{ $request->product_type }}">
-                            <input type="hidden" name="name" value="{{ $request->name }}">
-                            <button type="submit" class="btn btn-primary btn-block paynow-btn continue-btn border-0">
-                                Pay Now
-                            </button>
-                        </div>
-                    @endif
-                </form>
-            </section>
+    </div>
+</x-frontend-layout> --}}
+<x-frontend-layout>
+    <style>
+        /* Custom styling to mimic Tailwind-like appearance */
+        body {
+            background-color: #f8f9fa;
+        }
 
-            <!-- Checkout Details -->
-            <section class="col-lg-5 col-md-5 offset-lg-1 offset-md-1">
-                <div class="bg-light p-4 rounded">
-                    <div class="checkout-lists">
-                        <div class="card border-0">
-                            <div class="card-image">
-                                <img src="{{ asset(Storage::url($request->thumbnail)) }}"
-                                    alt="{{ $request->thumbnail_alt }}">
+        .custom-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: end;
+            gap: 1rem;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .step-badge {
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .product-card {
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: scale(1.02);
+        }
+
+        .checkout-section {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 2rem;
+        }
+
+        .text-underline {
+            text-decoration: underline;
+        }
+
+        .btn-orange {
+            color: white;
+            background-color: #fd5222;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.7rem 2.5rem;
+
+        }
+
+        .btn-orange:hover {
+            background-color: #cc3309;
+        }
+    </style>
+    <title>Enhanced Checkout</title>
+    </head>
+
+    <body x-data="{ activeTab: 1 }">
+        <div class="container-fluid bg-white shadow-sm py-3 mb-4">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-12 col-md-4">
+                        <a href="#" class="h2 font-weight-bold text-dark">Checkout</a>
+                    </div>
+                    <div class="col-12 col-md-8">
+                        <div class="step-indicator">
+                            <div class="step-item" @click="activeTab = 1">
+                                <div class="step-badge bg-success text-white">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <span class="font-weight-semibold">Sign In / Sign Up</span>
                             </div>
-                            <div class="card-details">
-                                <div class="card-name">{{ $request->actualName }}</div>
-                                <div class="card-price">Rs {{ $request->coursePrice }}</div>
+                            <i class="fas fa-chevron-right text-muted"></i>
+                            <div class="step-item" @click="activeTab = 2">
+                                <div class="step-badge bg-primary text-white">2</div>
+                                <span class="font-weight-semibold">Verification</span>
+                            </div>
+                            <i class="fas fa-chevron-right text-muted"></i>
+                            <div class="step-item" @click="activeTab = 3">
+                                <div class="step-badge bg-primary text-white">3</div>
+                                <span class="font-weight-semibold">Billing Address</span>
+                            </div>
+                            <i class="fas fa-chevron-right text-muted"></i>
+                            <div class="step-item" @click="activeTab = 4">
+                                <div class="step-badge bg-light text-muted">4</div>
+                                <span class="text-muted">Payment</span>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="checkout-shipping">
-                        <h6>CGST</h6>
-                        <p>Rs {{ $request->cgst }}</p>
-                    </div>
-                    <div class="checkout-shipping">
-                        <h6>SGST</h6>
-                        <p>Rs {{ $request->sgst }}</p>
-                    </div>
-                    <div class="checkout-total">
-                        <h6>Total</h6>
-                        <p>Rs {{ $request->payablePrice }}</p>
-                    </div>
-                    <div class="note">
-                        {!! $thankyou->content !!}
                     </div>
                 </div>
-            </section>
-        </main>
-    </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6 pr-lg-4">
+                    <div class="checkout-section custom-shadow">
+                        <h4 class="mb-3 text-dark">Order Summary</h4>
+                        <p class="text-muted">Check your items. And select a suitable shipping method.</p>
+                        <div class="product-card card mb-3 overflow-hidden custom-shadow">
+                            <div class="card-body">
+                                <div class="row no-gutters pb-3">
+                                    <div class="col-4 pr-3">
+                                        <img src="{{ asset(Storage::url($request->thumbnail)) }}"
+                                            class="img-fluid rounded" alt="{{ $request->thumbnail_alt }}">
+                                    </div>
+                                    <div class="col-8 pl-3">
+                                        <h5 class="mb-2">{{ $request->actualName }}</h5>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h4 class="text-primary mb-0">Rs {{ $request->coursePrice }}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="border-top pt-3">
+                                    <div class="d-flex justify-content-between">
+                                        <span>Subtotal</span>
+                                        <span>Rs {{ $request->coursePrice }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span>CGST</span>
+                                        <span>Rs {{ $request->cgst }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span>SGST</span>
+                                        <span>Rs {{ $request->sgst }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between font-weight-bold">
+                                    <span>Total</span>
+                                    <span>Rs {{ $request->payablePrice }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 pl-lg-4 mt-4 mt-lg-0">
+                    <div class="checkout-section custom-shadow">
+                        @guest
+                            <div x-show="activeTab === 1">
+                                <livewire:register-user />
+                            </div>
+                        @endguest
+                        @auth
+                            @if (Auth::user()->email_verified_at === null)
+                                <div x-show="activeTab === 2">
+                                    <livewire:otp-verification />
+                                </div>
+                            @endif
+                        @endauth
+                        @auth
+                            @if (Auth::user()->email_verified_at !== null)
+                                <div x-show="activeTab === 3">
+                                    <livewire:billing-address />
+                                </div>
+                            @endif
+                        @endauth
+                        @auth
+                            @php
+                                $name = $request->name;
+                                $payablePrice = $request->payablePrice;
+                                $productType = $request->product_type;
+                            @endphp
+                            <div x-show="activeTab === 4">
+                                <livewire:payment-method :$name :$payablePrice :$productType />
+                            </div>
+                        @endauth
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            Livewire.on('reload-page', () => {
+                window.location.reload();
+            });
+        </script>
 </x-frontend-layout>

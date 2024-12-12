@@ -8,21 +8,17 @@ use App\Actions\Payment\GenerateInvoice;
 use App\Actions\Payment\PaymentResponse;
 use App\Actions\Payment\SendEmails;
 use App\Actions\Payment\UpdateOrderPayment;
-use App\Mail\UserEnrollMail;
 use App\Models\Address;
 use App\Models\Currency;
 use App\Models\Thankyou;
-use App\Models\User;
 use App\Services\PayUPayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Srmklive\PayPal\Services\PayPal;
 use Stripe\Checkout\Session as CheckoutSession;
 use Stripe\Stripe;
 use Stripe\StripeClient;
-use Illuminate\Support\Str;
 
 class PaymentController extends Controller
 {
@@ -103,7 +99,7 @@ class PaymentController extends Controller
                         ],
                     ],
                     'mode' => 'payment',
-                    'success_url' => route('payment.success') . '?session_id={CHECKOUT_SESSION_ID}',
+                    'success_url' => route('payment.success').'?session_id={CHECKOUT_SESSION_ID}',
                     'cancel_url' => route('payment.failure'),
                 ]);
 

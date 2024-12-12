@@ -65,8 +65,6 @@
     @if (isset($organizationSchema))
         <script type="application/ld+json">{{ $organizationSchema }}</script>
     @endif
-
-
     @livewireStyles
 </head>
 
@@ -77,7 +75,6 @@
     {{ $slot }}
     <x-partials.footer />
     <x-sticky-contact />
-    @livewireScripts
     <script src="{{ asset('frontend/assets/js/jquery.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/popper.min.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/appear.js') }}"></script>
@@ -91,6 +88,7 @@
     <script src="{{ asset('frontend/assets/js/odometer.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/jquery-one-page-nav.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/custom.js') }}"></script>
+    @livewireScripts
 </body>
 
 </html>

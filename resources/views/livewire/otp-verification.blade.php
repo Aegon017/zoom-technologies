@@ -1,57 +1,103 @@
-<div wire:poll.1s="decrementTimer">
-    @if (Auth::user() && Auth::user()->email_verified_at == null && !$otp_expired)
-        <div class="popup">
-            <div class="email-card">
-                {{-- Success Message --}}
-                @if ($success_message)
-                    <div class="alert alert-success">
-                        {{ $success_message }}
-                    </div>
-                @endif
+<div>
+    <style>
+        .otp-input input {
+            width: 50px;
+            height: 50px;
+            margin: 0 8px;
+            text-align: center;
+            font-size: 1.5rem;
+            border: 2px solid #6f6f6f;
+            border-radius: 12px;
+            background-color: #eeeeee;
+            color: #1d1d1d;
+            transition: all 0.3s ease;
+        }
 
-                {{-- Error Message --}}
-                @if ($error_message)
-                    <div class="alert alert-danger">
-                        {{ $error_message }}
-                    </div>
-                @endif
+        .otp-input input:focus {
+            border-color: #fd5222;
+            box-shadow: 0 0 0 1px #fd5222;
+            outline: none;
+        }
 
-                <h1>OTP Verification</h1>
-                <p>Enter the OTP you received at <span id="email">{{ Auth::user()->email }}</span></p>
+        .otp-input input::-webkit-outer-spin-button,
+        .otp-input input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
 
-                <div class="otp-input">
-                    @foreach ($otp as $index => $digit)
-                        <input type="number" min="0" max="9" wire:model.live="otp.{{ $index }}"
-                            maxlength="1" wire:keydown.enter="verifyOTP"
-                            @if ($index > 0) x-ref="otp{{ $index }}"
-                                x-on:input="$refs.otp{{ $index + 1 }}?.focus()" @endif>
-                    @endforeach
-                </div>
+        .otp-input input[type=number] {
+            -moz-appearance: textfield;
+        }
 
-                <button wire:click.prevent="verifyOTP">Verify</button>
+        #timer {
+            font-size: 1rem;
+            color: #fd5222;
+            font-weight: 500;
+            margin-left: 10px;
+        }
 
-                <div class="resend-text">
-                    @if ($resend_allowed)
-                        Didn't receive the code?
-                        <span class="resend-link" wire:click.prevent="sendOtp">Resend Code</span>
-                    @endif
-                    <span id="timer">{{ $time_left }} seconds</span>
-                </div>
-            @elseif ($otp_expired)
-                <div class="otp-expired">
-                    {{-- Error Message --}}
-                    @if ($error_message)
-                        <div class="alert alert-danger">
-                            {{ $error_message }}
-                        </div>
-                    @endif
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
 
-                    <p>Your OTP has expired. Please request a new one.</p>
-                    <button wire:click.prevent="sendOtp" class="btn btn-primary">Send New OTP</button>
-                </div>
-            </div>
+            50% {
+                opacity: 0.5;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .expired {
+            animation: pulse 2s infinite;
+            color: #cc3309;
+        }
+
+        .resend-text {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: gray;
+        }
+
+        .resend-link {
+            color: #fd5222;
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .resend-link:hover {
+            color: #cc3309;
+            text-decoration: underline;
+        }
+
+        #email {
+            color: #fd5222;
+            font-weight: 500;
+        }
+    </style>
+    <h4 class="mb-3 text-dark">Verify Your Email</h4>
+    <p class="text-muted">Please enter the OTP that was sent to <a href=""
+            class="text-underline">{{ Auth::user()->email }}</a></p>
+    <form wire:submit="verifyOTP">
+        <div class="otp-input">
+            <input type="number" wire:model="otp0" min="0" max="9" required>
+            <input type="number" wire:model="otp1" min="0" max="9" required>
+            <input type="number" wire:model="otp2" min="0" max="9" required>
+            <input type="number" wire:model="otp3" min="0" max="9" required>
+            <input type="number" wire:model="otp4" min="0" max="9" required>
+            <input type="number" wire:model="otp5" min="0" max="9" required>
         </div>
-    @endif
+        <button wire:click.prevent='generateOTP' class="btn-orange ml-2 mt-4">Send verification mail</button>
+        <button wire:click.prevent="verifyOTP" class="btn-orange ml-2 mt-4">Verify</button>
+    </form>
+    <div class="resend-text">
+        Didn't receive the code?
+        <span class="resend-link" wire:click.prevent="resendOTP">Resend Code</span>
+        <span id="timer"></span>
+    </div>
     <script>
         const inputs = document.querySelectorAll('.otp-input input');
         inputs.forEach((input, index) => {
@@ -65,6 +111,7 @@
                     }
                 }
             });
+
             input.addEventListener('keydown', (e) => {
                 if (e.key === 'Backspace' && !e.target.value) {
                     if (index > 0) {

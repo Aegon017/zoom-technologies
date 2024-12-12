@@ -7,7 +7,6 @@ use App\Models\Address;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
@@ -41,12 +40,14 @@ class UserRegister extends Component
             $existingEmail = User::where('email', $this->email)->first();
             if ($existingEmail) {
                 $this->errorMessage = 'The email address is already registered.';
+
                 return;
             }
 
             $existingPhone = User::where('phone', $this->phone)->first();
             if ($existingPhone) {
                 $this->errorMessage = 'The phone number is already registered.';
+
                 return;
             }
             $user = new User;
@@ -71,12 +72,12 @@ class UserRegister extends Component
         $address->country = $this->country;
         $address->zip_code = $this->zipCode;
         $address->save();
-        $this->successMessage = "Address updated";
+        $this->successMessage = 'Address updated';
     }
 
     public function addressStore()
     {
-        $address = new Address();
+        $address = new Address;
         $address->user_id = Auth::id();
         $address->address = $this->fAddress;
         $address->city = $this->city;
@@ -84,6 +85,7 @@ class UserRegister extends Component
         $address->country = $this->country;
         $address->zip_code = $this->zipCode;
         $address->save();
+
         return redirect()->back();
     }
 
@@ -118,14 +120,14 @@ class UserRegister extends Component
                 'city' => 'required',
                 'state' => 'required',
                 'country' => 'required',
-                'zipCode' => 'required'
+                'zipCode' => 'required',
             ]);
 
-            return !empty($this->fAddress) &&
-                !empty($this->city) &&
-                !empty($this->state) &&
-                !empty($this->country) &&
-                !empty($this->zipCode);
+            return ! empty($this->fAddress) &&
+                ! empty($this->city) &&
+                ! empty($this->state) &&
+                ! empty($this->country) &&
+                ! empty($this->zipCode);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return false;
         }
@@ -134,7 +136,7 @@ class UserRegister extends Component
     public function render()
     {
         return view('livewire.user-register', [
-            'isFormValid' => $this->isFormValid()
+            'isFormValid' => $this->isFormValid(),
         ]);
     }
 }

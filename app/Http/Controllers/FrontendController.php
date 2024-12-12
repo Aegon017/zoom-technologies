@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Actions\CalculatePrice;
-use App\Models\Address;
 use App\Models\Brochure;
 use App\Models\CorporateTraining;
 use App\Models\Course;
@@ -199,9 +198,10 @@ class FrontendController extends Controller
 
     public function checkout(Request $request)
     {
-        $scheduleIDs = array_values(array_filter($request->all(), fn($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
+        $scheduleIDs = array_values(array_filter($request->all(), fn ($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
         Session::put('scheduleIDs', $scheduleIDs);
         $thankyou = Thankyou::first();
+
         return view('pages.checkout', compact('request', 'thankyou'));
     }
 }
