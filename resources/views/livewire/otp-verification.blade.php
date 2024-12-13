@@ -90,7 +90,6 @@
             <input type="number" wire:model="otp4" min="0" max="9" required>
             <input type="number" wire:model="otp5" min="0" max="9" required>
         </div>
-        <button wire:click.prevent='generateOTP' class="btn-orange ml-2 mt-4">Send verification mail</button>
         <button wire:click.prevent="verifyOTP" class="btn-orange ml-2 mt-4">Verify</button>
     </form>
     <div class="resend-text">

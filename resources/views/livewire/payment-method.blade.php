@@ -14,7 +14,7 @@
                 <input class="form-check-input payment-select" type="radio" value="paypal" name="payment_method"
                     id="paypal">
                 <label class="form-check-label" for="paypal">
-                    <img src="{{ asset('frontend/assets/img/icon/paypal-icon.png') }}" alt="paypal">
+                    <img src="{{ asset('frontend/assets/img/icon/paypal-icon.png') }}" class="mt-2" alt="paypal">
                 </label>
             </div>
             <div class="form-check col-md-4 pl-5 stripe-input">

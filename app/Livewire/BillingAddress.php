@@ -36,7 +36,8 @@ class BillingAddress extends Component
                 'country' => $this->country,
             ]);
             if ($address) {
-                $this->dispatch('notify', message: 'Address Updated');
+                flash()->success('Billing Address Updated Successfully');
+                $this->dispatch('reload-page');
             }
         } else {
             $address = Address::create([
@@ -48,7 +49,8 @@ class BillingAddress extends Component
                 'country' => $this->country,
             ]);
             if ($address) {
-                $this->dispatch('notify', message: 'Address Saved');
+                flash()->success('Billing Address Saved Successfully');
+                $this->dispatch('reload-page');
             }
         }
     }

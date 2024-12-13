@@ -1,7 +1,4 @@
 <div>
-    <h4 class="mb-3 text-dark">Sign In / Sign Up</h4>
-    <p class="text-muted">Already Registered? <a href="" class="text-underline">Login
-            here</a></p>
     <form wire:submit="register">
         <div class="form-group">
             <label for="fullName" class="font-weight-semibold">Full Name</label>
@@ -48,6 +45,7 @@
                 <span class="text-danger">{{ $message }}</span>
             @enderror
         </div>
-        <button type="submit" class="btn btn-dark btn-block">Register</button>
+        <button type="submit" wire:loading.attr="disabled" class="btn btn-dark btn-block">
+            <span wire:loading class="loader"></span>Register</button>
     </form>
 </div>

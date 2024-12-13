@@ -2,12 +2,16 @@
 
 namespace App\Livewire;
 
+use App\Mail\OtpMail;
 use App\Mail\UserEnrollMail;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Livewire\Attributes\On;
 use Livewire\Component;
+
+use function Flasher\Prime\flash;
 
 class RegisterUser extends Component
 {
@@ -16,6 +20,8 @@ class RegisterUser extends Component
     public $email = '';
 
     public $phone = '';
+
+    public $otp = '';
 
     public function rules()
     {
@@ -53,9 +59,9 @@ class RegisterUser extends Component
         if ($user) {
             Mail::to($user->email)->send(new UserEnrollMail($user, $password));
             Auth::login($user);
+            flash()->success('Registration Successful');
             $this->dispatch('reload-page');
         }
-        $this->dispatch('notify', message: 'Registered Successfully');
     }
 
     public function render()
