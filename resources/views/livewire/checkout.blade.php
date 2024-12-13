@@ -154,7 +154,7 @@
                 </div>
             </div>
         </div>
-        <div class="container">
+        <div class="container py-5">
             <div class="row">
                 <div class="col-12 col-lg-6 pr-lg-4">
                     <div class="checkout-section custom-shadow">
