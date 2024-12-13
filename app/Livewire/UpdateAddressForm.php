@@ -8,11 +8,11 @@ use Livewire\Component;
 
 class UpdateAddressForm extends Component
 {
-    public $addresses = [];
+    public $addresses;
 
     public $addressId = '';
 
-    public $address = '';
+    public $faddress = '';
 
     public $city = '';
 
@@ -24,37 +24,38 @@ class UpdateAddressForm extends Component
 
     public function mount()
     {
-        $this->addresses = Auth::user()->addresses;
-        foreach ($this->addresses as $address) {
-            $this->addressId = $address->id;
-            $this->address = $address->address;
-            $this->city = $address->city;
-            $this->state = $address->state;
-            $this->zip_code = $address->zip_code;
-            $this->country = $address->country;
+        $addresses = Address::where('user_id', Auth::id())->first();
+        if ($addresses) {
+            $this->faddress = $addresses->address;
+            $this->city = $addresses->city;
+            $this->state = $addresses->state;
+            $this->zip_code = $addresses->zip_code;
+            $this->country = $addresses->country;
         }
     }
 
     public function updateAddress()
     {
-        $address = Address::find($this->addressId);
-        $address->update([
-            'address' => $this->address,
-            'city' => $this->city,
-            'state' => $this->state,
-            'zip_code' => $this->zip_code,
-            'country' => $this->country,
-        ]);
-        $this->dispatch('updated');
-    }
-
-    public function delete()
-    {
-        $address = Address::find($this->addressId);
-        $address->delete();
-        $this->dispatch('deleted');
-
-        return redirect('/user/profile');
+        if (Auth::user()->addresses) {
+            Auth::user()->addresses->update([
+                'address' => $this->faddress,
+                'city' => $this->city,
+                'state' => $this->state,
+                'zip_code' => $this->zip_code,
+                'country' => $this->country,
+            ]);
+            $this->dispatch('updated');
+        } else {
+            Address::create([
+                'user_id' => Auth::id(),
+                'address' => $this->faddress,
+                'city' => $this->city,
+                'state' => $this->state,
+                'zip_code' => $this->zip_code,
+                'country' => $this->country,
+            ]);
+            $this->dispatch('updated');
+        }
     }
 
     public function render()

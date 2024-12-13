@@ -12,11 +12,10 @@
 
                 <x-section-border />
             @endif
-            @if (!Auth::user()->addresses->isEmpty())
-                <div class="mt-10 sm:mt-0">
-                    <livewire:update-address-form />
-                </div>
-            @endif
+
+            <div class="mt-10 sm:mt-0">
+                <livewire:update-address-form />
+            </div>
 
             @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
                 <div class="mt-10 sm:mt-0">
