@@ -29,8 +29,8 @@ class UserResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')->required(),
-                TextInput::make('email')->required(),
-                PhoneInput::make('phone'),
+                TextInput::make('email')->required()->unique(),
+                PhoneInput::make('phone')->unique(),
                 TextInput::make('password')->password(),
                 Select::make('roles')
                     ->relationship('roles', 'name')

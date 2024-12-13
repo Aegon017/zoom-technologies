@@ -29,8 +29,8 @@ class ThankyouResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('title')->required(),
-                RichEditor::make('content')->required(),
+                TextInput::make('title')->required()->columnSpanFull(),
+                RichEditor::make('content')->required()->columnSpanFull(),
                 TextInput::make('heading')->required(),
                 TextInput::make('sub_heading')->required(),
                 Select::make('email')->options(Email::all()->pluck('email', 'id'))->multiple()->required()->searchable(),
@@ -46,8 +46,8 @@ class ThankyouResource extends Resource
                 TextColumn::make('content'),
                 TextColumn::make('heading'),
                 TextColumn::make('sub_heading'),
-                TextColumn::make('email')->getStateUsing(fn ($record) => is_array($record->email) ? implode(', ', Email::whereIn('id', $record->email)->pluck('email')->toArray()) : ''),
-                TextColumn::make('mobile')->getStateUsing(fn ($record) => is_array($record->mobile) ? implode(', ', MobileNumber::whereIn('id', $record->mobile)->pluck('number')->toArray()) : ''),
+                TextColumn::make('email')->getStateUsing(fn($record) => is_array($record->email) ? implode(', ', Email::whereIn('id', $record->email)->pluck('email')->toArray()) : ''),
+                TextColumn::make('mobile')->getStateUsing(fn($record) => is_array($record->mobile) ? implode(', ', MobileNumber::whereIn('id', $record->mobile)->pluck('number')->toArray()) : ''),
             ])
             ->filters([
                 //
