@@ -17,32 +17,32 @@ class OrderExporter extends Exporter
             ExportColumn::make('user.name')->label('User name'),
             ExportColumn::make('user.email')->label('User email'),
             ExportColumn::make('user.phone')->label('User phone'),
-            ExportColumn::make('order_number'),
-            ExportColumn::make('payment.payment_id')->label('Payment ID'),
-            ExportColumn::make('payment.mode')->label('Payment mode'),
-            ExportColumn::make('payment.date')->label('Payment date'),
-            ExportColumn::make('payment.time')->label('Payment time'),
-            ExportColumn::make('payment.description')->label('Payment description'),
-            ExportColumn::make('Payment.status')->label('Payment status'),
-            ExportColumn::make('course.name')->label('Course name'),
-            ExportColumn::make('schedule.duration')->label('Duration'),
-            ExportColumn::make('schedule.duration_type')->label('Duration type'),
-            ExportColumn::make('schedule.start_date')->label('Batch date'),
-            ExportColumn::make('schedule.time')->label('Batch date'),
-            ExportColumn::make('schedule.training_mode')->label('Training mode'),
-            ExportColumn::make('courseOrPackage_price')->label('Course price'),
-            ExportColumn::make('sgst'),
-            ExportColumn::make('cgst'),
-            ExportColumn::make('payment.amount')->label('Payment amount'),
+            ExportColumn::make('order_number')->enabledByDefault(false),
+            ExportColumn::make('payment.payment_id')->label('Payment ID')->enabledByDefault(false),
+            ExportColumn::make('payment.mode')->label('Payment mode')->enabledByDefault(false),
+            ExportColumn::make('payment.date')->label('Payment date')->enabledByDefault(false),
+            ExportColumn::make('payment.time')->label('Payment time')->enabledByDefault(false),
+            ExportColumn::make('payment.description')->label('Payment description')->enabledByDefault(false),
+            ExportColumn::make('Payment.status')->label('Payment status')->enabledByDefault(false),
+            ExportColumn::make('course.name')->label('Course name')->enabledByDefault(false),
+            ExportColumn::make('schedule.duration')->label('Duration')->enabledByDefault(false),
+            ExportColumn::make('schedule.duration_type')->label('Duration type')->enabledByDefault(false),
+            ExportColumn::make('schedule.start_date')->label('Batch date')->enabledByDefault(false),
+            ExportColumn::make('schedule.time')->label('Batch date')->enabledByDefault(false),
+            ExportColumn::make('schedule.training_mode')->label('Training mode')->enabledByDefault(false),
+            ExportColumn::make('courseOrPackage_price')->label('Course price')->enabledByDefault(false),
+            ExportColumn::make('sgst')->enabledByDefault(false),
+            ExportColumn::make('cgst')->enabledByDefault(false),
+            ExportColumn::make('payment.amount')->label('Payment amount')->enabledByDefault(false),
         ];
     }
 
     public static function getCompletedNotificationBody(Export $export): string
     {
-        $body = 'Your order export has completed and '.number_format($export->successful_rows).' '.str('row')->plural($export->successful_rows).' exported.';
+        $body = 'Your order export has completed and ' . number_format($export->successful_rows) . ' ' . str('row')->plural($export->successful_rows) . ' exported.';
 
         if ($failedRowsCount = $export->getFailedRowsCount()) {
-            $body .= ' '.number_format($failedRowsCount).' '.str('row')->plural($failedRowsCount).' failed to export.';
+            $body .= ' ' . number_format($failedRowsCount) . ' ' . str('row')->plural($failedRowsCount) . ' failed to export.';
         }
 
         return $body;
