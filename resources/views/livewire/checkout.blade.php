@@ -98,6 +98,16 @@
             color: #cc3309;
             text-decoration: underline;
         }
+
+        .step-badge.active {
+            background-color: #fd5222 !important;
+            color: white !important;
+            font-weight: bold !important;
+        }
+
+        .step-item.active {
+            font-weight: bold !important;
+        }
     </style>
     @php
         $request = request();
@@ -120,23 +130,23 @@
                     </div>
                     <div class="col-12 col-md-8">
                         <div class="step-indicator">
-                            <div class="step-item">
-                                <div class="step-badge bg-light text-muted">1</div>
+                            <div class="step-item" id="step-1">
+                                <div class="step-badge bg-light text-muted" data-step="1">1</div>
                                 <span class="font-weight-semibold">Sign In / Sign Up</span>
                             </div>
                             <i class="fas fa-chevron-right text-muted"></i>
-                            <div class="step-item">
-                                <div class="step-badge bg-light text-muted">2</div>
+                            <div class="step-item" id="step-2">
+                                <div class="step-badge bg-light text-muted" data-step="2">2</div>
                                 <span class="font-weight-semibold">Verification</span>
                             </div>
                             <i class="fas fa-chevron-right text-muted"></i>
-                            <div class="step-item">
-                                <div class="step-badge bg-light text-muted">3</div>
+                            <div class="step-item" id="step-3">
+                                <div class="step-badge bg-light text-muted" data-step="3">3</div>
                                 <span class="font-weight-semibold">Billing Address</span>
                             </div>
                             <i class="fas fa-chevron-right text-muted"></i>
-                            <div class="step-item">
-                                <div class="step-badge bg-light text-muted">4</div>
+                            <div class="step-item" id="step-4">
+                                <div class="step-badge bg-light text-muted" data-step="4">4</div>
                                 <span class="text-muted">Payment</span>
                             </div>
                         </div>
@@ -190,59 +200,101 @@
                 <div class="col-12 col-lg-6 pl-lg-4 mt-4 mt-lg-0">
                     <div class="checkout-section custom-shadow">
                         @guest
-
-                            <h4 class="mb-3 text-dark">Sign In / Sign Up</h4>
-                            <form action="{{ route('checkout.course') }}">
-                                <input type="hidden" name="thumbnail" value="{{ $request->thumbnail }}">
-                                <input type="hidden" name="thumbnail_alt" value="{{ $request->thumbnail_alt }}">
-                                <input type="hidden" name="payable_price" value="{{ $request->payable_price }}">
-                                <input type="hidden" name="product_type" value="{{ $request->product_type }}">
-                                <input type="hidden" name="name" value="{{ $request->name }}">
-                                <input type="hidden" name="actualName" value="{{ $request->actualName }}">
-                                <input type="hidden" name="coursePrice" value="{{ $request->coursePrice }}">
-                                <input type="hidden" name="cgst" value="{{ $request->cgst }}">
-                                <input type="hidden" name="sgst" value="{{ $request->sgst }}">
-                                <input type="hidden" name="payablePrice" value="{{ $request->payablePrice }}">
-                                <button class="login-btn text-muted">Already Registered? <span>Login here<span></button>
-                                @foreach ($course_schedule_values as $key => $value)
-                                    <input type="hidden" name="{{ $key }}" value="{{ $value }}" />
-                                @endforeach
-                            </form>
-                            <livewire:register-user />
-                        </div>
-                    @endguest
-                    @auth
-                        @if (Auth::user()->email_verified_at === null)
-                            <div>
-                                <livewire:otp-verification />
+                            <div class="step-content" id="content-1">
+                                <h4 class="mb-3 text-dark">Sign In / Sign Up</h4>
+                                <form action="{{ route('checkout.course') }}">
+                                    <input type="hidden" name="thumbnail" value="{{ $request->thumbnail }}">
+                                    <input type="hidden" name="thumbnail_alt" value="{{ $request->thumbnail_alt }}">
+                                    <input type="hidden" name="payable_price" value="{{ $request->payable_price }}">
+                                    <input type="hidden" name="product_type" value="{{ $request->product_type }}">
+                                    <input type="hidden" name="name" value="{{ $request->name }}">
+                                    <input type="hidden" name="actualName" value="{{ $request->actualName }}">
+                                    <input type="hidden" name="coursePrice" value="{{ $request->coursePrice }}">
+                                    <input type="hidden" name="cgst" value="{{ $request->cgst }}">
+                                    <input type="hidden" name="sgst" value="{{ $request->sgst }}">
+                                    <input type="hidden" name="payablePrice" value="{{ $request->payablePrice }}">
+                                    <button class="login-btn text-muted">Already Registered? <span>Login here<span></button>
+                                    @foreach ($course_schedule_values as $key => $value)
+                                        <input type="hidden" name="{{ $key }}" value="{{ $value }}" />
+                                    @endforeach
+                                </form>
+                                <livewire:register-user />
                             </div>
-                        @endif
-                    @endauth
-                    @auth
-                        @if (Auth::user()->email_verified_at !== null)
-                            <div x-data="{ expanded: false }">
-                                @if (Auth::user()->addresses)
-                                    <div class="text-right" x-show="! expanded">
-                                        <button class="btn btn-dark" x-on:click="expanded = ! expanded">Continue</button>
+                        @endguest
+                        @auth
+                            @if (Auth::user()->email_verified_at === null)
+                                <div class="step-content" id="content-2">
+                                    <livewire:otp-verification />
+                                </div>
+                            @endif
+                        @endauth
+                        @auth
+                            @if (Auth::user()->email_verified_at !== null)
+                                <div x-data="{ expanded: false }" class="step-content" id="content-3">
+                                    @if (Auth::user()->addresses)
+                                        <div class="text-right" x-show="! expanded">
+                                            <button class="btn btn-dark"
+                                                x-on:click="expanded = ! expanded">Continue</button>
+                                        </div>
+                                    @endif
+                                    <div x-show="! expanded">
+                                        <livewire:billing-address />
                                     </div>
-                                @endif
-                                <div x-show="! expanded">
-                                    <livewire:billing-address />
+                                    @php
+                                        $name = $request->name;
+                                        $payablePrice = $request->payablePrice;
+                                        $productType = $request->product_type;
+                                    @endphp
+                                    <div x-show="expanded" class="step-content" id="content-4">
+                                        <livewire:payment-method :$name :$payablePrice :$productType />
+                                    </div>
                                 </div>
-                                @php
-                                    $name = $request->name;
-                                    $payablePrice = $request->payablePrice;
-                                    $productType = $request->product_type;
-                                @endphp
-                                <div x-show="expanded">
-                                    <livewire:payment-method :$name :$payablePrice :$productType />
-                                </div>
-                            </div>
-                        @endif
-                    @endauth
+                            @endif
+                        @endauth
+                    </div>
                 </div>
             </div>
         </div>
-        </div>
         <div x-on:reload-page.window="location.reload()"></div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const stepBadges = document.querySelectorAll('.step-badge');
+                const steps = document.querySelectorAll('.step-item');
+                const contents = document.querySelectorAll('.step-content');
+
+                function activateStep(stepNumber) {
+                    stepBadges.forEach(badge => badge.classList.remove('active'));
+                    steps.forEach(step => step.classList.remove('active'));
+
+                    const activeBadge = document.querySelector('.step-badge[data-step="' + stepNumber + '"]');
+                    const activeStep = document.getElementById('step-' + stepNumber);
+
+                    activeBadge?.classList.add('active');
+                    activeStep?.classList.add('active');
+                }
+
+                const observerOptions = {
+                    root: null,
+                    rootMargin: '0px',
+                    threshold: 0.5
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        const stepNumber = entry.target.id.replace('content-', '');
+                        if (entry.isIntersecting) {
+                            activateStep(stepNumber);
+                        }
+                    });
+                }, observerOptions);
+
+                contents.forEach(content => {
+                    observer.observe(content);
+                });
+
+                if (contents.length > 0) {
+                    activateStep(1);
+                }
+            });
+        </script>
 </x-frontend-layout>

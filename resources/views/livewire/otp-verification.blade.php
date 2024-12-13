@@ -79,23 +79,30 @@
         }
     </style>
     <h4 class="mb-3 text-dark">Verify Your Email</h4>
-    <p class="text-muted">Please enter the OTP that was sent to <a href=""
-            class="text-underline">{{ Auth::user()->email }}</a></p>
-    <form wire:submit="verifyOTP">
-        <div class="otp-input">
-            <input type="number" wire:model="otp0" min="0" max="9" required>
-            <input type="number" wire:model="otp1" min="0" max="9" required>
-            <input type="number" wire:model="otp2" min="0" max="9" required>
-            <input type="number" wire:model="otp3" min="0" max="9" required>
-            <input type="number" wire:model="otp4" min="0" max="9" required>
-            <input type="number" wire:model="otp5" min="0" max="9" required>
+    <div x-data="{ expanded: false }">
+        <button class="btn btn-dark" x-on:click="$dispatch('send-otp'); expanded = !expanded" x-show="! expanded">Send
+            Verification
+            Mail</button>
+        <div x-show="expanded">
+            <p class="text-muted">Please enter the OTP that was sent to <a href=""
+                    class="text-underline">{{ Auth::user()->email }}</a></p>
+            <form wire:submit="verifyOTP">
+                <div class="otp-input">
+                    <input type="number" wire:model="otp0" min="0" max="9" required>
+                    <input type="number" wire:model="otp1" min="0" max="9" required>
+                    <input type="number" wire:model="otp2" min="0" max="9" required>
+                    <input type="number" wire:model="otp3" min="0" max="9" required>
+                    <input type="number" wire:model="otp4" min="0" max="9" required>
+                    <input type="number" wire:model="otp5" min="0" max="9" required>
+                </div>
+                <button wire:click.prevent="verifyOTP" class="btn-orange ml-2 mt-4">Verify</button>
+            </form>
+            <div class="resend-text">
+                Didn't receive the code?
+                <span class="resend-link" wire:click.prevent="resendOTP">Resend Code</span>
+                <span id="timer"></span>
+            </div>
         </div>
-        <button wire:click.prevent="verifyOTP" class="btn-orange ml-2 mt-4">Verify</button>
-    </form>
-    <div class="resend-text">
-        Didn't receive the code?
-        <span class="resend-link" wire:click.prevent="resendOTP">Resend Code</span>
-        <span id="timer"></span>
     </div>
     <script>
         const inputs = document.querySelectorAll('.otp-input input');

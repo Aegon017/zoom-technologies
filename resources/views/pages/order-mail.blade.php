@@ -155,7 +155,27 @@
                     </tr>
                 </tbody>
             </table>
-
+            <div class="mt-2">
+                {!! $thankyou->content !!}
+            </div>
+            <h3 class="text-orange mt-2 mb-0">{{ $thankyou->heading }}</h3>
+            <p class="mt-1">{{ $thankyou->sub_heading }}<br>
+                <i class="fas fa-envelope"></i> <strong>Email:</strong>
+                @foreach ($thankyou->email as $email)
+                    @php
+                        $mail = App\Models\Email::find($email)->email;
+                    @endphp
+                    <a href="mailto:{{ $mail }}" style="color: #007bff;">{{ $mail }}</a>
+                @endforeach
+                <br>
+                <i class="fas fa-mobile-alt"></i> <strong>Phone:</strong>
+                @foreach ($thankyou->mobile as $mobile)
+                    @php
+                        $number = App\Models\MobileNumber::find($mobile)->number;
+                    @endphp
+                    <a href="tel:{{ $number }}" style="color: #007bff;">{{ $number }}</a>
+                @endforeach
+            </p>
             <p>Thank you for your purchase! We hope you enjoy your experience.</p>
             <p>Sincerely,<br /><strong>Zoom Technologies Team</strong></p>
         </div>

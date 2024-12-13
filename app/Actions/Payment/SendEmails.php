@@ -6,6 +6,7 @@ use App\Mail\AdminMail;
 use App\Mail\MeetingMail;
 use App\Mail\OrderMail;
 use App\Models\Order;
+use App\Models\Thankyou;
 use Illuminate\Support\Facades\Mail;
 
 class SendEmails
@@ -14,7 +15,8 @@ class SendEmails
     {
         $to = $order->user->email;
         $orderMailSubject = "Payment {$order->payment->status} on your order with Zoom Technologies";
-        Mail::to($to)->send(new OrderMail($orderMailSubject, $order));
+        $thankyou = Thankyou::first();
+        Mail::to($to)->send(new OrderMail($orderMailSubject, $order, $thankyou));
 
         if ($order->payment->status === 'success') {
             $adminEmail = 'kondanagamalleswararao016@gmail.com';
