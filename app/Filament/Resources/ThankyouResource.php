@@ -46,8 +46,8 @@ class ThankyouResource extends Resource
                 TextColumn::make('content'),
                 TextColumn::make('heading'),
                 TextColumn::make('sub_heading'),
-                TextColumn::make('email')->getStateUsing(fn($record) => is_array($record->email) ? implode(', ', Email::whereIn('id', $record->email)->pluck('email')->toArray()) : ''),
-                TextColumn::make('mobile')->getStateUsing(fn($record) => is_array($record->mobile) ? implode(', ', MobileNumber::whereIn('id', $record->mobile)->pluck('number')->toArray()) : ''),
+                TextColumn::make('email')->getStateUsing(fn ($record) => is_array($record->email) ? implode(', ', Email::whereIn('id', $record->email)->pluck('email')->toArray()) : ''),
+                TextColumn::make('mobile')->getStateUsing(fn ($record) => is_array($record->mobile) ? implode(', ', MobileNumber::whereIn('id', $record->mobile)->pluck('number')->toArray()) : ''),
             ])
             ->filters([
                 //

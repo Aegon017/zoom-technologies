@@ -32,8 +32,6 @@ class OrderResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
-    protected static ?string $navigationLabel = 'Course Orders';
-
     public static function canCreate(): bool
     {
         return false;

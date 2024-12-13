@@ -37,6 +37,8 @@ class CourseResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
 
+    protected static ?string $navigationLabel = 'Single Courses';
+
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form

@@ -34,7 +34,7 @@ class PackageResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-group';
 
-    protected static ?string $navigationLabel = 'Courses package';
+    protected static ?string $navigationLabel = 'Package Courses';
 
     protected static ?int $navigationSort = 4;
 
