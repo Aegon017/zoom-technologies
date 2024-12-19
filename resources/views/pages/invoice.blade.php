@@ -209,9 +209,9 @@
                             </td>
                         </tr>
                         <tr>
-                            <td style="width:60%;"></td>
-                            <td>
-                                <span><b>Total Price:</b></span>
+                            <td style="width:80%;"></td>
+                            <td style="padding-right: 1rem">
+                                <span><b>Total Price :</b></span>
                             </td>
                             <td style="text-align: end">
                                 <div>{{ $order->payment->currency }} {{ $order->payment->amount }}/-</div>
