@@ -83,11 +83,11 @@
                         <span>{{ $order->payment->currency }} {{ $order->courseOrPackage_price }}</span>
                     </div>
                     <div class="flex justify-between text-gray-600 mb-2">
-                        <span>C.GST({{ (100 * $order->cgst) / $order->courseOrPackage_price }}%)</span>
+                        <span>CGST({{ (100 * $order->cgst) / $order->courseOrPackage_price }}%)</span>
                         <span>{{ $order->payment->currency }} {{ $order->cgst }}</span>
                     </div>
                     <div class="flex justify-between text-gray-600 mb-2">
-                        <span>S.GST({{ (100 * $order->sgst) / $order->courseOrPackage_price }}%)</span>
+                        <span>SGST({{ (100 * $order->sgst) / $order->courseOrPackage_price }}%)</span>
                         <span>{{ $order->payment->currency }} {{ $order->sgst }}</span>
                     </div>
                     <div class="flex justify-between font-semibold text-gray-900">

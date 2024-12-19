@@ -141,16 +141,16 @@
                     <tr>
                         <td>Taxes:</td>
                         <td>
-                            C.GST({{ (100 * $order->cgst) / $order->courseOrPackage_price }}%):
+                            CGST({{ (100 * $order->cgst) / $order->courseOrPackage_price }}%):
                             {{ $order->payment->currency }}
                             {{ $order->cgst }}/-<br>
-                            S.GST({{ (100 * $order->sgst) / $order->courseOrPackage_price }}%):
+                            SGST({{ (100 * $order->sgst) / $order->courseOrPackage_price }}%):
                             {{ $order->payment->currency }}
                             {{ $order->sgst }}/-
                         </td>
                     </tr>
                     <tr>
-                        <td>Total:</td>
+                        <td>Total Price:</td>
                         <td>{{ $order->payment->currency }} {{ $order->payment->amount }}/-</td>
                     </tr>
                 </tbody>
@@ -237,14 +237,14 @@
                     <tr>
                         <td>Taxes:</td>
                         <td>
-                            C.GST({{ (100 * $order->cgst) / $order->courseOrPackage_price }}%):
+                            CGST({{ (100 * $order->cgst) / $order->courseOrPackage_price }}%):
                             {{ $order->payment->currency }} {{ $order->cgst }}/-<br>
-                            S.GST({{ (100 * $order->sgst) / $order->courseOrPackage_price }}%):
+                            SGST({{ (100 * $order->sgst) / $order->courseOrPackage_price }}%):
                             {{ $order->payment->currency }} {{ $order->sgst }}/-
                         </td>
                     </tr>
                     <tr>
-                        <td>Total:</td>
+                        <td>Total Price:</td>
                         <td>{{ $order->payment->currency }} {{ $order->payment->amount }}/-</td>
                     </tr>
                 </tbody>

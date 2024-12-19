@@ -10,6 +10,7 @@ use App\Events\ManualOrderCreatedEvent;
 use App\Mail\UserEnrollMail;
 use App\Models\Address;
 use App\Models\Order;
+use App\Models\OrderNumber;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
@@ -28,6 +29,7 @@ class CreateOrderSendMail
      */
     public function handle(ManualOrderCreatedEvent $event): void
     {
+        $orderNumberPrefix = OrderNumber::first()->prefix;
         $userName = $event->manualOrder->user_name;
         $userEmail = $event->manualOrder->user_email;
         $userPhone = $event->manualOrder->user_phone;
@@ -52,7 +54,7 @@ class CreateOrderSendMail
         $order->user_id = $userId;
         $order->course_id = $event->manualOrder->package_id ? null : $event->manualOrder->course_id;
         $order->package_id = $event->manualOrder->package_id;
-        $order->order_number = 'zt_'.$userId.now()->format('YmdHis');
+        $order->order_number = $orderNumberPrefix.$userId.now()->format('YmdHis');
         $order->courseOrPackage_price = $event->manualOrder->course_price;
         $order->cgst = $event->manualOrder->cgst;
         $order->sgst = $event->manualOrder->sgst;

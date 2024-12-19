@@ -24,6 +24,7 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->databaseTransactions()
             ->databaseNotifications()
             ->homeUrl('/zoom-technologies')
             ->favicon(asset('frontend/assets/img/favicon.png'))

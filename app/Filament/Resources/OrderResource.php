@@ -99,10 +99,10 @@ class OrderResource extends Resource
                     TextEntry::make('payment.description')->label('Description'),
                     TextEntry::make('cgst')
                         ->formatStateUsing(fn ($state, $record) => $record->payment->currency.' '.$state)
-                        ->label('C.GST'),
+                        ->label('CGST'),
                     TextEntry::make('sgst')
                         ->formatStateUsing(fn ($state, $record) => $record->payment->currency.' '.$state)
-                        ->label('S.GST'),
+                        ->label('SGST'),
                     TextEntry::make('payment.amount')
                         ->formatStateUsing(fn ($state, $record) => $record->payment->currency.' '.$state)
                         ->label('Order Amount'),

@@ -75,6 +75,7 @@
 
 <body>
     <div class="invoice-box">
+        <h1 class="title" style="text-decoration: underline; font-weight:bold; text-align:center">Tax Invoice</h1>
         <table>
             <tr class="top">
                 <td colspan="2">
@@ -84,8 +85,11 @@
                                 <img src="data:image/png;base64,{{ base64_encode(file_get_contents(asset('frontend/assets/img/logo.png'))) }}"
                                     style="width: 100%; max-width: 150px;" alt="Logo" />
                             </td>
-                            <td>{{ $order->order_number }}<br />{{ $order->payment->date }}
-                                {{ $order->payment->time }}
+                            <td><b>
+                                    {{ $order->order_number }}
+                                </b>
+                                <br />
+                                {{ $order->payment->date }}{{ $order->payment->time }}
                             </td>
                         </tr>
                     </table>
@@ -186,7 +190,7 @@
                         <tr>
                             <td style="width:60%;"></td>
                             <td style="text-align: end">
-                                <span><b>S.GST({{ (100 * $order->sgst) / $order->courseOrPackage_price }}%) :</b>
+                                <span><b>SGST({{ (100 * $order->sgst) / $order->courseOrPackage_price }}%) :</b>
                                     &nbsp;&nbsp;</span>
                             </td>
                             <td style="text-align: end">
@@ -197,7 +201,7 @@
                         <tr>
                             <td style="width:60%;"></td>
                             <td style="text-align: end">
-                                <span><b>C.GST({{ (100 * $order->cgst) / $order->courseOrPackage_price }}%) :</b>
+                                <span><b>CGST({{ (100 * $order->cgst) / $order->courseOrPackage_price }}%) :</b>
                                     &nbsp;&nbsp;</span>
                             </td>
                             <td style="text-align: end">
@@ -207,7 +211,7 @@
                         <tr>
                             <td style="width:60%;"></td>
                             <td>
-                                <span><b>Total :</b></span>
+                                <span><b>Total Price:</b></span>
                             </td>
                             <td style="text-align: end">
                                 <div>{{ $order->payment->currency }} {{ $order->payment->amount }}/-</div>
