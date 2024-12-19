@@ -10,7 +10,8 @@
                         <form action="{{ route('checkout') }}">
                             @foreach ($packageCourses as $course)
                                 <div class="my-3">
-                                    <label for="course-schedule" class="batch-label">Select Batch</label>
+                                    <label for="course-schedule" class="batch-label">Select {{ $course->name }}
+                                        Batch</label>
                                     <select class="form-control mb-2 batch-select"
                                         name="course_schedule{{ $course->id }}"
                                         id="course-schedule{{ $course->id }}" required>
@@ -21,8 +22,8 @@
                                                     {{ \Carbon\Carbon::parse($schedule->start_date)->format('jS M Y') }}
                                                     -
                                                     {{ \Carbon\Carbon::parse($schedule->time)->format('g:i A') }} (
-                                                    {{ $schedule->timezone->offset }} -
-                                                    {{ $schedule->timezone->abbreviation }} )
+                                                    {{ $schedule->timezone?->offset }} -
+                                                    {{ $schedule->timezone?->abbreviation }} )
                                                     -
                                                     {{ $schedule->training_mode }}
                                                 </option>
