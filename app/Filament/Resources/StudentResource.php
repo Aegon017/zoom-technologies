@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers\OrderScheduleRelationManager;
 use App\Models\Order;
+use App\Models\Schedule;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -53,16 +54,10 @@ class StudentResource extends Resource
                     }),
             ])
             ->filters([
-                SelectFilter::make('course.name')
-                    ->label('Single course')
-                    ->relationship('course', 'name')
-                    ->searchable()
-                    ->preload(),
-                SelectFilter::make('package.name')
-                    ->label('Package course')
-                    ->relationship('package', 'name')
-                    ->searchable()
-                    ->preload(),
+                SelectFilter::make('Batch date')
+                    ->relationship('schedule', 'start_date')
+                    ->preload()
+                    ->searchable(),
             ], layout: FiltersLayout::AboveContent)->filtersFormColumns(2)
             ->actions([
                 Tables\Actions\EditAction::make(),

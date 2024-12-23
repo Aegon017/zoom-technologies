@@ -29,9 +29,9 @@ class UserResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')->required(),
-                TextInput::make('email')->required()->unique(),
-                PhoneInput::make('phone')->unique(),
-                TextInput::make('password')->password(),
+                TextInput::make('email')->required()->unique(ignoreRecord: true),
+                PhoneInput::make('phone'),
+                TextInput::make('password')->required(),
                 Select::make('roles')
                     ->relationship('roles', 'name')
                     ->multiple()
@@ -44,9 +44,6 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->headerActions([
-                ActionsExportAction::make()->exporter(UserExporter::class),
-            ])
             ->columns([
                 TextColumn::make('name'),
                 TextColumn::make('email'),
@@ -56,12 +53,9 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                ActionsExportAction::make()->exporter(UserExporter::class),
                 EditAction::make(),
             ])
-            ->bulkActions([
-                ExportBulkAction::make()->exporter(UserExporter::class),
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getRelations(): array
