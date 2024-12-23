@@ -2,8 +2,6 @@
 
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\PaymentController;
-use App\Models\Address;
-use App\Models\Order;
 use Filament\Actions\Exports\Http\Controllers\DownloadExport;
 use Illuminate\Support\Facades\Route;
 
@@ -55,10 +53,3 @@ Route::get('/storage-link', function () {
 Route::get('/zoom-technologies/filament/exports/{export}/download', DownloadExport::class)
     ->name('filament.exports.download')
     ->middleware(['web', 'auth']);
-
-Route::get('/invoice', function () {
-    $order = Order::first();
-    $address = Address::first();
-
-    return view('pages.invoice', compact('order', 'address'));
-});

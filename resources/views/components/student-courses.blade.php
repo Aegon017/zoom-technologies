@@ -1,5 +1,5 @@
 @php
-    $items = $courses;
+    $items = collect($courses)->merge($packages);
 @endphp
 <section id="course-page-course" class="course-page-course-section">
     <div class="container">

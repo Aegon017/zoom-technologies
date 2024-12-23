@@ -185,8 +185,16 @@ class FrontendController extends Controller
     public function renderMyCourse($slug)
     {
         $course = Course::where('slug', $slug)->with('studyMaterial')->first();
-        $studyMaterials = $course->studyMaterial;
-        $courseName = $course->name;
+        $package = Package::where('slug', $slug)->first();
+
+        if ($package) {
+            $courses = Course::findMany($package->courses);
+            $studyMaterials = $courses->flatMap->studyMaterial;
+            $courseName = $package->name;
+        } else {
+            $studyMaterials = $course->studyMaterial;
+            $courseName = $course->name;
+        }
 
         return view('pages.my-course', compact('studyMaterials', 'courseName'));
     }

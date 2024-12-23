@@ -4,6 +4,7 @@ namespace App\View\Components;
 
 use App\Models\Course;
 use App\Models\Order;
+use App\Models\Package;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,8 @@ class StudentCourses extends Component
 {
     public $courses;
 
+    public $packages;
+
     public function __construct()
     {
         $user = Auth::user();
@@ -20,11 +23,16 @@ class StudentCourses extends Component
         foreach ($orders as $order) {
             if ($order->payment->status == 'success') {
                 $course_id = $order->course_id;
+                $package_id = $order->package_id;
                 $courses[$course_id] ??= [
                     'course_id' => $course_id,
                 ];
+                $packages[$package_id] ??= [
+                    'package_id' => $package_id,
+                ];
             }
         }
+        $this->packages = Package::findMany($packages ?? []);
         $this->courses = Course::findMany($courses ?? []);
     }
 
