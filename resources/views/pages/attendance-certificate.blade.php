@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Attendance Certificate</title>
+    <title>Course Completion Certificate</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -75,7 +75,6 @@
 </head>
 
 <body>
-
     <div class="certificate-container">
         <div class="certificate-header">
             <h1>Certificate of Attendance</h1>

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('meeting_id')->nullable();
             $table->string('meeting_password')->nullable();
             $table->boolean('status')->default(true);
+            $table->boolean('certificate_status')->default(false);
             $table->timestamps();
         });
     }

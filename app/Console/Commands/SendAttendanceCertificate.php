@@ -6,8 +6,12 @@ use App\Mail\AttendingCertificateMail;
 use App\Models\Schedule;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Flasher\Laravel\Facade\Flasher;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+
+use function Laravel\Prompts\info;
 
 class SendAttendanceCertificate extends Command
 {
@@ -33,7 +37,7 @@ class SendAttendanceCertificate extends Command
         $today = Carbon::today();
         $students = [];
         $data = [];
-        $schedules = Schedule::where('start_date', '<', $today)->get();
+        $schedules = Schedule::where('status', false)->get();
         foreach ($schedules as $schedule) {
             $startDate = Carbon::parse($schedule->start_date);
             $duration = $schedule->duration;
@@ -49,34 +53,36 @@ class SendAttendanceCertificate extends Command
                     $endDate = $startDate->addMonths($duration);
                     break;
                 default:
-                    $endDate = $startDate;
+                    $endDate = null;
                     break;
             }
-            if ($endDate->lt($today)) {
 
-                $order = $schedule->orderSchedule->order;
-                $userName = $order->user->name;
-                $userEmail = $order->user->email;
-                $courseName = $order->course->name;
-                $batchDate = $schedule->start_date;
-                $batchTime = $schedule->time;
-                $trainingMode = $schedule->training_mode;
-
-                $data = [
-                    'userName' => $userName,
-                    'courseName' => $courseName,
-                    'batchDate' => $batchDate,
-                    'batchTime' => $batchTime,
-                    'trainingMode' => $trainingMode,
-                    'userEmail' => $userEmail,
-                ];
-
-                $pdf = Pdf::loadView('pages.attendance-certificate', $data);
-                $pdfFileName = 'certificates/certificate_'.time().'.pdf';
-                $pdfPath = public_path($pdfFileName);
-                $pdf->save($pdfPath);
-                $subject = 'Certificate of Attendance';
-                Mail::to($data['userEmail'])->send(new AttendingCertificateMail($pdfFileName, $subject, $userName, $courseName));
+            if ($endDate->lt($today) && $schedule->certificate_status == false) {
+                $orderSchedules = $schedule->orderSchedule;
+                foreach ($orderSchedules as $orderSchedule) {
+                    $order = $orderSchedule->order;
+                    $userName = $order->user->name;
+                    $userEmail = $order->user->email;
+                    $courseName = $order->course->name;
+                    $batchDate = $schedule->start_date;
+                    $batchTime = $schedule->time;
+                    $trainingMode = $schedule->training_mode;
+                    $data = [
+                        'userName' => $userName,
+                        'courseName' => $courseName,
+                        'batchDate' => $batchDate,
+                        'batchTime' => $batchTime,
+                        'trainingMode' => $trainingMode,
+                        'userEmail' => $userEmail,
+                    ];
+                    $pdf = Pdf::loadView('pages.attendance-certificate', $data);
+                    $pdfFileName = 'certificates/certificate_' . time() . '.pdf';
+                    $pdfPath = public_path($pdfFileName);
+                    $pdf->save($pdfPath);
+                    $subject = 'Course Completion Certificate';
+                    Mail::to($data['userEmail'])->send(new AttendingCertificateMail($pdfFileName, $subject, $userName, $courseName));
+                }
+                $schedule->update(['certificate_status' => true]);
             }
         }
     }

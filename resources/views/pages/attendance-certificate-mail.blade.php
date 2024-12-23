@@ -8,7 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    <title>Order Payment Notification</title>
+    <title>Course Completion Certificate</title>
     <style>
         /* public/css/style.css */
         body {
@@ -81,13 +81,13 @@
         <div class="company-logo">
             <img alt="Logo" class="logo" src="{{ asset('frontend/assets/img/logo.png') }}" />
         </div>
-        <h3 class="mt-3"> Course Attendance Certificate for {{ $courseName }}</h3>
+        <h3 class="mt-3"> Course Completion Certificate for {{ $courseName }}</h3>
     </div>
     <div class="content">
         <p>Dear <strong>{{ $userName }}</strong>,</p>
         <p>I hope this message finds you well.</p>
         <p>We are pleased to inform you that you have successfully completed the <strong>{{ $courseName }}</strong>
-            course. As a token of recognition, we are attaching your Certificate of Attendance for the course. Please
+            course. As a token of recognition, we are attaching your course completion certificate. Please
             find your certificate attached to this email. If you have any questions or require further assistance, feel
             free to reach out.</p>
         <p>Congratulations on completing the course, and we wish you continued success in your learning journey.</p>
