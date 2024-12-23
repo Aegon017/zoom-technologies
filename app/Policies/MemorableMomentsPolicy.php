@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\MemorableMoments;
 use App\Models\User;
+use App\Models\MemorableMoments;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class MemorableMomentsPolicy
@@ -23,7 +23,7 @@ class MemorableMomentsPolicy
      */
     public function view(User $user, MemorableMoments $memorableMoments): bool
     {
-        return $user->can('view_memorable::moments');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class MemorableMomentsPolicy
      */
     public function forceDelete(User $user, MemorableMoments $memorableMoments): bool
     {
-        return $user->can('force_delete_memorable::moments');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class MemorableMomentsPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_memorable::moments');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class MemorableMomentsPolicy
      */
     public function restore(User $user, MemorableMoments $memorableMoments): bool
     {
-        return $user->can('restore_memorable::moments');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class MemorableMomentsPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_memorable::moments');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class MemorableMomentsPolicy
      */
     public function replicate(User $user, MemorableMoments $memorableMoments): bool
     {
-        return $user->can('replicate_memorable::moments');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class MemorableMomentsPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_memorable::moments');
+        return $user->can('{{ Reorder }}');
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Email;
 use App\Models\User;
+use App\Models\Email;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class EmailPolicy
@@ -23,7 +23,7 @@ class EmailPolicy
      */
     public function view(User $user, Email $email): bool
     {
-        return $user->can('view_email');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class EmailPolicy
      */
     public function forceDelete(User $user, Email $email): bool
     {
-        return $user->can('force_delete_email');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class EmailPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_email');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class EmailPolicy
      */
     public function restore(User $user, Email $email): bool
     {
-        return $user->can('restore_email');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class EmailPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_email');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class EmailPolicy
      */
     public function replicate(User $user, Email $email): bool
     {
-        return $user->can('replicate_email');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class EmailPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_email');
+        return $user->can('{{ Reorder }}');
     }
 }

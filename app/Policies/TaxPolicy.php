@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Tax;
 use App\Models\User;
+use App\Models\Tax;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TaxPolicy
@@ -23,7 +23,7 @@ class TaxPolicy
      */
     public function view(User $user, Tax $tax): bool
     {
-        return $user->can('view_tax');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class TaxPolicy
      */
     public function forceDelete(User $user, Tax $tax): bool
     {
-        return $user->can('force_delete_tax');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class TaxPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_tax');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class TaxPolicy
      */
     public function restore(User $user, Tax $tax): bool
     {
-        return $user->can('restore_tax');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class TaxPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_tax');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class TaxPolicy
      */
     public function replicate(User $user, Tax $tax): bool
     {
-        return $user->can('replicate_tax');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class TaxPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_tax');
+        return $user->can('{{ Reorder }}');
     }
 }

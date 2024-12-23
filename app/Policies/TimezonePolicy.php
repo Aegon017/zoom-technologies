@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Timezone;
 use App\Models\User;
+use App\Models\Timezone;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TimezonePolicy
@@ -23,7 +23,7 @@ class TimezonePolicy
      */
     public function view(User $user, Timezone $timezone): bool
     {
-        return $user->can('view_timezone');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class TimezonePolicy
      */
     public function forceDelete(User $user, Timezone $timezone): bool
     {
-        return $user->can('force_delete_timezone');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class TimezonePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_timezone');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class TimezonePolicy
      */
     public function restore(User $user, Timezone $timezone): bool
     {
-        return $user->can('restore_timezone');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class TimezonePolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_timezone');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class TimezonePolicy
      */
     public function replicate(User $user, Timezone $timezone): bool
     {
-        return $user->can('replicate_timezone');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class TimezonePolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_timezone');
+        return $user->can('{{ Reorder }}');
     }
 }

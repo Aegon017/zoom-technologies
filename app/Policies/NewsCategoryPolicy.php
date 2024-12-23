@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\NewsCategory;
 use App\Models\User;
+use App\Models\NewsCategory;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class NewsCategoryPolicy
@@ -23,7 +23,7 @@ class NewsCategoryPolicy
      */
     public function view(User $user, NewsCategory $newsCategory): bool
     {
-        return $user->can('view_news::category');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class NewsCategoryPolicy
      */
     public function forceDelete(User $user, NewsCategory $newsCategory): bool
     {
-        return $user->can('force_delete_news::category');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class NewsCategoryPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_news::category');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class NewsCategoryPolicy
      */
     public function restore(User $user, NewsCategory $newsCategory): bool
     {
-        return $user->can('restore_news::category');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class NewsCategoryPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_news::category');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class NewsCategoryPolicy
      */
     public function replicate(User $user, NewsCategory $newsCategory): bool
     {
-        return $user->can('replicate_news::category');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class NewsCategoryPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_news::category');
+        return $user->can('{{ Reorder }}');
     }
 }

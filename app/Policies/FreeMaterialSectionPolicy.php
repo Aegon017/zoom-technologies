@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\FreeMaterialSection;
 use App\Models\User;
+use App\Models\FreeMaterialSection;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class FreeMaterialSectionPolicy
@@ -23,7 +23,7 @@ class FreeMaterialSectionPolicy
      */
     public function view(User $user, FreeMaterialSection $freeMaterialSection): bool
     {
-        return $user->can('view_free::material::section');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class FreeMaterialSectionPolicy
      */
     public function forceDelete(User $user, FreeMaterialSection $freeMaterialSection): bool
     {
-        return $user->can('force_delete_free::material::section');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class FreeMaterialSectionPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_free::material::section');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class FreeMaterialSectionPolicy
      */
     public function restore(User $user, FreeMaterialSection $freeMaterialSection): bool
     {
-        return $user->can('restore_free::material::section');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class FreeMaterialSectionPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_free::material::section');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class FreeMaterialSectionPolicy
      */
     public function replicate(User $user, FreeMaterialSection $freeMaterialSection): bool
     {
-        return $user->can('replicate_free::material::section');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class FreeMaterialSectionPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_free::material::section');
+        return $user->can('{{ Reorder }}');
     }
 }

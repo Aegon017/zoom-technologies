@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\SocialLink;
 use App\Models\User;
+use App\Models\SocialLink;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class SocialLinkPolicy
@@ -23,7 +23,7 @@ class SocialLinkPolicy
      */
     public function view(User $user, SocialLink $socialLink): bool
     {
-        return $user->can('view_social::link');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class SocialLinkPolicy
      */
     public function forceDelete(User $user, SocialLink $socialLink): bool
     {
-        return $user->can('force_delete_social::link');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class SocialLinkPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_social::link');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class SocialLinkPolicy
      */
     public function restore(User $user, SocialLink $socialLink): bool
     {
-        return $user->can('restore_social::link');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class SocialLinkPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_social::link');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class SocialLinkPolicy
      */
     public function replicate(User $user, SocialLink $socialLink): bool
     {
-        return $user->can('replicate_social::link');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class SocialLinkPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_social::link');
+        return $user->can('{{ Reorder }}');
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\FooterSection;
 use App\Models\User;
+use App\Models\FooterSection;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class FooterSectionPolicy
@@ -23,7 +23,7 @@ class FooterSectionPolicy
      */
     public function view(User $user, FooterSection $footerSection): bool
     {
-        return $user->can('view_footer::section');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class FooterSectionPolicy
      */
     public function forceDelete(User $user, FooterSection $footerSection): bool
     {
-        return $user->can('force_delete_footer::section');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class FooterSectionPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_footer::section');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class FooterSectionPolicy
      */
     public function restore(User $user, FooterSection $footerSection): bool
     {
-        return $user->can('restore_footer::section');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class FooterSectionPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_footer::section');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class FooterSectionPolicy
      */
     public function replicate(User $user, FooterSection $footerSection): bool
     {
-        return $user->can('replicate_footer::section');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class FooterSectionPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_footer::section');
+        return $user->can('{{ Reorder }}');
     }
 }

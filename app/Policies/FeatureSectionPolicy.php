@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\FeatureSection;
 use App\Models\User;
+use App\Models\FeatureSection;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class FeatureSectionPolicy
@@ -23,7 +23,7 @@ class FeatureSectionPolicy
      */
     public function view(User $user, FeatureSection $featureSection): bool
     {
-        return $user->can('view_feature::section');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class FeatureSectionPolicy
      */
     public function forceDelete(User $user, FeatureSection $featureSection): bool
     {
-        return $user->can('force_delete_feature::section');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class FeatureSectionPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_feature::section');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class FeatureSectionPolicy
      */
     public function restore(User $user, FeatureSection $featureSection): bool
     {
-        return $user->can('restore_feature::section');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class FeatureSectionPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_feature::section');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class FeatureSectionPolicy
      */
     public function replicate(User $user, FeatureSection $featureSection): bool
     {
-        return $user->can('replicate_feature::section');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class FeatureSectionPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_feature::section');
+        return $user->can('{{ Reorder }}');
     }
 }

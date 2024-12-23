@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\OrderNumber;
 use App\Models\User;
+use App\Models\OrderNumber;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class OrderNumberPolicy
@@ -23,7 +23,7 @@ class OrderNumberPolicy
      */
     public function view(User $user, OrderNumber $orderNumber): bool
     {
-        return $user->can('view_order::number');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class OrderNumberPolicy
      */
     public function forceDelete(User $user, OrderNumber $orderNumber): bool
     {
-        return $user->can('force_delete_order::number');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class OrderNumberPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_order::number');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class OrderNumberPolicy
      */
     public function restore(User $user, OrderNumber $orderNumber): bool
     {
-        return $user->can('restore_order::number');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class OrderNumberPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_order::number');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class OrderNumberPolicy
      */
     public function replicate(User $user, OrderNumber $orderNumber): bool
     {
-        return $user->can('replicate_order::number');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class OrderNumberPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_order::number');
+        return $user->can('{{ Reorder }}');
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\CorporateTraining;
 use App\Models\User;
+use App\Models\CorporateTraining;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CorporateTrainingPolicy
@@ -23,7 +23,7 @@ class CorporateTrainingPolicy
      */
     public function view(User $user, CorporateTraining $corporateTraining): bool
     {
-        return $user->can('view_corporate::training');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class CorporateTrainingPolicy
      */
     public function forceDelete(User $user, CorporateTraining $corporateTraining): bool
     {
-        return $user->can('force_delete_corporate::training');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class CorporateTrainingPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_corporate::training');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class CorporateTrainingPolicy
      */
     public function restore(User $user, CorporateTraining $corporateTraining): bool
     {
-        return $user->can('restore_corporate::training');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class CorporateTrainingPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_corporate::training');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class CorporateTrainingPolicy
      */
     public function replicate(User $user, CorporateTraining $corporateTraining): bool
     {
-        return $user->can('replicate_corporate::training');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class CorporateTrainingPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_corporate::training');
+        return $user->can('{{ Reorder }}');
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\FaqsSection;
 use App\Models\User;
+use App\Models\FaqsSection;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class FaqsSectionPolicy
@@ -23,7 +23,7 @@ class FaqsSectionPolicy
      */
     public function view(User $user, FaqsSection $faqsSection): bool
     {
-        return $user->can('view_faqs::section');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class FaqsSectionPolicy
      */
     public function forceDelete(User $user, FaqsSection $faqsSection): bool
     {
-        return $user->can('force_delete_faqs::section');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class FaqsSectionPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_faqs::section');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class FaqsSectionPolicy
      */
     public function restore(User $user, FaqsSection $faqsSection): bool
     {
-        return $user->can('restore_faqs::section');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class FaqsSectionPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_faqs::section');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class FaqsSectionPolicy
      */
     public function replicate(User $user, FaqsSection $faqsSection): bool
     {
-        return $user->can('replicate_faqs::section');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class FaqsSectionPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_faqs::section');
+        return $user->can('{{ Reorder }}');
     }
 }

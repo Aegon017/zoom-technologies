@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\PageMetaDetails;
 use App\Models\User;
+use App\Models\PageMetaDetails;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PageMetaDetailsPolicy
@@ -23,7 +23,7 @@ class PageMetaDetailsPolicy
      */
     public function view(User $user, PageMetaDetails $pageMetaDetails): bool
     {
-        return $user->can('view_page::meta::details');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class PageMetaDetailsPolicy
      */
     public function forceDelete(User $user, PageMetaDetails $pageMetaDetails): bool
     {
-        return $user->can('force_delete_page::meta::details');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class PageMetaDetailsPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_page::meta::details');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class PageMetaDetailsPolicy
      */
     public function restore(User $user, PageMetaDetails $pageMetaDetails): bool
     {
-        return $user->can('restore_page::meta::details');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class PageMetaDetailsPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_page::meta::details');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class PageMetaDetailsPolicy
      */
     public function replicate(User $user, PageMetaDetails $pageMetaDetails): bool
     {
-        return $user->can('replicate_page::meta::details');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class PageMetaDetailsPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_page::meta::details');
+        return $user->can('{{ Reorder }}');
     }
 }

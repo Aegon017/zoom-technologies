@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Thankyou;
 use App\Models\User;
+use App\Models\Thankyou;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ThankyouPolicy
@@ -23,7 +23,7 @@ class ThankyouPolicy
      */
     public function view(User $user, Thankyou $thankyou): bool
     {
-        return $user->can('view_thankyou');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class ThankyouPolicy
      */
     public function forceDelete(User $user, Thankyou $thankyou): bool
     {
-        return $user->can('force_delete_thankyou');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class ThankyouPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_thankyou');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class ThankyouPolicy
      */
     public function restore(User $user, Thankyou $thankyou): bool
     {
-        return $user->can('restore_thankyou');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class ThankyouPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_thankyou');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class ThankyouPolicy
      */
     public function replicate(User $user, Thankyou $thankyou): bool
     {
-        return $user->can('replicate_thankyou');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class ThankyouPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_thankyou');
+        return $user->can('{{ Reorder }}');
     }
 }

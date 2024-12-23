@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\ContactLocation;
 use App\Models\User;
+use App\Models\ContactLocation;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ContactLocationPolicy
@@ -23,7 +23,7 @@ class ContactLocationPolicy
      */
     public function view(User $user, ContactLocation $contactLocation): bool
     {
-        return $user->can('view_contact::location');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class ContactLocationPolicy
      */
     public function forceDelete(User $user, ContactLocation $contactLocation): bool
     {
-        return $user->can('force_delete_contact::location');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class ContactLocationPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_contact::location');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class ContactLocationPolicy
      */
     public function restore(User $user, ContactLocation $contactLocation): bool
     {
-        return $user->can('restore_contact::location');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class ContactLocationPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_contact::location');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class ContactLocationPolicy
      */
     public function replicate(User $user, ContactLocation $contactLocation): bool
     {
-        return $user->can('replicate_contact::location');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class ContactLocationPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_contact::location');
+        return $user->can('{{ Reorder }}');
     }
 }

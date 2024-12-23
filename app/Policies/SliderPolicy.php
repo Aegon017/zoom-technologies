@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Slider;
 use App\Models\User;
+use App\Models\Slider;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class SliderPolicy
@@ -23,7 +23,7 @@ class SliderPolicy
      */
     public function view(User $user, Slider $slider): bool
     {
-        return $user->can('view_slider');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class SliderPolicy
      */
     public function forceDelete(User $user, Slider $slider): bool
     {
-        return $user->can('force_delete_slider');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class SliderPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_slider');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class SliderPolicy
      */
     public function restore(User $user, Slider $slider): bool
     {
-        return $user->can('restore_slider');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class SliderPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_slider');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class SliderPolicy
      */
     public function replicate(User $user, Slider $slider): bool
     {
-        return $user->can('replicate_slider');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class SliderPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_slider');
+        return $user->can('{{ Reorder }}');
     }
 }

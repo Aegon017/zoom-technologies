@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\PromoSection;
 use App\Models\User;
+use App\Models\PromoSection;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PromoSectionPolicy
@@ -23,7 +23,7 @@ class PromoSectionPolicy
      */
     public function view(User $user, PromoSection $promoSection): bool
     {
-        return $user->can('view_promo::section');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class PromoSectionPolicy
      */
     public function forceDelete(User $user, PromoSection $promoSection): bool
     {
-        return $user->can('force_delete_promo::section');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class PromoSectionPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_promo::section');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class PromoSectionPolicy
      */
     public function restore(User $user, PromoSection $promoSection): bool
     {
-        return $user->can('restore_promo::section');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class PromoSectionPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_promo::section');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class PromoSectionPolicy
      */
     public function replicate(User $user, PromoSection $promoSection): bool
     {
-        return $user->can('replicate_promo::section');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class PromoSectionPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_promo::section');
+        return $user->can('{{ Reorder }}');
     }
 }

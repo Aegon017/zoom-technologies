@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\MobileNumber;
 use App\Models\User;
+use App\Models\MobileNumber;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class MobileNumberPolicy
@@ -23,7 +23,7 @@ class MobileNumberPolicy
      */
     public function view(User $user, MobileNumber $mobileNumber): bool
     {
-        return $user->can('view_mobile::number');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class MobileNumberPolicy
      */
     public function forceDelete(User $user, MobileNumber $mobileNumber): bool
     {
-        return $user->can('force_delete_mobile::number');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class MobileNumberPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_mobile::number');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class MobileNumberPolicy
      */
     public function restore(User $user, MobileNumber $mobileNumber): bool
     {
-        return $user->can('restore_mobile::number');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class MobileNumberPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_mobile::number');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class MobileNumberPolicy
      */
     public function replicate(User $user, MobileNumber $mobileNumber): bool
     {
-        return $user->can('replicate_mobile::number');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class MobileNumberPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_mobile::number');
+        return $user->can('{{ Reorder }}');
     }
 }

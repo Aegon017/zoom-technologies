@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\StickyContact;
 use App\Models\User;
+use App\Models\StickyContact;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class StickyContactPolicy
@@ -23,7 +23,7 @@ class StickyContactPolicy
      */
     public function view(User $user, StickyContact $stickyContact): bool
     {
-        return $user->can('view_sticky::contact');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class StickyContactPolicy
      */
     public function forceDelete(User $user, StickyContact $stickyContact): bool
     {
-        return $user->can('force_delete_sticky::contact');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class StickyContactPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_sticky::contact');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class StickyContactPolicy
      */
     public function restore(User $user, StickyContact $stickyContact): bool
     {
-        return $user->can('restore_sticky::contact');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class StickyContactPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_sticky::contact');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class StickyContactPolicy
      */
     public function replicate(User $user, StickyContact $stickyContact): bool
     {
-        return $user->can('replicate_sticky::contact');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class StickyContactPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_sticky::contact');
+        return $user->can('{{ Reorder }}');
     }
 }

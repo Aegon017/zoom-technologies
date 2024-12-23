@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\News;
 use App\Models\User;
+use App\Models\News;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class NewsPolicy
@@ -23,7 +23,7 @@ class NewsPolicy
      */
     public function view(User $user, News $news): bool
     {
-        return $user->can('view_news');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class NewsPolicy
      */
     public function forceDelete(User $user, News $news): bool
     {
-        return $user->can('force_delete_news');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class NewsPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_news');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class NewsPolicy
      */
     public function restore(User $user, News $news): bool
     {
-        return $user->can('restore_news');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class NewsPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_news');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class NewsPolicy
      */
     public function replicate(User $user, News $news): bool
     {
-        return $user->can('replicate_news');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class NewsPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_news');
+        return $user->can('{{ Reorder }}');
     }
 }

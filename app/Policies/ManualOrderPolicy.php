@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\ManualOrder;
 use App\Models\User;
+use App\Models\ManualOrder;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ManualOrderPolicy
@@ -23,7 +23,7 @@ class ManualOrderPolicy
      */
     public function view(User $user, ManualOrder $manualOrder): bool
     {
-        return $user->can('view_single::course');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class ManualOrderPolicy
      */
     public function forceDelete(User $user, ManualOrder $manualOrder): bool
     {
-        return $user->can('force_delete_single::course');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class ManualOrderPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_single::course');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class ManualOrderPolicy
      */
     public function restore(User $user, ManualOrder $manualOrder): bool
     {
-        return $user->can('restore_single::course');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class ManualOrderPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_single::course');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class ManualOrderPolicy
      */
     public function replicate(User $user, ManualOrder $manualOrder): bool
     {
-        return $user->can('replicate_single::course');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class ManualOrderPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_single::course');
+        return $user->can('{{ Reorder }}');
     }
 }

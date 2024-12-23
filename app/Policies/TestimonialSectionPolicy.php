@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\TestimonialSection;
 use App\Models\User;
+use App\Models\TestimonialSection;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TestimonialSectionPolicy
@@ -23,7 +23,7 @@ class TestimonialSectionPolicy
      */
     public function view(User $user, TestimonialSection $testimonialSection): bool
     {
-        return $user->can('view_testimonial::section');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class TestimonialSectionPolicy
      */
     public function forceDelete(User $user, TestimonialSection $testimonialSection): bool
     {
-        return $user->can('force_delete_testimonial::section');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class TestimonialSectionPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_testimonial::section');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class TestimonialSectionPolicy
      */
     public function restore(User $user, TestimonialSection $testimonialSection): bool
     {
-        return $user->can('restore_testimonial::section');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class TestimonialSectionPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_testimonial::section');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class TestimonialSectionPolicy
      */
     public function replicate(User $user, TestimonialSection $testimonialSection): bool
     {
-        return $user->can('replicate_testimonial::section');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class TestimonialSectionPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_testimonial::section');
+        return $user->can('{{ Reorder }}');
     }
 }

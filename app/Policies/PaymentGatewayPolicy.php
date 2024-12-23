@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\PaymentGateway;
 use App\Models\User;
+use App\Models\PaymentGateway;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PaymentGatewayPolicy
@@ -23,7 +23,7 @@ class PaymentGatewayPolicy
      */
     public function view(User $user, PaymentGateway $paymentGateway): bool
     {
-        return $user->can('view_payment::gateway');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class PaymentGatewayPolicy
      */
     public function forceDelete(User $user, PaymentGateway $paymentGateway): bool
     {
-        return $user->can('force_delete_payment::gateway');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class PaymentGatewayPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_payment::gateway');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class PaymentGatewayPolicy
      */
     public function restore(User $user, PaymentGateway $paymentGateway): bool
     {
-        return $user->can('restore_payment::gateway');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class PaymentGatewayPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_payment::gateway');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class PaymentGatewayPolicy
      */
     public function replicate(User $user, PaymentGateway $paymentGateway): bool
     {
-        return $user->can('replicate_payment::gateway');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class PaymentGatewayPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_payment::gateway');
+        return $user->can('{{ Reorder }}');
     }
 }

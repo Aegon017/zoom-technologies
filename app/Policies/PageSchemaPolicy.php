@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\PageSchema;
 use App\Models\User;
+use App\Models\PageSchema;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PageSchemaPolicy
@@ -23,7 +23,7 @@ class PageSchemaPolicy
      */
     public function view(User $user, PageSchema $pageSchema): bool
     {
-        return $user->can('view_page::schema');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class PageSchemaPolicy
      */
     public function forceDelete(User $user, PageSchema $pageSchema): bool
     {
-        return $user->can('force_delete_page::schema');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class PageSchemaPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_page::schema');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class PageSchemaPolicy
      */
     public function restore(User $user, PageSchema $pageSchema): bool
     {
-        return $user->can('restore_page::schema');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class PageSchemaPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_page::schema');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class PageSchemaPolicy
      */
     public function replicate(User $user, PageSchema $pageSchema): bool
     {
-        return $user->can('replicate_page::schema');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class PageSchemaPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_page::schema');
+        return $user->can('{{ Reorder }}');
     }
 }

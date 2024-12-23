@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Brochure;
 use App\Models\User;
+use App\Models\Brochure;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class BrochurePolicy
@@ -23,7 +23,7 @@ class BrochurePolicy
      */
     public function view(User $user, Brochure $brochure): bool
     {
-        return $user->can('view_brochure');
+        return $user->can('{{ View }}');
     }
 
     /**
@@ -63,7 +63,7 @@ class BrochurePolicy
      */
     public function forceDelete(User $user, Brochure $brochure): bool
     {
-        return $user->can('force_delete_brochure');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class BrochurePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_brochure');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class BrochurePolicy
      */
     public function restore(User $user, Brochure $brochure): bool
     {
-        return $user->can('restore_brochure');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class BrochurePolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_brochure');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class BrochurePolicy
      */
     public function replicate(User $user, Brochure $brochure): bool
     {
-        return $user->can('replicate_brochure');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class BrochurePolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_brochure');
+        return $user->can('{{ Reorder }}');
     }
 }
