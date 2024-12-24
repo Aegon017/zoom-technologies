@@ -31,14 +31,6 @@
             font-weight: 600;
         }
 
-        .product-card {
-            transition: transform 0.3s ease;
-        }
-
-        .product-card:hover {
-            transform: scale(1.02);
-        }
-
         .checkout-section {
             background-color: white;
             border-radius: 0.5rem;
@@ -47,19 +39,6 @@
 
         .text-underline {
             text-decoration: underline;
-        }
-
-        .btn-orange {
-            color: white;
-            background-color: #fd5222;
-            border: none;
-            border-radius: 0.5rem;
-            padding: 0.7rem 2.5rem;
-
-        }
-
-        .btn-orange:hover {
-            background-color: #cc3309;
         }
 
         .loader {
@@ -108,6 +87,27 @@
         .step-item.active {
             font-weight: bold !important;
         }
+
+        .form-check {
+            margin-bottom: 1rem;
+        }
+
+        .form-check-input {
+            accent-color: #fd5222;
+            width: 1rem;
+            aspect-ratio: 1;
+            cursor: pointer;
+        }
+
+        .form-check-label {
+            cursor: pointer;
+            margin-left: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-check-label:hover {
+            color: #fd5222;
+        }
     </style>
     @php
         $request = request();
@@ -132,22 +132,22 @@
                         <div class="step-indicator">
                             <div class="step-item" id="step-1">
                                 <div class="step-badge bg-light text-muted" data-step="1">1</div>
-                                <span class="font-weight-semibold">Sign In / Sign Up</span>
+                                <span class="text-muted">Payment</span>
                             </div>
                             <i class="fas fa-chevron-right text-muted"></i>
                             <div class="step-item" id="step-2">
                                 <div class="step-badge bg-light text-muted" data-step="2">2</div>
-                                <span class="font-weight-semibold">Verification</span>
+                                <span class="font-weight-semibold">Sign In / Sign Up</span>
                             </div>
                             <i class="fas fa-chevron-right text-muted"></i>
                             <div class="step-item" id="step-3">
                                 <div class="step-badge bg-light text-muted" data-step="3">3</div>
-                                <span class="font-weight-semibold">Billing Address</span>
+                                <span class="font-weight-semibold">Verification</span>
                             </div>
                             <i class="fas fa-chevron-right text-muted"></i>
                             <div class="step-item" id="step-4">
                                 <div class="step-badge bg-light text-muted" data-step="4">4</div>
-                                <span class="text-muted">Payment</span>
+                                <span class="font-weight-semibold">Billing Address</span>
                             </div>
                         </div>
                     </div>
@@ -160,8 +160,8 @@
                     <div class="checkout-section custom-shadow">
                         <h4 class="mb-3 text-dark">Order Summary</h4>
                         <p class="text-muted">Check your items. And select a suitable shipping method.</p>
-                        <div class="product-card card mb-3 overflow-hidden custom-shadow">
-                            <div class="card-body">
+                        <div class="product-card card overflow-hidden border-0">
+                            <div class="card-body px-0 pb-0">
                                 <div class="row no-gutters pb-3">
                                     <div class="col-4 pr-3">
                                         <img src="{{ asset(Storage::url($request->thumbnail)) }}"
@@ -198,59 +198,67 @@
                     </div>
                 </div>
                 <div class="col-12 col-lg-6 pl-lg-4 mt-4 mt-lg-0">
-                    <div class="checkout-section custom-shadow">
-                        @guest
-                            <div class="step-content" id="content-1">
-                                <h4 class="mb-3 text-dark">Sign In / Sign Up</h4>
-                                <form action="{{ route('checkout.course') }}">
-                                    <input type="hidden" name="thumbnail" value="{{ $request->thumbnail }}">
-                                    <input type="hidden" name="thumbnail_alt" value="{{ $request->thumbnail_alt }}">
-                                    <input type="hidden" name="payable_price" value="{{ $request->payable_price }}">
-                                    <input type="hidden" name="product_type" value="{{ $request->product_type }}">
-                                    <input type="hidden" name="name" value="{{ $request->name }}">
-                                    <input type="hidden" name="actualName" value="{{ $request->actualName }}">
-                                    <input type="hidden" name="coursePrice" value="{{ $request->coursePrice }}">
-                                    <input type="hidden" name="cgst" value="{{ $request->cgst }}">
-                                    <input type="hidden" name="sgst" value="{{ $request->sgst }}">
-                                    <input type="hidden" name="payablePrice" value="{{ $request->payablePrice }}">
-                                    <button class="login-btn text-muted">Already Registered? <span>Login here<span></button>
-                                    @foreach ($course_schedule_values as $key => $value)
-                                        <input type="hidden" name="{{ $key }}" value="{{ $value }}" />
-                                    @endforeach
-                                </form>
-                                <livewire:register-user />
+                    <div class="checkout-section custom-shadow" x-data="{ expanded: false }">
+                        <form action="{{ route('payment.initiate') }}" method="POST">
+                            @csrf
+                            @php
+                                $name = $request->name;
+                                $payablePrice = $request->payablePrice;
+                                $productType = $request->product_type;
+                            @endphp
+                            <div class="step-content" id="content-1" x-show="! expanded">
+                                <livewire:payment-method />
                             </div>
-                        @endguest
-                        @auth
-                            @if (Auth::user()->email_verified_at === null)
-                                <div class="step-content" id="content-2">
-                                    <livewire:otp-verification />
+                            @guest
+                                <div class="step-content" id="content-2" x-show="">
+                                    <h4 class="mb-3 text-dark">Sign In / Sign Up</h4>
+                                    <form action="{{ route('checkout.course') }}">
+                                        <input type="hidden" name="thumbnail" value="{{ $request->thumbnail }}">
+                                        <input type="hidden" name="thumbnail_alt" value="{{ $request->thumbnail_alt }}">
+                                        <input type="hidden" name="payable_price" value="{{ $request->payable_price }}">
+                                        <input type="hidden" name="product_type" value="{{ $request->product_type }}">
+                                        <input type="hidden" name="name" value="{{ $request->name }}">
+                                        <input type="hidden" name="actualName" value="{{ $request->actualName }}">
+                                        <input type="hidden" name="coursePrice" value="{{ $request->coursePrice }}">
+                                        <input type="hidden" name="cgst" value="{{ $request->cgst }}">
+                                        <input type="hidden" name="sgst" value="{{ $request->sgst }}">
+                                        <input type="hidden" name="payablePrice" value="{{ $request->payablePrice }}">
+                                        <button class="login-btn text-muted">Already Registered? <span>Login
+                                                here<span></button>
+                                        @foreach ($course_schedule_values as $key => $value)
+                                            <input type="hidden" name="{{ $key }}"
+                                                value="{{ $value }}" />
+                                        @endforeach
+                                    </form>
+                                    <livewire:register-user />
                                 </div>
-                            @endif
-                        @endauth
-                        @auth
-                            @if (Auth::user()->email_verified_at !== null)
-                                <div x-data="{ expanded: false }" class="step-content" id="content-3">
-                                    @if (Auth::user()->addresses)
-                                        <div class="text-right" x-show="! expanded">
-                                            <button class="btn btn-dark"
-                                                x-on:click="expanded = ! expanded">Continue</button>
+                            @endguest
+                            @auth
+                                @if (Auth::user()->email_verified_at === null)
+                                    <div class="step-content" id="content-3">
+                                        <livewire:otp-verification />
+                                    </div>
+                                @endif
+                            @endauth
+                            @auth
+                                @if (Auth::user()->email_verified_at !== null)
+                                    <div class="step-content" id="content-4">
+                                        @if (Auth::user()->addresses)
+                                            <div class="text-right" x-show="! expanded">
+                                                <button class="btn btn-dark"
+                                                    x-on:click="expanded = ! expanded">Continue</button>
+                                            </div>
+                                        @endif
+                                        <div x-show="! expanded">
+                                            <livewire:billing-address />
                                         </div>
-                                    @endif
-                                    <div x-show="! expanded">
-                                        <livewire:billing-address />
                                     </div>
-                                    @php
-                                        $name = $request->name;
-                                        $payablePrice = $request->payablePrice;
-                                        $productType = $request->product_type;
-                                    @endphp
-                                    <div x-show="expanded" class="step-content" id="content-4">
-                                        <livewire:payment-method :$name :$payablePrice :$productType />
-                                    </div>
-                                </div>
-                            @endif
-                        @endauth
+                                @endif
+                            @endauth
+                            <input type="hidden" name="name" value="{{ $name }}">
+                            <input type="hidden" name="payable_price" value="{{ $payablePrice }}">
+                            <input type="hidden" name="product_type" value="{{ $productType }}">
+                            </from>
                     </div>
                 </div>
             </div>
