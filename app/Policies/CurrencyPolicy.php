@@ -23,7 +23,7 @@ class CurrencyPolicy
      */
     public function view(User $user, Currency $currency): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_currency');
     }
 
     /**

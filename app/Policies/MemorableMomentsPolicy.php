@@ -23,7 +23,7 @@ class MemorableMomentsPolicy
      */
     public function view(User $user, MemorableMoments $memorableMoments): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_memorable::moments');
     }
 
     /**

@@ -23,7 +23,7 @@ class TestimonialSectionPolicy
      */
     public function view(User $user, TestimonialSection $testimonialSection): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_testimonial::section');
     }
 
     /**

@@ -23,7 +23,7 @@ class FeatureSectionPolicy
      */
     public function view(User $user, FeatureSection $featureSection): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_feature::section');
     }
 
     /**

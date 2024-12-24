@@ -23,7 +23,7 @@ class PromoSectionPolicy
      */
     public function view(User $user, PromoSection $promoSection): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_promo::section');
     }
 
     /**

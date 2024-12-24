@@ -54,6 +54,10 @@ class StudentResource extends Resource
                     }),
             ])
             ->filters([
+                SelectFilter::make('Course')
+                    ->relationship('course', 'name')
+                    ->preload()
+                    ->searchable(),
                 SelectFilter::make('Batch date')
                     ->relationship('schedule', 'start_date')
                     ->preload()

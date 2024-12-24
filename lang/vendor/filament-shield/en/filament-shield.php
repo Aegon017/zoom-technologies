@@ -33,8 +33,7 @@ return [
     | Navigation & Resource
     |--------------------------------------------------------------------------
     */
-
-    'nav.group' => 'Roles & Permisions',
+    'nav.group' => 'User Management',
     'nav.role.label' => 'Roles',
     'nav.role.icon' => 'heroicon-o-shield-check',
     'resource.label.role' => 'Role',

@@ -23,7 +23,7 @@ class PackagePolicy
      */
     public function view(User $user, Package $package): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_package');
     }
 
     /**

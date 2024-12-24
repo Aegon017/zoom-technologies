@@ -179,8 +179,10 @@ class SingleCourseResource extends Resource
                                     ->label('Total Amount')
                                     ->readOnly(),
                                 Select::make('payment_mode')->options([
-                                    'Bank transfer' => 'Bank transfer',
                                     'UPI' => 'UPI',
+                                    'Card' => 'Card',
+                                    'QR Code' => 'QR Code',
+                                    'Bank transfer' => 'Bank transfer',
                                     'POS' => 'POS',
                                     'Cash' => 'Cash',
                                 ]),
@@ -211,7 +213,7 @@ class SingleCourseResource extends Resource
                     }),
             ])
             ->bulkActions([])
-            ->modifyQueryUsing(fn (Builder $query) => $query->whereNotNull('course_id'));
+            ->modifyQueryUsing(fn(Builder $query) => $query->whereNotNull('course_id'));
     }
 
     public static function getRelations(): array

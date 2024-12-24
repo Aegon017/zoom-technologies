@@ -23,7 +23,7 @@ class TimezonePolicy
      */
     public function view(User $user, Timezone $timezone): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_timezone');
     }
 
     /**

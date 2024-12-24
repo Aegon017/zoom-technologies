@@ -23,7 +23,7 @@ class BrochurePolicy
      */
     public function view(User $user, Brochure $brochure): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_brochure');
     }
 
     /**

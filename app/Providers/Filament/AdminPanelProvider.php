@@ -65,6 +65,7 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->navigationGroups([
+                'User Management',
                 'Offline Enrolls',
                 'Courses & Packages',
                 'News',
@@ -73,7 +74,6 @@ class AdminPanelProvider extends PanelProvider
                 'Contact Details',
                 'Payment Settings',
                 'SEO Settings',
-                'Filament Shield',
             ]);
     }
 }

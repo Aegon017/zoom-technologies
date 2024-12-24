@@ -23,7 +23,7 @@ class PaymentGatewayPolicy
      */
     public function view(User $user, PaymentGateway $paymentGateway): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_payment::gateway');
     }
 
     /**

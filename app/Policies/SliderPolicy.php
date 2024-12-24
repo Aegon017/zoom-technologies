@@ -23,7 +23,7 @@ class SliderPolicy
      */
     public function view(User $user, Slider $slider): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_slider');
     }
 
     /**

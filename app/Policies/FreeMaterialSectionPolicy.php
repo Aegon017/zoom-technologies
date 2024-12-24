@@ -23,7 +23,7 @@ class FreeMaterialSectionPolicy
      */
     public function view(User $user, FreeMaterialSection $freeMaterialSection): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_free::material::section');
     }
 
     /**

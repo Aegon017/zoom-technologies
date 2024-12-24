@@ -23,7 +23,7 @@ class StickyContactPolicy
      */
     public function view(User $user, StickyContact $stickyContact): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_sticky::contact');
     }
 
     /**

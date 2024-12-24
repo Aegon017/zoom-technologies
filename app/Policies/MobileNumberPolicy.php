@@ -23,7 +23,7 @@ class MobileNumberPolicy
      */
     public function view(User $user, MobileNumber $mobileNumber): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_mobile::number');
     }
 
     /**

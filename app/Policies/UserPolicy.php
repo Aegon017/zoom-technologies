@@ -29,7 +29,7 @@ class UserPolicy
      */
     public function view(User $user): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_user');
     }
 
     /**

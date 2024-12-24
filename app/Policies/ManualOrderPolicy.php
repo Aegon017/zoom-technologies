@@ -23,7 +23,7 @@ class ManualOrderPolicy
      */
     public function view(User $user, ManualOrder $manualOrder): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_single::course');
     }
 
     /**

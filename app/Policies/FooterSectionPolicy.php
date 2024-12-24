@@ -23,7 +23,7 @@ class FooterSectionPolicy
      */
     public function view(User $user, FooterSection $footerSection): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_footer::section');
     }
 
     /**

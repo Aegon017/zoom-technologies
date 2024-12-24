@@ -23,7 +23,7 @@ class NewsPolicy
      */
     public function view(User $user, News $news): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_news');
     }
 
     /**

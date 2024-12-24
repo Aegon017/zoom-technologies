@@ -23,7 +23,7 @@ class FaqsSectionPolicy
      */
     public function view(User $user, FaqsSection $faqsSection): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_faqs::section');
     }
 
     /**

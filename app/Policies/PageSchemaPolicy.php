@@ -23,7 +23,7 @@ class PageSchemaPolicy
      */
     public function view(User $user, PageSchema $pageSchema): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_page::schema');
     }
 
     /**

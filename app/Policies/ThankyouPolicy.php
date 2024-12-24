@@ -23,7 +23,7 @@ class ThankyouPolicy
      */
     public function view(User $user, Thankyou $thankyou): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_thankyou');
     }
 
     /**

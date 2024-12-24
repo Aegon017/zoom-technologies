@@ -23,7 +23,7 @@ class CorporateTrainingPolicy
      */
     public function view(User $user, CorporateTraining $corporateTraining): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_corporate::training');
     }
 
     /**

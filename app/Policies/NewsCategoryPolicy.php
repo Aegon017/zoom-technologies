@@ -23,7 +23,7 @@ class NewsCategoryPolicy
      */
     public function view(User $user, NewsCategory $newsCategory): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_news::category');
     }
 
     /**

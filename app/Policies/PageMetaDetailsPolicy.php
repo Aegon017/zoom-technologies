@@ -23,7 +23,7 @@ class PageMetaDetailsPolicy
      */
     public function view(User $user, PageMetaDetails $pageMetaDetails): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_page::meta::details');
     }
 
     /**

@@ -23,7 +23,7 @@ class SocialLinkPolicy
      */
     public function view(User $user, SocialLink $socialLink): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_social::link');
     }
 
     /**

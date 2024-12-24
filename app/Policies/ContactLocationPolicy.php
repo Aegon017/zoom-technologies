@@ -23,7 +23,7 @@ class ContactLocationPolicy
      */
     public function view(User $user, ContactLocation $contactLocation): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_contact::location');
     }
 
     /**

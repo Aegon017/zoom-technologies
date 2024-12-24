@@ -23,7 +23,7 @@ class CoursePolicy
      */
     public function view(User $user, Course $course): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_course');
     }
 
     /**

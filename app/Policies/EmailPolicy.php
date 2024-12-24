@@ -23,7 +23,7 @@ class EmailPolicy
      */
     public function view(User $user, Email $email): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_email');
     }
 
     /**

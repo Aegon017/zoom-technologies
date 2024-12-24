@@ -23,7 +23,7 @@ class OrderNumberPolicy
      */
     public function view(User $user, OrderNumber $orderNumber): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_order::number');
     }
 
     /**

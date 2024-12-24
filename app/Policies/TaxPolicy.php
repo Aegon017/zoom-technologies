@@ -23,7 +23,7 @@ class TaxPolicy
      */
     public function view(User $user, Tax $tax): bool
     {
-        return $user->can('{{ View }}');
+        return $user->can('view_tax');
     }
 
     /**
