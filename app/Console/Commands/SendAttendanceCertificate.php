@@ -6,12 +6,8 @@ use App\Mail\AttendingCertificateMail;
 use App\Models\Schedule;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
-use Flasher\Laravel\Facade\Flasher;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-
-use function Laravel\Prompts\info;
 
 class SendAttendanceCertificate extends Command
 {
@@ -76,7 +72,7 @@ class SendAttendanceCertificate extends Command
                         'userEmail' => $userEmail,
                     ];
                     $pdf = Pdf::loadView('pages.attendance-certificate', $data);
-                    $pdfFileName = 'certificates/certificate_' . time() . '.pdf';
+                    $pdfFileName = 'certificates/certificate_'.time().'.pdf';
                     $pdfPath = public_path($pdfFileName);
                     $pdf->save($pdfPath);
                     $subject = 'Course Completion Certificate';
