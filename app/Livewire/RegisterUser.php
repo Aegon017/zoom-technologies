@@ -58,7 +58,7 @@ class RegisterUser extends Component
             Mail::to($user->email)->send(new UserEnrollMail($user, $password));
             Auth::login($user);
             flash()->success('Registration Successful');
-            $this->dispatch('reload-page');
+            $this->dispatch('registration-success');
         }
     }
 

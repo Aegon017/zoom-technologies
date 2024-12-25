@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Exports\OrderExporter;
 use App\Filament\Resources\OrderResource\Pages;
+use App\Models\Course;
 use App\Models\Order;
 use App\Models\Schedule;
 use Filament\Forms\Components\DatePicker;
@@ -19,6 +20,7 @@ use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -141,23 +143,24 @@ class OrderResource extends Resource
                     }),
             ])
             ->filters([
-                SelectFilter::make('course.name')
-                    ->label('Single course')
-                    ->relationship('course', 'name')
-                    ->searchable()
-                    ->preload()->columnSpan(2),
                 SelectFilter::make('package.name')
                     ->label('Package course')
                     ->relationship('package', 'name')
                     ->searchable()
                     ->preload()->columnSpan(2),
-                SelectFilter::make('training_mode')
-                    ->label('Training mode')
+                SelectFilter::make('course_id')
+                    ->label('Single course')
                     ->options(
-                        Schedule::distinct('training_mode')->pluck('training_mode')->toArray()
+                        Course::whereHas('order')->pluck('name', 'id')
                     )
                     ->searchable()
-                    ->query(fn(Builder $query, $data) => $query->when($data['value'] ?? null, fn(Builder $query, $value) => $query->whereHas('schedule', fn($query) => $query->where('training_mode', $value)))),
+                    ->preload()
+                    ->columnSpan(2),
+                SelectFilter::make('training_mode')
+                    ->label('Training Mode')
+                    ->relationship('schedule', 'training_mode')
+                    ->searchable()
+                    ->preload(),
                 SelectFilter::make('schedule.start_date')
                     ->label('Batch Date')
                     ->options(

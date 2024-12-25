@@ -1,37 +1,85 @@
-<div class="pt-3">
-    <h6>Select payment method: </h6>
+<div class="pt-3" x-data="{ button: true, bankTransfer: false, qrCode: false }">
+    <h4 class="mb-3 text-dark">Payment Method</h4>
+    <p class="text-muted">Please select your payment method</p>
     <div class="py-3 justify-content-center">
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="payment_method" value="PayU" id="payu" checked>
+        <div class="form-check" x-on:click="button = true; bankTransfer = false; qrCode = false">
+            <input class="form-check-input" type="radio" name="payment_method" value="payu" id="payu" checked>
             <label class="form-check-label" for="payu">
                 PayU
             </label>
         </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="payment_method" value="PayPal" id="paypal">
+        <div class="form-check" x-on:click="button = true; bankTransfer = false; qrCode = false">
+            <input class="form-check-input" type="radio" name="payment_method" value="paypal" id="paypal">
             <label class="form-check-label" for="paypal">
                 PayPal
             </label>
         </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="payment_method" value="Stripe" id="stripe">
+        <div class="form-check" x-on:click="button = true; bankTransfer = false; qrCode = false">
+            <input class="form-check-input" type="radio" name="payment_method" value="stripe" id="stripe">
             <label class="form-check-label" for="stripe">
                 Stripe
             </label>
         </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="payment_method" value="Bank Transfer"
-                id="bank_transfer">
-            <label class="form-check-label" for="bank_transfer">
-                Bank Transfer
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="payment_method" value="QR Code" id="qr_code">
-            <label class="form-check-label" for="qr_code">
-                QR Code
-            </label>
+        @guest
+            <div class="form-check" x-on:click="button = false; bankTransfer = true; qrCode = false">
+                <input class="form-check-input" type="radio" name="payment_method" value="bank transfer"
+                    id="bank_transfer">
+                <label class="form-check-label" for="bank_transfer">
+                    Bank Transfer
+                </label>
+            </div>
+            <div class="form-check" x-on:click="button=false; qrCode = true; bankTransfer = false">
+                <input class="form-check-input" type="radio" name="payment_method" value="QR code" id="qr_code">
+                <label class="form-check-label" for="qr_code">
+                    QR Code
+                </label>
+            </div>
+        @endguest
+    </div>
+    <button class="btn btn-dark" wire:click.prevent="checkAuth" x-on:click="$dispatch('check-address')" x-transition
+        x-show="button">Continue</button>
+    <div x-transition x-show="bankTransfer" class="bank-details-container">
+        <h5 class="mb-3">Bank Transfer Details</h5>
+        <div class="bank-details">
+            <dl class="row">
+                <dt class="col-sm-4">Favoring Beneficiary Bank</dt>
+                <dd class="col-sm-8">{{ $bankTransferDetails->bank_name }}</dd>
+
+                <dt class="col-sm-4">IFSC Code</dt>
+                <dd class="col-sm-8">{{ $bankTransferDetails->ifsc_code }}</dd>
+
+                <dt class="col-sm-4">Beneficiary Name</dt>
+                <dd class="col-sm-8">{{ $bankTransferDetails->account_name }}</dd>
+
+                <dt class="col-sm-4">Account Number</dt>
+                <dd class="col-sm-8">{{ $bankTransferDetails->account_number }}</dd>
+
+                <dt class="col-sm-4">Branch Name</dt>
+                <dd class="col-sm-8">{{ $bankTransferDetails->branch_name }}</dd>
+
+                <dt class="col-sm-4">Branch Code</dt>
+                <dd class="col-sm-8">{{ $bankTransferDetails->branch_code }}</dd>
+
+                <dt class="col-sm-4">Address</dt>
+                <dd class="col-sm-8">{{ $bankTransferDetails->address }}</dd>
+            </dl>
+
+            <div class="notice-bar my-3">
+                <p class="txt-primary"><strong>Note:</strong></p>
+                <ul>
+                    @forelse ($bankTransferDetails->notes as $note)
+                        <li>{{ $note['content'] }}</li>
+                    @empty
+                        <li>No additional notes available.</li>
+                    @endforelse
+                </ul>
+            </div>
         </div>
     </div>
-    <button class="btn btn-dark" x-on:click.prevent="expanded = !expanded">Continue</button>
+    <div x-transition x-show="qrCode" class="qr-code-container">
+        <h5 class="mb-3">QR Code</h5>
+        <div class="text-center">
+            <img src="{{ asset(Storage::url($qrCode->image)) }}" alt="Payment QR Code" class="img-fluid" loading="lazy">
+        </div>
+    </div>
 </div>

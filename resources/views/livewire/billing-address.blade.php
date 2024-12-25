@@ -26,7 +26,12 @@
                 <input type="text" class="form-control" id="zipCode" wire:model='zipCode'
                     placeholder="Enter zip code">
             </div>
-            <button type="submit" class="btn-orange">Submit</button>
+            <div class="d-flex justify-content-between" x-data="{ showPaymentButton: false }"
+                x-on:show-pay-button.window="showPaymentButton = true">
+                <button type="submit" class="btn btn-dark">Submit</button>
+                <button class="btn btn-orange" x-show="showPaymentButton"
+                    x-on:click.prevent="$refs.checkoutForm.submit()">Continue to pay</button>
+            </div>
         </form>
     </div>
 </div>

@@ -38,13 +38,13 @@ class OtpVerification extends Component
 
     public function verifyOTP()
     {
-        $otp = $this->otp0.$this->otp1.$this->otp2.$this->otp3.$this->otp4.$this->otp5;
+        $otp = $this->otp0 . $this->otp1 . $this->otp2 . $this->otp3 . $this->otp4 . $this->otp5;
         $user = User::find(Auth::id());
         if ($this->otp == $otp) {
             $user->email_verified_at = now();
             $user->save();
             flash()->success('Verification Success');
-            $this->dispatch('reload-page');
+            $this->dispatch('verification-success');
         } else {
             flash()->error('Incorrect OTP');
         }

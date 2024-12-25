@@ -37,7 +37,7 @@ class BillingAddress extends Component
             ]);
             if ($address) {
                 flash()->success('Billing Address Updated Successfully');
-                $this->dispatch('reload-page');
+                $this->dispatch('show-pay-button');
             }
         } else {
             $address = Address::create([
@@ -50,7 +50,7 @@ class BillingAddress extends Component
             ]);
             if ($address) {
                 flash()->success('Billing Address Saved Successfully');
-                $this->dispatch('reload-page');
+                $this->dispatch('show-pay-button');
             }
         }
     }

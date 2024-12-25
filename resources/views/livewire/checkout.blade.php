@@ -108,6 +108,100 @@
         .form-check-label:hover {
             color: #fd5222;
         }
+
+        .otp-input input {
+            width: 50px;
+            height: 50px;
+            margin: 0 8px;
+            text-align: center;
+            font-size: 1.5rem;
+            border: 2px solid #6f6f6f;
+            border-radius: 12px;
+            background-color: #eeeeee;
+            color: #1d1d1d;
+            transition: all 0.3s ease;
+        }
+
+        .otp-input input:focus {
+            border-color: #fd5222;
+            box-shadow: 0 0 0 1px #fd5222;
+            outline: none;
+        }
+
+        .otp-input input::-webkit-outer-spin-button,
+        .otp-input input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .otp-input input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        #timer {
+            font-size: 1rem;
+            color: #fd5222;
+            font-weight: 500;
+            margin-left: 10px;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .expired {
+            animation: pulse 2s infinite;
+            color: #cc3309;
+        }
+
+        .resend-text {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: gray;
+        }
+
+        .resend-link {
+            color: #fd5222;
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .resend-link:hover {
+            color: #cc3309;
+            text-decoration: underline;
+        }
+
+        #email {
+            color: #fd5222;
+            font-weight: 500;
+        }
+
+        .btn-orange {
+            color: #fff;
+            background-color: #fd5222;
+            border-color: #fd5222;
+        }
+
+        .btn-orange:focus {
+            box-shadow: 0 0 0 .2rem rgba(52, 58, 64, .5);
+        }
+
+        .btn-orange:hover {
+            color: #fff;
+            background-color: #cc3309;
+            border-color: #cc3309;
+        }
     </style>
     @php
         $request = request();
@@ -154,7 +248,7 @@
                 </div>
             </div>
         </div>
-        <div class="container py-5">
+        <div class="container py-3">
             <div class="row">
                 <div class="col-12 col-lg-6 pr-lg-4">
                     <div class="checkout-section custom-shadow">
@@ -198,72 +292,51 @@
                     </div>
                 </div>
                 <div class="col-12 col-lg-6 pl-lg-4 mt-4 mt-lg-0">
-                    <div class="checkout-section custom-shadow" x-data="{ expanded: false }">
-                        <form action="{{ route('payment.initiate') }}" method="POST">
+                    <div class="checkout-section custom-shadow" x-data="{ paymentMethod: true, signIn: false, verification: false, billingAddress: false }"
+                        x-on:show-login-form.window="signIn = true; paymentMethod = false"
+                        x-on:registration-success.window="signIn=false; paymentMethod = false; verification=true"
+                        x-on:show-address-form.window="billingAddress = true; verification = false; signIn = false; paymentMethod = false"
+                        x-on:show-otp-verification.window="verification = true; signIn = false; paymentMethod = false">
+                        <div class="step-content" id="content-2" x-show="signIn">
+                            <h4 class="mb-3 text-dark">Sign In / Sign Up</h4>
+                            <form action="{{ route('checkout.course') }}">
+                                <input type="hidden" name="thumbnail" value="{{ $request->thumbnail }}">
+                                <input type="hidden" name="thumbnail_alt" value="{{ $request->thumbnail_alt }}">
+                                <input type="hidden" name="payable_price" value="{{ $request->payable_price }}">
+                                <input type="hidden" name="product_type" value="{{ $request->product_type }}">
+                                <input type="hidden" name="name" value="{{ $request->name }}">
+                                <input type="hidden" name="actualName" value="{{ $request->actualName }}">
+                                <input type="hidden" name="coursePrice" value="{{ $request->coursePrice }}">
+                                <input type="hidden" name="cgst" value="{{ $request->cgst }}">
+                                <input type="hidden" name="sgst" value="{{ $request->sgst }}">
+                                <input type="hidden" name="payablePrice" value="{{ $request->payablePrice }}">
+                                <button class="login-btn text-muted">Already Registered? <span>Login
+                                        here<span></button>
+                                @foreach ($course_schedule_values as $key => $value)
+                                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                                @endforeach
+                            </form>
+                            <livewire:register-user />
+                        </div>
+                        <form action="{{ route('payment.initiate') }}" x-ref="checkoutForm" method="POST">
                             @csrf
-                            @php
-                                $name = $request->name;
-                                $payablePrice = $request->payablePrice;
-                                $productType = $request->product_type;
-                            @endphp
-                            <div class="step-content" id="content-1" x-show="! expanded">
-                                <livewire:payment-method />
+                            <input type="hidden" name="name" value="{{ $request->name }}">
+                            <input type="hidden" name="payable_price" value="{{ $request->payablePrice }}">
+                            <input type="hidden" name="product_type" value="{{ $request->product_type }}">
+                            <div class="step-content" id="content-1" x-show="paymentMethod">
+                                <livewire:payment-method :$bankTransferDetails :$qrCode />
                             </div>
-                            @guest
-                                <div class="step-content" id="content-2" x-show="">
-                                    <h4 class="mb-3 text-dark">Sign In / Sign Up</h4>
-                                    <form action="{{ route('checkout.course') }}">
-                                        <input type="hidden" name="thumbnail" value="{{ $request->thumbnail }}">
-                                        <input type="hidden" name="thumbnail_alt" value="{{ $request->thumbnail_alt }}">
-                                        <input type="hidden" name="payable_price" value="{{ $request->payable_price }}">
-                                        <input type="hidden" name="product_type" value="{{ $request->product_type }}">
-                                        <input type="hidden" name="name" value="{{ $request->name }}">
-                                        <input type="hidden" name="actualName" value="{{ $request->actualName }}">
-                                        <input type="hidden" name="coursePrice" value="{{ $request->coursePrice }}">
-                                        <input type="hidden" name="cgst" value="{{ $request->cgst }}">
-                                        <input type="hidden" name="sgst" value="{{ $request->sgst }}">
-                                        <input type="hidden" name="payablePrice" value="{{ $request->payablePrice }}">
-                                        <button class="login-btn text-muted">Already Registered? <span>Login
-                                                here<span></button>
-                                        @foreach ($course_schedule_values as $key => $value)
-                                            <input type="hidden" name="{{ $key }}"
-                                                value="{{ $value }}" />
-                                        @endforeach
-                                    </form>
-                                    <livewire:register-user />
-                                </div>
-                            @endguest
-                            @auth
-                                @if (Auth::user()->email_verified_at === null)
-                                    <div class="step-content" id="content-3">
-                                        <livewire:otp-verification />
-                                    </div>
-                                @endif
-                            @endauth
-                            @auth
-                                @if (Auth::user()->email_verified_at !== null)
-                                    <div class="step-content" id="content-4">
-                                        @if (Auth::user()->addresses)
-                                            <div class="text-right" x-show="! expanded">
-                                                <button class="btn btn-dark"
-                                                    x-on:click="expanded = ! expanded">Continue</button>
-                                            </div>
-                                        @endif
-                                        <div x-show="! expanded">
-                                            <livewire:billing-address />
-                                        </div>
-                                    </div>
-                                @endif
-                            @endauth
-                            <input type="hidden" name="name" value="{{ $name }}">
-                            <input type="hidden" name="payable_price" value="{{ $payablePrice }}">
-                            <input type="hidden" name="product_type" value="{{ $productType }}">
-                            </from>
+                        </form>
+                        <div class="step-content" id="content-3" x-show="verification">
+                            <livewire:otp-verification />
+                        </div>
+                        <div class="step-content" id="content-4" x-show="billingAddress">
+                            <livewire:billing-address />
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div x-on:reload-page.window="location.reload()"></div>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 const stepBadges = document.querySelectorAll('.step-badge');
@@ -303,6 +376,34 @@
                 if (contents.length > 0) {
                     activateStep(1);
                 }
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const inputs = document.querySelectorAll('.otp-input input');
+                inputs.forEach((input, index) => {
+                    input.addEventListener('input', (e) => {
+                        if (e.target.value.length > 1) {
+                            e.target.value = e.target.value.slice(0, 1);
+                        }
+                        if (e.target.value.length === 1) {
+                            if (index < inputs.length - 1) {
+                                inputs[index + 1].focus();
+                            }
+                        }
+                    });
+
+                    input.addEventListener('keydown', (e) => {
+                        if (e.key === 'Backspace' && !e.target.value) {
+                            if (index > 0) {
+                                inputs[index - 1].focus();
+                            }
+                        }
+                        if (e.key === 'e') {
+                            e.preventDefault();
+                        }
+                    });
+                });
             });
         </script>
 </x-frontend-layout>

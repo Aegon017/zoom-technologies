@@ -21,12 +21,15 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\ReplicateAction;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class CourseResource extends Resource
@@ -48,7 +51,7 @@ class CourseResource extends Resource
                 Group::make()->schema([
                     Section::make('Course Details')->schema([
                         TextInput::make('name')->live(onBlur: true)
-                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
+                            ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
                         TextInput::make('slug')->prefix('training/india/')->required(),
                         RichEditor::make('short_description')->columnSpanFull()->required(),
                         TextInput::make('duration')->required(),
@@ -92,12 +95,99 @@ class CourseResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 DeleteAction::make(),
+                // ReplicateAction::make()
+                //     ->record(function (Model $record) {
+                //         return $record->replicate();
+                //     }),
+
+
+                Tables\Actions\Action::make('replicate')
+                    ->label('Duplicate')
+                    ->icon('heroicon-o-document-duplicate')
+                    ->action(function (Course $record) {
+                        $newCourse = self::replicateCourse($record);
+                    })
+                    ->requiresConfirmation(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function replicateCourse(Course $course)
+    {
+        $baseName = 'Copy of ' . $course->name;
+        $uniqueName = self::generateUniqueName($baseName);
+        $uniqueSlug = self::generateUniqueSlug(Str::slug($uniqueName));
+        $newCourse = $course->replicate([
+            'id',
+            'created_at',
+            'updated_at'
+        ]);
+        $newCourse->name = $uniqueName;
+        $newCourse->slug = $uniqueSlug;
+        $newCourse->save();
+        self::replicateRelatedModels($course, $newCourse);
+        Notification::make()
+            ->title('Course Duplicated')
+            ->body("'{$newCourse->name}' has been created")
+            ->success()
+            ->send();
+
+        return $newCourse;
+    }
+    protected static function generateUniqueName(string $baseName): string
+    {
+        $newName = $baseName;
+        $counter = 1;
+
+        while (Course::where('name', $newName)->exists()) {
+            $newName = $baseName . ' (' . $counter . ')';
+            $counter++;
+        }
+
+        return $newName;
+    }
+    protected static function generateUniqueSlug(string $baseSlug): string
+    {
+        $newSlug = $baseSlug;
+        $counter = 1;
+
+        while (Course::where('slug', $newSlug)->exists()) {
+            $newSlug = $baseSlug . '-' . $counter;
+            $counter++;
+        }
+
+        return $newSlug;
+    }
+    protected static function replicateRelatedModels(Course $originalCourse, Course $newCourse)
+    {
+        $relationsToReplicate = [
+            'metaDetail',
+            'overview',
+            'curriculum',
+            'schedule',
+            'guideline',
+            'studyMaterial',
+            'faq'
+        ];
+
+        foreach ($relationsToReplicate as $relation) {
+            if (method_exists($originalCourse, $relation) && $originalCourse->$relation()->exists()) {
+                $originalCourse->$relation->each(function ($relatedModel) use ($newCourse, $relation) {
+                    $newRelatedModel = $relatedModel->replicate([
+                        'id',
+                        'created_at',
+                        'updated_at',
+                        'course_id'
+                    ]);
+                    $newRelatedModel->course_id = $newCourse->id;
+                    $newRelatedModel->save();
+                });
+            }
+        }
     }
 
     public static function getRelations(): array
