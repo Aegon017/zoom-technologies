@@ -51,7 +51,7 @@ class CourseResource extends Resource
                 Group::make()->schema([
                     Section::make('Course Details')->schema([
                         TextInput::make('name')->live(onBlur: true)
-                            ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
+                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
                         TextInput::make('slug')->prefix('training/india/')->required(),
                         RichEditor::make('short_description')->columnSpanFull()->required(),
                         TextInput::make('duration')->required(),
@@ -100,7 +100,6 @@ class CourseResource extends Resource
                 //         return $record->replicate();
                 //     }),
 
-
                 Tables\Actions\Action::make('replicate')
                     ->label('Duplicate')
                     ->icon('heroicon-o-document-duplicate')
@@ -118,13 +117,13 @@ class CourseResource extends Resource
 
     public static function replicateCourse(Course $course)
     {
-        $baseName = 'Copy of ' . $course->name;
+        $baseName = 'Copy of '.$course->name;
         $uniqueName = self::generateUniqueName($baseName);
         $uniqueSlug = self::generateUniqueSlug(Str::slug($uniqueName));
         $newCourse = $course->replicate([
             'id',
             'created_at',
-            'updated_at'
+            'updated_at',
         ]);
         $newCourse->name = $uniqueName;
         $newCourse->slug = $uniqueSlug;
@@ -138,30 +137,33 @@ class CourseResource extends Resource
 
         return $newCourse;
     }
+
     protected static function generateUniqueName(string $baseName): string
     {
         $newName = $baseName;
         $counter = 1;
 
         while (Course::where('name', $newName)->exists()) {
-            $newName = $baseName . ' (' . $counter . ')';
+            $newName = $baseName.' ('.$counter.')';
             $counter++;
         }
 
         return $newName;
     }
+
     protected static function generateUniqueSlug(string $baseSlug): string
     {
         $newSlug = $baseSlug;
         $counter = 1;
 
         while (Course::where('slug', $newSlug)->exists()) {
-            $newSlug = $baseSlug . '-' . $counter;
+            $newSlug = $baseSlug.'-'.$counter;
             $counter++;
         }
 
         return $newSlug;
     }
+
     protected static function replicateRelatedModels(Course $originalCourse, Course $newCourse)
     {
         $relationsToReplicate = [
@@ -171,17 +173,17 @@ class CourseResource extends Resource
             'schedule',
             'guideline',
             'studyMaterial',
-            'faq'
+            'faq',
         ];
 
         foreach ($relationsToReplicate as $relation) {
             if (method_exists($originalCourse, $relation) && $originalCourse->$relation()->exists()) {
-                $originalCourse->$relation->each(function ($relatedModel) use ($newCourse, $relation) {
+                $originalCourse->$relation->each(function ($relatedModel) use ($newCourse) {
                     $newRelatedModel = $relatedModel->replicate([
                         'id',
                         'created_at',
                         'updated_at',
-                        'course_id'
+                        'course_id',
                     ]);
                     $newRelatedModel->course_id = $newCourse->id;
                     $newRelatedModel->save();

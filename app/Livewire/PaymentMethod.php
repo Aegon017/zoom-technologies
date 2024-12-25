@@ -6,8 +6,6 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-use function Flasher\Prime\flash;
-
 class PaymentMethod extends Component
 {
     public $name;

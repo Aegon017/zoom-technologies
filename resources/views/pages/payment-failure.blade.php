@@ -4,7 +4,7 @@
         $pageTitle = 'Payment Failure';
     @endphp
     <x-page-breadcrumb :pageBackground="$pageBackground" :pageTitle="$pageTitle" />
-    <section class="response-section course-page-course-section py-5">
+    <section class="response-section course-page-course-section py-5 mb-5">
         <div class="container">
             <div class="response-card">
                 <div class="card alert-danger">
