@@ -3,22 +3,20 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\QRCodeResource\Pages;
-use App\Filament\Resources\QRCodeResource\RelationManagers;
 use App\Models\QRCode;
-use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class QRCodeResource extends Resource
 {
     protected static ?string $model = QRCode::class;
+
     protected static ?string $navigationLabel = 'QR Codes';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
