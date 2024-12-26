@@ -101,10 +101,18 @@ class FrontendController extends Controller
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Upcoming schedule')->first();
         $latestSchedules = Course::with('schedule')->get()->map(function ($course) {
-            $latestSchedule = $course->schedule->firstWhere('start_date', '>=', Carbon::today());
+            $latestSchedule = $course->schedule
+                ->filter(function ($schedule) {
+                    return Carbon::parse($schedule->start_date) >= today();
+                })
+                ->sortBy('start_date')
+                ->first();
 
-            return ['item' => $course, 'latest_schedule' => $latestSchedule];
-        });
+            return $latestSchedule ? [
+                'item' => $course,
+                'latest_schedule' => $latestSchedule
+            ] : null;
+        })->filter()->values();
 
         $packages = Package::all();
         $latestPackageSchedules = collect($packages)->map(function ($package) {
@@ -112,7 +120,7 @@ class FrontendController extends Controller
 
             $latestSchedule = $packageSchedules->flatMap(function ($course) {
                 return optional($course->schedule)->filter(function ($schedule) {
-                    return $schedule->start_date >= Carbon::today();
+                    return Carbon::parse($schedule->start_date) >= today();
                 });
             })->sortByDesc('start_date')->first();
 
@@ -208,7 +216,7 @@ class FrontendController extends Controller
 
     public function checkout(Request $request)
     {
-        $scheduleIDs = array_values(array_filter($request->all(), fn ($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
+        $scheduleIDs = array_values(array_filter($request->all(), fn($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
         Session::put('scheduleIDs', $scheduleIDs);
         $thankyou = Thankyou::first();
         $bankTransferDetails = BankTransfer::first();

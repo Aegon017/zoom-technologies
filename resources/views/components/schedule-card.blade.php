@@ -5,6 +5,7 @@
     $timeDiff = (new DateTime($schedule->time))->diff(new DateTime($schedule->end_time));
     $hoursPerDay = $timeDiff->h + $timeDiff->i / 60;
     $daysOff = implode(', ', $schedule->day_off);
+    $timeZone = $schedule->timezone;
 @endphp
 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb-3">
     <div class="course-batch">
@@ -15,7 +16,7 @@
         <div class="course-batch-time">
             <i class="fa fa-clock"></i>
             <p>{{ $startTime }} to {{ $endTime }}</p>
-            <p>(IST - GMT +5.30)</p>
+            <p>({{ $timeZone->abbreviation }} - {{ $timeZone->offset }})</p>
         </div>
         <div class="course-batch-duration">
             <i class="fa fa-calendar"></i>
