@@ -21,9 +21,9 @@
                                                 <option value="{{ $schedule->id }}">
                                                     {{ \Carbon\Carbon::parse($schedule->start_date)->format('jS M Y') }}
                                                     -
-                                                    {{ \Carbon\Carbon::parse($schedule->time)->format('g:i A') }} (
-                                                    {{ $schedule->timezone?->offset }} -
-                                                    {{ $schedule->timezone?->abbreviation }} )
+                                                    {{ \Carbon\Carbon::parse($schedule->time)->format('g:i A') }}
+                                                    ({{ $schedule->timezone?->abbreviation }} -
+                                                    {{ $schedule->timezone?->offset }})
                                                     -
                                                     {{ $schedule->training_mode }}
                                                 </option>
