@@ -1,10 +1,11 @@
 <div>
     <h4 class="mb-3 text-dark">Verify Your Email</h4>
     <div x-data="{ otpInput: false, addressBtnContinue: false }" x-on:verification-success.window="addressBtnContinue=true">
-        <button class="btn btn-dark" x-on:click="$dispatch('send-otp'); otpInput = !otpInput" x-show="! otpInput">Send
+        <button class="btn btn-dark" x-on:click="$dispatch('send-otp'); otpInput = !otpInput" x-transition.duration.300ms
+            x-show="! otpInput">Send
             Verification
             Mail</button>
-        <div x-show="otpInput">
+        <div x-transition.duration.300ms x-show="otpInput">
             <p class="text-muted">Please enter the OTP that was sent to <a href=""
                     class="text-underline">{{ Auth::user()?->email }}</a></p>
             <form wire:submit="verifyOTP">
@@ -18,7 +19,7 @@
                 </div>
                 <div class="d-flex justify-content-between ml-2 mt-4">
                     <button wire:click.prevent="verifyOTP" class="btn btn-dark">Verify</button>
-                    <button class="btn btn-orange" x-show="addressBtnContinue"
+                    <button class="btn btn-orange" x-transition.duration.300ms x-show="addressBtnContinue"
                         x-on:click.prevent="otpInput=false; verification=false; billingAddress=true; $dispatch('check-address')">Continue</button>
                 </div>
             </form>

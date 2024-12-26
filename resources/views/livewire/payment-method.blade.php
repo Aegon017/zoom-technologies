@@ -36,9 +36,9 @@
             </div>
         @endguest
     </div>
-    <button class="btn btn-dark" wire:click.prevent="checkAuth" x-on:click="$dispatch('check-address')" x-transition
-        x-show="button">Continue</button>
-    <div x-transition x-show="bankTransfer" class="bank-details-container">
+    <button class="btn btn-dark" wire:click.prevent="checkAuth" x-on:click="$dispatch('check-address')"
+        x-transition.duration.300ms.opacity x-show="button">Continue</button>
+    <div x-transition.duration.300ms.opacity x-show="bankTransfer" class="bank-details-container">
         <h5 class="mb-3">Bank Transfer Details</h5>
         <div class="bank-details">
             <dl class="row">
@@ -76,7 +76,7 @@
             </div>
         </div>
     </div>
-    <div x-transition x-show="qrCode" class="qr-code-container">
+    <div x-transition.duration.300ms.opacity x-show="qrCode" class="qr-code-container">
         <h5 class="mb-3">QR Code</h5>
         <div class="text-center">
             <img src="{{ asset(Storage::url($qrCode->image)) }}" alt="Payment QR Code" class="img-fluid" loading="lazy">

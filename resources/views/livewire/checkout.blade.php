@@ -297,7 +297,7 @@
                         x-on:registration-success.window="signIn=false; paymentMethod = false; verification=true"
                         x-on:show-address-form.window="billingAddress = true; verification = false; signIn = false; paymentMethod = false"
                         x-on:show-otp-verification.window="verification = true; signIn = false; paymentMethod = false">
-                        <div class="step-content" id="content-2" x-show="signIn">
+                        <div class="step-content" id="content-2" x-transition.duration.300ms.opacity x-show="signIn">
                             <h4 class="mb-3 text-dark">Sign In / Sign Up</h4>
                             <form action="{{ route('checkout.course') }}">
                                 <input type="hidden" name="thumbnail" value="{{ $request->thumbnail }}">
@@ -323,14 +323,17 @@
                             <input type="hidden" name="name" value="{{ $request->name }}">
                             <input type="hidden" name="payable_price" value="{{ $request->payablePrice }}">
                             <input type="hidden" name="product_type" value="{{ $request->product_type }}">
-                            <div class="step-content" id="content-1" x-show="paymentMethod">
+                            <div class="step-content" id="content-1" x-transition.duration.300ms.opacity
+                                x-show="paymentMethod">
                                 <livewire:payment-method :$bankTransferDetails :$qrCode />
                             </div>
                         </form>
-                        <div class="step-content" id="content-3" x-show="verification">
+                        <div class="step-content" id="content-3" x-transition.duration.300ms.opacity
+                            x-show="verification">
                             <livewire:otp-verification />
                         </div>
-                        <div class="step-content" id="content-4" x-show="billingAddress">
+                        <div class="step-content" id="content-4" x-transition.duration.300ms.opacity
+                            x-show="billingAddress">
                             <livewire:billing-address />
                         </div>
                     </div>
