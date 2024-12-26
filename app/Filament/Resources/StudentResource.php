@@ -4,7 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers\OrderScheduleRelationManager;
+use App\Models\Course;
 use App\Models\Order;
+use App\Models\Schedule;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -12,6 +14,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class StudentResource extends Resource
 {
@@ -53,15 +56,49 @@ class StudentResource extends Resource
                     }),
             ])
             ->filters([
-                SelectFilter::make('Course')
-                    ->relationship('course', 'name')
+                SelectFilter::make('course_id')
+                    ->label('Single course')
+                    ->options(
+                        Course::whereHas('order')->pluck('name', 'id')
+                    )
+                    ->searchable()
                     ->preload()
-                    ->searchable(),
-                SelectFilter::make('Batch date')
-                    ->relationship('schedule', 'start_date')
+                    ->query(function (Builder $query, $data) {
+                        $query->when($data['value'] ?? null, function ($query, $value) {
+                            $query->where(function ($query) use ($value) {
+                                $query->where('course_id', $value)
+                                    ->orWhereHas('package', function ($query) use ($value) {
+                                        $query->whereJsonContains('courses', $value);
+                                    });
+                            });
+                        });
+                    })
+                    ->columnSpanFull(),
+                SelectFilter::make('training_mode')
+                    ->label('Training mode')
+                    ->options(
+                        Schedule::distinct()->pluck('training_mode', 'training_mode')->toArray()
+                    )
+                    ->searchable()
                     ->preload()
-                    ->searchable(),
-            ], layout: FiltersLayout::AboveContent)->filtersFormColumns(2)
+                    ->query(fn(Builder $query, $data) => $query->when($data['value'] ?? null, fn(Builder $query, $value) => $query->whereHas('schedule', fn($query) => $query->where('training_mode', $value)))),
+                SelectFilter::make('start_date')
+                    ->label('Batch Date')
+                    ->options(
+                        Schedule::distinct()->pluck('start_date', 'start_date')->toArray()
+                    )
+                    ->searchable()
+                    ->query(fn(Builder $query, $data) => $query->when($data['value'] ?? null, fn(Builder $query, $value) => $query->whereHas('schedule', fn($query) => $query->where('start_date', $value))))
+                    ->preload(),
+                SelectFilter::make('batch_time')
+                    ->label('Batch Time')
+                    ->options(
+                        Schedule::distinct()->pluck('time', 'time')->toArray()
+                    )
+                    ->searchable()
+                    ->query(fn(Builder $query, $data) => $query->when($data['value'] ?? null, fn(Builder $query, $value) => $query->whereHas('schedule', fn($query) => $query->where('time', $value))))
+                    ->preload(),
+            ], layout: FiltersLayout::AboveContentCollapsible)->filtersFormColumns(3)
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])

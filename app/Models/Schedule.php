@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Events\MeetingCredentialsUpdatedEvent;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\BelongsToRelationship;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -69,12 +70,12 @@ class Schedule extends Model
 
     public function getFormattedScheduleAttribute()
     {
-        return $this->start_date.', '.$this->time;
+        return $this->start_date . ', ' . $this->time;
     }
 
     public function getFormattedPackageScheduleAttribute()
     {
-        return $this->course->name.' - '.$this->start_date.', '.$this->time;
+        return $this->course->name . ' - ' . $this->start_date . ', ' . $this->time;
     }
 
     public function getStartDateAttribute($value)

@@ -7,7 +7,7 @@
                     <div class="zt-popular-course-img-text">
                         <div class="zt-popular-course-img text-center">
                             <a href="{{ isset($item->slug) ? route('render.course', $item->slug) : '#' }}">
-                                <img src="{{ asset(Storage::url($item->image)) }}" alt="{{ $item->name }}">
+                                <img src="{{ asset(Storage::url($item->thumbnail)) }}" alt="{{ $item->thumbnail_alt }}">
                             </a>
                         </div>
                         <div class="zt-popular-course-text">

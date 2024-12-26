@@ -2,7 +2,8 @@
     <div class="course-widget-wrap">
         <div class="cd-video-widget position-relative">
             <img src="{{ asset(Storage::url($product->image)) }}" alt="{{ $product->image_alt }}">
-            <a class="video_box text-center" href="https://youtu.be/naLqv5fj3T0"><i class="fas fa-play"></i></a>
+            <a class="video_box text-center" data-fancybox data-type="iframe" href="{{ $product->video_link }}"><i
+                    class="fas fa-play"></i></a>
             <span class="play-view-text d-block color-white"><i class="fas-fa-eye"></i> Preview this course</span>
         </div>
     </div>

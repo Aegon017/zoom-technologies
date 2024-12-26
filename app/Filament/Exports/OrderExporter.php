@@ -25,6 +25,7 @@ class OrderExporter extends Exporter
             ExportColumn::make('payment.description')->label('Payment description')->enabledByDefault(false),
             ExportColumn::make('Payment.status')->label('Payment status')->enabledByDefault(false),
             ExportColumn::make('course.name')->label('Course name')->enabledByDefault(false),
+            ExportColumn::make('package.name')->label('Package name')->enabledByDefault(false),
             ExportColumn::make('schedule.duration')->label('Duration')->enabledByDefault(false),
             ExportColumn::make('schedule.duration_type')->label('Duration type')->enabledByDefault(false),
             ExportColumn::make('schedule.start_date')->label('Batch date')->enabledByDefault(false),
@@ -39,10 +40,10 @@ class OrderExporter extends Exporter
 
     public static function getCompletedNotificationBody(Export $export): string
     {
-        $body = 'Your order export has completed and '.number_format($export->successful_rows).' '.str('row')->plural($export->successful_rows).' exported.';
+        $body = 'Your order export has completed and ' . number_format($export->successful_rows) . ' ' . str('row')->plural($export->successful_rows) . ' exported.';
 
         if ($failedRowsCount = $export->getFailedRowsCount()) {
-            $body .= ' '.number_format($failedRowsCount).' '.str('row')->plural($failedRowsCount).' failed to export.';
+            $body .= ' ' . number_format($failedRowsCount) . ' ' . str('row')->plural($failedRowsCount) . ' failed to export.';
         }
 
         return $body;

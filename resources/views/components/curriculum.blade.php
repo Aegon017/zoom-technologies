@@ -3,7 +3,7 @@
         <h3>{{ $course->name }}</h3>
         <div class="cd-curriculam-time-lesson">
             <span>
-                <a class="video_box text-center" href="{{ $course->video_link }}">
+                <a class="video_box text-center" data-fancybox data-type="iframe" href="{{ $course->video_link }}">
                     <i class="fas fa-play"></i>
                 </a>
             </span>
