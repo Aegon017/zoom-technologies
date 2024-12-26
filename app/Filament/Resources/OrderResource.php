@@ -6,6 +6,7 @@ use App\Filament\Exports\OrderExporter;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Models\Course;
 use App\Models\Order;
+use App\Models\Package;
 use App\Models\Schedule;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
@@ -142,11 +143,14 @@ class OrderResource extends Resource
                     }),
             ])
             ->filters([
-                SelectFilter::make('package.name')
-                    ->label('Package course')
-                    ->relationship('package', 'name')
+                SelectFilter::make('package_id')
+                    ->label('Package Course')
+                    ->options(
+                        Package::whereHas('order')->pluck('name', 'id')
+                    )
                     ->searchable()
-                    ->preload()->columnSpan(2),
+                    ->preload()
+                    ->columnSpan(2),
                 SelectFilter::make('course_id')
                     ->label('Single course')
                     ->options(

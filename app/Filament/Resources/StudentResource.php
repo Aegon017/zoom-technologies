@@ -2,14 +2,17 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\OrderExporter;
 use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers\OrderScheduleRelationManager;
 use App\Models\Course;
 use App\Models\Order;
+use App\Models\Package;
 use App\Models\Schedule;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
@@ -44,9 +47,12 @@ class StudentResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->headerActions([
+                ExportAction::make()->exporter(OrderExporter::class),
+            ])
             ->columns([
-                TextColumn::make('user.name')->searchable(),
-                TextColumn::make('user.email')->searchable(),
+                TextColumn::make('user.name')->label('Username')->searchable(),
+                TextColumn::make('user.email')->label('User Email')->searchable(),
                 TextColumn::make('combined')
                     ->label('Course and Package Name')
                     ->getStateUsing(function ($record) {
@@ -56,6 +62,14 @@ class StudentResource extends Resource
                     }),
             ])
             ->filters([
+                SelectFilter::make('package_id')
+                    ->label('Package Course')
+                    ->options(
+                        Package::whereHas('order')->pluck('name', 'id')
+                    )
+                    ->searchable()
+                    ->preload()
+                    ->columnSpan(2),
                 SelectFilter::make('course_id')
                     ->label('Single course')
                     ->options(
@@ -73,7 +87,7 @@ class StudentResource extends Resource
                             });
                         });
                     })
-                    ->columnSpanFull(),
+                    ->columnSpan(2),
                 SelectFilter::make('training_mode')
                     ->label('Training mode')
                     ->options(
@@ -89,7 +103,7 @@ class StudentResource extends Resource
                     )
                     ->searchable()
                     ->query(fn(Builder $query, $data) => $query->when($data['value'] ?? null, fn(Builder $query, $value) => $query->whereHas('schedule', fn($query) => $query->where('start_date', $value))))
-                    ->preload(),
+                    ->columnSpan(2),
                 SelectFilter::make('batch_time')
                     ->label('Batch Time')
                     ->options(
@@ -98,7 +112,7 @@ class StudentResource extends Resource
                     ->searchable()
                     ->query(fn(Builder $query, $data) => $query->when($data['value'] ?? null, fn(Builder $query, $value) => $query->whereHas('schedule', fn($query) => $query->where('time', $value))))
                     ->preload(),
-            ], layout: FiltersLayout::AboveContentCollapsible)->filtersFormColumns(3)
+            ], layout: FiltersLayout::AboveContentCollapsible)->filtersFormColumns(4)
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
