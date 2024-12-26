@@ -18,7 +18,6 @@ use App\Models\Order;
 use App\Models\Package;
 use App\Models\PageMetaDetails;
 use App\Models\PageSchema;
-use App\Models\PaymentGateway;
 use App\Models\PromoSection;
 use App\Models\QRCode;
 use App\Models\Slider;
@@ -92,9 +91,8 @@ class FrontendController extends Controller
         $packageCourses = optional($package)->courses ? Course::findMany($package->courses) : [$course];
         $pageSchema = PageSchema::where('page_name', $product->name)->first();
         $metaDetail = $product->metaDetail;
-        $paymentGateway = PaymentGateway::first();
 
-        return view('pages.course', compact('product', 'packageCourses', 'pageSchema', 'prices', 'metaDetail', 'paymentGateway'));
+        return view('pages.course', compact('product', 'packageCourses', 'pageSchema', 'prices', 'metaDetail'));
     }
 
     public function renderUpcomingBatches()

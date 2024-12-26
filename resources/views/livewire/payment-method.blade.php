@@ -2,38 +2,48 @@
     <h4 class="mb-3 text-dark">Payment Method</h4>
     <p class="text-muted">Please select your payment method</p>
     <div class="py-3 justify-content-center">
-        <div class="form-check" x-on:click="button = true; bankTransfer = false; qrCode = false">
-            <input class="form-check-input" type="radio" name="payment_method" value="payu" id="payu" checked>
-            <label class="form-check-label" for="payu">
-                PayU
-            </label>
-        </div>
-        <div class="form-check" x-on:click="button = true; bankTransfer = false; qrCode = false">
-            <input class="form-check-input" type="radio" name="payment_method" value="paypal" id="paypal">
-            <label class="form-check-label" for="paypal">
-                PayPal
-            </label>
-        </div>
-        <div class="form-check" x-on:click="button = true; bankTransfer = false; qrCode = false">
-            <input class="form-check-input" type="radio" name="payment_method" value="stripe" id="stripe">
-            <label class="form-check-label" for="stripe">
-                Stripe
-            </label>
-        </div>
+        @if (in_array('PayU', $paymentGateways))
+            <div class="form-check" x-on:click="button = true; bankTransfer = false; qrCode = false">
+                <input class="form-check-input" type="radio" name="payment_method" value="payu" id="payu" checked>
+                <label class="form-check-label" for="payu">
+                    PayU
+                </label>
+            </div>
+        @endif
+        @if (in_array('PayPal', $paymentGateways))
+            <div class="form-check" x-on:click="button = true; bankTransfer = false; qrCode = false">
+                <input class="form-check-input" type="radio" name="payment_method" value="paypal" id="paypal">
+                <label class="form-check-label" for="paypal">
+                    PayPal
+                </label>
+            </div>
+        @endif
+        @if (in_array('Stripe', $paymentGateways))
+            <div class="form-check" x-on:click="button = true; bankTransfer = false; qrCode = false">
+                <input class="form-check-input" type="radio" name="payment_method" value="stripe" id="stripe">
+                <label class="form-check-label" for="stripe">
+                    Stripe
+                </label>
+            </div>
+        @endif
         @guest
-            <div class="form-check" x-on:click="button = false; bankTransfer = true; qrCode = false">
-                <input class="form-check-input" type="radio" name="payment_method" value="bank transfer"
-                    id="bank_transfer">
-                <label class="form-check-label" for="bank_transfer">
-                    Bank Transfer
-                </label>
-            </div>
-            <div class="form-check" x-on:click="button=false; qrCode = true; bankTransfer = false">
-                <input class="form-check-input" type="radio" name="payment_method" value="QR code" id="qr_code">
-                <label class="form-check-label" for="qr_code">
-                    QR Code
-                </label>
-            </div>
+            @if (in_array('Bank Transfer', $paymentGateways))
+                <div class="form-check" x-on:click="button = false; bankTransfer = true; qrCode = false">
+                    <input class="form-check-input" type="radio" name="payment_method" value="bank transfer"
+                        id="bank_transfer">
+                    <label class="form-check-label" for="bank_transfer">
+                        Bank Transfer
+                    </label>
+                </div>
+            @endif
+            @if (in_array('QR Code', $paymentGateways))
+                <div class="form-check" x-on:click="button=false; qrCode = true; bankTransfer = false">
+                    <input class="form-check-input" type="radio" name="payment_method" value="QR code" id="qr_code">
+                    <label class="form-check-label" for="qr_code">
+                        QR Code
+                    </label>
+                </div>
+            @endif
         @endguest
     </div>
     <button class="btn btn-dark" wire:click.prevent="checkAuth" x-on:click="$dispatch('check-address')"

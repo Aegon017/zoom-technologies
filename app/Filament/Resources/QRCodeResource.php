@@ -15,6 +15,8 @@ class QRCodeResource extends Resource
 {
     protected static ?string $model = QRCode::class;
 
+    protected static ?string $navigationGroup = 'Payment Settings';
+
     protected static ?string $navigationLabel = 'QR Codes';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';

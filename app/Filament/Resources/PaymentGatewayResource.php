@@ -27,6 +27,8 @@ class PaymentGatewayResource extends Resource
                     'PayU' => 'PayU',
                     'Stripe' => 'Stripe',
                     'PayPal' => 'PayPal',
+                    'Bank Transfer' => 'Bank Transfer',
+                    'QR Code' => 'QR Code',
                 ])->multiple()->required(),
             ]);
     }

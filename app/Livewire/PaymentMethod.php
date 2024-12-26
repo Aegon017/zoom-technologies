@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\PaymentGateway;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -17,6 +18,13 @@ class PaymentMethod extends Component
     public $bankTransferDetails;
 
     public $qrCode;
+
+    public $paymentGateways;
+
+    public function mount()
+    {
+        $this->paymentGateways = PaymentGateway::first()->gateway;
+    }
 
     #[On('check-address')]
     public function checkAddress()

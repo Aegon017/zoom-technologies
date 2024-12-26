@@ -17,6 +17,8 @@ class BankTransferResource extends Resource
 {
     protected static ?string $model = BankTransfer::class;
 
+    protected static ?string $navigationGroup = 'Payment Settings';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
