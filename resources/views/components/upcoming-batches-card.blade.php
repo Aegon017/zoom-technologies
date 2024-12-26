@@ -2,6 +2,7 @@
     @php
         $item = $scheduleInfo['item'];
         $latest_schedule = $scheduleInfo['latest_schedule'];
+        $timeZone = $scheduleInfo['latest_schedule']->timezone;
     @endphp
     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb-3">
         <div class="upcoming-batch-card">
@@ -23,7 +24,7 @@
                 <div class="batch-date">
                     <i class="fas fa-calendar"></i>
                     @if ($latest_schedule)
-                        {{ \Carbon\Carbon::parse($latest_schedule->start_date) }}
+                        {{ $latest_schedule->start_date }}
                     @else
                         No upcoming date
                     @endif
@@ -31,7 +32,7 @@
                 <div class="batch-time">
                     <i class="fas fa-clock"></i>
                     @if ($latest_schedule)
-                        {{ \Carbon\Carbon::parse($latest_schedule->time)->format('H:i') }} (IST - GMT +5.30)
+                        {{ $latest_schedule->time }} ({{ $timeZone->abbreviation }} - {{ $timeZone->offset }})
                     @else
                         No upcoming time
                     @endif
@@ -52,6 +53,7 @@
         @php
             $item = $scheduleInfo['package'];
             $latest_schedule = $scheduleInfo['latest_schedule'];
+            $timeZone = $scheduleInfo['latest_schedule']->timezone;
         @endphp
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb-3">
             <div class="upcoming-batch-card">
@@ -73,7 +75,7 @@
                     <div class="batch-date">
                         <i class="fas fa-calendar"></i>
                         @if ($latest_schedule)
-                            {{ \Carbon\Carbon::parse($latest_schedule->start_date) }}
+                            {{ $latest_schedule->start_date }}
                         @else
                             No upcoming date
                         @endif
@@ -81,7 +83,7 @@
                     <div class="batch-time">
                         <i class="fas fa-clock"></i>
                         @if ($latest_schedule)
-                            {{ \Carbon\Carbon::parse($latest_schedule->time)->format('H:i') }} (IST - GMT +5.30)
+                            {{ $latest_schedule->time }} ({{ $timeZone->abbreviation }} - {{ $timeZone->offset }})
                         @else
                             No upcoming time
                         @endif
