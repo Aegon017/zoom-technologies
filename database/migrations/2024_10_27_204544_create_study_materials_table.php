@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('image');
             $table->string('image_alt');
             $table->string('material_url')->nullable();
+            $table->string('material_pdf')->nullable();
             $table->string('subscription');
             $table->timestamps();
         });

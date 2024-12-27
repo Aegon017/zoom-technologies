@@ -22,6 +22,7 @@ class StudyMaterialRelationManager extends RelationManager
             ->schema([
                 TextInput::make('name')->required(),
                 TextInput::make('material_url'),
+                FileUpload::make('material_pdf')->acceptedFileTypes(['application/pdf'])->disk('public')->directory('ebooks/courses')->preserveFilenames()->columnSpanFull(),
                 Select::make('subscription')->options([
                     'Free' => 'Free',
                     'Paid' => 'Paid',

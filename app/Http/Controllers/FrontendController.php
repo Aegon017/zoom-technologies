@@ -189,7 +189,7 @@ class FrontendController extends Controller
     public function renderFreeEbooks()
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Study material')->first();
-        $materials = Course::with('studyMaterial')->get()->flatMap->studyMaterial;
+        $materials = Course::with('studyMaterial')->get()->flatMap->studyMaterial->where('subscription', 'Free');
         $pageSchema = PageSchema::where('page_name', 'Study material')->first();
 
         return view('pages.free-ebooks', compact('metaDetail', 'materials', 'pageSchema'));
