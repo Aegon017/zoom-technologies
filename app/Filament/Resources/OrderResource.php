@@ -117,7 +117,7 @@ class OrderResource extends Resource
     {
         return $table
             ->headerActions([
-                ExportAction::make()->exporter(OrderExporter::class),
+                ExportAction::make()->exporter(OrderExporter::class)
             ])
             ->columns([
                 TextColumn::make('#')->rowIndex(),
@@ -220,7 +220,8 @@ class OrderResource extends Resource
                     ->icon('heroicon-o-arrow-down-tray')
                     ->action(function ($record) {
                         return response()->download(public_path($record->invoice));
-                    }),
+                    })
+                    ->visible(fn($record) => !is_null($record->invoice)),
                 ViewAction::make(),
             ])
             ->bulkActions([

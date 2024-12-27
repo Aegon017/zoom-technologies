@@ -28,7 +28,7 @@ class AboutUsSectionResource extends Resource
     {
         return $form
             ->schema([
-                FileUpload::make('image')->columnSpanFull()->required(),
+                FileUpload::make('image')->disk('public')->directory('about-us')->preserveFilenames()->columnSpanFull()->required(),
                 TextInput::make('image_alt')->required(),
                 TextInput::make('video_url')->required(),
                 TextInput::make('title')->required(),
