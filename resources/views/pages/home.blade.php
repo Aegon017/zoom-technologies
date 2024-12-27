@@ -172,27 +172,20 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="about-page-about-img">
-                            <img src="{{ asset('frontend/assets/img/zoom-about.png') }}"
-                                alt="Zoom Group company about us promotional image">
-                            <a class="video_box text-center" href="https://www.youtube.com/watch?v=6EA-YrAbEzc&t=2s"><i
+                            <img src="{{ asset(Storage::url($aboutUsSection->image)) }}"
+                                alt="{{ $aboutUsSection->image_alt }}">
+                            <a class="video_box text-center" href="{{ $aboutUsSection->video_url }}"><i
                                     class="fas fa-play"></i></a>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="about-page-about-text">
                             <div class="zt-section-title  zt-headline zt-title-style-two position-relative">
-                                <span>ZOOM Technologies</span>
-                                <h2>ZOOM is a pioneering leader in Network and Security Solutions.</h2>
+                                <span>{{ $aboutUsSection->title }}</span>
+                                <h2>{{ $aboutUsSection->heading }}</h2>
                             </div>
                             <div class="about-page-about-text-wrap">
-                                For well over two decades, we have designed and built avant-garde secure networks for
-                                hundreds of clients. We were the first to set up an IPsec VPN in India, the first to set
-                                up
-                                a Linux based WAN (the largest network in India), the first to set up a 24 X 7 antivirus
-                                and
-                                malware support center in India, and of course the first to offer a comprehensive bundle
-                                of
-                                networking courses. The list goes on...
+                                {!! $aboutUsSection->content !!}
                             </div>
                         </div>
                         <div class="button-group">

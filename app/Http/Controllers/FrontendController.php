@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\CalculatePrice;
+use App\Models\AboutUsSection;
 use App\Models\BankTransfer;
 use App\Models\Brochure;
 use App\Models\CorporateTraining;
@@ -46,8 +47,9 @@ class FrontendController extends Controller
         $clients = CorporateTraining::all();
         $faqs = FaqsSection::all();
         $brochures = Brochure::all();
+        $aboutUsSection = AboutUsSection::first();
 
-        return view('pages.home', compact('metaDetail', 'pageSchema', 'sliders', 'promoSections', 'featureSection', 'featureCards', 'freeMaterials', 'testimonialSection', 'testimonials', 'clients', 'faqs', 'brochures'));
+        return view('pages.home', compact('metaDetail', 'pageSchema', 'sliders', 'promoSections', 'featureSection', 'featureCards', 'freeMaterials', 'testimonialSection', 'testimonials', 'clients', 'faqs', 'brochures', 'aboutUsSection'));
     }
 
     public function renderNewsList()
