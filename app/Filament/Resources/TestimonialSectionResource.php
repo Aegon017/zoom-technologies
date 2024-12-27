@@ -59,9 +59,7 @@ class TestimonialSectionResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            TestimonialRelationManager::class,
-        ];
+        return [];
     }
 
     public static function getPages(): array

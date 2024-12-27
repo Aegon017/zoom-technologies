@@ -136,7 +136,9 @@
                             <div id="zt-testimonial-slide" class="zt-testimonial-area owl-carousel">
                                 @foreach ($testimonials as $testimonial)
                                     <div class="zt-testimonial-item-wrap pera-content zt-headline">
-                                        <p>{!! $testimonial->content !!}</p>
+                                        <div class="testimonial-content">
+                                            {!! $testimonial->content !!}
+                                        </div>
                                         <div class="zt-testimonial-author">
                                             <div class="zt-testimonial-text">
                                                 <div class="zt-testimonial-rate ul-li">
@@ -164,7 +166,7 @@
     @endif
     <!-- End of Testimonial section -->
     <!-- About Section -->
-    <section id="about-page-about" class="about-page-about-section">
+    <section id="about" class="about-page-about-section">
         <div class="container">
             <div class="about-page-about-content">
                 <div class="row">

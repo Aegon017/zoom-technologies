@@ -12021,3 +12021,12 @@ select:visited {
   .text-balance{
     text-wrap: balance;
   }
+
+  .testimonial-content{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 6;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2em;
+  }

@@ -12,9 +12,4 @@ class TestimonialSection extends Model
         'heading',
         'image',
     ];
-
-    public function testimonial(): HasMany
-    {
-        return $this->hasMany(Testimonial::class);
-    }
 }

@@ -16,7 +16,7 @@
         <div class="course-batch-time">
             <i class="fa fa-clock"></i>
             <p>{{ $startTime }} to {{ $endTime }}</p>
-            <p>({{ $timeZone->abbreviation }} - {{ $timeZone->offset }})</p>
+            <p>({{ $timeZone?->abbreviation }} - {{ $timeZone?->offset }})</p>
         </div>
         <div class="course-batch-duration">
             <i class="fa fa-calendar"></i>

@@ -10,6 +10,7 @@ use App\Models\Course;
 use App\Models\FaqsSection;
 use App\Models\FeatureCard;
 use App\Models\FeatureSection;
+use App\Models\Franchisee;
 use App\Models\FreeMaterialSection;
 use App\Models\MemorableMoments;
 use App\Models\News;
@@ -37,11 +38,11 @@ class FrontendController extends Controller
         $metaDetail = PageMetaDetails::where('page_name', 'Home')->first();
         $sliders = Slider::where('status', 1)->get();
         $promoSections = PromoSection::all();
-        $featureSection = FeatureSection::find(1);
+        $featureSection = FeatureSection::first();
         $featureCards = FeatureCard::all();
         $freeMaterials = FreeMaterialSection::all();
-        $testimonialSection = TestimonialSection::find(1);
-        $testimonials = Testimonial::all();
+        $testimonialSection = TestimonialSection::first();
+        $testimonials = Testimonial::take(4)->get();
         $clients = CorporateTraining::all();
         $faqs = FaqsSection::all();
         $brochures = Brochure::all();
@@ -160,8 +161,9 @@ class FrontendController extends Controller
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Testimonials')->first();
         $pageSchema = PageSchema::where('page_name', 'Testimonials')->first();
+        $testimonials = Testimonial::all();
 
-        return view('pages.testimonials', compact('metaDetail', 'pageSchema'));
+        return view('pages.testimonials', compact('metaDetail', 'pageSchema', 'testimonials'));
     }
 
     public function renderMemorableMoments()
@@ -177,8 +179,9 @@ class FrontendController extends Controller
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Franchisee')->first();
         $pageSchema = PageSchema::where('page_name', 'Franchisee')->first();
+        $pageContent = Franchisee::first()->page_content;
 
-        return view('pages.franchisee', compact('metaDetail', 'pageSchema'));
+        return view('pages.franchisee', compact('metaDetail', 'pageSchema', 'pageContent'));
     }
 
     public function renderFreeEbooks()
@@ -214,7 +217,7 @@ class FrontendController extends Controller
 
     public function checkout(Request $request)
     {
-        $scheduleIDs = array_values(array_filter($request->all(), fn ($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
+        $scheduleIDs = array_values(array_filter($request->all(), fn($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
         Session::put('scheduleIDs', $scheduleIDs);
         $thankyou = Thankyou::first();
         $bankTransferDetails = BankTransfer::first();

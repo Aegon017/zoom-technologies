@@ -23,7 +23,7 @@ class PaymentMethod extends Component
 
     public function mount()
     {
-        $this->paymentGateways = PaymentGateway::first()->gateway;
+        $this->paymentGateways = PaymentGateway::first()?->gateway;
     }
 
     #[On('check-address')]
