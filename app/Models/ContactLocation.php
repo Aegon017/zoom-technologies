@@ -16,4 +16,9 @@ class ContactLocation extends Model
         'website',
         'map_iframe',
     ];
+
+    protected $casts = [
+        'mobile' => 'array',
+        'email' => 'array',
+    ];
 }

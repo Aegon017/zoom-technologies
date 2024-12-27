@@ -5,15 +5,13 @@
             <div class="map">
                 {!! $location->map_iframe !!}
             </div>
+            @php
+                $landlineNumbers = explode(',', $location->landline);
+            @endphp
             <div class="contact-info">
                 <h3 class="city">{{ $location->city }}</h3>
                 <p class="address">{{ $location->address }}</p>
                 <ul>
-                    @php
-                        $mobileNumbers = explode(',', $location->mobile);
-                        $landlineNumbers = explode(',', $location->landline);
-                    @endphp
-
                     @if (!empty($landlineNumbers[0]))
                         <li>
                             <i class="fas fa-phone-volume"></i>
@@ -31,20 +29,31 @@
                     <li>
                         <i class="fas fa-mobile"></i>
                         <span class="text">
-                            @foreach ($mobileNumbers as $number)
-                                <a href="tel:+91{{ $number }}">+91 - {{ $number }}</a>
+                            @foreach ($location->mobile as $mobile)
+                                @php
+                                    $number = App\Models\MobileNumber::find($mobile)->number;
+                                @endphp
+                                <a href="tel:{{ $number }}">{{ $number }}</a>
                                 @if (!$loop->last)
                                     <span class="divider">/</span>
                                 @endif
                             @endforeach
                         </span>
                     </li>
-
                     @if (!empty($location->email))
                         <li>
                             <i class="fas fa-envelope"></i>
-                            <span class="text"><a
-                                    href="mailto:{{ $location->email }}">{{ $location->email }}</a></span>
+                            <span class="text">
+                                @foreach ($location->email as $email)
+                                    @php
+                                        $mail = App\Models\Email::find($email)->email;
+                                    @endphp
+                                    <a href="mailto:{{ $mail }}">{{ $mail }}</a>
+                                    @if (!$loop->last)
+                                        <span class="divider">/</span>
+                                    @endif
+                                @endforeach
+                            </span>
                         </li>
                     @endif
 

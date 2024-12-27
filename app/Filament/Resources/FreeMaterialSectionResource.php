@@ -24,6 +24,7 @@ class FreeMaterialSectionResource extends Resource
         return $form
             ->schema([
                 TextInput::make('icon')
+                    ->helperText('Please use font awesome 5 icons')
                     ->required(),
                 TextInput::make('title')
                     ->required(),

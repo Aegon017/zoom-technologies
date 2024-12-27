@@ -17,7 +17,7 @@ class FeatureCardRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                TextInput::make('icon')->label('favicon_icon')->required(),
+                TextInput::make('icon')->helperText('Please use font awesome 5 icons')->required(),
                 TextInput::make('number'),
                 TextInput::make('title')->required(),
                 TextInput::make('content')->required(),

@@ -4,6 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ContactLocationResource\Pages;
 use App\Models\ContactLocation;
+use App\Models\Email;
+use App\Models\MobileNumber;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -31,8 +34,8 @@ class ContactLocationResource extends Resource
                 TextInput::make('address')->required(),
                 TextInput::make('map_iframe')->prefixIcon('heroicon-o-map')->required(),
                 TextInput::make('landline')->prefixIcon('heroicon-o-phone'),
-                TextInput::make('mobile')->prefixIcon('heroicon-o-device-phone-mobile')->required(),
-                TextInput::make('email')->prefixIcon('heroicon-o-envelope-open')->required(),
+                Select::make('mobile')->prefixIcon('heroicon-o-device-phone-mobile')->options(MobileNumber::pluck('number', 'id'))->multiple()->searchable()->required(),
+                Select::make('email')->prefixIcon('heroicon-o-envelope-open')->options(Email::pluck('email', 'id'))->multiple()->searchable()->required()->required(),
                 TextInput::make('website')->prefixIcon('heroicon-o-globe-alt')->required(),
             ]);
     }

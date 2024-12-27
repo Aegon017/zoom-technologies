@@ -70,7 +70,10 @@ class Schedule extends Model
 
     public function getFormattedScheduleAttribute()
     {
-        return $this->start_date . ', ' . $this->time;
+        $timezone = Timezone::find($this->timezone_id);
+        $offset = $timezone->offset;
+        $abbreviation = $timezone->abbreviation;
+        return $this->start_date . ', ' . $this->time . '( '. $abbreviation ;
     }
 
     public function getFormattedPackageScheduleAttribute()

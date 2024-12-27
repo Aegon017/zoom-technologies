@@ -23,7 +23,7 @@ class SocialLinkResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')->required(),
-                TextInput::make('icon')->label('Font Awesome icon')->required(),
+                TextInput::make('icon')->helperText('Please use font awesome 5 icons')->required(),
                 TextInput::make('redirect_url')->columnSpanFull(),
             ]);
     }
