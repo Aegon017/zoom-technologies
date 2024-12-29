@@ -75,7 +75,7 @@
                                 <div class="col-lg-3 col-md-6 mb-4">
                                     <div class="zt-feature-innerbox position-relative">
                                         <div class="zt-feature-icon">
-                                            {{ $featureCard->icon }}
+                                            {!! $featureCard->icon !!}
                                         </div>
                                         <div class="zt-feature-text zt-headline pera-content">
                                             @if ($featureCard->number)
