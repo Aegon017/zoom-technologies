@@ -14,6 +14,7 @@ use App\Models\Thankyou;
 use App\Services\PayUPayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Srmklive\PayPal\Services\PayPal;
 use Stripe\Checkout\Session as CheckoutSession;
@@ -47,7 +48,14 @@ class PaymentController extends Controller
                 $provider = new PayPal;
                 $provider->setApiCredentials(config('paypal'));
                 $paypalToken = $provider->getAccessToken();
-                $usd_rate = Currency::where('name', 'USD')->first()->value;
+                $currency = Currency::where('name', 'USD')->first();
+                if ($currency) {
+                    $usd_rate = $currency->value;
+                } else {
+                    $response = Http::get('https://api.coinbase.com/v2/exchange-rates?currency=USD');
+                    $data = $response->json();
+                    $usd_rate = $data['data']['rates']['INR'];
+                }
                 $usd = ceil($payablePrice / $usd_rate);
                 Session::put('usd', $usd);
                 $response = $provider->createOrder([
@@ -81,7 +89,9 @@ class PaymentController extends Controller
                 break;
             case 'stripe':
                 Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
-                $usd_rate = Currency::where('name', 'USD')->first()->value;
+                $response = Http::get('https://api.coinbase.com/v2/exchange-rates?currency=USD');
+                $data = $response->json();
+                $usd_rate = $data['data']['rates']['INR'];
                 $usd = ceil($payablePrice / $usd_rate);
                 Session::put('usd', $usd);
                 $checkoutSession = CheckoutSession::create([
@@ -99,7 +109,7 @@ class PaymentController extends Controller
                         ],
                     ],
                     'mode' => 'payment',
-                    'success_url' => route('payment.success').'?session_id={CHECKOUT_SESSION_ID}',
+                    'success_url' => route('payment.success') . '?session_id={CHECKOUT_SESSION_ID}',
                     'cancel_url' => route('payment.failure'),
                 ]);
 

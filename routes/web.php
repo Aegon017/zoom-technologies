@@ -3,6 +3,7 @@
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\PaymentController;
 use Filament\Actions\Exports\Http\Controllers\DownloadExport;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [FrontendController::class, 'renderHome'])->name('render.home');
@@ -46,7 +47,7 @@ Route::post('/payment/initiate', [PaymentController::class, 'initiate'])->name('
 
 Route::get('/storage-link', function () {
     $target = storage_path('app/public');
-    $link = $_SERVER['DOCUMENT_ROOT'].'/zoom-technologies/public/storage';
+    $link = $_SERVER['DOCUMENT_ROOT'] . '/zoom-technologies/public/storage';
     symlink($target, $link);
 });
 
