@@ -22,7 +22,7 @@ class FooterOfficeRelationManager extends RelationManager
             ->schema([
                 TextInput::make('name')->required(),
                 TextInput::make('location')->required(),
-                TextInput::make('location_url')->url(),
+                TextInput::make('location_url'),
                 Select::make('mobile')->options(MobileNumber::pluck('number', 'id'))->multiple()->searchable()->required(),
                 TextInput::make('landline'),
                 Select::make('email')->options(Email::pluck('email', 'id'))->multiple()->searchable()->required()->required(),
@@ -36,8 +36,8 @@ class FooterOfficeRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('name'),
                 TextColumn::make('location')->wrap(),
-                TextColumn::make('mobile')->getStateUsing(fn ($record) => is_array($record->mobile) ? implode(', ', MobileNumber::whereIn('id', $record->mobile)->pluck('number')->toArray()) : '')->wrap(),
-                TextColumn::make('email')->getStateUsing(fn ($record) => is_array($record->email) ? implode(', ', Email::whereIn('id', $record->email)->pluck('email')->toArray()) : '')->wrap(),
+                TextColumn::make('mobile')->getStateUsing(fn($record) => is_array($record->mobile) ? implode(', ', MobileNumber::whereIn('id', $record->mobile)->pluck('number')->toArray()) : '')->wrap(),
+                TextColumn::make('email')->getStateUsing(fn($record) => is_array($record->email) ? implode(', ', Email::whereIn('id', $record->email)->pluck('email')->toArray()) : '')->wrap(),
             ])
             ->filters([
                 //
