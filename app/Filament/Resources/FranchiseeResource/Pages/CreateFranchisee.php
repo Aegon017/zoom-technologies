@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\FranchiseeResource\Pages;
 
 use App\Filament\Resources\FranchiseeResource;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateFranchisee extends CreateRecord

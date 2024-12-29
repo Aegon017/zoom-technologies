@@ -95,14 +95,14 @@ class StudentResource extends Resource
                     )
                     ->searchable()
                     ->preload()
-                    ->query(fn(Builder $query, $data) => $query->when($data['value'] ?? null, fn(Builder $query, $value) => $query->whereHas('schedule', fn($query) => $query->where('training_mode', $value)))),
+                    ->query(fn (Builder $query, $data) => $query->when($data['value'] ?? null, fn (Builder $query, $value) => $query->whereHas('schedule', fn ($query) => $query->where('training_mode', $value)))),
                 SelectFilter::make('start_date')
                     ->label('Batch Date')
                     ->options(
                         Schedule::distinct()->pluck('start_date', 'start_date')->toArray()
                     )
                     ->searchable()
-                    ->query(fn(Builder $query, $data) => $query->when($data['value'] ?? null, fn(Builder $query, $value) => $query->whereHas('schedule', fn($query) => $query->where('start_date', $value))))
+                    ->query(fn (Builder $query, $data) => $query->when($data['value'] ?? null, fn (Builder $query, $value) => $query->whereHas('schedule', fn ($query) => $query->where('start_date', $value))))
                     ->columnSpan(2),
                 SelectFilter::make('batch_time')
                     ->label('Batch Time')
@@ -110,7 +110,7 @@ class StudentResource extends Resource
                         Schedule::distinct()->pluck('time', 'time')->toArray()
                     )
                     ->searchable()
-                    ->query(fn(Builder $query, $data) => $query->when($data['value'] ?? null, fn(Builder $query, $value) => $query->whereHas('schedule', fn($query) => $query->where('time', $value))))
+                    ->query(fn (Builder $query, $data) => $query->when($data['value'] ?? null, fn (Builder $query, $value) => $query->whereHas('schedule', fn ($query) => $query->where('time', $value))))
                     ->preload(),
             ], layout: FiltersLayout::AboveContentCollapsible)->filtersFormColumns(4)
             ->actions([
