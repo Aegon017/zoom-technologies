@@ -181,7 +181,7 @@ class FrontendController extends Controller
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Franchisee')->first();
         $pageSchema = PageSchema::where('page_name', 'Franchisee')->first();
-        $pageContent = Franchisee::first()->page_content;
+        $pageContent = Franchisee::first()?->page_content;
 
         return view('pages.franchisee', compact('metaDetail', 'pageSchema', 'pageContent'));
     }
@@ -219,7 +219,7 @@ class FrontendController extends Controller
 
     public function checkout(Request $request)
     {
-        $scheduleIDs = array_values(array_filter($request->all(), fn ($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
+        $scheduleIDs = array_values(array_filter($request->all(), fn($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
         Session::put('scheduleIDs', $scheduleIDs);
         $thankyou = Thankyou::first();
         $bankTransferDetails = BankTransfer::first();

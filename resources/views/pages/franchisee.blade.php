@@ -24,15 +24,17 @@
         $pageTitle = 'Franchisee';
     @endphp
     <x-page-breadcrumb :pageBackground="$pageBackground" :pageTitle="$pageTitle" />
-    <section class="zt-inner-page-wrapper e-books-page">
-        <div class="container">
-            <div class="content-wrapper bg-white d-block w-100">
-                @foreach ($pageContent as $data)
-                    <h3 class="zt-sub-title">{{ $data['heading'] }}</h3>
-                    <p>{!! $data['content'] !!}</p>
-                @endforeach
+    @if ($pageContent)
+        <section class="zt-inner-page-wrapper e-books-page">
+            <div class="container">
+                <div class="content-wrapper bg-white d-block w-100">
+                    @foreach ($pageContent as $data)
+                        <h3 class="zt-sub-title">{{ $data['heading'] }}</h3>
+                        <p>{!! $data['content'] !!}</p>
+                    @endforeach
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    @endif
     <x-related-courses />
 </x-frontend-layout>
