@@ -65,7 +65,7 @@
                                 <h3 class="widget-title">Quick Links</h3>
                                 <div class="clearfix">
                                     <ul>
-                                        <li><a href="{{ route('render.home') }}">About Us</a></li>
+                                        <li><a href="#about">About Us</a></li>
                                         <li><a href="{{ route('render.contact') }}">Contact Us</a></li>
                                         <li><a href="{{ route('render.course.list') }}">Courses</a></li>
                                         <li><a href="{{ route('render.free.ebooks') }}">Study Material</a></li>
