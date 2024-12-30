@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\StickyContact;
 use App\Models\User;
+use App\Models\StickyContact;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class StickyContactPolicy

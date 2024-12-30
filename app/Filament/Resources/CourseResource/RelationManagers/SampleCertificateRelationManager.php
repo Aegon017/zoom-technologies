@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\CourseResource\RelationManagers;
 
-use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -11,8 +10,6 @@ use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SampleCertificateRelationManager extends RelationManager
 {
@@ -23,7 +20,7 @@ class SampleCertificateRelationManager extends RelationManager
         return $form
             ->schema([
                 FileUpload::make('image')->disk('public')->directory('sampleCertificates')->preserveFilenames()->columnSpanFull()->required(),
-                TextInput::make('image_alt')->columnSpanFull()->required()
+                TextInput::make('image_alt')->columnSpanFull()->required(),
             ]);
     }
 
@@ -33,7 +30,7 @@ class SampleCertificateRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 ImageColumn::make('image'),
-                TextColumn::make('image_alt')
+                TextColumn::make('image_alt'),
             ])
             ->filters([
                 //

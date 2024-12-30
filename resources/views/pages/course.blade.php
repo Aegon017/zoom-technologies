@@ -64,7 +64,9 @@
                                         <x-guideline :$guideline />
                                     @endforeach
                                 </div>
-                                <x-sample-certificate :$certificate />
+                                @if ($certificate)
+                                    <x-sample-certificate :$certificate />
+                                @endif
                                 <div id="study-material" class="zt-course-feature-box study-material-wrapper">
                                     <div class="section-title">
                                         <h4>Study Material</h4>

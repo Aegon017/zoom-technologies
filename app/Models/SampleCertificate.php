@@ -10,7 +10,7 @@ class SampleCertificate extends Model
     protected $fillable = [
         'course_id',
         'image',
-        'image_alt'
+        'image_alt',
     ];
 
     public function course(): BelongsTo

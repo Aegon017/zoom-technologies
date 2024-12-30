@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Testimonial;
 use App\Models\User;
+use App\Models\Testimonial;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TestimonialPolicy

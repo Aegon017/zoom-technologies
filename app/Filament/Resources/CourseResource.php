@@ -26,11 +26,9 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\ReplicateAction;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class CourseResource extends Resource
@@ -52,7 +50,7 @@ class CourseResource extends Resource
                 Group::make()->schema([
                     Section::make('Course Details')->schema([
                         TextInput::make('name')->live(onBlur: true)
-                            ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
+                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
                         TextInput::make('slug')->prefix('training/india/')->required(),
                         RichEditor::make('short_description')->columnSpanFull()->required(),
                         TextInput::make('duration')->required(),
@@ -113,7 +111,7 @@ class CourseResource extends Resource
 
     public static function replicateCourse(Course $course)
     {
-        $baseName = 'Copy of ' . $course->name;
+        $baseName = 'Copy of '.$course->name;
         $uniqueName = self::generateUniqueName($baseName);
         $uniqueSlug = self::generateUniqueSlug(Str::slug($uniqueName));
         $newCourse = $course->replicate([
@@ -140,7 +138,7 @@ class CourseResource extends Resource
         $counter = 1;
 
         while (Course::where('name', $newName)->exists()) {
-            $newName = $baseName . ' (' . $counter . ')';
+            $newName = $baseName.' ('.$counter.')';
             $counter++;
         }
 
@@ -153,7 +151,7 @@ class CourseResource extends Resource
         $counter = 1;
 
         while (Course::where('slug', $newSlug)->exists()) {
-            $newSlug = $baseSlug . '-' . $counter;
+            $newSlug = $baseSlug.'-'.$counter;
             $counter++;
         }
 
