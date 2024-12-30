@@ -12,10 +12,10 @@
     @endif
     @if ($pageSchema != null)
         <x-slot:localSchema>
-            {!! $pageSchema->local_schema !!}
+            {!! $pageSchema?->local_schema !!}
         </x-slot>
         <x-slot:organizationSchema>
-            {!! $pageSchema->organization_schema !!}
+            {!! $pageSchema?->organization_schema !!}
         </x-slot>
     @endif
     <x-course-breadcrumb :$product />
