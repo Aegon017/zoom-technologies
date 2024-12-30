@@ -8,7 +8,8 @@
                 </a>
             </span>
             <span>
-                <a href="{{ $course->outline_pdf ? asset(Storage::url($course->outline_pdf)) : '#' }}" target="_blank">
+                <a href="{{ $course->outline_pdf ? asset(Storage::url($course->outline_pdf)) : '#' }}"
+                    target="{{ $course->outline_pdf ? '_blank' : '_self' }}">
                     <i class="fas fa-download"></i>
                 </a>
             </span>
