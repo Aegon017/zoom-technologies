@@ -20,7 +20,10 @@
         </div>
         <div class="course-batch-duration">
             <i class="fa fa-calendar"></i>
-            <p class="days">{{ $schedule->duration }} {{ $schedule->duration_type }}</p>
+            <p class="days">
+                {{ $schedule->duration }}
+                {{ Str::plural($schedule->duration_type, $schedule->duration) }}
+            </p>
             <p class="hrs">{{ $hoursPerDay }} Hrs/Day</p>
             <p class="m-0">{{ $daysOff }} off</p>
         </div>

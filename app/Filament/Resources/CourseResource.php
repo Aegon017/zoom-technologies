@@ -8,6 +8,7 @@ use App\Filament\Resources\CourseResource\RelationManagers\FaqRelationManager;
 use App\Filament\Resources\CourseResource\RelationManagers\GuidelineRelationManager;
 use App\Filament\Resources\CourseResource\RelationManagers\MetaDetailRelationManager;
 use App\Filament\Resources\CourseResource\RelationManagers\OverviewRelationManager;
+use App\Filament\Resources\CourseResource\RelationManagers\SampleCertificateRelationManager;
 use App\Filament\Resources\CourseResource\RelationManagers\ScheduleRelationManager;
 use App\Filament\Resources\CourseResource\RelationManagers\StudyMaterialRelationManager;
 use App\Filament\Resources\CourseResource\RelationManagers\SubCurriculumRelationManager;
@@ -51,7 +52,7 @@ class CourseResource extends Resource
                 Group::make()->schema([
                     Section::make('Course Details')->schema([
                         TextInput::make('name')->live(onBlur: true)
-                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
+                            ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
                         TextInput::make('slug')->prefix('training/india/')->required(),
                         RichEditor::make('short_description')->columnSpanFull()->required(),
                         TextInput::make('duration')->required(),
@@ -95,11 +96,6 @@ class CourseResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 DeleteAction::make(),
-                // ReplicateAction::make()
-                //     ->record(function (Model $record) {
-                //         return $record->replicate();
-                //     }),
-
                 Tables\Actions\Action::make('replicate')
                     ->label('Duplicate')
                     ->icon('heroicon-o-document-duplicate')
@@ -117,7 +113,7 @@ class CourseResource extends Resource
 
     public static function replicateCourse(Course $course)
     {
-        $baseName = 'Copy of '.$course->name;
+        $baseName = 'Copy of ' . $course->name;
         $uniqueName = self::generateUniqueName($baseName);
         $uniqueSlug = self::generateUniqueSlug(Str::slug($uniqueName));
         $newCourse = $course->replicate([
@@ -144,7 +140,7 @@ class CourseResource extends Resource
         $counter = 1;
 
         while (Course::where('name', $newName)->exists()) {
-            $newName = $baseName.' ('.$counter.')';
+            $newName = $baseName . ' (' . $counter . ')';
             $counter++;
         }
 
@@ -157,7 +153,7 @@ class CourseResource extends Resource
         $counter = 1;
 
         while (Course::where('slug', $newSlug)->exists()) {
-            $newSlug = $baseSlug.'-'.$counter;
+            $newSlug = $baseSlug . '-' . $counter;
             $counter++;
         }
 
@@ -172,6 +168,7 @@ class CourseResource extends Resource
             'curriculum',
             'schedule',
             'guideline',
+            'sampleCertificate',
             'studyMaterial',
             'faq',
         ];
@@ -201,6 +198,7 @@ class CourseResource extends Resource
             SubCurriculumRelationManager::class,
             ScheduleRelationManager::class,
             GuidelineRelationManager::class,
+            SampleCertificateRelationManager::class,
             StudyMaterialRelationManager::class,
             FaqRelationManager::class,
         ];

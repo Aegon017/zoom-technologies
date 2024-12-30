@@ -2,8 +2,7 @@
     <div class="course-widget-wrap">
         <div class="cd-video-widget position-relative">
             <img src="{{ asset(Storage::url($product->image)) }}" alt="{{ $product->image_alt }}">
-            <a class="video_box text-center" data-fancybox data-type="iframe" href="{{ $product->video_link }}"><i
-                    class="fas fa-play"></i></a>
+            <a class="video_box text-center" href="{{ $product->video_link }}"><i class="fas fa-play"></i></a>
             <span class="play-view-text d-block color-white"><i class="fas-fa-eye"></i> Preview this course</span>
         </div>
     </div>
@@ -14,7 +13,7 @@
                     <span class="cd-table-title float-left"><i class="fas fa-clock"></i>
                         Duration : </span>
                     <span class="cd-table-valur float-right">{{ $product->duration }}
-                        {{ $product->duration_type }}</span>
+                        {{ Str::plural($product->duration_type, $product->duration) }}</span>
                 </div>
                 <div class="course-table-item clearfix">
                     <span class="cd-table-title float-left"><i class="fas fa-laptop"></i>Mode Of Training :</span>

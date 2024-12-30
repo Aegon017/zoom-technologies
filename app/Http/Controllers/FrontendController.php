@@ -22,6 +22,7 @@ use App\Models\PageMetaDetails;
 use App\Models\PageSchema;
 use App\Models\PromoSection;
 use App\Models\QRCode;
+use App\Models\SampleCertificate;
 use App\Models\Slider;
 use App\Models\Testimonial;
 use App\Models\TestimonialSection;
@@ -94,8 +95,9 @@ class FrontendController extends Controller
         $packageCourses = optional($package)->courses ? Course::findMany($package->courses) : [$course];
         $pageSchema = PageSchema::where('page_name', $product->name)->first();
         $metaDetail = $product->metaDetail;
+        $certificate = SampleCertificate::first();
 
-        return view('pages.course', compact('product', 'packageCourses', 'pageSchema', 'prices', 'metaDetail'));
+        return view('pages.course', compact('product', 'packageCourses', 'pageSchema', 'prices', 'metaDetail', 'certificate'));
     }
 
     public function renderUpcomingBatches()
@@ -219,7 +221,7 @@ class FrontendController extends Controller
 
     public function checkout(Request $request)
     {
-        $scheduleIDs = array_values(array_filter($request->all(), fn ($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
+        $scheduleIDs = array_values(array_filter($request->all(), fn($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
         Session::put('scheduleIDs', $scheduleIDs);
         $thankyou = Thankyou::first();
         $bankTransferDetails = BankTransfer::first();

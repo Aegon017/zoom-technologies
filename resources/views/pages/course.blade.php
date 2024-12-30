@@ -64,6 +64,7 @@
                                         <x-guideline :$guideline />
                                     @endforeach
                                 </div>
+                                <x-sample-certificate :$certificate />
                                 <div id="study-material" class="zt-course-feature-box study-material-wrapper">
                                     <div class="section-title">
                                         <h4>Study Material</h4>

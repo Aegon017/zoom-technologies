@@ -26,7 +26,7 @@
                                         @endforeach
                                     </a>
                                     <a><i class="fas fa-calendar"></i>{{ $item->duration }}
-                                        {{ $item->duration_type }}</a>
+                                        {{ Str::plural($item->duration_type, $item->duration) }}</a>
                                 </div>
                             </div>
                         </div>
