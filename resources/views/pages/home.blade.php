@@ -47,7 +47,7 @@
                 <div class="zt-promo zt-promo-carousel owl-carousel">
                     @foreach ($promoSections as $promoSection)
                         <div class="zt-promo-item">
-                            <a href="{{ $promoSection->redirect_url }}">
+                            <a href="{{ $promoSection->redirect_link }}">
                                 <div class="wrapper">
                                     <h3>{{ $promoSection->title }}</h3>
                                     <p>{!! $promoSection->content !!}</p>
