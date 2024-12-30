@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\MobileNumber;
+use App\Models\StudyMaterialPage;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class MobileNumberPolicy
+class StudyMaterialPagePolicy
 {
     use HandlesAuthorization;
 
@@ -15,15 +15,15 @@ class MobileNumberPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_mobile::number');
+        return $user->can('view_any_study::material::page');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, MobileNumber $mobileNumber): bool
+    public function view(User $user, StudyMaterialPage $studyMaterialPage): bool
     {
-        return $user->can('view_mobile::number');
+        return $user->can('view_study::material::page');
     }
 
     /**
@@ -31,23 +31,23 @@ class MobileNumberPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_mobile::number');
+        return $user->can('create_study::material::page');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, MobileNumber $mobileNumber): bool
+    public function update(User $user, StudyMaterialPage $studyMaterialPage): bool
     {
-        return $user->can('update_mobile::number');
+        return $user->can('update_study::material::page');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, MobileNumber $mobileNumber): bool
+    public function delete(User $user, StudyMaterialPage $studyMaterialPage): bool
     {
-        return $user->can('delete_mobile::number');
+        return $user->can('delete_study::material::page');
     }
 
     /**
@@ -55,13 +55,13 @@ class MobileNumberPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_mobile::number');
+        return $user->can('delete_any_study::material::page');
     }
 
     /**
      * Determine whether the user can permanently delete.
      */
-    public function forceDelete(User $user, MobileNumber $mobileNumber): bool
+    public function forceDelete(User $user, StudyMaterialPage $studyMaterialPage): bool
     {
         return $user->can('{{ ForceDelete }}');
     }
@@ -77,7 +77,7 @@ class MobileNumberPolicy
     /**
      * Determine whether the user can restore.
      */
-    public function restore(User $user, MobileNumber $mobileNumber): bool
+    public function restore(User $user, StudyMaterialPage $studyMaterialPage): bool
     {
         return $user->can('{{ Restore }}');
     }
@@ -93,7 +93,7 @@ class MobileNumberPolicy
     /**
      * Determine whether the user can replicate.
      */
-    public function replicate(User $user, MobileNumber $mobileNumber): bool
+    public function replicate(User $user, StudyMaterialPage $studyMaterialPage): bool
     {
         return $user->can('{{ Replicate }}');
     }

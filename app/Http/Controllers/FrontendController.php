@@ -195,6 +195,7 @@ class FrontendController extends Controller
         $materials = Course::with('studyMaterial')->get()->flatMap->studyMaterial->where('subscription', 'Free');
         $pageSchema = PageSchema::where('page_name', 'Study material')->first();
         $pageContent = StudyMaterialPage::first()?->page_content;
+
         return view('pages.free-ebooks', compact('metaDetail', 'materials', 'pageSchema', 'pageContent'));
     }
 
@@ -222,7 +223,7 @@ class FrontendController extends Controller
 
     public function checkout(Request $request)
     {
-        $scheduleIDs = array_values(array_filter($request->all(), fn($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
+        $scheduleIDs = array_values(array_filter($request->all(), fn ($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
         Session::put('scheduleIDs', $scheduleIDs);
         $thankyou = Thankyou::first();
         $bankTransferDetails = BankTransfer::first();

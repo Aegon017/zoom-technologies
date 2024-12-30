@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class StudyMaterialPage extends Model
 {
     protected $fillable = [
-        'page_content'
+        'page_content',
     ];
 
     protected $casts = [
-        'page_content' => 'json'
+        'page_content' => 'json',
     ];
 }
