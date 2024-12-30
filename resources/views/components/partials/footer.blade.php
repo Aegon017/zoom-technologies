@@ -68,7 +68,7 @@
                                         <li><a href="#about">About Us</a></li>
                                         <li><a href="{{ route('render.contact') }}">Contact Us</a></li>
                                         <li><a href="{{ route('render.course.list') }}">Courses</a></li>
-                                        <li><a href="{{ route('render.free.ebooks') }}">Study Material</a></li>
+                                        <li><a href="{{ route('render.userCourses') }}">Study Material</a></li>
                                         <li><a href="{{ route('render.franchisee') }}">Franchisee</a></li>
                                         <li><a href="{{ route('render.memorable-moments') }}">Memorable Moments</a>
                                         </li>

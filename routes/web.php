@@ -3,7 +3,6 @@
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\PaymentController;
 use Filament\Actions\Exports\Http\Controllers\DownloadExport;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [FrontendController::class, 'renderHome'])->name('render.home');
