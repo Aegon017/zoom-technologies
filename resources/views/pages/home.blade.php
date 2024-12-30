@@ -10,14 +10,12 @@
             {{ $metaDetail->description }}
         </x-slot>
     @endif
-    @if ($pageSchema != null)
-        <x-slot:localSchema>
-            {!! $pageSchema->local_schema !!}
-        </x-slot>
-        <x-slot:organizationSchema>
-            {!! $pageSchema->organization_schema !!}
-        </x-slot>
-    @endif
+    <x-slot:localSchema>
+        {!! $pageSchema?->local_schema !!}
+    </x-slot>
+    <x-slot:organizationSchema>
+        {!! $pageSchema?->organization_schema !!}
+    </x-slot>
     @if ($sliders)
         <section id="zt-slider-2" class="zt-slider-section-2">
             <div id="zt-main-slider-2" class="zt-main-slider-wrap owl-carousel">

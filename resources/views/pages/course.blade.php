@@ -10,14 +10,12 @@
             {{ $metaDetail->description }}
         </x-slot>
     @endif
-    @if ($pageSchema != null)
-        <x-slot:localSchema>
-            {!! $pageSchema?->local_schema !!}
-        </x-slot>
-        <x-slot:organizationSchema>
-            {!! $pageSchema?->organization_schema !!}
-        </x-slot>
-    @endif
+    <x-slot:localSchema>
+        {!! $pageSchema?->local_schema !!}
+    </x-slot>
+    <x-slot:organizationSchema>
+        {!! $pageSchema?->organization_schema !!}
+    </x-slot>
     <x-course-breadcrumb :$product />
     <section id="course-details" class="course-details-section">
         <div class="container">
