@@ -62,9 +62,20 @@
                                         <x-guideline :$guideline />
                                     @endforeach
                                 </div>
-                                @if ($certificate)
-                                    <x-sample-certificate :$certificate />
-                                @endif
+                                <div id="sample-certificate" class="zt-course-feature-box sample-certificate-wrapper">
+                                    <div class="section-title">
+                                        <h4>Sample Certificate</h4>
+                                    </div>
+                                    @foreach ($packageCourses as $course)
+                                        @php
+                                            $certificate = $course->sampleCertificate;
+                                        @endphp
+                                        <div class="sample-certificate-list mb-5">
+                                            <h6>{{ $course->name }}</h6>
+                                            <x-sample-certificate :$certificate />
+                                        </div>
+                                    @endforeach
+                                </div>
                                 <div id="study-material" class="zt-course-feature-box study-material-wrapper">
                                     <div class="section-title">
                                         <h4>Study Material</h4>

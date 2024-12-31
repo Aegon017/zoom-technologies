@@ -82,8 +82,8 @@ class Course extends Model
         return $this->hasMany(ManualOrder::class);
     }
 
-    public function sampleCertificate(): HasMany
+    public function sampleCertificate(): HasOne
     {
-        return $this->hasMany(SampleCertificate::class);
+        return $this->hasOne(SampleCertificate::class);
     }
 }
