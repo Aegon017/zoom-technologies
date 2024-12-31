@@ -267,9 +267,9 @@ class SingleCourseResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('user_name')->label('User name'),
-                TextColumn::make('user_email')->label('User email')->searchable(),
-                TextColumn::make('user_phone')->label('User phone'),
+                TextColumn::make('user_name')->label('Student name'),
+                TextColumn::make('user_email')->label('Student email')->searchable(),
+                TextColumn::make('user_phone')->label('Student phone'),
                 TextColumn::make('course.name')->label('Course name')->searchable(),
                 TextColumn::make('payment_mode'),
                 TextColumn::make('amount'),
