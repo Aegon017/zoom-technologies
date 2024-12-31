@@ -262,8 +262,10 @@ class PackageCourseResource extends Resource
                             Select::make('payment_mode')
                                 ->required()
                                 ->options([
-                                    'Bank transfer' => 'Bank transfer',
                                     'UPI' => 'UPI',
+                                    'Card' => 'Card',
+                                    'QR Code' => 'QR Code',
+                                    'Bank transfer' => 'Bank transfer',
                                     'POS' => 'POS',
                                     'Cash' => 'Cash',
                                 ]),
