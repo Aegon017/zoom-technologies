@@ -9,6 +9,7 @@ use App\Models\Schedule;
 use App\Models\Tax;
 use App\Models\User;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Tabs\Tab;
@@ -16,9 +17,15 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Fieldset;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\Section as ComponentsSection;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -42,6 +49,70 @@ class PackageCourseResource extends Resource
     {
         return false;
     }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Fieldset::make('Student Details')->schema([
+                    TextEntry::make('user_name')->label('Student Name'),
+                    TextEntry::make('user_email')->label('Email'),
+                    TextEntry::make('user_phone')->label('Phone'),
+                    ComponentsSection::make()->schema([
+                        ImageEntry::make('user_image')->label('Student Image'),
+                        ImageEntry::make('user_id_card')->label('Student Id '),
+                    ])->columns(2)
+                ]),
+                Fieldset::make('Course Details')->schema([
+                    TextEntry::make('package.name'),
+                    TextEntry::make('course_price')->label('Price')
+                        ->formatStateUsing(fn($state, $record) => 'Rs.' . ' ' . $state),
+                ]),
+                Fieldset::make('Batches')->schema([
+                    TextEntry::make('schedule')
+                        ->label('')
+                        ->listWithLineBreaks()
+                        ->getStateUsing(
+                            fn($record) => !$record->packageSchedule_id
+                                ? ['🚫 No Schedules Available']
+                                : collect($record->packageSchedule_id)
+                                ->map(function ($os) {
+                                    $s = Schedule::find($os);
+
+                                    return $s ? [
+                                        '📚 Course: ' . ($s->course?->name ?? 'N/A'),
+                                        '📅 Date: ' . (
+                                            $s->start_date
+                                            ? \Carbon\Carbon::parse($s->start_date)->format('d M Y')
+                                            : 'Unscheduled'
+                                        ),
+                                        '⏰ Time: ' . (
+                                            $s->time
+                                            ? \Carbon\Carbon::parse($s->time)->format('h:i A')
+                                            : 'TBD'
+                                        ),
+                                        '🌐 Mode: ' . ($s->training_mode ?? 'Unspecified'),
+                                    ] : ['⚠️ Invalid Schedule'];
+                                })
+                                ->flatten()
+                                ->filter()
+                                ->toArray()
+                        )
+                        ->placeholder('No schedule information'),
+                ]),
+                Fieldset::make('Payment Details')->schema([
+                    TextEntry::make('payment_mode'),
+                    TextEntry::make('cgst')
+                        ->formatStateUsing(fn($state, $record) => 'Rs.' . ' ' . $state),
+                    TextEntry::make('sgst')
+                        ->formatStateUsing(fn($state, $record) => 'Rs.' . ' ' . $state),
+                    TextEntry::make('amount')
+                        ->formatStateUsing(fn($state, $record) => 'Rs.' . ' ' . $state),
+                ]),
+            ]);
+    }
+
+
 
     public static function form(Form $form): Form
     {
@@ -77,6 +148,10 @@ class PackageCourseResource extends Resource
                                             ->send();
                                     }
                                 }),
+                            Section::make()->schema([
+                                FileUpload::make('user_image')->label('Student photo')->disk('public')->directory('users/profile-images')->required(),
+                                FileUpload::make('user_id_card')->label('Student ID Card')->disk('public')->directory('users/id_cards')->required()
+                            ])->columns(2)
                         ]),
                     Step::make('Address Details')
                         ->schema([
@@ -217,6 +292,7 @@ class PackageCourseResource extends Resource
                     ->action(function ($record) {
                         return response()->download(storage_path("app/public/{$record->proof}"));
                     }),
+                ViewAction::make()
             ])
             ->bulkActions([])
             ->modifyQueryUsing(fn(Builder $query) => $query->whereNotNull('package_id'));

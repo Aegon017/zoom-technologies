@@ -12,6 +12,8 @@ class ManualOrder extends Model
         'user_name',
         'user_email',
         'user_phone',
+        'user_image',
+        'user_id_card',
         'course_id',
         'package_id',
         'schedule_id',
