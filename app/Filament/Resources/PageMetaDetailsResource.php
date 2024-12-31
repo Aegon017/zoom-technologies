@@ -30,7 +30,7 @@ class PageMetaDetailsResource extends Resource
             ->schema([
                 Select::make('page_name')->options([
                     'Home' => 'Home',
-                    'News list' => 'News list',
+                    'Blog list' => 'Blog list',
                     'Course list' => 'Course list',
                     'Upcoming schedule' => 'Upcoming schedule',
                     'Contact' => 'Contact',

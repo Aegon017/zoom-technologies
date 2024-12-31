@@ -3,6 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PageSchemaResource\Pages;
+use App\Models\Blog;
+use App\Models\BlogCategory;
 use App\Models\Course;
 use App\Models\News;
 use App\Models\NewsCategory;
@@ -35,7 +37,7 @@ class PageSchemaResource extends Resource
                     array_merge(
                         [
                             'Home' => 'Home',
-                            'News list' => 'News list',
+                            'Blog list' => 'Blog list',
                             'Course list' => 'Course list',
                             'Upcoming schedule' => 'Upcoming schedule',
                             'Contact' => 'Contact',
@@ -45,16 +47,16 @@ class PageSchemaResource extends Resource
                             'Study material' => 'Study material',
                         ],
                         Course::pluck('name', 'name')->mapWithKeys(function ($item, $key) {
-                            return [$key => 'Course - '.$item];
+                            return [$key => 'Course - ' . $item];
                         })->toArray(),
                         Package::pluck('name', 'name')->mapWithKeys(function ($item, $key) {
-                            return [$key => 'Package - '.$item];
+                            return [$key => 'Package - ' . $item];
                         })->toArray(),
-                        News::pluck('name', 'name')->mapWithKeys(function ($item, $key) {
-                            return [$key => 'News - '.$item];
+                        Blog::pluck('name', 'name')->mapWithKeys(function ($item, $key) {
+                            return [$key => 'Blog - ' . $item];
                         })->toArray(),
-                        NewsCategory::pluck('name', 'name')->mapWithKeys(function ($item, $key) {
-                            return [$key => 'News category - '.$item];
+                        BlogCategory::pluck('name', 'name')->mapWithKeys(function ($item, $key) {
+                            return [$key => 'Blog category - ' . $item];
                         })->toArray()
                     )
                 )->searchable()->required()->columnSpanFull(),
