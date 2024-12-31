@@ -71,7 +71,7 @@
                                             $certificate = $course->sampleCertificate;
                                         @endphp
                                         <div class="sample-certificate-list mb-5">
-                                            <h6>{{ $course->name }}</h6>
+                                            <h6 class="mb-3">{{ $course->name }}</h6>
                                             <x-sample-certificate :$certificate />
                                         </div>
                                     @endforeach
