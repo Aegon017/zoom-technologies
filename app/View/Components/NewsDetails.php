@@ -3,7 +3,6 @@
 namespace App\View\Components;
 
 use App\Models\Blog;
-use App\Models\News;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -11,6 +10,7 @@ use Illuminate\View\Component;
 class NewsDetails extends Component
 {
     public $news;
+
     public $slug;
 
     public function __construct($slug)

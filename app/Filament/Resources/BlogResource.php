@@ -3,11 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BlogResource\Pages;
-use App\Filament\Resources\BlogResource\RelationManagers;
 use App\Models\Blog;
 use App\Models\BlogCategory;
-use App\Models\NewsCategory;
-use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\RichEditor;
@@ -22,14 +19,14 @@ use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 
 class BlogResource extends Resource
 {
     protected static ?string $model = Blog::class;
+
     protected static ?string $navigationGroup = 'Blogs';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -40,7 +37,7 @@ class BlogResource extends Resource
                     ->label('Blog category')
                     ->options(BlogCategory::pluck('name', 'id'))->required(),
                 TextInput::make('name')->live(onBlur: true)
-                    ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
+                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
                 TextInput::make('slug')->required(),
                 TextInput::make('source')->required(),
                 TextInput::make('source_url')->columnSpanFull(),
@@ -71,7 +68,7 @@ class BlogResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                DeleteAction::make()
+                DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

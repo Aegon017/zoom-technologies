@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\SingleCourseResource\Pages;
 
 use App\Filament\Resources\SingleCourseResource;
-use App\Models\User;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\CreateRecord;
 

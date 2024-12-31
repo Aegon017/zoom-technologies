@@ -16,15 +16,12 @@ use App\Models\FeatureSection;
 use App\Models\Franchisee;
 use App\Models\FreeMaterialSection;
 use App\Models\MemorableMoments;
-use App\Models\News;
-use App\Models\NewsCategory;
 use App\Models\Order;
 use App\Models\Package;
 use App\Models\PageMetaDetails;
 use App\Models\PageSchema;
 use App\Models\PromoSection;
 use App\Models\QRCode;
-use App\Models\SampleCertificate;
 use App\Models\Slider;
 use App\Models\StudyMaterialPage;
 use App\Models\Testimonial;
@@ -61,6 +58,7 @@ class FrontendController extends Controller
         $news = Blog::all();
         $metaDetail = PageMetaDetails::where('page_name', 'News list')->first();
         $pageSchema = PageSchema::where('page_name', 'News list')->first();
+
         return view('pages.news-list', compact('news', 'metaDetail', 'pageSchema'));
     }
 
@@ -68,6 +66,7 @@ class FrontendController extends Controller
     {
         $metaDetail = Blog::where('slug', $slug)->first()->metaDetail;
         $pageSchema = PageSchema::where('page_name', $metaDetail?->name)->first();
+
         return view('pages.news', compact('slug', 'metaDetail', 'pageSchema'));
     }
 
@@ -75,6 +74,7 @@ class FrontendController extends Controller
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Course list')->first();
         $pageSchema = PageSchema::where('page_name', 'Course list')->first();
+
         return view('pages.course-list', compact('metaDetail', 'pageSchema'));
     }
 
@@ -82,6 +82,7 @@ class FrontendController extends Controller
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Contact')->first();
         $pageSchema = PageSchema::where('page_name', 'Contact')->first();
+
         return view('pages.contact', compact('metaDetail', 'pageSchema'));
     }
 
@@ -94,6 +95,7 @@ class FrontendController extends Controller
         $packageCourses = optional($package)->courses ? Course::findMany($package->courses) : [$course];
         $pageSchema = PageSchema::where('page_name', $product->name)->first();
         $metaDetail = $product->metaDetail;
+
         return view('pages.course', compact('product', 'packageCourses', 'pageSchema', 'prices', 'metaDetail'));
     }
 
@@ -219,7 +221,7 @@ class FrontendController extends Controller
 
     public function checkout(Request $request)
     {
-        $scheduleIDs = array_values(array_filter($request->all(), fn($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
+        $scheduleIDs = array_values(array_filter($request->all(), fn ($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
         Session::put('scheduleIDs', $scheduleIDs);
         $thankyou = Thankyou::first();
         $bankTransferDetails = BankTransfer::first();
