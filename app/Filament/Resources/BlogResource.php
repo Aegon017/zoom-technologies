@@ -2,10 +2,12 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\NewsResource\Pages;
-use App\Filament\Resources\NewsResource\RelationManagers\MetaDetailRelationManager;
-use App\Models\News;
+use App\Filament\Resources\BlogResource\Pages;
+use App\Filament\Resources\BlogResource\RelationManagers;
+use App\Models\Blog;
+use App\Models\BlogCategory;
 use App\Models\NewsCategory;
+use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\RichEditor;
@@ -20,37 +22,35 @@ use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 
-class NewsResource extends Resource
+class BlogResource extends Resource
 {
-    protected static ?string $model = News::class;
-
-    protected static ?int $navigationSort = 6;
-
-    protected static ?string $navigationIcon = 'heroicon-o-newspaper';
-
-    protected static ?string $navigationGroup = 'News';
+    protected static ?string $model = Blog::class;
+    protected static ?string $navigationGroup = 'Blogs';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Select::make('news_category_id')
-                    ->label('News category')
-                    ->options(NewsCategory::pluck('name', 'id'))->required(),
+                Select::make('blog_category_id')
+                    ->label('Blog category')
+                    ->options(BlogCategory::pluck('name', 'id'))->required(),
                 TextInput::make('name')->live(onBlur: true)
-                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
+                    ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
                 TextInput::make('slug')->required(),
                 TextInput::make('source')->required(),
                 TextInput::make('source_url')->columnSpanFull(),
                 Section::make([
                     Group::make()->schema([
-                        FileUpload::make('thumbnail')->disk('public')->directory('thumbnails/news')->preserveFilenames()->required(),
+                        FileUpload::make('thumbnail')->disk('public')->directory('thumbnails/blogs')->preserveFilenames()->required(),
                         TextInput::make('thumbnail_alt')->required(),
                     ]),
                     Group::make()->schema([
-                        FileUpload::make('image')->disk('public')->directory('images/news')->preserveFilenames()->required(),
+                        FileUpload::make('image')->disk('public')->directory('images/blogs')->preserveFilenames()->required(),
                         TextInput::make('image_alt')->required(),
                     ]),
                 ])->columns(2),
@@ -71,7 +71,7 @@ class NewsResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                DeleteAction::make(),
+                DeleteAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -82,17 +82,15 @@ class NewsResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            MetaDetailRelationManager::class,
-        ];
+        return [];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListNews::route('/'),
-            'create' => Pages\CreateNews::route('/create'),
-            'edit' => Pages\EditNews::route('/{record}/edit'),
+            'index' => Pages\ListBlogs::route('/'),
+            'create' => Pages\CreateBlog::route('/create'),
+            'edit' => Pages\EditBlog::route('/{record}/edit'),
         ];
     }
 }

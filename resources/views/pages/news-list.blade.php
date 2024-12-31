@@ -19,7 +19,7 @@
     </x-slot>
     @php
         $pageBackground = 'frontend/assets/img/banner/contact-us-banner.jpg';
-        $pageTitle = 'News';
+        $pageTitle = 'Blogs';
     @endphp
     <x-page-breadcrumb :pageBackground="$pageBackground" :pageTitle="$pageTitle" />
     <section class="news-left zt-inner-page-wrapper blog-page">

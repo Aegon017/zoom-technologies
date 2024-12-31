@@ -8,7 +8,7 @@
             </p>
             <p><span class="fa fa-bookmark ">&nbsp;Source :</span> <a href="#">{{ $news->source }}</a></p>
             <p>
-                <a href="new/"><i class="fas fa-tag "></i> {{ $news->news_category->name }}</a>
+                <a href="new/"><i class="fas fa-tag "></i> {{ $news->blogCategory->name }}</a>
             </p>
         </div>
     </div>

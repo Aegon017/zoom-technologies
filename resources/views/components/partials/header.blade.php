@@ -51,10 +51,10 @@
                             <a href="{{ route('render.upcoming.batches') }}">Upcoming Schedule</a>
                         </li>
                         <li>
-                            <a href="{{ route('render.news.list') }}">News</a>
+                            <a href="{{ route('render.news.list') }}">Blogs</a>
                         </li>
                         <li>
-                            <a href="{{ route('render.contact') }}">Conatct Us</a>
+                            <a href="{{ route('render.contact') }}">Contact Us</a>
                         </li>
                     </ul>
                 </nav>
@@ -91,10 +91,10 @@
                                         <a href="{{ route('render.upcoming.batches') }}">Upcoming Schedule</a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('render.news.list') }}">News</a>
+                                        <a href="{{ route('render.news.list') }}">Blogs</a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('render.contact') }}">Conatct Us</a>
+                                        <a href="{{ route('render.contact') }}">Contact Us</a>
                                     </li>
                                 </ul>
                             </nav>

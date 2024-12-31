@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Actions\CalculatePrice;
 use App\Models\AboutUsSection;
 use App\Models\BankTransfer;
+use App\Models\Blog;
+use App\Models\BlogCategory;
 use App\Models\Brochure;
 use App\Models\CorporateTraining;
 use App\Models\Course;
@@ -54,20 +56,18 @@ class FrontendController extends Controller
         return view('pages.home', compact('metaDetail', 'pageSchema', 'sliders', 'promoSections', 'featureSection', 'featureCards', 'freeMaterials', 'testimonialSection', 'testimonials', 'clients', 'faqs', 'brochures', 'aboutUsSection'));
     }
 
-    public function renderNewsList()
+    public function renderBlogList()
     {
-        $news = News::all();
+        $news = Blog::all();
         $metaDetail = PageMetaDetails::where('page_name', 'News list')->first();
         $pageSchema = PageSchema::where('page_name', 'News list')->first();
-
         return view('pages.news-list', compact('news', 'metaDetail', 'pageSchema'));
     }
 
-    public function renderNews($slug)
+    public function renderBlog($slug)
     {
-        $metaDetail = News::where('slug', $slug)->first()->metaDetail;
-        $pageSchema = PageSchema::where('page_name', $metaDetail->name)->first();
-
+        $metaDetail = Blog::where('slug', $slug)->first()->metaDetail;
+        $pageSchema = PageSchema::where('page_name', $metaDetail?->name)->first();
         return view('pages.news', compact('slug', 'metaDetail', 'pageSchema'));
     }
 
@@ -75,7 +75,6 @@ class FrontendController extends Controller
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Course list')->first();
         $pageSchema = PageSchema::where('page_name', 'Course list')->first();
-
         return view('pages.course-list', compact('metaDetail', 'pageSchema'));
     }
 
@@ -83,7 +82,6 @@ class FrontendController extends Controller
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Contact')->first();
         $pageSchema = PageSchema::where('page_name', 'Contact')->first();
-
         return view('pages.contact', compact('metaDetail', 'pageSchema'));
     }
 
@@ -150,10 +148,10 @@ class FrontendController extends Controller
         return view('components.order-details', compact('order'));
     }
 
-    public function renderNewsCategory($category)
+    public function renderBlogCategory($category)
     {
-        $newsCategory = NewsCategory::where('name', $category)->first();
-        $news = $newsCategory->news ?? collect();
+        $newsCategory = BlogCategory::where('name', $category)->first();
+        $news = $newsCategory->blog ?? collect();
         $metaDetail = $newsCategory->metaDetail;
         $pageSchema = PageSchema::where('page_name', $newsCategory->name)->first();
 

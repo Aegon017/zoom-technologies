@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\NewsCategoryResource\Pages;
-use App\Filament\Resources\NewsCategoryResource\RelationManagers\MetaDetailRelationManager;
-use App\Models\NewsCategory;
+use App\Filament\Resources\BlogCategoryResource\Pages;
+use App\Filament\Resources\BlogCategoryResource\RelationManagers;
+use App\Models\BlogCategory;
+use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -12,22 +13,20 @@ use Filament\Tables;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class NewsCategoryResource extends Resource
+class BlogCategoryResource extends Resource
 {
-    protected static ?string $model = NewsCategory::class;
-
-    protected static ?string $navigationGroup = 'News';
-
-    protected static ?string $navigationIcon = 'heroicon-o-newspaper';
-
-    protected static ?int $navigationSort = 5;
+    protected static ?string $model = BlogCategory::class;
+    protected static ?string $navigationGroup = 'Blogs';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('name')->label('News category')->required(),
+                TextInput::make('name')->label('Blog category')->required(),
             ]);
     }
 
@@ -36,14 +35,14 @@ class NewsCategoryResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('#')->rowIndex(),
-                TextColumn::make('name')->label('News category'),
+                TextColumn::make('name')->label('Blog category'),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                DeleteAction::make(),
+                DeleteAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -55,16 +54,16 @@ class NewsCategoryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            MetaDetailRelationManager::class,
+            //
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListNewsCategories::route('/'),
-            'create' => Pages\CreateNewsCategory::route('/create'),
-            'edit' => Pages\EditNewsCategory::route('/{record}/edit'),
+            'index' => Pages\ListBlogCategories::route('/'),
+            'create' => Pages\CreateBlogCategory::route('/create'),
+            'edit' => Pages\EditBlogCategory::route('/{record}/edit'),
         ];
     }
 }

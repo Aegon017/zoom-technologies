@@ -6,10 +6,10 @@ use Filament\Actions\Exports\Http\Controllers\DownloadExport;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [FrontendController::class, 'renderHome'])->name('render.home');
-Route::prefix('/news')->group(function () {
-    Route::get('/', [FrontendController::class, 'renderNewsList'])->name('render.news.list');
-    Route::get('/{slug}', [FrontendController::class, 'renderNews'])->name('render.news');
-    Route::get('/category/{category}', [FrontendController::class, 'renderNewsCategory'])->name('news.category');
+Route::prefix('/blog')->group(function () {
+    Route::get('/', [FrontendController::class, 'renderBlogList'])->name('render.news.list');
+    Route::get('/{slug}', [FrontendController::class, 'renderBlog'])->name('render.news');
+    Route::get('/category/{category}', [FrontendController::class, 'renderBlogCategory'])->name('news.category');
 });
 
 Route::get('/email-verified', [FrontendController::class, 'emailVerified'])->name('email.verified');
@@ -46,7 +46,7 @@ Route::post('/payment/initiate', [PaymentController::class, 'initiate'])->name('
 
 Route::get('/storage-link', function () {
     $target = storage_path('app/public');
-    $link = $_SERVER['DOCUMENT_ROOT'].'/zoom-technologies/public/storage';
+    $link = $_SERVER['DOCUMENT_ROOT'] . '/zoom-technologies/public/storage';
     symlink($target, $link);
 });
 

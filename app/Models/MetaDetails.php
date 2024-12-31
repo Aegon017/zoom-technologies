@@ -10,8 +10,8 @@ class MetaDetails extends Model
     protected $fillable = [
         'course_id',
         'package_id',
-        'news_category_id',
-        'news_id',
+        'blog_category_id',
+        'blog_id',
         'title',
         'keywords',
         'description',
@@ -27,13 +27,13 @@ class MetaDetails extends Model
         return $this->belongsTo(Package::class);
     }
 
-    public function newsCategory(): BelongsTo
+    public function blogCategory(): BelongsTo
     {
-        return $this->belongsTo(NewsCategory::class);
+        return $this->belongsTo(BlogCategory::class);
     }
 
-    public function news(): BelongsTo
+    public function blog(): BelongsTo
     {
-        return $this->belongsTo(News::class);
+        return $this->belongsTo(Blog::class);
     }
 }

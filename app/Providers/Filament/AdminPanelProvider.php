@@ -68,7 +68,7 @@ class AdminPanelProvider extends PanelProvider
                 'User Management',
                 'Offline Enrolls',
                 'Courses & Packages',
-                'News',
+                'Blogs',
                 'Pages',
                 'Home page',
                 'Contact Details',
