@@ -9,7 +9,6 @@ use Livewire\Component;
 
 class BillingAddress extends Component
 {
-    #[Validate('required')]
     public $streetAddress = '';
 
     #[Validate('required')]
@@ -18,7 +17,6 @@ class BillingAddress extends Component
     #[Validate('required')]
     public $state = '';
 
-    #[Validate('required')]
     public $zipCode = '';
 
     #[Validate('required')]

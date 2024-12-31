@@ -236,11 +236,6 @@
                             <i class="fas fa-chevron-right text-muted"></i>
                             <div class="step-item" id="step-3">
                                 <div class="step-badge bg-light text-muted" data-step="3">3</div>
-                                <span class="font-weight-semibold">Verification</span>
-                            </div>
-                            <i class="fas fa-chevron-right text-muted"></i>
-                            <div class="step-item" id="step-4">
-                                <div class="step-badge bg-light text-muted" data-step="4">4</div>
                                 <span class="font-weight-semibold">Billing Address</span>
                             </div>
                         </div>
@@ -294,9 +289,8 @@
                 <div class="col-12 col-lg-6 pl-lg-4 mt-4 mt-lg-0">
                     <div class="checkout-section custom-shadow" x-data="{ paymentMethod: true, signIn: false, verification: false, billingAddress: false }"
                         x-on:show-login-form.window="signIn = true; paymentMethod = false"
-                        x-on:registration-success.window="signIn=false; paymentMethod = false; verification=true"
-                        x-on:show-address-form.window="billingAddress = true; verification = false; signIn = false; paymentMethod = false"
-                        x-on:show-otp-verification.window="verification = true; signIn = false; paymentMethod = false">
+                        x-on:registration-success.window="signIn=false; paymentMethod = false; billingAddress = true;"
+                        x-on:show-address-form.window="billingAddress = true; signIn = false; paymentMethod = false">
                         <div class="step-content" id="content-2" x-transition.duration.opacity x-show="signIn">
                             <h4 class="mb-3 text-dark">Sign In / Sign Up</h4>
                             <form action="{{ route('checkout.course') }}">
@@ -328,10 +322,7 @@
                                 <livewire:payment-method :$bankTransferDetails :$qrCode />
                             </div>
                         </form>
-                        <div class="step-content" id="content-3" x-transition.duration.opacity x-show="verification">
-                            <livewire:otp-verification />
-                        </div>
-                        <div class="step-content" id="content-4" x-transition.duration.opacity
+                        <div class="step-content" id="content-3" x-transition.duration.opacity
                             x-show="billingAddress">
                             <livewire:billing-address />
                         </div>

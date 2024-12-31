@@ -128,11 +128,15 @@
                                         <br /><strong>Phone:</strong> {{ $order->user->phone }}
                                     </div>
                                     <div style="flex:2">
-                                        <strong>Address:</strong> {{ $address->address }}
-                                        <br>
+                                        @if ($address->address)
+                                            <strong>Address:</strong> {{ $address->address }}
+                                            <br>
+                                        @endif
                                         <strong>City:</strong> {{ $address->city }} <br>
                                         <strong>State:</strong> {{ $address->state }} <br>
-                                        <strong>Zip code:</strong> {{ $address->zip_code }} <br>
+                                        @if ($address->zip_code)
+                                            <strong>Zip code:</strong> {{ $address->zip_code }} <br>
+                                        @endif
                                         <strong>Country:</strong> {{ $address->country }} <br>
                                     </div>
                                 </div>

@@ -37,11 +37,8 @@ class PaymentMethod extends Component
     public function checkAuth()
     {
         if (Auth::check()) {
-            if (Auth::user()?->email_verified_at) {
-                $this->dispatch('show-address-form');
-            } else {
-                $this->dispatch('show-otp-verification');
-            }
+            $this->dispatch('show-address-form');
+            $this->dispatch('show-otp-verification');
         } else {
             $this->dispatch('show-login-form');
         }
