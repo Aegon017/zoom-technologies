@@ -64,6 +64,7 @@
     @if ((string) $organizationSchema ?? null)
         <script type="application/ld+json">{{ $organizationSchema }}</script>
     @endif --}}
+    @stack('styles')
     @livewireStyles
 </head>
 
@@ -88,6 +89,7 @@
     <script src="{{ asset('frontend/assets/js/jquery-one-page-nav.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/custom.js') }}"></script>
     @livewireScripts
+    @stack('scripts')
 </body>
 
 </html>

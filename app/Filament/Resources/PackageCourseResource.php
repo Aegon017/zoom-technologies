@@ -28,6 +28,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 
 class PackageCourseResource extends Resource
 {
@@ -64,48 +65,48 @@ class PackageCourseResource extends Resource
                 Fieldset::make('Course Details')->schema([
                     TextEntry::make('package.name'),
                     TextEntry::make('course_price')->label('Price')
-                        ->formatStateUsing(fn ($state, $record) => 'Rs.'.' '.$state),
+                        ->formatStateUsing(fn($state, $record) => 'Rs.' . ' ' . $state),
                 ]),
                 Fieldset::make('Batches')->schema([
                     TextEntry::make('schedule')
                         ->label('')
                         ->listWithLineBreaks()
                         ->getStateUsing(
-                            fn ($record) => ! $record->packageSchedule_id
+                            fn($record) => ! $record->packageSchedule_id
                                 ? ['🚫 No Schedules Available']
                                 : collect($record->packageSchedule_id)
-                                    ->map(function ($os) {
-                                        $s = Schedule::find($os);
+                                ->map(function ($os) {
+                                    $s = Schedule::find($os);
 
-                                        return $s ? [
-                                            '📚 Course: '.($s->course?->name ?? 'N/A'),
-                                            '📅 Date: '.(
-                                                $s->start_date
-                                                ? \Carbon\Carbon::parse($s->start_date)->format('d M Y')
-                                                : 'Unscheduled'
-                                            ),
-                                            '⏰ Time: '.(
-                                                $s->time
-                                                ? \Carbon\Carbon::parse($s->time)->format('h:i A')
-                                                : 'TBD'
-                                            ),
-                                            '🌐 Mode: '.($s->training_mode ?? 'Unspecified'),
-                                        ] : ['⚠️ Invalid Schedule'];
-                                    })
-                                    ->flatten()
-                                    ->filter()
-                                    ->toArray()
+                                    return $s ? [
+                                        '📚 Course: ' . ($s->course?->name ?? 'N/A'),
+                                        '📅 Date: ' . (
+                                            $s->start_date
+                                            ? \Carbon\Carbon::parse($s->start_date)->format('d M Y')
+                                            : 'Unscheduled'
+                                        ),
+                                        '⏰ Time: ' . (
+                                            $s->time
+                                            ? \Carbon\Carbon::parse($s->time)->format('h:i A')
+                                            : 'TBD'
+                                        ),
+                                        '🌐 Mode: ' . ($s->training_mode ?? 'Unspecified'),
+                                    ] : ['⚠️ Invalid Schedule'];
+                                })
+                                ->flatten()
+                                ->filter()
+                                ->toArray()
                         )
                         ->placeholder('No schedule information'),
                 ]),
                 Fieldset::make('Payment Details')->schema([
                     TextEntry::make('payment_mode'),
                     TextEntry::make('cgst')
-                        ->formatStateUsing(fn ($state, $record) => 'Rs.'.' '.$state),
+                        ->formatStateUsing(fn($state, $record) => 'Rs.' . ' ' . $state),
                     TextEntry::make('sgst')
-                        ->formatStateUsing(fn ($state, $record) => 'Rs.'.' '.$state),
+                        ->formatStateUsing(fn($state, $record) => 'Rs.' . ' ' . $state),
                     TextEntry::make('amount')
-                        ->formatStateUsing(fn ($state, $record) => 'Rs.'.' '.$state),
+                        ->formatStateUsing(fn($state, $record) => 'Rs.' . ' ' . $state),
                 ]),
             ]);
     }
@@ -131,7 +132,7 @@ class PackageCourseResource extends Resource
                                             ->send();
                                     }
                                 }),
-                            TextInput::make('user_phone')->required()
+                            PhoneInput::make('user_phone')->required()
                                 ->unique(User::class, 'phone', ignoreRecord: true)
                                 ->live()
                                 ->reactive()
@@ -293,7 +294,7 @@ class PackageCourseResource extends Resource
                 ViewAction::make(),
             ])
             ->bulkActions([])
-            ->modifyQueryUsing(fn (Builder $query) => $query->whereNotNull('package_id'));
+            ->modifyQueryUsing(fn(Builder $query) => $query->whereNotNull('package_id'));
     }
 
     public static function getRelations(): array

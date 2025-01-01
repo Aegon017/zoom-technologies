@@ -86,9 +86,13 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            var input = document.querySelector("#phone_number");
-            var iti = intlTelInput(input, {
-                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js" // Optional: For validation
+            const input = document.querySelector("#phone_number");
+            const iti = window.intlTelInput(input, {
+                loadUtils: () => import(
+                    "https://cdn.jsdelivr.net/npm/intl-tel-input@25.2.1/build/js/utils.js"),
+                strictMode: true,
+                separateDialCode: false,
+                initialCountry: "IN",
             });
 
             document.querySelector("form").addEventListener("submit", function() {
