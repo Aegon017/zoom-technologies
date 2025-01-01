@@ -6,10 +6,14 @@ use App\Filament\Exports\OrderExporter;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Models\Course;
 use App\Models\Order;
+use App\Models\OrderSchedule;
 use App\Models\Package;
 use App\Models\Schedule;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Infolists\Components\Fieldset;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
@@ -21,6 +25,7 @@ use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\Indicator;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -57,37 +62,37 @@ class OrderResource extends Resource
                 Fieldset::make('Course Details')->schema([
                     TextEntry::make('course.name'),
                     TextEntry::make('courseOrPackage_price')
-                        ->formatStateUsing(fn ($state, $record) => $record->payment->currency.' '.$state),
+                        ->formatStateUsing(fn($state, $record) => $record->payment->currency . ' ' . $state),
                 ]),
                 Fieldset::make('Batches')->schema([
                     TextEntry::make('orderSchedule')
                         ->label('')
                         ->listWithLineBreaks()
                         ->getStateUsing(
-                            fn ($record) => $record->orderSchedule->isEmpty()
+                            fn($record) => $record->orderSchedule->isEmpty()
                                 ? ['🚫 No Schedules Available']
                                 : $record->orderSchedule
-                                    ->map(function ($os) {
-                                        $s = $os->schedule;
+                                ->map(function ($os) {
+                                    $s = $os->schedule;
 
-                                        return $s ? [
-                                            '📚 Course: '.($s->course?->name ?? 'N/A'),
-                                            '📅 Date: '.(
-                                                $s->start_date
-                                                ? \Carbon\Carbon::parse($s->start_date)->format('d M Y')
-                                                : 'Unscheduled'
-                                            ),
-                                            '⏰ Time: '.(
-                                                $s->time
-                                                ? \Carbon\Carbon::parse($s->time)->format('h:i A')
-                                                : 'TBD'
-                                            ),
-                                            '🌐 Mode: '.($s->training_mode ?? 'Unspecified'),
-                                        ] : ['⚠️ Invalid Schedule'];
-                                    })
-                                    ->flatten()
-                                    ->filter()
-                                    ->toArray()
+                                    return $s ? [
+                                        '📚 Course: ' . ($s->course?->name ?? 'N/A'),
+                                        '📅 Date: ' . (
+                                            $s->start_date
+                                            ? \Carbon\Carbon::parse($s->start_date)->format('d M Y')
+                                            : 'Unscheduled'
+                                        ),
+                                        '⏰ Time: ' . (
+                                            $s->time
+                                            ? \Carbon\Carbon::parse($s->time)->format('h:i A')
+                                            : 'TBD'
+                                        ),
+                                        '🌐 Mode: ' . ($s->training_mode ?? 'Unspecified'),
+                                    ] : ['⚠️ Invalid Schedule'];
+                                })
+                                ->flatten()
+                                ->filter()
+                                ->toArray()
                         )
                         ->placeholder('No schedule information'),
                 ]),
@@ -100,13 +105,13 @@ class OrderResource extends Resource
                     TextEntry::make('payment.time')->label('Time')->time('h:i A'),
                     TextEntry::make('payment.description')->label('Description'),
                     TextEntry::make('cgst')
-                        ->formatStateUsing(fn ($state, $record) => $record->payment->currency.' '.$state)
+                        ->formatStateUsing(fn($state, $record) => $record->payment->currency . ' ' . $state)
                         ->label('CGST'),
                     TextEntry::make('sgst')
-                        ->formatStateUsing(fn ($state, $record) => $record->payment->currency.' '.$state)
+                        ->formatStateUsing(fn($state, $record) => $record->payment->currency . ' ' . $state)
                         ->label('SGST'),
                     TextEntry::make('payment.amount')
-                        ->formatStateUsing(fn ($state, $record) => $record->payment->currency.' '.$state)
+                        ->formatStateUsing(fn($state, $record) => $record->payment->currency . ' ' . $state)
                         ->label('Order Amount'),
                     TextEntry::make('payment.status'),
                 ]),
@@ -132,88 +137,231 @@ class OrderResource extends Resource
                     }),
                 TextColumn::make('payment.amount')
                     ->label('Order Amount')
-                    ->formatStateUsing(fn ($state, $record) => $record->payment->currency.' '.$state),
+                    ->formatStateUsing(fn($state, $record) => $record->payment->currency . ' ' . $state),
                 TextColumn::make('payment.date')->label('Payment date'),
                 TextColumn::make('payment.time')->label('Payment time'),
                 TextColumn::make('payment.status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'success' => 'success',
                         'failure' => 'danger',
                     }),
             ])
             ->filters([
-                SelectFilter::make('package_id')
-                    ->label('Package Course')
-                    ->options(
-                        Package::whereHas('order')->pluck('name', 'id')
-                    )
-                    ->searchable()
-                    ->preload()
-                    ->columnSpan(2),
-                SelectFilter::make('course_id')
-                    ->label('Single course')
-                    ->options(
-                        Course::whereHas('order')->pluck('name', 'id')
-                    )
-                    ->searchable()
-                    ->preload()
-                    ->query(function (Builder $query, $data) {
-                        $query->when($data['value'] ?? null, function ($query, $value) {
-                            $query->where(function ($query) use ($value) {
-                                $query->where('course_id', $value)
-                                    ->orWhereHas('package', function ($query) use ($value) {
-                                        $query->whereJsonContains('courses', $value);
-                                    });
-                            });
-                        });
+                Filter::make('course')
+                    ->form([
+                        Section::make('Single Course')->schema([
+                            Select::make('course_id')
+                                ->label('Course')
+                                ->options(Course::whereHas('order')->pluck('name', 'id'))
+                                ->live()
+                                ->searchable()
+                                ->preload(),
+                            Select::make('training_mode')
+                                ->label('Training mode')
+                                ->options(function (Get $get) {
+                                    $courseId = $get('course_id');
+                                    if (!$courseId) {
+                                        return [];
+                                    }
+                                    return Schedule::whereHas('orderSchedule')
+                                        ->where('course_id', $courseId)
+                                        ->distinct()
+                                        ->get()
+                                        ->pluck('training_mode', 'training_mode')
+                                        ->toArray();
+                                })
+                                ->searchable()
+                                ->preload()
+                                ->disabled(fn(Get $get) => !$get('course_id')),
+                            Select::make('schedule_id')
+                                ->label('Batch')
+                                ->options(function (Get $get) {
+                                    $courseId = $get('course_id');
+                                    $trainingMode = $get('training_mode');
+                                    if (!$courseId || !$trainingMode) {
+                                        return [];
+                                    }
+                                    return Schedule::whereHas('orderSchedule')
+                                        ->where('course_id', $courseId)
+                                        ->where('training_mode', $trainingMode)
+                                        ->distinct()
+                                        ->get()
+                                        ->mapWithKeys(function ($schedule) {
+                                            return [$schedule->id => $schedule->formatted_schedule];
+                                        })
+                                        ->toArray();
+                                })->columnSpanFull()
+                                ->searchable()
+                                ->preload()
+                                ->disabled(fn(Get $get) => !$get('training_mode')),
+                        ])->columns(2)->collapsed(),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['course_id'] ?? null,
+                                fn(Builder $query, $courseId) => $query
+                                    ->where(function (Builder $subQuery) use ($courseId) {
+                                        $subQuery->whereHas('course', fn(Builder $courseQuery) => $courseQuery->where('id', $courseId))
+                                            ->orWhereHas('package', fn(Builder $packageQuery) => $packageQuery->whereJsonContains('courses', (string)$courseId));
+                                    })
+                            )
+                            ->when(
+                                $data['training_mode'],
+                                fn(Builder $query, $trainingMode) => $query->whereHas(
+                                    'schedule',
+                                    fn(Builder $scheduleQuery) => $scheduleQuery->where('training_mode', $trainingMode)
+                                )
+                            )
+                            ->when(
+                                $data['schedule_id'],
+                                fn(Builder $query, $scheduleId): Builder => $query->whereHas('schedule', fn(Builder $query) => $query->where('schedule_id', $scheduleId)),
+                            );
                     })
-                    ->columnSpan(2),
-                SelectFilter::make('training_mode')
-                    ->label('Training mode')
-                    ->options(
-                        Schedule::distinct()->pluck('training_mode', 'training_mode')->toArray()
-                    )
-                    ->searchable()
-                    ->preload()
-                    ->query(fn (Builder $query, $data) => $query->when($data['value'] ?? null, fn (Builder $query, $value) => $query->whereHas('schedule', fn ($query) => $query->where('training_mode', $value)))),
-                SelectFilter::make('start_date')
-                    ->label('Batch Date')
-                    ->options(
-                        Schedule::distinct()->pluck('start_date', 'start_date')->toArray()
-                    )
-                    ->searchable()
-                    ->query(fn (Builder $query, $data) => $query->when($data['value'] ?? null, fn (Builder $query, $value) => $query->whereHas('schedule', fn ($query) => $query->where('start_date', $value))))
-                    ->preload()
-                    ->columnSpan(2),
-                SelectFilter::make('batch_time')
-                    ->label('Batch Time')
-                    ->options(
-                        Schedule::distinct()->pluck('time', 'time')->toArray()
-                    )
-                    ->searchable()
-                    ->query(fn (Builder $query, $data) => $query->when($data['value'] ?? null, fn (Builder $query, $value) => $query->whereHas('schedule', fn ($query) => $query->where('time', $value))))
-                    ->preload(),
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+
+                        if ($data['course_id'] ?? null) {
+                            $indicators[] = Indicator::make('Course: ' . Course::where('id', $data['course_id'])->first()->name)
+                                ->removeField('course_id');
+                        }
+
+                        if ($data['training_mode'] ?? null) {
+                            $indicators[] = Indicator::make('Training Mode: ' . $data['training_mode'])
+                                ->removeField('training_mode');
+                        }
+
+                        if ($data['schedule_id'] ?? null) {
+                            $indicators[] = Indicator::make('Batch: ' . Schedule::where('id', $data['schedule_id'])->first()->formatted_schedule)
+                                ->removeField('schedule_id');
+                        }
+                        return $indicators;
+                    })->columnSpan(3),
                 Filter::make('order_date_range')
                     ->label('Order Date Range')
                     ->form([
-                        DatePicker::make('start_date')->label('Start Date'),
-                        DatePicker::make('end_date')->label('End Date'),
+                        Section::make('Order Date Range')->schema([
+                            DatePicker::make('start_date')->label('Start Date')->required(),
+                            DatePicker::make('end_date')->label('End Date')->required(),
+                        ])->collapsed(),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->when(
                             $data['start_date'] && $data['end_date'],
-                            fn (Builder $query): Builder => $query->whereHas(
+                            fn(Builder $query): Builder => $query->whereHas(
                                 'payment',
-                                fn (Builder $query): Builder => $query->whereBetween(
+                                fn(Builder $query): Builder => $query->whereBetween(
                                     'payments.date',
                                     [$data['start_date'], $data['end_date']]
                                 )
                             )
                         );
-                    })->columns(2)->columnSpanFull(),
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+                        if ($data['start_date'] && $data['end_date']) {
+                            $indicators[] = Indicator::make('From: ' . $data['start_date'] . ' To: ' . $data['end_date'])
+                                ->removeField('start_date')
+                                ->removeField('end_date');
+                        }
+                        return $indicators;
+                    }),
 
-            ], layout: FiltersLayout::AboveContentCollapsible)->filtersFormColumns(4)
+                Filter::make('package')
+                    ->form([
+                        Section::make('Package Course')->schema([
+                            Select::make('package_id')
+                                ->label('Package Course')
+                                ->options(Package::whereHas('order')->pluck('name', 'id'))
+                                ->live()
+                                ->searchable()
+                                ->preload(),
+                            Select::make('training_mode')
+                                ->label('Training mode')
+                                ->options(function (Get $get) {
+                                    $packageId = $get('package_id');
+                                    if (!$packageId) {
+                                        return [];
+                                    }
+                                    return Schedule::whereHas('orderSchedule')
+                                        ->whereHas('course', function (Builder $query) use ($packageId) {
+                                            $package = Package::find($packageId);
+                                            if ($package && $package->courses) {
+                                                $query->whereIn('id', $package->courses);
+                                            }
+                                        })
+                                        ->distinct()
+                                        ->pluck('training_mode', 'training_mode')
+                                        ->toArray();
+                                })
+                                ->searchable()
+                                ->preload()
+                                ->disabled(fn(Get $get) => !$get('package_id')),
+                            Select::make('schedule_id')
+                                ->label('Batch')
+                                ->options(function (Get $get) {
+                                    $courseId = $get('course_id');
+                                    $trainingMode = $get('training_mode');
+                                    if (!$courseId || !$trainingMode) {
+                                        return [];
+                                    }
+                                    return Schedule::whereHas('orderSchedule')
+                                        ->where('course_id', $courseId)
+                                        ->where('training_mode', $trainingMode)
+                                        ->distinct()
+                                        ->get()
+                                        ->mapWithKeys(function ($schedule) {
+                                            return [$schedule->id => $schedule->formatted_schedule];
+                                        })
+                                        ->toArray();
+                                })->columnSpanFull()
+                                ->searchable()
+                                ->preload()
+                                ->disabled(fn(Get $get) => !$get('training_mode')),
+                        ])->columns(2)->collapsed(),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['package_id'] ?? null,
+                                fn(Builder $query, $courseId) => $query
+                                    ->where(function (Builder $subQuery) use ($courseId) {
+                                        $subQuery->whereHas('package', fn(Builder $courseQuery) => $courseQuery->where('id', $courseId));
+                                    })
+                            )
+                            ->when(
+                                $data['training_mode'],
+                                fn(Builder $query, $trainingMode) => $query->whereHas(
+                                    'schedule',
+                                    fn(Builder $scheduleQuery) => $scheduleQuery->where('training_mode', $trainingMode)
+                                )
+                            )
+                            ->when(
+                                $data['schedule_id'],
+                                fn(Builder $query, $scheduleId): Builder => $query->whereHas('schedule', fn(Builder $query) => $query->where('schedule_id', $scheduleId)),
+                            );
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+
+                        if ($data['package_id'] ?? null) {
+                            $indicators[] = Indicator::make('Package Course: ' . Package::where('id', $data['package_id'])->first()->name)
+                                ->removeField('package_id');
+                        }
+
+                        if ($data['training_mode'] ?? null) {
+                            $indicators[] = Indicator::make('Training Mode: ' . $data['training_mode'])
+                                ->removeField('training_mode');
+                        }
+
+                        if ($data['schedule_id'] ?? null) {
+                            $indicators[] = Indicator::make('Batch: ' . Schedule::where('id', $data['schedule_id'])->first()->formatted_schedule)
+                                ->removeField('schedule_id');
+                        }
+                        return $indicators;
+                    })->columnSpan(3),
+            ], layout: FiltersLayout::AboveContentCollapsible)->filtersFormColumns('4')
             ->actions([
                 ActionsAction::make('invoice')
                     ->label('Download Invoice')
@@ -221,7 +369,7 @@ class OrderResource extends Resource
                     ->action(function ($record) {
                         return response()->download(public_path($record->invoice));
                     })
-                    ->visible(fn ($record) => ! is_null($record->invoice)),
+                    ->visible(fn($record) => ! is_null($record->invoice)),
                 ViewAction::make(),
             ])
             ->bulkActions([
