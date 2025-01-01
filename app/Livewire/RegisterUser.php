@@ -19,8 +19,6 @@ class RegisterUser extends Component
 
     public $phone = '';
 
-    public $otp = '';
-
     public function rules()
     {
         return [
@@ -33,6 +31,7 @@ class RegisterUser extends Component
             'phone' => [
                 'unique:users,phone',
             ],
+
         ];
     }
 
@@ -61,7 +60,6 @@ class RegisterUser extends Component
             $this->dispatch('registration-success');
         }
     }
-
     public function render()
     {
         return view('livewire.register-user');

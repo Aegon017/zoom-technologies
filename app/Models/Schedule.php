@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+use function Laravel\Prompts\info;
+
 class Schedule extends Model
 {
     protected $fillable = [
@@ -34,8 +36,7 @@ class Schedule extends Model
 
     protected static function expireSchedule()
     {
-        self::whereDate('start_date', '<', today())
-            ->update(['status' => false]);
+        self::whereDate('start_date', '<', today()->subDays(5))->update(['status' => false]);
     }
 
     protected $casts = [
@@ -73,7 +74,7 @@ class Schedule extends Model
         $offset = $timezone->offset;
         $abbreviation = $timezone->abbreviation;
 
-        return $this->start_date.', '.$this->time.' ( '.$abbreviation.' - '.$offset.' )';
+        return $this->start_date . ', ' . $this->time . ' ( ' . $abbreviation . ' - ' . $offset . ' )';
     }
 
     public function getFormattedPackageScheduleAttribute()
@@ -82,7 +83,7 @@ class Schedule extends Model
         $offset = $timezone->offset;
         $abbreviation = $timezone->abbreviation;
 
-        return $this->course->name.' - '.$this->start_date.', '.$this->time.' ( '.$abbreviation.' - '.$offset.' )';
+        return $this->course->name . ' - ' . $this->start_date . ', ' . $this->time . ' ( ' . $abbreviation . ' - ' . $offset . ' )';
     }
 
     public function getStartDateAttribute($value)

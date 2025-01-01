@@ -17,6 +17,6 @@
         "vite": "^5.0"
     },
     "dependencies": {
-        "intl-tel-input": "^24.8.1"
+        "intl-tel-input": "^24.8.2"
     }
 }
