@@ -17,6 +17,7 @@ use App\Models\Franchisee;
 use App\Models\FreeMaterialSection;
 use App\Models\MemorableMoments;
 use App\Models\Order;
+use App\Models\OtherStudyMaterial;
 use App\Models\Package;
 use App\Models\PageMetaDetails;
 use App\Models\PageSchema;
@@ -192,7 +193,7 @@ class FrontendController extends Controller
     public function renderFreeEbooks()
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Study material')->first();
-        $materials = Course::with('studyMaterial')->get()->flatMap->studyMaterial->where('subscription', 'Free');
+        $materials = Course::with('studyMaterial')->get()->flatMap->studyMaterial->where('subscription', 'Direct Access')->concat(OtherStudyMaterial::where('subscription', 'Direct Access')->get());
         $pageSchema = PageSchema::where('page_name', 'Study material')->first();
         $pageContent = StudyMaterialPage::first()?->page_content;
 
@@ -201,19 +202,7 @@ class FrontendController extends Controller
 
     public function renderMyCourse($slug)
     {
-        $course = Course::where('slug', $slug)->with('studyMaterial')->first();
-        $package = Package::where('slug', $slug)->first();
-
-        if ($package) {
-            $courses = Course::findMany($package->courses);
-            $studyMaterials = $courses->flatMap->studyMaterial;
-            $courseName = $package->name;
-        } else {
-            $studyMaterials = $course->studyMaterial;
-            $courseName = $course->name;
-        }
-
-        return view('pages.my-course', compact('studyMaterials', 'courseName'));
+        return view('pages.my-course', compact('slug'));
     }
 
     public function renderCourses()

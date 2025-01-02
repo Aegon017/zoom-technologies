@@ -13,27 +13,12 @@ use Illuminate\View\Component;
 class StudentCourses extends Component
 {
     public $courses;
-
     public $packages;
 
     public function __construct()
     {
-        $user = Auth::user();
-        $orders = Order::where('user_id', $user->id)->get();
-        foreach ($orders as $order) {
-            if ($order->payment->status == 'success') {
-                $course_id = $order->course_id;
-                $package_id = $order->package_id;
-                $courses[$course_id] ??= [
-                    'course_id' => $course_id,
-                ];
-                $packages[$package_id] ??= [
-                    'package_id' => $package_id,
-                ];
-            }
-        }
-        $this->packages = Package::findMany($packages ?? []);
-        $this->courses = Course::findMany($courses ?? []);
+        $this->courses = Course::all();
+        $this->packages = Package::all();
     }
 
     public function render(): View|Closure|string

@@ -1,22 +1,30 @@
 <?php
 
-namespace App\Filament\Resources\CourseResource\RelationManagers;
+namespace App\Filament\Resources;
 
+use App\Filament\Resources\OtherStudyMaterialResource\Pages;
+use App\Filament\Resources\OtherStudyMaterialResource\RelationManagers;
+use App\Models\OtherStudyMaterial;
+use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class StudyMaterialRelationManager extends RelationManager
+class OtherStudyMaterialResource extends Resource
 {
-    protected static string $relationship = 'studyMaterial';
+    protected static ?string $model = OtherStudyMaterial::class;
 
-    public function form(Form $form): Form
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static function form(Form $form): Form
     {
         return $form
             ->schema([
@@ -33,10 +41,9 @@ class StudyMaterialRelationManager extends RelationManager
             ]);
     }
 
-    public function table(Table $table): Table
+    public static function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('name')
             ->columns([
                 TextColumn::make('#')->rowIndex(),
                 TextColumn::make('name')->searchable(),
@@ -45,17 +52,29 @@ class StudyMaterialRelationManager extends RelationManager
             ->filters([
                 //
             ])
-            ->headerActions([
-                Tables\Actions\CreateAction::make(),
-            ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListOtherStudyMaterials::route('/'),
+            'create' => Pages\CreateOtherStudyMaterial::route('/create'),
+            'edit' => Pages\EditOtherStudyMaterial::route('/{record}/edit'),
+        ];
     }
 }

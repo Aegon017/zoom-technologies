@@ -10,6 +10,7 @@ use App\Models\OrderSchedule;
 use App\Models\Package;
 use App\Models\Schedule;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
@@ -150,7 +151,7 @@ class OrderResource extends Resource
             ->filters([
                 Filter::make('course')
                     ->form([
-                        Section::make('Single Course')->schema([
+                        Group::make()->schema([
                             Select::make('course_id')
                                 ->label('Course')
                                 ->options(Course::whereHas('order')->pluck('name', 'id'))
@@ -195,7 +196,7 @@ class OrderResource extends Resource
                                 ->searchable()
                                 ->preload()
                                 ->disabled(fn(Get $get) => !$get('training_mode')),
-                        ])->columns(2)->collapsed(),
+                        ])->columns(2)
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
@@ -241,10 +242,10 @@ class OrderResource extends Resource
                 Filter::make('order_date_range')
                     ->label('Order Date Range')
                     ->form([
-                        Section::make('Order Date Range')->schema([
+                        Group::make()->schema([
                             DatePicker::make('start_date')->label('Start Date')->required(),
                             DatePicker::make('end_date')->label('End Date')->required(),
-                        ])->collapsed(),
+                        ])
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->when(
@@ -268,99 +269,99 @@ class OrderResource extends Resource
                         return $indicators;
                     }),
 
-                Filter::make('package')
-                    ->form([
-                        Section::make('Package Course')->schema([
-                            Select::make('package_id')
-                                ->label('Package Course')
-                                ->options(Package::whereHas('order')->pluck('name', 'id'))
-                                ->live()
-                                ->searchable()
-                                ->preload(),
-                            Select::make('training_mode')
-                                ->label('Training mode')
-                                ->options(function (Get $get) {
-                                    $packageId = $get('package_id');
-                                    if (!$packageId) {
-                                        return [];
-                                    }
-                                    return Schedule::whereHas('orderSchedule')
-                                        ->whereHas('course', function (Builder $query) use ($packageId) {
-                                            $package = Package::find($packageId);
-                                            if ($package && $package->courses) {
-                                                $query->whereIn('id', $package->courses);
-                                            }
-                                        })
-                                        ->distinct()
-                                        ->pluck('training_mode', 'training_mode')
-                                        ->toArray();
-                                })
-                                ->searchable()
-                                ->preload()
-                                ->disabled(fn(Get $get) => !$get('package_id')),
-                            Select::make('schedule_id')
-                                ->label('Batch')
-                                ->options(function (Get $get) {
-                                    $courseId = $get('course_id');
-                                    $trainingMode = $get('training_mode');
-                                    if (!$courseId || !$trainingMode) {
-                                        return [];
-                                    }
-                                    return Schedule::whereHas('orderSchedule')
-                                        ->where('course_id', $courseId)
-                                        ->where('training_mode', $trainingMode)
-                                        ->distinct()
-                                        ->get()
-                                        ->mapWithKeys(function ($schedule) {
-                                            return [$schedule->id => $schedule->formatted_schedule];
-                                        })
-                                        ->toArray();
-                                })->columnSpanFull()
-                                ->searchable()
-                                ->preload()
-                                ->disabled(fn(Get $get) => !$get('training_mode')),
-                        ])->columns(2)->collapsed(),
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when(
-                                $data['package_id'] ?? null,
-                                fn(Builder $query, $courseId) => $query
-                                    ->where(function (Builder $subQuery) use ($courseId) {
-                                        $subQuery->whereHas('package', fn(Builder $courseQuery) => $courseQuery->where('id', $courseId));
-                                    })
-                            )
-                            ->when(
-                                $data['training_mode'],
-                                fn(Builder $query, $trainingMode) => $query->whereHas(
-                                    'schedule',
-                                    fn(Builder $scheduleQuery) => $scheduleQuery->where('training_mode', $trainingMode)
-                                )
-                            )
-                            ->when(
-                                $data['schedule_id'],
-                                fn(Builder $query, $scheduleId): Builder => $query->whereHas('schedule', fn(Builder $query) => $query->where('schedule_id', $scheduleId)),
-                            );
-                    })
-                    ->indicateUsing(function (array $data): array {
-                        $indicators = [];
+                // Filter::make('package')
+                //     ->form([
+                //         Section::make('Package Course')->schema([
+                //             Select::make('package_id')
+                //                 ->label('Package Course')
+                //                 ->options(Package::whereHas('order')->pluck('name', 'id'))
+                //                 ->live()
+                //                 ->searchable()
+                //                 ->preload(),
+                //             Select::make('training_mode')
+                //                 ->label('Training mode')
+                //                 ->options(function (Get $get) {
+                //                     $packageId = $get('package_id');
+                //                     if (!$packageId) {
+                //                         return [];
+                //                     }
+                //                     return Schedule::whereHas('orderSchedule')
+                //                         ->whereHas('course', function (Builder $query) use ($packageId) {
+                //                             $package = Package::find($packageId);
+                //                             if ($package && $package->courses) {
+                //                                 $query->whereIn('id', $package->courses);
+                //                             }
+                //                         })
+                //                         ->distinct()
+                //                         ->pluck('training_mode', 'training_mode')
+                //                         ->toArray();
+                //                 })
+                //                 ->searchable()
+                //                 ->preload()
+                //                 ->disabled(fn(Get $get) => !$get('package_id')),
+                //             Select::make('schedule_id')
+                //                 ->label('Batch')
+                //                 ->options(function (Get $get) {
+                //                     $courseId = $get('course_id');
+                //                     $trainingMode = $get('training_mode');
+                //                     if (!$courseId || !$trainingMode) {
+                //                         return [];
+                //                     }
+                //                     return Schedule::whereHas('orderSchedule')
+                //                         ->where('course_id', $courseId)
+                //                         ->where('training_mode', $trainingMode)
+                //                         ->distinct()
+                //                         ->get()
+                //                         ->mapWithKeys(function ($schedule) {
+                //                             return [$schedule->id => $schedule->formatted_schedule];
+                //                         })
+                //                         ->toArray();
+                //                 })->columnSpanFull()
+                //                 ->searchable()
+                //                 ->preload()
+                //                 ->disabled(fn(Get $get) => !$get('training_mode')),
+                //         ])->columns(2)->collapsed(),
+                //     ])
+                //     ->query(function (Builder $query, array $data): Builder {
+                //         return $query
+                //             ->when(
+                //                 $data['package_id'] ?? null,
+                //                 fn(Builder $query, $courseId) => $query
+                //                     ->where(function (Builder $subQuery) use ($courseId) {
+                //                         $subQuery->whereHas('package', fn(Builder $courseQuery) => $courseQuery->where('id', $courseId));
+                //                     })
+                //             )
+                //             ->when(
+                //                 $data['training_mode'],
+                //                 fn(Builder $query, $trainingMode) => $query->whereHas(
+                //                     'schedule',
+                //                     fn(Builder $scheduleQuery) => $scheduleQuery->where('training_mode', $trainingMode)
+                //                 )
+                //             )
+                //             ->when(
+                //                 $data['schedule_id'],
+                //                 fn(Builder $query, $scheduleId): Builder => $query->whereHas('schedule', fn(Builder $query) => $query->where('schedule_id', $scheduleId)),
+                //             );
+                //     })
+                //     ->indicateUsing(function (array $data): array {
+                //         $indicators = [];
 
-                        if ($data['package_id'] ?? null) {
-                            $indicators[] = Indicator::make('Package Course: ' . Package::where('id', $data['package_id'])->first()->name)
-                                ->removeField('package_id');
-                        }
+                //         if ($data['package_id'] ?? null) {
+                //             $indicators[] = Indicator::make('Package Course: ' . Package::where('id', $data['package_id'])->first()->name)
+                //                 ->removeField('package_id');
+                //         }
 
-                        if ($data['training_mode'] ?? null) {
-                            $indicators[] = Indicator::make('Training Mode: ' . $data['training_mode'])
-                                ->removeField('training_mode');
-                        }
+                //         if ($data['training_mode'] ?? null) {
+                //             $indicators[] = Indicator::make('Training Mode: ' . $data['training_mode'])
+                //                 ->removeField('training_mode');
+                //         }
 
-                        if ($data['schedule_id'] ?? null) {
-                            $indicators[] = Indicator::make('Batch: ' . Schedule::where('id', $data['schedule_id'])->first()->formatted_schedule)
-                                ->removeField('schedule_id');
-                        }
-                        return $indicators;
-                    })->columnSpan(3),
+                //         if ($data['schedule_id'] ?? null) {
+                //             $indicators[] = Indicator::make('Batch: ' . Schedule::where('id', $data['schedule_id'])->first()->formatted_schedule)
+                //                 ->removeField('schedule_id');
+                //         }
+                //         return $indicators;
+                //     })->columnSpan(3),
             ], layout: FiltersLayout::AboveContentCollapsible)->filtersFormColumns('4')
             ->actions([
                 ActionsAction::make('invoice')
