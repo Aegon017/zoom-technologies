@@ -49,6 +49,7 @@ class CourseResource extends Resource
             ->schema([
                 Group::make()->schema([
                     Section::make('Course Details')->schema([
+                        TextInput::make('position')->numeric()->required()->helperText('Position of the course in the list'),
                         TextInput::make('name')->live(onBlur: true)
                             ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
                         TextInput::make('slug')->prefix('training/india/')->required(),
@@ -106,7 +107,8 @@ class CourseResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('position', 'asc');
     }
 
     public static function replicateCourse(Course $course)

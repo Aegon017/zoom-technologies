@@ -46,7 +46,7 @@ Route::any('/payment/failure', [PaymentController::class, 'failure'])->name('pay
 
 Route::get('/storage-link', function () {
     $target = storage_path('app/public');
-    $link = $_SERVER['DOCUMENT_ROOT'] . '/zoom-technologies/public/storage';
+    $link = $_SERVER['DOCUMENT_ROOT'].'/zoom-technologies/public/storage';
     symlink($target, $link);
 });
 

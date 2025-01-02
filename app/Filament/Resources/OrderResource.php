@@ -27,7 +27,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\Indicator;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use ZipArchive;
@@ -63,37 +62,37 @@ class OrderResource extends Resource
                 Fieldset::make('Course Details')->schema([
                     TextEntry::make('course.name'),
                     TextEntry::make('courseOrPackage_price')
-                        ->formatStateUsing(fn($state, $record) => $record->payment->currency . ' ' . $state),
+                        ->formatStateUsing(fn ($state, $record) => $record->payment->currency.' '.$state),
                 ]),
                 Fieldset::make('Batches')->schema([
                     TextEntry::make('orderSchedule')
                         ->label('')
                         ->listWithLineBreaks()
                         ->getStateUsing(
-                            fn($record) => $record->orderSchedule->isEmpty()
+                            fn ($record) => $record->orderSchedule->isEmpty()
                                 ? ['🚫 No Schedules Available']
                                 : $record->orderSchedule
-                                ->map(function ($os) {
-                                    $s = $os->schedule;
+                                    ->map(function ($os) {
+                                        $s = $os->schedule;
 
-                                    return $s ? [
-                                        '📚 Course: ' . ($s->course?->name ?? 'N/A'),
-                                        '📅 Date: ' . (
-                                            $s->start_date
-                                            ? \Carbon\Carbon::parse($s->start_date)->format('d M Y')
-                                            : 'Unscheduled'
-                                        ),
-                                        '⏰ Time: ' . (
-                                            $s->time
-                                            ? \Carbon\Carbon::parse($s->time)->format('h:i A')
-                                            : 'TBD'
-                                        ),
-                                        '🌐 Mode: ' . ($s->training_mode ?? 'Unspecified'),
-                                    ] : ['⚠️ Invalid Schedule'];
-                                })
-                                ->flatten()
-                                ->filter()
-                                ->toArray()
+                                        return $s ? [
+                                            '📚 Course: '.($s->course?->name ?? 'N/A'),
+                                            '📅 Date: '.(
+                                                $s->start_date
+                                                ? \Carbon\Carbon::parse($s->start_date)->format('d M Y')
+                                                : 'Unscheduled'
+                                            ),
+                                            '⏰ Time: '.(
+                                                $s->time
+                                                ? \Carbon\Carbon::parse($s->time)->format('h:i A')
+                                                : 'TBD'
+                                            ),
+                                            '🌐 Mode: '.($s->training_mode ?? 'Unspecified'),
+                                        ] : ['⚠️ Invalid Schedule'];
+                                    })
+                                    ->flatten()
+                                    ->filter()
+                                    ->toArray()
                         )
                         ->placeholder('No schedule information'),
                 ]),
@@ -106,13 +105,13 @@ class OrderResource extends Resource
                     TextEntry::make('payment.time')->label('Time')->time('h:i A'),
                     TextEntry::make('payment.description')->label('Description'),
                     TextEntry::make('cgst')
-                        ->formatStateUsing(fn($state, $record) => $record->payment->currency . ' ' . $state)
+                        ->formatStateUsing(fn ($state, $record) => $record->payment->currency.' '.$state)
                         ->label('CGST'),
                     TextEntry::make('sgst')
-                        ->formatStateUsing(fn($state, $record) => $record->payment->currency . ' ' . $state)
+                        ->formatStateUsing(fn ($state, $record) => $record->payment->currency.' '.$state)
                         ->label('SGST'),
                     TextEntry::make('payment.amount')
-                        ->formatStateUsing(fn($state, $record) => $record->payment->currency . ' ' . $state)
+                        ->formatStateUsing(fn ($state, $record) => $record->payment->currency.' '.$state)
                         ->label('Order Amount'),
                     TextEntry::make('payment.status'),
                 ]),
@@ -138,12 +137,12 @@ class OrderResource extends Resource
                     }),
                 TextColumn::make('payment.amount')
                     ->label('Order Amount')
-                    ->formatStateUsing(fn($state, $record) => $record->payment->currency . ' ' . $state),
+                    ->formatStateUsing(fn ($state, $record) => $record->payment->currency.' '.$state),
                 TextColumn::make('payment.date')->label('Payment date'),
                 TextColumn::make('payment.time')->label('Payment time'),
                 TextColumn::make('payment.status')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'success' => 'success',
                         'failure' => 'danger',
                     }),
@@ -162,9 +161,10 @@ class OrderResource extends Resource
                                 ->label('Training mode')
                                 ->options(function (Get $get) {
                                     $courseId = $get('course_id');
-                                    if (!$courseId) {
+                                    if (! $courseId) {
                                         return [];
                                     }
+
                                     return Schedule::whereHas('orderSchedule')
                                         ->where('course_id', $courseId)
                                         ->distinct()
@@ -174,15 +174,16 @@ class OrderResource extends Resource
                                 })
                                 ->searchable()
                                 ->preload()
-                                ->disabled(fn(Get $get) => !$get('course_id')),
+                                ->disabled(fn (Get $get) => ! $get('course_id')),
                             Select::make('schedule_id')
                                 ->label('Batch')
                                 ->options(function (Get $get) {
                                     $courseId = $get('course_id');
                                     $trainingMode = $get('training_mode');
-                                    if (!$courseId || !$trainingMode) {
+                                    if (! $courseId || ! $trainingMode) {
                                         return [];
                                     }
+
                                     return Schedule::whereHas('orderSchedule')
                                         ->where('course_id', $courseId)
                                         ->where('training_mode', $trainingMode)
@@ -195,48 +196,49 @@ class OrderResource extends Resource
                                 })->columnSpanFull()
                                 ->searchable()
                                 ->preload()
-                                ->disabled(fn(Get $get) => !$get('training_mode')),
-                        ])->columns(2)
+                                ->disabled(fn (Get $get) => ! $get('training_mode')),
+                        ])->columns(2),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
                             ->when(
                                 $data['course_id'] ?? null,
-                                fn(Builder $query, $courseId) => $query
+                                fn (Builder $query, $courseId) => $query
                                     ->where(function (Builder $subQuery) use ($courseId) {
-                                        $subQuery->whereHas('course', fn(Builder $courseQuery) => $courseQuery->where('id', $courseId))
-                                            ->orWhereHas('package', fn(Builder $packageQuery) => $packageQuery->whereJsonContains('courses', (string)$courseId));
+                                        $subQuery->whereHas('course', fn (Builder $courseQuery) => $courseQuery->where('id', $courseId))
+                                            ->orWhereHas('package', fn (Builder $packageQuery) => $packageQuery->whereJsonContains('courses', (string) $courseId));
                                     })
                             )
                             ->when(
                                 $data['training_mode'],
-                                fn(Builder $query, $trainingMode) => $query->whereHas(
+                                fn (Builder $query, $trainingMode) => $query->whereHas(
                                     'schedule',
-                                    fn(Builder $scheduleQuery) => $scheduleQuery->where('training_mode', $trainingMode)
+                                    fn (Builder $scheduleQuery) => $scheduleQuery->where('training_mode', $trainingMode)
                                 )
                             )
                             ->when(
                                 $data['schedule_id'],
-                                fn(Builder $query, $scheduleId): Builder => $query->whereHas('schedule', fn(Builder $query) => $query->where('schedule_id', $scheduleId)),
+                                fn (Builder $query, $scheduleId): Builder => $query->whereHas('schedule', fn (Builder $query) => $query->where('schedule_id', $scheduleId)),
                             );
                     })
                     ->indicateUsing(function (array $data): array {
                         $indicators = [];
 
                         if ($data['course_id'] ?? null) {
-                            $indicators[] = Indicator::make('Course: ' . Course::where('id', $data['course_id'])->first()->name)
+                            $indicators[] = Indicator::make('Course: '.Course::where('id', $data['course_id'])->first()->name)
                                 ->removeField('course_id');
                         }
 
                         if ($data['training_mode'] ?? null) {
-                            $indicators[] = Indicator::make('Training Mode: ' . $data['training_mode'])
+                            $indicators[] = Indicator::make('Training Mode: '.$data['training_mode'])
                                 ->removeField('training_mode');
                         }
 
                         if ($data['schedule_id'] ?? null) {
-                            $indicators[] = Indicator::make('Batch: ' . Schedule::where('id', $data['schedule_id'])->first()->formatted_schedule)
+                            $indicators[] = Indicator::make('Batch: '.Schedule::where('id', $data['schedule_id'])->first()->formatted_schedule)
                                 ->removeField('schedule_id');
                         }
+
                         return $indicators;
                     })->columnSpan(3),
                 Filter::make('order_date_range')
@@ -245,14 +247,14 @@ class OrderResource extends Resource
                         Group::make()->schema([
                             DatePicker::make('start_date')->label('Start Date')->required(),
                             DatePicker::make('end_date')->label('End Date')->required(),
-                        ])
+                        ]),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->when(
                             $data['start_date'] && $data['end_date'],
-                            fn(Builder $query): Builder => $query->whereHas(
+                            fn (Builder $query): Builder => $query->whereHas(
                                 'payment',
-                                fn(Builder $query): Builder => $query->whereBetween(
+                                fn (Builder $query): Builder => $query->whereBetween(
                                     'payments.date',
                                     [$data['start_date'], $data['end_date']]
                                 )
@@ -262,10 +264,11 @@ class OrderResource extends Resource
                     ->indicateUsing(function (array $data): array {
                         $indicators = [];
                         if ($data['start_date'] && $data['end_date']) {
-                            $indicators[] = Indicator::make('From: ' . $data['start_date'] . ' To: ' . $data['end_date'])
+                            $indicators[] = Indicator::make('From: '.$data['start_date'].' To: '.$data['end_date'])
                                 ->removeField('start_date')
                                 ->removeField('end_date');
                         }
+
                         return $indicators;
                     }),
 
@@ -370,7 +373,7 @@ class OrderResource extends Resource
                     ->action(function ($record) {
                         return response()->download(public_path($record->invoice));
                     })
-                    ->visible(fn($record) => ! is_null($record->invoice)),
+                    ->visible(fn ($record) => ! is_null($record->invoice)),
                 ViewAction::make(),
             ])
             ->bulkActions([

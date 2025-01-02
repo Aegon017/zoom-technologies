@@ -13,8 +13,11 @@ use Livewire\Component;
 class RegisterUser extends Component
 {
     public $fullName = '';
+
     public $email = '';
+
     public $phone = '';
+
     public $valid = false;
 
     public function rules()
@@ -79,7 +82,7 @@ class RegisterUser extends Component
 
         } catch (\Exception $e) {
             // Log the error
-            logger()->error('Registration failed: ' . $e->getMessage());
+            logger()->error('Registration failed: '.$e->getMessage());
 
             // Flash error message
             session()->flash('error', 'Registration failed. Please try again.');

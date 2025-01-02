@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Package extends Model
 {
     protected $fillable = [
+        'position',
         'courses',
         'name',
         'slug',

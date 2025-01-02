@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Course extends Model
 {
     protected $fillable = [
+        'position',
         'name',
         'slug',
         'thumbnail',

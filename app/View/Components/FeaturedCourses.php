@@ -14,7 +14,10 @@ class FeaturedCourses extends Component
 
     public function __construct()
     {
-        $this->items = Course::all()->concat(Package::all());
+        $courses = Course::orderBy('position', 'asc')->get();
+        $packages = Package::orderBy('position', 'asc')->get();
+        $PakcageCourses = $courses->concat($packages);
+        $this->items = $PakcageCourses->sortBy('position');
     }
 
     public function render(): View|Closure|string

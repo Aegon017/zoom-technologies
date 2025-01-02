@@ -10,8 +10,11 @@ use Livewire\Component;
 class StudentStudyMaterail extends Component
 {
     public $slug = '';
+
     public $courseName = '';
+
     public $studyMaterials = [];
+
     public function mount()
     {
         $user = Auth::user();
@@ -50,6 +53,7 @@ class StudentStudyMaterail extends Component
             $this->courseName = $course->name;
         }
     }
+
     public function render()
     {
         return view('livewire.student-study-materail');

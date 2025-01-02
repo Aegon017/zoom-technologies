@@ -44,6 +44,7 @@ class PackageResource extends Resource
             ->schema([
                 Group::make()->schema([
                     Section::make('Courses package details')->schema([
+                        TextInput::make('position')->numeric()->required()->helperText('Position of the course in the list'),
                         TextInput::make('name')->live(onBlur: true)
                             ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
                         TextInput::make('slug')->prefix('training/india/')->required(),
@@ -96,7 +97,8 @@ class PackageResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('position', 'asc');
     }
 
     public static function getRelations(): array
