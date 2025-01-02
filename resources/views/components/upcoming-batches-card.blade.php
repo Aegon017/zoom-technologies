@@ -51,7 +51,7 @@
 @if ($latestPackageSchedules != null)
     @foreach ($latestPackageSchedules as $scheduleInfo)
         @php
-            $item = $scheduleInfo['package'];
+            $item = $scheduleInfo['item'];
             $latest_schedule = $scheduleInfo['latest_schedule'];
             $timeZone = $scheduleInfo['latest_schedule']->timezone;
         @endphp

@@ -23,6 +23,7 @@ use App\Models\PageMetaDetails;
 use App\Models\PageSchema;
 use App\Models\PromoSection;
 use App\Models\QRCode;
+use App\Models\Schedule;
 use App\Models\Slider;
 use App\Models\StudyMaterialPage;
 use App\Models\TermsAndCondition;
@@ -105,35 +106,35 @@ class FrontendController extends Controller
     public function renderUpcomingBatches()
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Upcoming schedule')->first();
-        $latestSchedules = Course::with('schedule')->get()->map(function ($course) {
-            $latestSchedule = $course->schedule
-                ->filter(function ($schedule) {
-                    return Carbon::parse($schedule->start_date) >= today();
-                })
-                ->sortBy('start_date')
+
+        $latestSchedules = Course::with(['schedule' => function ($query) {
+            $query->where('start_date', '>', today())
+                ->orderBy('start_date', 'asc')
+                ->limit(1);
+        }])
+            ->whereHas('schedule', function ($query) {
+                $query->where('start_date', '>', today());
+            })
+            ->get()
+            ->map(fn($course) => [
+                'item' => $course,
+                'latest_schedule' => $course->schedule->first(),
+            ]);
+        $latestPackageSchedules = Package::all()->map(function ($package) {
+            $courseIds = $package->courses;
+
+            $latestSchedule = Schedule::whereIn('course_id', $courseIds)
+                ->where('start_date', '>', today())
+                ->orderBy('start_date', 'asc')
                 ->first();
 
             return $latestSchedule ? [
-                'item' => $course,
+                'item' => $package,
                 'latest_schedule' => $latestSchedule,
             ] : null;
-        })->filter()->values();
-
-        $packages = Package::all();
-        $latestPackageSchedules = collect($packages)->map(function ($package) {
-            $packageSchedules = Course::findMany($package->courses);
-
-            $latestSchedule = $packageSchedules->flatMap(function ($course) {
-                return optional($course->schedule)->filter(function ($schedule) {
-                    return Carbon::parse($schedule->start_date) >= today();
-                });
-            })->sortByDesc('start_date')->first();
-
-            return $latestSchedule ? [
-                'package' => $package,
-                'latest_schedule' => $latestSchedule,
-            ] : null;
-        })->filter()->values()->all();
+        })
+            ->filter()
+            ->values();
         $pageSchema = PageSchema::where('page_name', 'Upcoming schedule')->first();
 
         return view('pages.upcoming-batches', compact('latestSchedules', 'metaDetail', 'latestPackageSchedules', 'pageSchema'));
@@ -212,7 +213,7 @@ class FrontendController extends Controller
 
     public function checkout(Request $request)
     {
-        $scheduleIDs = array_values(array_filter($request->all(), fn ($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
+        $scheduleIDs = array_values(array_filter($request->all(), fn($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
         Session::put('scheduleIDs', $scheduleIDs);
         $thankyou = Thankyou::first();
         $bankTransferDetails = BankTransfer::first();
