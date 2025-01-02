@@ -72,7 +72,7 @@
                                         <li><a href="{{ route('render.franchisee') }}">Franchisee</a></li>
                                         <li><a href="{{ route('render.memorable-moments') }}">Memorable Moments</a>
                                         </li>
-                                        <li><a href="{{ route('render.home') }}">Projects Implemented</a></li>
+                                        <li><a href="https://www.zoomcybersense.com/customers.php">Customers</a></li>
                                         <li><a href="{{ route('render.testimonials') }}">Testimonials</a></li>
                                     </ul>
                                 </div>
