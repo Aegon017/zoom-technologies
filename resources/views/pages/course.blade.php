@@ -111,4 +111,5 @@
     </section>
     <x-related-courses />
     <x-checkout-popup :$prices :$product :$packageCourses />
+    <x-terms-popup :$terms />
 </x-frontend-layout>
