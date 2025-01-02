@@ -65,28 +65,28 @@ class SingleCourseResource extends Resource
                 Fieldset::make('Course Details')->schema([
                     TextEntry::make('course.name'),
                     TextEntry::make('course_price')->label('Price')
-                        ->formatStateUsing(fn ($state, $record) => 'Rs.'.' '.$state),
+                        ->formatStateUsing(fn($state, $record) => 'Rs.' . ' ' . $state),
                 ]),
                 Fieldset::make('Batches')->schema([
                     TextEntry::make('schedule')
                         ->label('')
                         ->listWithLineBreaks()
                         ->getStateUsing(
-                            fn ($record) => ! $record->schedule
+                            fn($record) => ! $record->schedule
                                 ? ['🚫 No Schedules Available']
                                 : [
-                                    '📚 Course: '.($record->schedule->first()->course?->name ?? 'N/A'),
-                                    '📅 Date: '.(
+                                    '📚 Course: ' . ($record->schedule->first()->course?->name ?? 'N/A'),
+                                    '📅 Date: ' . (
                                         $record->schedule->first()->start_date
                                         ? \Carbon\Carbon::parse($record->schedule->first()->start_date)->format('d M Y')
                                         : 'Unscheduled'
                                     ),
-                                    '⏰ Time: '.(
+                                    '⏰ Time: ' . (
                                         $record->schedule->first()->time
                                         ? \Carbon\Carbon::parse($record->schedule->first()->time)->format('h:i A')
                                         : 'TBD'
                                     ),
-                                    '🌐 Mode: '.($record->schedule->first()->training_mode ?? 'Unspecified'),
+                                    '🌐 Mode: ' . ($record->schedule->first()->training_mode ?? 'Unspecified'),
                                 ]
 
                         )
@@ -95,11 +95,11 @@ class SingleCourseResource extends Resource
                 Fieldset::make('Payment Details')->schema([
                     TextEntry::make('payment_mode'),
                     TextEntry::make('cgst')
-                        ->formatStateUsing(fn ($state, $record) => 'Rs.'.' '.$state),
+                        ->formatStateUsing(fn($state, $record) => 'Rs.' . ' ' . $state),
                     TextEntry::make('sgst')
-                        ->formatStateUsing(fn ($state, $record) => 'Rs.'.' '.$state),
+                        ->formatStateUsing(fn($state, $record) => 'Rs.' . ' ' . $state),
                     TextEntry::make('amount')
-                        ->formatStateUsing(fn ($state, $record) => 'Rs.'.' '.$state),
+                        ->formatStateUsing(fn($state, $record) => 'Rs.' . ' ' . $state),
                 ]),
             ]);
     }
@@ -113,30 +113,10 @@ class SingleCourseResource extends Resource
                         ->schema([
                             TextInput::make('user_name')->required()->label('Student Name'),
                             TextInput::make('user_email')->required()
-                                ->live()
-                                ->reactive()
-                                ->afterStateUpdated(function ($state, callable $get) {
-                                    if (User::where('email', $state)->exists()) {
-                                        Notification::make()
-                                            ->title('Email already exists')
-                                            ->body('The email you entered is already registered. Please use a different email.')
-                                            ->danger()
-                                            ->send();
-                                    }
-                                })
+                                ->unique('users', 'email')
                                 ->label('Email'),
                             PhoneInput::make('user_phone')->required()
-                                ->live()
-                                ->reactive()
-                                ->afterStateUpdated(function ($state, callable $get) {
-                                    if (User::where('phone', $state)->exists()) {
-                                        Notification::make()
-                                            ->title('Phone number already exists')
-                                            ->body('The phone number you entered is already registered. Please use a different phone number.')
-                                            ->danger()
-                                            ->send();
-                                    }
-                                })
+                                ->unique('users', 'phone')
                                 ->label('Phone Number'),
                             Section::make()->schema([
                                 FileUpload::make('user_image')->image()->label('Student photo')->disk('public')->directory('users/profile-images')->required(),
@@ -282,7 +262,7 @@ class SingleCourseResource extends Resource
                 ViewAction::make(),
             ])
             ->bulkActions([])
-            ->modifyQueryUsing(fn (Builder $query) => $query->whereNotNull('course_id'));
+            ->modifyQueryUsing(fn(Builder $query) => $query->whereNotNull('course_id'));
     }
 
     public static function getRelations(): array
