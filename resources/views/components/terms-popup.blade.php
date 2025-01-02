@@ -6,7 +6,7 @@
             </button>
             <div class="position-relative">
                 <div class="text-center pera-content">
-                    <div class="modal-body text-left" style="height:300px; overflow-x:scroll;">
+                    <div class="modal-body text-left" style="height:400px; overflow-x:scroll;">
                         <h3 class="title text-center font-weight-bold mb-4">Terms & Conditions</h3>
                         {!! $terms->content !!}
                         <button class="btn d-block ml-auto mt-4 continue-btn" data-toggle="modal"
