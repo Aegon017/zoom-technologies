@@ -246,7 +246,7 @@ class PackageCourseResource extends Resource
                                     'POS' => 'POS',
                                     'Cash' => 'Cash',
                                 ]),
-                            FileUpload::make('proof')->required(),
+                            FileUpload::make('proof')->image()->required(),
                         ]),
                 ])->columns(2)->columnSpanFull(),
             ]);

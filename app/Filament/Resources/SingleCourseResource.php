@@ -234,7 +234,7 @@ class SingleCourseResource extends Resource
                                 'POS' => 'POS',
                                 'Cash' => 'Cash',
                             ])->required(),
-                            FileUpload::make('proof')->required(),
+                            FileUpload::make('proof')->image()->required(),
                         ]),
                 ])->columns(2)->columnSpanFull(),
             ]);
