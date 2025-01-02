@@ -50,41 +50,22 @@ class RegisterUser extends Component
 
     public function register()
     {
-        // Validate input
         $validatedData = $this->validate();
-
-        // Generate a random password
         $password = Str::random(12);
 
         try {
-            // Create user
             $user = User::create([
                 'name' => $validatedData['fullName'],
                 'email' => $validatedData['email'],
                 'phone' => $validatedData['phone'],
                 'password' => Hash::make($password),
             ]);
-
-            // Send welcome email
             Mail::to($user->email)->send(new UserEnrollMail($user, $password));
-
-            // Log in the user
             Auth::login($user);
-
-            // Flash success message
             session()->flash('success', 'Registration Successful');
-
-            // Dispatch event
             $this->dispatch('registration-success');
-
-            // Redirect or reset form
-            return redirect()->route('dashboard'); // Adjust route as needed
-
         } catch (\Exception $e) {
-            // Log the error
-            logger()->error('Registration failed: '.$e->getMessage());
-
-            // Flash error message
+            logger()->error('Registration failed: ' . $e->getMessage());
             session()->flash('error', 'Registration failed. Please try again.');
         }
     }
