@@ -31,7 +31,7 @@
                 </div>
                 <div class="upcoming-batch-grid-list">
                     <div class="row">
-                        <x-upcoming-batches-card :$latestSchedules :$latestPackageSchedules />
+                        <x-upcoming-batches-card :$upcomingSchedules />
                     </div>
                 </div>
             </div>

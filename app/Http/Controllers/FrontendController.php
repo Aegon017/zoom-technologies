@@ -135,9 +135,9 @@ class FrontendController extends Controller
         })
             ->filter()
             ->values();
+        $upcomingSchedules = ($latestSchedules->concat($latestPackageSchedules))->sortBy('item.position');
         $pageSchema = PageSchema::where('page_name', 'Upcoming schedule')->first();
-
-        return view('pages.upcoming-batches', compact('latestSchedules', 'metaDetail', 'latestPackageSchedules', 'pageSchema'));
+        return view('pages.upcoming-batches', compact('upcomingSchedules', 'metaDetail', 'pageSchema'));
     }
 
     public function render_account()
