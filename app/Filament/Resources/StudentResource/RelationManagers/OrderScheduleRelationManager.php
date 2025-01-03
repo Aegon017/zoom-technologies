@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Actions\Action as ActionsAction;
+use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -53,7 +54,10 @@ class OrderScheduleRelationManager extends RelationManager
             ->filters([
                 //
             ])
-            ->headerActions([])
+            ->headerActions([
+                CreateAction::make()
+                    ->visible(fn() => $this->getSchedules()->isEmpty()),
+            ])
             ->actions([
                 ActionsAction::make('proof')
                     ->label('download proof')
@@ -64,5 +68,10 @@ class OrderScheduleRelationManager extends RelationManager
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([]);
+    }
+
+    public function getSchedules()
+    {
+        return $this->getOwnerRecord()->schedule;
     }
 }

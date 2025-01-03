@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Events\ManualOrderCreatedEvent;
 use App\Events\MeetingCredentialsUpdatedEvent;
+use App\Events\ScheduleDeleted;
 use App\Listeners\CreateOrderSendMail;
+use App\Listeners\SendChooseScheduleNotification;
 use App\Listeners\SendMeetingCredentialsUpdatedEmail;
 use App\Mail\EmailVerified;
 use Illuminate\Auth\Events\Verified;
@@ -33,7 +35,9 @@ class AppServiceProvider extends ServiceProvider
             MeetingCredentialsUpdatedEvent::class,
             SendMeetingCredentialsUpdatedEmail::class,
             ManualOrderCreatedEvent::class,
-            CreateOrderSendMail::class
+            CreateOrderSendMail::class,
+            ScheduleDeleted::class,
+            SendChooseScheduleNotification::class
         );
         Event::listen(Verified::class, function ($event) {
             $user = $event->user;

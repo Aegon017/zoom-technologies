@@ -3,13 +3,17 @@
 namespace App\Models;
 
 use App\Events\MeetingCredentialsUpdatedEvent;
+use App\Events\ScheduleDeleted;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Log;
 
 class Schedule extends Model
 {
+    use SoftDeletes;
     protected $fillable = [
         'course_id',
         'timezone_id',
@@ -59,6 +63,11 @@ class Schedule extends Model
                 event(new MeetingCredentialsUpdatedEvent($schedule));
             }
         });
+
+        static::deleted(function ($schedule) {
+            Log::info($schedule);
+            event(new ScheduleDeleted($schedule));
+        });
     }
 
     public function manualOrder(): HasMany
@@ -72,7 +81,7 @@ class Schedule extends Model
         $offset = $timezone->offset;
         $abbreviation = $timezone->abbreviation;
 
-        return $this->start_date.', '.$this->time.' ( '.$abbreviation.' - '.$offset.' )';
+        return $this->start_date . ', ' . $this->time . ' ( ' . $abbreviation . ' - ' . $offset . ' )';
     }
 
     public function getFormattedPackageScheduleAttribute()
@@ -81,7 +90,7 @@ class Schedule extends Model
         $offset = $timezone->offset;
         $abbreviation = $timezone->abbreviation;
 
-        return $this->course->name.' - '.$this->start_date.', '.$this->time.' ( '.$abbreviation.' - '.$offset.' )';
+        return $this->course->name . ' - ' . $this->start_date . ', ' . $this->time . ' ( ' . $abbreviation . ' - ' . $offset . ' )';
     }
 
     public function getStartDateAttribute($value)
