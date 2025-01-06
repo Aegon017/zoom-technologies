@@ -30,7 +30,6 @@ use App\Models\TermsAndCondition;
 use App\Models\Testimonial;
 use App\Models\TestimonialSection;
 use App\Models\Thankyou;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -116,7 +115,7 @@ class FrontendController extends Controller
                 $query->where('start_date', '>', today());
             })
             ->get()
-            ->map(fn($course) => [
+            ->map(fn ($course) => [
                 'item' => $course,
                 'latest_schedule' => $course->schedule->first(),
             ]);
@@ -137,6 +136,7 @@ class FrontendController extends Controller
             ->values();
         $upcomingSchedules = ($latestSchedules->concat($latestPackageSchedules))->sortBy('item.position');
         $pageSchema = PageSchema::where('page_name', 'Upcoming schedule')->first();
+
         return view('pages.upcoming-batches', compact('upcomingSchedules', 'metaDetail', 'pageSchema'));
     }
 
@@ -213,7 +213,7 @@ class FrontendController extends Controller
 
     public function checkout(Request $request)
     {
-        $scheduleIDs = array_values(array_filter($request->all(), fn($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
+        $scheduleIDs = array_values(array_filter($request->all(), fn ($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
         Session::put('scheduleIDs', $scheduleIDs);
         $thankyou = Thankyou::first();
         $bankTransferDetails = BankTransfer::first();

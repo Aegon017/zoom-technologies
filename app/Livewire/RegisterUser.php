@@ -65,7 +65,7 @@ class RegisterUser extends Component
             session()->flash('success', 'Registration Successful');
             $this->dispatch('registration-success');
         } catch (\Exception $e) {
-            logger()->error('Registration failed: ' . $e->getMessage());
+            logger()->error('Registration failed: '.$e->getMessage());
             session()->flash('error', 'Registration failed. Please try again.');
         }
     }

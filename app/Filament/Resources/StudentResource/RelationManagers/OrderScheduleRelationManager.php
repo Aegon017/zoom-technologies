@@ -56,7 +56,7 @@ class OrderScheduleRelationManager extends RelationManager
             ])
             ->headerActions([
                 CreateAction::make()
-                    ->visible(fn() => $this->getSchedules()->isEmpty()),
+                    ->visible(fn () => $this->getSchedules()->isEmpty()),
             ])
             ->actions([
                 ActionsAction::make('proof')

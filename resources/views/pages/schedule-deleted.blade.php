@@ -84,27 +84,26 @@
         <div class="company-logo">
             <img alt="Logo" class="logo" src="{{ asset('frontend/assets/img/logo.png') }}" />
         </div>
-        <h3 class="mt-3">Your Classes Canceled</h3>
+        <h3 class="mt-3">Your Class Schedule Has Been Cancelled</h3>
     </div>
 
     <div class="content">
+        <p>Dear <strong>{{ $user }}</strong>,</p>
+        <p>We regret to inform you that the class batch for your course has been cancelled. The affected session is as
+            follows:</p>
+        <h3>{{ $schedule->course->name }}:</h3>
         <p>Batch: {{ $schedule->start_date }} {{ $schedule->time }}</p>
         <p>Training Mode: {{ $schedule->training_mode }}</p>
-        @if ($schedule->training_mode == 'Online')
-            @if ($schedule->zoom_meeting_url && $schedule->meeting_id && $schedule->meeting_password)
-                <p>Zoom Meeting Link: <a href="{{ $schedule->zoom_meeting_url }}">Click here to join
-                        the meeting</a></p>
-                <p>Meeting ID: {{ $schedule->meeting_id }}</p>
-                <p>Meeting Password: {{ $schedule->meeting_password }}</a></p>
-            @endif
-        @endif
+        <p><strong>We apologize for the inconvenience caused. Your scheduled class has been cancelled.</strong></p>
         <hr>
-        <p>Thank you for your purchase! We hope you enjoy your experience.</p>
+        <p>If you would like to choose another batch or need assistance, please feel free to contact our customer
+            support team.</p>
+        <p>Thank you for your understanding, and we hope to serve you better in the future.</p>
         <p>Sincerely,<br /><strong>Zoom Technologies Team</strong></p>
     </div>
 
     <div class="footer">
-        <p>© 2024 Zoom Technologies. All rights reserved.</p>
+        <p>© 2025 Zoom Technologies. All rights reserved.</p>
         <p>
             <a href="#">Terms</a> | <a href="#">Privacy</a>
         </p>

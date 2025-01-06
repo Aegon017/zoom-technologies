@@ -82,7 +82,7 @@
                     </div>
                 </div>
             </div>
-            <div class="zt-footer-copyright text-center"><span>Copyright © 1996-2024 <span class="text-uppercase"><a
+            <div class="zt-footer-copyright text-center"><span>Copyright © 1996-2025 <span class="text-uppercase"><a
                             href="#">zoom
                             Technologies india private limited</a></span>. All Rights Reserved.</span></div>
         </div>

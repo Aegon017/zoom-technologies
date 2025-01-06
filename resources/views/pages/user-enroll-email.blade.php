@@ -97,7 +97,7 @@
         <p>Sincerely,<br /><strong>Zoom Technologies Team</strong></p>
     </div>
     <div class="footer">
-        <p>© 2024 Zoom Technologies. All rights reserved.</p>
+        <p>© 2025 Zoom Technologies. All rights reserved.</p>
         <p>
             <a href="#">Terms</a> | <a href="#">Privacy</a>
         </p>

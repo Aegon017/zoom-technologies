@@ -22,7 +22,7 @@ class OrderSchedule extends Model
 
     protected static function booted()
     {
-        static::updating(function ($orderSchedule) {
+        static::updated(function ($orderSchedule) {
             if ($orderSchedule->isDirty('schedule_id')) {
                 $admin = Auth::user();
                 $orderSchedule->admin_name = $admin->name;

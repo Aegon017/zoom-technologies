@@ -3,12 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\ScheduleDeleted;
-use App\Mail\DeletedSheduleMail;
 use App\Mail\ScheduleDeletedMail;
 use App\Models\OrderSchedule;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class SendChooseScheduleNotification
@@ -37,7 +33,7 @@ class SendChooseScheduleNotification
         }
         if ($users) {
             foreach ($users as $user) {
-                Mail::to($user)->send(new ScheduleDeletedMail($subject, $event->schedule));
+                Mail::to($user)->send(new ScheduleDeletedMail($subject, $event->schedule, $user));
             }
         }
     }

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Log;
 class Schedule extends Model
 {
     use SoftDeletes;
+
     protected $fillable = [
         'course_id',
         'timezone_id',
@@ -81,7 +82,7 @@ class Schedule extends Model
         $offset = $timezone->offset;
         $abbreviation = $timezone->abbreviation;
 
-        return $this->start_date . ', ' . $this->time . ' ( ' . $abbreviation . ' - ' . $offset . ' )';
+        return $this->start_date.', '.$this->time.' ( '.$abbreviation.' - '.$offset.' )';
     }
 
     public function getFormattedPackageScheduleAttribute()
@@ -90,7 +91,7 @@ class Schedule extends Model
         $offset = $timezone->offset;
         $abbreviation = $timezone->abbreviation;
 
-        return $this->course->name . ' - ' . $this->start_date . ', ' . $this->time . ' ( ' . $abbreviation . ' - ' . $offset . ' )';
+        return $this->course->name.' - '.$this->start_date.', '.$this->time.' ( '.$abbreviation.' - '.$offset.' )';
     }
 
     public function getStartDateAttribute($value)
