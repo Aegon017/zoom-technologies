@@ -15,7 +15,6 @@
         }
 
         .invoice-box {
-            width: 210mm;
             margin: auto;
             padding: 10mm;
             box-sizing: border-box;
@@ -31,7 +30,7 @@
         }
 
         .logo {
-            max-width: 50mm;
+            max-width: 30mm;
         }
 
         .company-details,
