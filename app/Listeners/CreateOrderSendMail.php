@@ -30,18 +30,23 @@ class CreateOrderSendMail
     public function handle(ManualOrderCreatedEvent $event): void
     {
         $orderNumberPrefix = OrderNumber::first()->prefix;
-        $userName = $event->manualOrder->user_name;
-        $userEmail = $event->manualOrder->user_email;
-        $userPhone = $event->manualOrder->user_phone;
-        $password = uniqid(8);
-        $user = new User;
-        $user->name = $userName;
-        $user->email = $userEmail;
-        $user->phone = $userPhone;
-        $user->password = $password;
-        $user->save();
-        Mail::to($userEmail)->send(new UserEnrollMail($user, $password));
-        $userId = $user->id;
+        $isRegistered = $event->manualOrder->is_registered;
+        if ($isRegistered) {
+            $userId = $event->manualOrder->user_id;
+        } else {
+            $userName = $event->manualOrder->user_name;
+            $userEmail = $event->manualOrder->user_email;
+            $userPhone = $event->manualOrder->user_phone;
+            $password = uniqid(8);
+            $user = new User;
+            $user->name = $userName;
+            $user->email = $userEmail;
+            $user->phone = $userPhone;
+            $user->password = $password;
+            $user->save();
+            Mail::to($userEmail)->send(new UserEnrollMail($user, $password));
+            $userId = $user->id;
+        }
         $address = Address::create([
             'user_id' => $userId,
             'address' => $event->manualOrder->address,
@@ -54,7 +59,7 @@ class CreateOrderSendMail
         $order->user_id = $userId;
         $order->course_id = $event->manualOrder->package_id ? null : $event->manualOrder->course_id;
         $order->package_id = $event->manualOrder->package_id;
-        $order->order_number = $orderNumberPrefix.$userId.now()->format('YmdHis');
+        $order->order_number = $orderNumberPrefix . $userId . now()->format('YmdHis');
         $order->courseOrPackage_price = $event->manualOrder->course_price;
         $order->cgst = $event->manualOrder->cgst;
         $order->sgst = $event->manualOrder->sgst;

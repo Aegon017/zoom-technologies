@@ -35,7 +35,6 @@ class OverviewRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('content')
             ->columns([
                 TextColumn::make('title')->wrap(),
                 TextColumn::make('keywords')->wrap(),

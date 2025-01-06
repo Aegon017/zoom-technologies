@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('manual_orders', function (Blueprint $table) {
             $table->id();
+            $table->boolean('is_registered');
+            $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('user_name');
             $table->string('user_email');
             $table->string('user_phone')->nullable();

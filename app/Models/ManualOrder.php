@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ManualOrder extends Model
 {
     protected $fillable = [
+        'is_registered',
+        'user_id',
         'user_name',
         'user_email',
         'user_phone',

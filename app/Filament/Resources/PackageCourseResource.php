@@ -7,13 +7,17 @@ use App\Models\ManualOrder;
 use App\Models\Package;
 use App\Models\Schedule;
 use App\Models\Tax;
+use App\Models\User;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Infolists\Components\Fieldset;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\Section as ComponentsSection;
@@ -52,9 +56,15 @@ class PackageCourseResource extends Resource
         return $infolist
             ->schema([
                 Fieldset::make('Student Details')->schema([
-                    TextEntry::make('user_name')->label('Student Name'),
-                    TextEntry::make('user_email')->label('Email'),
-                    TextEntry::make('user_phone')->label('Phone'),
+                    TextEntry::make('user_name')
+                        ->label('Student Name')
+                        ->getStateUsing(fn($record) => $record->is_registered ? $record->user->name : $record->user_name),
+                    TextEntry::make('user_email')
+                        ->label('Email')
+                        ->getStateUsing(fn($record) => $record->is_registered ? $record->user->email : $record->user_email),
+                    TextEntry::make('user_phone')
+                        ->label('Phone')
+                        ->getStateUsing(fn($record) => $record->is_registered ? $record->user->phone : $record->user_email),
                     ComponentsSection::make()->schema([
                         ImageEntry::make('user_image')->label('Student Image'),
                         ImageEntry::make('user_id_card')->label('Student Id '),
@@ -63,48 +73,48 @@ class PackageCourseResource extends Resource
                 Fieldset::make('Course Details')->schema([
                     TextEntry::make('package.name'),
                     TextEntry::make('course_price')->label('Price')
-                        ->formatStateUsing(fn ($state, $record) => 'Rs.'.' '.$state),
+                        ->formatStateUsing(fn($state, $record) => 'Rs.' . ' ' . $state),
                 ]),
                 Fieldset::make('Batches')->schema([
                     TextEntry::make('schedule')
                         ->label('')
                         ->listWithLineBreaks()
                         ->getStateUsing(
-                            fn ($record) => ! $record->packageSchedule_id
+                            fn($record) => ! $record->packageSchedule_id
                                 ? ['🚫 No Schedules Available']
                                 : collect($record->packageSchedule_id)
-                                    ->map(function ($os) {
-                                        $s = Schedule::find($os);
+                                ->map(function ($os) {
+                                    $s = Schedule::find($os);
 
-                                        return $s ? [
-                                            '📚 Course: '.($s->course?->name ?? 'N/A'),
-                                            '📅 Date: '.(
-                                                $s->start_date
-                                                ? \Carbon\Carbon::parse($s->start_date)->format('d M Y')
-                                                : 'Unscheduled'
-                                            ),
-                                            '⏰ Time: '.(
-                                                $s->time
-                                                ? \Carbon\Carbon::parse($s->time)->format('h:i A')
-                                                : 'TBD'
-                                            ),
-                                            '🌐 Mode: '.($s->training_mode ?? 'Unspecified'),
-                                        ] : ['⚠️ Invalid Schedule'];
-                                    })
-                                    ->flatten()
-                                    ->filter()
-                                    ->toArray()
+                                    return $s ? [
+                                        '📚 Course: ' . ($s->course?->name ?? 'N/A'),
+                                        '📅 Date: ' . (
+                                            $s->start_date
+                                            ? \Carbon\Carbon::parse($s->start_date)->format('d M Y')
+                                            : 'Unscheduled'
+                                        ),
+                                        '⏰ Time: ' . (
+                                            $s->time
+                                            ? \Carbon\Carbon::parse($s->time)->format('h:i A')
+                                            : 'TBD'
+                                        ),
+                                        '🌐 Mode: ' . ($s->training_mode ?? 'Unspecified'),
+                                    ] : ['⚠️ Invalid Schedule'];
+                                })
+                                ->flatten()
+                                ->filter()
+                                ->toArray()
                         )
                         ->placeholder('No schedule information'),
                 ]),
                 Fieldset::make('Payment Details')->schema([
                     TextEntry::make('payment_mode'),
                     TextEntry::make('cgst')
-                        ->formatStateUsing(fn ($state, $record) => 'Rs.'.' '.$state),
+                        ->formatStateUsing(fn($state, $record) => 'Rs.' . ' ' . $state),
                     TextEntry::make('sgst')
-                        ->formatStateUsing(fn ($state, $record) => 'Rs.'.' '.$state),
+                        ->formatStateUsing(fn($state, $record) => 'Rs.' . ' ' . $state),
                     TextEntry::make('amount')
-                        ->formatStateUsing(fn ($state, $record) => 'Rs.'.' '.$state),
+                        ->formatStateUsing(fn($state, $record) => 'Rs.' . ' ' . $state),
                 ]),
             ]);
     }
@@ -116,13 +126,21 @@ class PackageCourseResource extends Resource
                 Wizard::make([
                     Step::make('Student Details')
                         ->schema([
-                            TextInput::make('user_name')->required()->label('Student Name'),
-                            TextInput::make('user_email')->required()
-                                ->unique('users', 'email')
-                                ->label('Email'),
-                            PhoneInput::make('user_phone')->required()
-                                ->unique('users', 'phone')
-                                ->label('Phone Number'),
+                            Radio::make('is_registered')
+                                ->label('Already Registered Student')
+                                ->reactive()
+                                ->boolean()
+                                ->default(false),
+                            Group::make()->schema([
+                                Select::make('user_id')->label('Select Student Email')->options(User::pluck('email', 'id'))->hidden(fn(Get $get): bool => !$get('is_registered'))->searchable()->required(),
+                                TextInput::make('user_name')->visible(fn(Get $get): bool => ! $get('is_registered'))->required()->label('Student Name'),
+                                TextInput::make('user_email')->visible(fn(Get $get): bool => ! $get('is_registered'))->required()
+                                    ->unique('users', 'email')
+                                    ->label('Email'),
+                                PhoneInput::make('user_phone')->visible(fn(Get $get): bool => ! $get('is_registered'))->required()
+                                    ->unique('users', 'phone')
+                                    ->label('Phone Number'),
+                            ]),
                             Section::make()->schema([
                                 FileUpload::make('user_image')->image()->label('Student photo')->disk('public')->directory('users/profile-images')->required(),
                                 FileUpload::make('user_id_card')->image()->label('Student ID Card')->disk('public')->directory('users/id_cards')->required(),
@@ -254,9 +272,20 @@ class PackageCourseResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('user_name')->label('Student name'),
-                TextColumn::make('user_email')->label('Student email')->searchable(),
-                TextColumn::make('user_phone')->label('Student phone'),
+                TextColumn::make('user_name')
+                    ->label('Student name')
+                    ->getStateUsing(fn($record) => $record->is_registered ? $record->user->name : $record->user_name)
+                    ->searchable(),
+
+                TextColumn::make('user_email')
+                    ->label('Student email')
+                    ->getStateUsing(fn($record) => $record->is_registered ? $record->user->email : $record->user_email)
+                    ->searchable(),
+
+                TextColumn::make('user_phone')
+                    ->label('Student phone')
+                    ->getStateUsing(fn($record) => $record->is_registered ? $record->user->phone : $record->user_phone)
+                    ->searchable(),
                 TextColumn::make('package.name'),
                 TextColumn::make('payment_mode'),
                 TextColumn::make('amount'),
@@ -272,7 +301,7 @@ class PackageCourseResource extends Resource
                 ViewAction::make(),
             ])
             ->bulkActions([])
-            ->modifyQueryUsing(fn (Builder $query) => $query->whereNotNull('package_id'));
+            ->modifyQueryUsing(fn(Builder $query) => $query->whereNotNull('package_id'));
     }
 
     public static function getRelations(): array

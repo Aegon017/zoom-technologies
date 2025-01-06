@@ -27,10 +27,10 @@ class OverviewRelationManager extends RelationManager
                 ])->columnSpan(2),
                 Group::make()->schema([
                     Section::make('U.S. Council')->schema([
-                        Radio::make('uscouncil_certified')->label('U.S. Council Certified')->boolean()->inline()->live()
+                        Radio::make('uscouncil_certified')->label('U.S. Council Certified')->boolean()->inline()->reactive()
                             ->inlineLabel(false)->required(),
-                        TextInput::make('note')->label('Note')->hidden(fn (Get $get): bool => ! $get('uscouncil_certified')),
-                        TextInput::make('voucher_value')->prefix('$')->hidden(fn (Get $get): bool => ! $get('uscouncil_certified')),
+                        TextInput::make('note')->label('Note')->hidden(fn(Get $get): bool => ! $get('uscouncil_certified')),
+                        TextInput::make('voucher_value')->prefix('$')->hidden(fn(Get $get): bool => ! $get('uscouncil_certified')),
                     ]),
                 ]),
             ])->columns(3);
@@ -39,7 +39,6 @@ class OverviewRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('content')
             ->columns([
                 TextColumn::make('#')->rowIndex(),
                 TextColumn::make('content')->html()->wrap()->lineClamp(3),
