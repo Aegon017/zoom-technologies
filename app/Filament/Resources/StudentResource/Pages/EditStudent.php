@@ -10,6 +10,15 @@ class EditStudent extends EditRecord
 {
     protected static string $resource = StudentResource::class;
 
+    protected function getSaveFormAction(): \Filament\Actions\Action
+    {
+        return parent::getSaveFormAction()
+            ->hidden(function (): bool {
+                return true;
+            });
+    }
+
+
     protected function getHeaderActions(): array
     {
         return [
