@@ -29,8 +29,8 @@ class OverviewRelationManager extends RelationManager
                     Section::make('U.S. Council')->schema([
                         Radio::make('uscouncil_certified')->label('U.S. Council Certified')->boolean()->inline()->reactive()
                             ->inlineLabel(false)->required(),
-                        TextInput::make('note')->label('Note')->hidden(fn(Get $get): bool => ! $get('uscouncil_certified')),
-                        TextInput::make('voucher_value')->prefix('$')->hidden(fn(Get $get): bool => ! $get('uscouncil_certified')),
+                        TextInput::make('note')->label('Note')->hidden(fn (Get $get): bool => ! $get('uscouncil_certified')),
+                        TextInput::make('voucher_value')->prefix('$')->hidden(fn (Get $get): bool => ! $get('uscouncil_certified')),
                     ]),
                 ]),
             ])->columns(3);

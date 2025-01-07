@@ -32,7 +32,8 @@
                 <div class="batch-time">
                     <i class="fas fa-clock"></i>
                     @if ($latestSchedule)
-                        {{ $latestSchedule->time }} ({{ $timeZone->abbreviation }} - {{ $timeZone->offset }})
+                        {{ $latestSchedule->time }} to {{ $latestSchedule->end_time }} ({{ $timeZone->abbreviation }} -
+                        {{ $timeZone->offset }})
                     @else
                         No upcoming time
                     @endif

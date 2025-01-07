@@ -30,7 +30,7 @@ class UserResource extends Resource
                 TextInput::make('name')->required(),
                 TextInput::make('email')->required()->unique(ignoreRecord: true),
                 PhoneInput::make('phone'),
-                TextInput::make('password')->required(),
+                TextInput::make('password')->password()->required(),
                 Select::make('roles')
                     ->relationship('roles', 'name')
                     ->multiple()

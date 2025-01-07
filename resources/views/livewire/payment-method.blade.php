@@ -8,7 +8,21 @@
                     <input class="form-check-input" type="radio" name="payment_method" value="payu" id="payu"
                         checked>
                     <label class="form-check-label" for="payu">
-                        PayU
+                        Credit orDebit Card (India),UPI and Net Banking
+                        <div>
+                            <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/visa.svg"
+                                alt="visa logo" width="54" class="mr-2 mt-2">
+                            <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/mastercard.svg"
+                                alt="mastercard logo" width="54" class="mr-2 mt-2">
+                            <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/google-pay.svg"
+                                alt="google pay logo" width="54" class="mr-2 mt-2">
+                            <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/bhim.svg"
+                                alt="bhim logo" width="54" class="mr-2 mt-2">
+                            <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/pay-tm.svg"
+                                alt="paytm logo" width="54" class="mr-2 mt-2">
+                            <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/phone-pe.svg"
+                                alt="phonepe logo" width="54" class="mr-2 mt-2">
+                        </div>
                     </label>
                 </div>
             @endif
@@ -17,6 +31,16 @@
                     <input class="form-check-input" type="radio" name="payment_method" value="paypal" id="paypal">
                     <label class="form-check-label" for="paypal">
                         PayPal
+                        <div>
+                            <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/paypal.svg"
+                                alt="paypal logo" width="54" class="mr-2 mt-2">
+                            <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/mastercard.svg"
+                                alt="mastercard logo" width="54" class="mr-2 mt-2">
+                            <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/visa.svg"
+                                alt="visa logo" width="54" class="mr-2 mt-2">
+                            <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/amex.svg"
+                                alt="amex logo" width="54" class="mr-2 mt-2">
+                        </div>
                     </label>
                 </div>
             @endif

@@ -59,7 +59,7 @@ class CreateOrderSendMail
         $order->user_id = $userId;
         $order->course_id = $event->manualOrder->package_id ? null : $event->manualOrder->course_id;
         $order->package_id = $event->manualOrder->package_id;
-        $order->order_number = $orderNumberPrefix . $userId . now()->format('YmdHis');
+        $order->order_number = $orderNumberPrefix.$userId.now()->format('YmdHis');
         $order->courseOrPackage_price = $event->manualOrder->course_price;
         $order->cgst = $event->manualOrder->cgst;
         $order->sgst = $event->manualOrder->sgst;

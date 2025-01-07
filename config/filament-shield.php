@@ -26,10 +26,10 @@ return [
         'intercept_gate' => 'before', // after
     ],
 
-    // 'panel_user' => [
-    //     'enabled' => true,
-    //     'name' => 'panel_user',
-    // ],
+    'panel_user' => [
+        'enabled' => true,
+        'name' => 'student',
+    ],
 
     'permission_prefixes' => [
         'resource' => [
