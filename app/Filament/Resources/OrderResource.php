@@ -99,8 +99,8 @@ class OrderResource extends Resource
                 Fieldset::make('Payment Details')->schema([
                     TextEntry::make('order_number'),
                     TextEntry::make('payment.payment_id')->label('Payment ID'),
-                    TextEntry::make('payment.method')->label('Method'),
-                    TextEntry::make('payment.mode')->label('Mode')->default('N/A'),
+                    TextEntry::make('payment.method')->label('Mode'),
+                    TextEntry::make('payment.mode')->label('Method')->default('N/A'),
                     TextEntry::make('payment.date')->label('Date')->date(),
                     TextEntry::make('payment.time')->label('Time')->time('h:i A'),
                     TextEntry::make('payment.description')->label('Description'),
