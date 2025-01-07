@@ -3,6 +3,7 @@
         $item = $schedule['item'];
         $latestSchedule = $schedule['latest_schedule'];
         $timeZone = $schedule['latest_schedule']->timezone;
+        $timings = $schedule['timings'];
     @endphp
     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb-3">
         <div class="upcoming-batch-card">
@@ -29,12 +30,15 @@
                         No upcoming date
                     @endif
                 </div>
-                <div class="batch-time">
-                    <i class="fas fa-clock"></i>
-                    @if ($latestSchedule)
-                        {{ $latestSchedule->time }} to {{ $latestSchedule->end_time }} ({{ $timeZone->abbreviation }} -
-                        {{ $timeZone->offset }})
+                <div class="batch-time d-block">
+                    @if ($timings)
+                        @foreach ($timings as $timing)
+                            <i class="fas fa-clock"></i>
+                            {{ $timing->time }} to {{ $timing->end_time }} ({{ $timing->timeZone->abbreviation }} -
+                            {{ $timing->timeZone->offset }})
+                        @endforeach
                     @else
+                        <i class="fas fa-clock"></i>
                         No upcoming time
                     @endif
                 </div>

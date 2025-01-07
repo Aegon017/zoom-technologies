@@ -30,6 +30,7 @@ use App\Models\TermsAndCondition;
 use App\Models\Testimonial;
 use App\Models\TestimonialSection;
 use App\Models\Thankyou;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -105,7 +106,6 @@ class FrontendController extends Controller
     public function renderUpcomingBatches()
     {
         $metaDetail = PageMetaDetails::where('page_name', 'Upcoming schedule')->first();
-
         $latestSchedules = Course::with(['schedule' => function ($query) {
             $query->where('start_date', '>', today())
                 ->orderBy('start_date', 'asc')
@@ -115,21 +115,44 @@ class FrontendController extends Controller
                 $query->where('start_date', '>', today());
             })
             ->get()
-            ->map(fn ($course) => [
-                'item' => $course,
-                'latest_schedule' => $course->schedule->first(),
-            ]);
+            ->map(function ($course) {
+                $latestSchedule = $course->schedule->first();
+                $timings = collect();
+
+                if ($latestSchedule) {
+                    $formattedDate = Carbon::parse($latestSchedule->start_date)->format('Y-m-d');
+                    $timings = $course->schedule()->where('start_date', $formattedDate)->orderBy('time', 'asc')->get();
+                }
+
+                return [
+                    'item' => $course,
+                    'latest_schedule' => $latestSchedule,
+                    'timings' => $timings,
+                ];
+            });
         $latestPackageSchedules = Package::all()->map(function ($package) {
-            $courseIds = $package->courses;
+            $courseIds = $package->courses; // Assuming courses is an array of course IDs
 
             $latestSchedule = Schedule::whereIn('course_id', $courseIds)
                 ->where('start_date', '>', today())
                 ->orderBy('start_date', 'asc')
                 ->first();
 
+            $timings = collect();
+
+            if ($latestSchedule) {
+                $formattedDate = Carbon::parse($latestSchedule->start_date)->format('Y-m-d');
+                // Get timings for the latest schedule
+                $timings = Schedule::where('course_id', $latestSchedule->course_id)
+                    ->whereDate('start_date', $formattedDate)
+                    ->orderBy('time', 'asc')
+                    ->get();
+            }
+
             return $latestSchedule ? [
                 'item' => $package,
                 'latest_schedule' => $latestSchedule,
+                'timings' => $timings
             ] : null;
         })
             ->filter()
@@ -213,7 +236,7 @@ class FrontendController extends Controller
 
     public function checkout(Request $request)
     {
-        $scheduleIDs = array_values(array_filter($request->all(), fn ($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
+        $scheduleIDs = array_values(array_filter($request->all(), fn($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
         Session::put('scheduleIDs', $scheduleIDs);
         $thankyou = Thankyou::first();
         $bankTransferDetails = BankTransfer::first();
