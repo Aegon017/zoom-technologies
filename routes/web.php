@@ -32,7 +32,6 @@ Route::get('/franchisee', [FrontendController::class, 'renderFranchisee'])->name
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
-    'verified',
 ])->group(function () {
     Route::get('/my-orders', [FrontendController::class, 'render_account'])->name('render.myOrders');
     Route::get('/my-courses', [FrontendController::class, 'renderCourses'])->name('render.userCourses');
@@ -43,22 +42,15 @@ Route::middleware([
 
 Route::post('/payment/initiate', [PaymentController::class, 'initiate'])->name('payment.initiate');
 
-Route::any('/payment/success', [PaymentController::class, 'success'])->name('payment.success')->middleware('prevent.refresh');
-Route::any('/payment/failure', [PaymentController::class, 'failure'])->name('payment.failure')->middleware('prevent.refresh');
+Route::any('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
+Route::any('/payment/failure', [PaymentController::class, 'failure'])->name('payment.failure');
 
 Route::get('/storage-link', function () {
     $target = storage_path('app/public');
-    $link = $_SERVER['DOCUMENT_ROOT'].'/zoom-technologies/public/storage';
+    $link = $_SERVER['DOCUMENT_ROOT'] . '/zoom-technologies/public/storage';
     symlink($target, $link);
 });
 
 Route::get('/zoom-technologies/filament/exports/{export}/download', DownloadExport::class)
     ->name('filament.exports.download')
     ->middleware(['web', 'auth']);
-
-Route::get('invoice', function () {
-    $order = Order::find(44);
-    $address = Address::find(32);
-
-    return view('pages.invoice', compact('order', 'address'));
-});

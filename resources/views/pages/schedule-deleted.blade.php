@@ -96,8 +96,8 @@
         <p>Training Mode: {{ $schedule->training_mode }}</p>
         <p><strong>We apologize for the inconvenience caused. Your scheduled class has been cancelled.</strong></p>
         <hr>
-        <p>If you would like to choose another batch or need assistance, please feel free to contact our customer
-            support team.</p>
+        <p>Our team will contact you as soon as possible to reschedule your batch. You can also reach us by phone or
+            WhatsApp at +91 91 9391191563, or by emailing us at priya@zoomgroup.com.</p>
         <p>Thank you for your understanding, and we hope to serve you better in the future.</p>
         <p>Sincerely,<br /><strong>Zoom Technologies Team</strong></p>
     </div>

@@ -35,6 +35,7 @@ return new class extends Migration
             $table->string('state');
             $table->string('zip_code');
             $table->string('country');
+            $table->string('enrolled_by');
             $table->timestamps();
         });
     }

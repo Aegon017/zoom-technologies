@@ -200,7 +200,7 @@
         <div class="footer">
             <div>Thank you for your order</div>
             <div class="bold">{{ $order->order_number }}</div>
-            <div>Computer-generated invoice. No signature is required.</div>
+            <div>System-generated invoice. Signature not required.</div>
         </div>
     </div>
 </body>

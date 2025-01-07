@@ -22,11 +22,9 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal Structure -->
-    <div class="modal fade" id="iframeModal" tabindex="-1" role="dialog" aria-labelledby="iframeModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+    <div class="modal fade px-4" id="iframeModal" tabindex="-1" role="dialog" aria-labelledby="iframeModalLabel"
+        aria-hidden="true" style="padding-left:17px;">
+        <div class="modal-dialog" style="max-width:100%" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="iframeModalLabel">E-Book</h5>
@@ -35,14 +33,11 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <iframe id="iframeContent" src=""
-                        style="width: 100%; height: 500px; border: none;"></iframe>
+                    <iframe id="iframeContent" src="" width="100%" height="540px"></iframe>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Include jQuery and Bootstrap JS (if not already included) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
