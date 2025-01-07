@@ -19,7 +19,14 @@
                                         name="course_schedule{{ $course->id }}"
                                         id="course-schedule{{ $course->id }}" required>
                                         <option value="" selected>select schedule</option>
-                                        @foreach ($course->schedule as $schedule)
+                                        @php
+                                            $schedules = $course
+                                                ->schedule()
+                                                ->orderBy('start_date', 'asc')
+                                                ->orderBy('time', 'asc')
+                                                ->get();
+                                        @endphp
+                                        @foreach ($schedules as $schedule)
                                             @if ($schedule->status == true)
                                                 <option value="{{ $schedule->id }}">
                                                     {{ \Carbon\Carbon::parse($schedule->start_date)->format('jS M Y') }}
