@@ -31,6 +31,7 @@ return new class extends Migration
             $table->boolean('certificate');
             $table->mediumInteger('sale_price')->nullable();
             $table->mediumInteger('actual_price');
+            $table->string('message', 500)->nullable();
             $table->timestamps();
         });
     }

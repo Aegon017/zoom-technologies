@@ -7,6 +7,9 @@
             <div class="position-relative">
                 <div class="text-center pera-content">
                     <div class="modal-body text-left">
+                        @if ($product->message)
+                            <p class="txt-primary"><i class="fa fa-angle-right"></i> {{ $product?->message }}</p>
+                        @endif
                         <form action="{{ route('checkout') }}">
                             @foreach ($packageCourses as $course)
                                 <div class="my-3">

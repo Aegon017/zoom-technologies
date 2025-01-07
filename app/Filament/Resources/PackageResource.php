@@ -15,6 +15,7 @@ use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
@@ -46,7 +47,7 @@ class PackageResource extends Resource
                     Section::make('Courses package details')->schema([
                         TextInput::make('position')->numeric()->required()->helperText('Position of the course in the list'),
                         TextInput::make('name')->live(onBlur: true)
-                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
+                            ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
                         TextInput::make('slug')->prefix('training/india/')->required(),
                         RichEditor::make('short_description')->columnSpanFull()->required(),
                         TextInput::make('duration')->required(),
@@ -70,6 +71,7 @@ class PackageResource extends Resource
                     ]),
                     Section::make('Courses')->schema([
                         Select::make('courses')->label('Select courses')->multiple()->options(Course::all()->pluck('name', 'id'))->searchable(),
+                        Textarea::make('message')->rows(4)->helperText('Provide some information to students about the courses in the package.')
                     ]),
                 ]),
             ])->columns(3);
