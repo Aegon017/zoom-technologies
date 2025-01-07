@@ -45,6 +45,7 @@
     <meta name="geo.position" content="17.41449;78.430262" />
     <meta name="ICBM" content="17.41449, 78.430262" />
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/fontawesome-all.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/flaticon.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/animate.css') }}">
