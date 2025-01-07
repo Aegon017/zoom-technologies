@@ -49,7 +49,14 @@
                                                     @foreach ($packageCourses as $course)
                                                         <h6 class="p-3 mt-3">{{ $course->name }}</h6>
                                                         <div class="row m-0 batch-list">
-                                                            @foreach ($course->schedule as $schedule)
+                                                            @php
+                                                                $schedules = $course
+                                                                    ->schedule()
+                                                                    ->orderBy('start_date', 'asc')
+                                                                    ->orderBy('time', 'asc')
+                                                                    ->get();
+                                                            @endphp
+                                                            @foreach ($schedules as $schedule)
                                                                 <x-schedule-card :$schedule />
                                                             @endforeach
                                                         </div>

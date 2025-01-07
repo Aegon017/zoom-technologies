@@ -92,6 +92,9 @@ class ScheduleRelationManager extends RelationManager
                 TextColumn::make('end_time')->time('h:i A'),
                 TextColumn::make('training_mode'),
             ])
+            ->defaultSort(function ($query) {
+                $query->orderBy('start_date', 'asc')->orderBy('time', 'asc');
+            })
             ->filters([])
             ->headerActions([
                 Tables\Actions\CreateAction::make()

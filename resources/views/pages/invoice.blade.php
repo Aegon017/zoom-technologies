@@ -144,7 +144,6 @@
                 {{ $order->course->duration_type ?? $order->package->duration_type }}
             </div>
         </div>
-
         <div>
             <div class="section-title">Course Schedule</div>
             <table class="schedule-table">
