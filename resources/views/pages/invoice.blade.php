@@ -112,7 +112,7 @@
                 GST Registration No: 36AAACZ0692A1ZK<br>
                 #205, 2nd Floor, HUDA Maitrivanam, Ameerpet<br>
                 Hyderabad, Telangana 500038, India<br>
-                Contact: +91 90599 49865 | Email: ks@zoomgroup.com
+                Contact: +91 93911 91563 | Email: priya@zoomgroup.com
             </div>
         </div>
 
