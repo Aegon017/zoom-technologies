@@ -217,7 +217,8 @@ class PackageCourseResource extends Resource
                                 ->multiple()
                                 ->disabled(function ($get) {
                                     return ! $get('package_id');
-                                }),
+                                })
+                                ->rules(['array', 'min:2', 'max:2']),
                         ]),
                     Step::make('Payment Details')
                         ->schema([
