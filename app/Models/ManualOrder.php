@@ -31,7 +31,7 @@ class ManualOrder extends Model
         'state',
         'zip_code',
         'country',
-        'enrolled_by'
+        'enrolled_by',
     ];
 
     protected $casts = [

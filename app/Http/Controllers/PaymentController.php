@@ -110,7 +110,7 @@ class PaymentController extends Controller
                         ],
                     ],
                     'mode' => 'payment',
-                    'success_url' => route('payment.success') . '?session_id={CHECKOUT_SESSION_ID}',
+                    'success_url' => route('payment.success').'?session_id={CHECKOUT_SESSION_ID}',
                     'cancel_url' => route('payment.failure'),
                 ]);
 
@@ -210,6 +210,7 @@ class PaymentController extends Controller
                     break;
             }
             Session::forget('refresh');
+
             return view('pages.payment-success', compact('order', 'thankyou'));
         } else {
             return redirect()->route('render.home');
@@ -289,6 +290,7 @@ class PaymentController extends Controller
                     break;
             }
             Session::forget('refresh');
+
             return view('pages.payment-failure', compact('order'));
         } else {
             return redirect()->route('render.home');

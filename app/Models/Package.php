@@ -27,7 +27,7 @@ class Package extends Model
         'certificate',
         'sale_price',
         'actual_price',
-        'message'
+        'message',
     ];
 
     protected $casts = [
