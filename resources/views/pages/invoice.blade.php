@@ -109,7 +109,6 @@
             <div class="section-title">Seller Details</div>
             <div>
                 <strong>Zoom Technologies (India) Pvt. Ltd.</strong><br>
-                zoomtechnologies.company.site<br>
                 GST Registration No: 36AAACZ0692A1ZK<br>
                 #205, 2nd Floor, HUDA Maitrivanam, Ameerpet<br>
                 Hyderabad, Telangana 500038, India<br>
@@ -175,6 +174,9 @@
 
         <div>
             <div class="section-title">Payment Details</div>
+            <div class="text-center">
+                <strong>Payment Mode:</strong> {{ $order->payment->method }}<br>
+            </div>
             <table class="pricing-table">
                 <tr>
                     <td>Course Price</td>
@@ -198,6 +200,7 @@
         <div class="footer">
             <div>Thank you for your order</div>
             <div class="bold">{{ $order->order_number }}</div>
+            <div>Computer-generated invoice. No signature is required.</div>
         </div>
     </div>
 </body>

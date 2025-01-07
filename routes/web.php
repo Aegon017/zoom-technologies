@@ -57,7 +57,7 @@ Route::get('/zoom-technologies/filament/exports/{export}/download', DownloadExpo
     ->middleware(['web', 'auth']);
 
 Route::get('invoice', function () {
-    $order = Order::find(13);
-    $address = Address::find(3);
+    $order = Order::find(44);
+    $address = Address::find(32);
     return view('pages.invoice', compact('order', 'address'));
 });

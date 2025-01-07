@@ -66,8 +66,9 @@
                         </div>
                         <div class="mb-4 sm:mb-0">
                             <h3 class="font-semibold mb-2">Order Summary</h3>
+                            <p class="text-gray-600"><strong>Payment Mode</strong>: {{ $order->payment->method }}</p>
                             <p class="text-gray-600"><strong>Payment status</strong>: {{ $order->payment->status }}</p>
-                            <p class="text-gray-600"><strong>Payment Status</strong>:
+                            <p class="text-gray-600"><strong>Payment description</strong>:
                                 {{ $order->payment->description }}
                             </p>
                             <p class="text-gray-600"><strong>Payment Id:</strong>
