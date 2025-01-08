@@ -13,11 +13,11 @@
                     </a>
                     <div class="dropdown-menu login-dropdown" aria-labelledby="navbarDropdown">
                         @auth
+                            <a class="dropdown-item" href="{{ route('render.student.studyMaterials') }}"><i
+                                    class="fas fa-book"></i>
+                                Study Material</a>
                             <a class="dropdown-item" href="{{ route('render.myOrders') }}" style="padding-left: 19px"><i
                                     class="fas fa-shopping-cart"></i> My Orders</a>
-                            {{-- <a class="dropdown-item" href="{{route('render.myOrders')}}"><i class="fas fa-bookmark"></i> My Courses</a> --}}
-                            <a class="dropdown-item" href="{{ route('render.userCourses') }}"><i class="fas fa-book"></i>
-                                Study Material</a>
                             <a class="dropdown-item" href="{{ route('profile.show') }}"><i class="fas fa-id-badge"></i>
                                 Profile</a>
                             <div class="dropdown-divider"></div>
