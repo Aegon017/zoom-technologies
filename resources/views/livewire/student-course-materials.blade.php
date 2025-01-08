@@ -8,7 +8,7 @@
                 <div class="zt-section-title text-center zt-headline zt-title-style-two position-relative">
                     <p class="title-watermark">Study Materials</p>
                     <span>Study Materials</span>
-                    <h2>Study Materials</h2>
+                    <h2>Free Study Materials</h2>
                 </div>
                 <div class="zt-course-content-3">
                     <div class="row">
@@ -37,7 +37,7 @@
                 <div class="zt-section-title text-center zt-headline zt-title-style-two position-relative">
                     <p class="title-watermark">Study Materials</p>
                     <span>Study Materials</span>
-                    <h2>Course Study Materials</h2>
+                    <h2>Paid Study Materials</h2>
                 </div>
                 <div class="zt-course-content-3">
                     <div class="row">
