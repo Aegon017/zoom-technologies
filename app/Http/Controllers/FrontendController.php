@@ -258,10 +258,10 @@ class FrontendController extends Controller
     public function renderOnlineClasses()
     {
         $user = Auth::user();
-        $schedules = $user->orders->flatMap(function ($order) {
-            return collect([$order->payment->where('status', 'success')]);
-        });
-        dd($order);
-        return view('pages.online-classes');
+        $successfulOrders = $user->orders()
+            ->whereHas('payment', fn($query) => $query->where('status', 'success'))
+            ->with(['schedule', 'payment' => fn($query) => $query->where('status', 'success')])
+            ->get();
+        return view('pages.online-classes', compact('successfulOrders'));
     }
 }

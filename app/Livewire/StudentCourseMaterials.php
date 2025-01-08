@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\OtherStudyMaterial;
 use App\Models\Package;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 class StudentCourseMaterials extends Component
@@ -22,13 +23,20 @@ class StudentCourseMaterials extends Component
             $this->packages = Package::all();
         } else {
             $this->courses = $user->orders->flatMap(function ($order) {
-                return collect([$order->course]);
+                if ($order->payment->status === 'success') {
+                    return collect([$order->course]);
+                }
+                return collect([]);
             });
             $this->packages = $user->orders->flatMap(function ($order) {
-                return collect([$order->package]);
+                if ($order->payment->status === 'success') {
+                    return collect([$order->package]);
+                }
+                return collect([]);
             });
         }
         $this->otherStudyMaterials = OtherStudyMaterial::where('subscription', 'Free')->get();
+        Session::put('subscription', $this->subscription);
     }
     public function render()
     {

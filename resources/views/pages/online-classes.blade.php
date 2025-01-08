@@ -14,16 +14,24 @@
                 </div>
                 <div class="zt-course-content-3">
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="card" style="width: 18rem;">
-                                <div class="card-body">
-                                    <h5 class="card-title">Card title</h5>
-                                    <p class="card-text">Meeting Link: <a href=""> dsfsfdsf</a></p>
-                                    <p class="card-text">Meeting Id: </p>
-                                    <p class="card-text">Meeting Password: </p>
-                                </div>
-                            </div>
-                        </div>
+                        @foreach ($successfulOrders as $order)
+                            @foreach ($order->schedule as $schedule)
+                                @if ($schedule->status == true && $schedule->training_mode == 'Online')
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ $schedule->course->name }}</h5>
+                                                <p class="card-text">Meeting Link: <a
+                                                        href="{{ $schedule->zoom_meeting_url }}">Click here</a></p>
+                                                <p class="card-text">Meeting Id: {{ $schedule->meeting_id }}</p>
+                                                <p class="card-text">Meeting Password: {{ $schedule->meeting_password }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                        @endforeach
                     </div>
                 </div>
             </div>
