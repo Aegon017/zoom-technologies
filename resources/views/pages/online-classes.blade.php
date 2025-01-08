@@ -56,7 +56,8 @@
                                                 <h5 class="card-title">{{ $schedule->course->name }}</h5>
                                                 <div class="batch-date mb-2">
                                                     <i class="fas fa-calendar text-primary"></i>
-                                                    {{ $schedule->start_date }}
+                                                    {{ $schedule->start_date }} ({{ $schedule->duration }}
+                                                    {{ Str::plural($schedule->duration_type, $schedule->duration) }})
                                                 </div>
                                                 <div class="batch-time mb-2">
                                                     <i class="fas fa-clock text-primary"></i>
@@ -64,18 +65,6 @@
                                                     ({{ $schedule->timezone->abbreviation }} -
                                                     {{ $schedule->timezone->offset }})
                                                 </div>
-                                                <p class="card-text mb-1">{{ $schedule->duration }}
-                                                    {{ Str::plural($schedule->duration_type, $schedule->duration) }}</p>
-                                                @php
-                                                    $timeDiff = (new DateTime($schedule->time))->diff(
-                                                        new DateTime($schedule->end_time),
-                                                    );
-                                                    $hoursPerDay = $timeDiff->h + $timeDiff->i / 60;
-                                                @endphp
-                                                <p class="card-text mb-1">{{ number_format($hoursPerDay, 2) }} Hrs/Day
-                                                </p>
-                                                <p class="card-text mb-1">{{ implode(', ', $schedule->day_off) }} off
-                                                </p>
                                                 <p class="card-text mb-1">Meeting Link:
                                                     <a href="{{ $schedule->zoom_meeting_url }}"
                                                         class="text-primary">Click here</a>
