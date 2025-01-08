@@ -254,4 +254,14 @@ class FrontendController extends Controller
     {
         return view('pages.user-study-materail', compact('subscription'));
     }
+
+    public function renderOnlineClasses()
+    {
+        $user = Auth::user();
+        $schedules = $user->orders->flatMap(function ($order) {
+            return collect([$order->payment->where('status', 'success')]);
+        });
+        dd($order);
+        return view('pages.online-classes');
+    }
 }

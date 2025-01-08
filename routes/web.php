@@ -38,6 +38,7 @@ Route::middleware([
     Route::get('/checkout/course', [FrontendController::class, 'checkout'])->name('checkout.course');
     Route::get('/student/study-materials', [FrontendController::class, 'renderStudentStudyMaterials'])->name('render.student.studyMaterials');
     Route::get('/student/study-materials/{subscription}', [FrontendController::class, 'renderStudentStudyMaterialsType'])->name('render.student.studyMaterials.type');
+    Route::get('/student/online-classes', [FrontendController::class, 'renderOnlineClasses'])->name('render.online-classes');
 });
 
 Route::post('/payment/initiate', [PaymentController::class, 'initiate'])->name('payment.initiate');
