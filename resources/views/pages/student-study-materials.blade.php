@@ -17,7 +17,7 @@
                         <div class="zt-course-content-3">
                             <section id="zt-cta-4" class="zt-cta-section-4 study-material p-0">
                                 <div class="container">
-                                    <div class="row">
+                                    <div class="row justify-content-center">
                                         <div class="col-lg-6 col-md-6 col-sm-12">
                                             <div class="zt-feature-innerbox position-relative">
                                                 <div class="zt-feature-icon float-left">
