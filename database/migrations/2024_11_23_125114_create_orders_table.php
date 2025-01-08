@@ -21,6 +21,7 @@ return new class extends Migration
             $table->mediumInteger('cgst');
             $table->mediumInteger('sgst');
             $table->string('invoice')->nullable();
+            $table->string('enrolled_by')->default('Self');
             $table->timestamps();
         });
     }

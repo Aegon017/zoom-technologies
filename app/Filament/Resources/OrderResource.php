@@ -27,6 +27,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\Indicator;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use ZipArchive;
@@ -127,6 +128,7 @@ class OrderResource extends Resource
             ->columns([
                 TextColumn::make('#')->rowIndex(),
                 TextColumn::make('order_number')->searchable(),
+                TextColumn::make('enrolled_by')->searchable(),
                 TextColumn::make('user.name')->searchable(),
                 TextColumn::make('combined')
                     ->label('Course and Package Name')
@@ -341,6 +343,39 @@ class OrderResource extends Resource
 
                         return $indicators;
                     }),
+                Filter::make('mode')
+                    ->form([
+                        Select::make('payment_mode')
+                            ->columnSpan(2)
+                            ->label('Payment Method')
+                            ->searchable()
+                            ->options(Payment::pluck('mode', 'mode')->filter()->unique()),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['payment_mode'],
+                            fn(Builder $query): Builder => $query->whereHas(
+                                'payment',
+                                fn(Builder $query): Builder => $query->where(
+                                    'payments.mode',
+                                    $data['payment_mode']
+                                )
+                            )
+                        );
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+                        if ($data['payment_mode']) {
+                            $indicators[] = Indicator::make('Payment Method: ' . $data['payment_mode'])
+                                ->removeField('payment_mode');
+                        }
+
+                        return $indicators;
+                    }),
+                SelectFilter::make('enrolled_by')
+                    ->options(Order::pluck('enrolled_by', 'enrolled_by'))
+                    ->searchable()
+                    ->columnSpan(2),
             ], layout: FiltersLayout::AboveContentCollapsible)->filtersFormColumns('4')
             ->actions([
                 ActionsAction::make('invoice')

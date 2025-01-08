@@ -21,7 +21,7 @@ class StudentCourseMaterials extends Component
     {
         $user = Auth::user();
         if ($this->subscription == 'free') {
-            $this->courseStudyMaterials = StudyMaterial::where('subscription', 'free')->get();
+            $this->courseStudyMaterials = StudyMaterial::where('subscription', 'Free')->get();
             $this->otherStudyMaterials = OtherStudyMaterial::where('subscription', 'Free')->get();
         } else {
             $this->courses = $user->orders->flatMap(function ($order) {

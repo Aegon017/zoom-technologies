@@ -8,7 +8,7 @@
                     <input class="form-check-input" type="radio" name="payment_method" value="payu" id="payu"
                         checked>
                     <label class="form-check-label" for="payu">
-                        Credit orDebit Card (India),UPI and Net Banking
+                        Credit or Debit Card (India),UPI and Net Bankings
                         <div>
                             <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/visa.svg"
                                 alt="visa logo" width="54" class="mr-2 mt-2">
