@@ -194,7 +194,7 @@ class PackageCourseResource extends Resource
                                 ->options(function ($get) {
                                     if ($get('package_id')) {
                                         $courseIds = Package::find($get('package_id'))->courses;
-                                        $schedules = Schedule::whereIn('course_id', $courseIds)->get()->pluck('formatted_package_schedule', 'id');
+                                        $schedules = Schedule::whereIn('course_id', $courseIds)->orderBy('course_id', 'asc')->orderBy('start_date', 'asc')->orderBy('time', 'asc')->get()->pluck('formatted_package_schedule', 'id');
 
                                         return $schedules;
                                     }
