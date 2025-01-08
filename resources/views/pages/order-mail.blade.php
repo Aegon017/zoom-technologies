@@ -136,7 +136,7 @@
                     </tr>
                     <tr>
                         <td>Payment mode:</td>
-                        <td>{{ $order->payment->mode ?? 'None' }}</td>
+                        <td>{{ $order->payment->method ?? 'None' }}</td>
                     </tr>
                     <tr>
                         <td>Taxes:</td>
@@ -232,7 +232,7 @@
                     </tr>
                     <tr>
                         <td>Payment mode:</td>
-                        <td>{{ $order->payment->mode ?? 'None' }}</td>
+                        <td>{{ $order->payment->method ?? 'None' }}</td>
                     </tr>
                     <tr>
                         <td>Taxes:</td>
