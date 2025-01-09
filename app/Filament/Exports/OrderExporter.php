@@ -25,7 +25,7 @@ class OrderExporter extends Exporter
             ExportColumn::make('payment.date')->label('Payment date')->enabledByDefault(false),
             ExportColumn::make('payment.time')->label('Payment time')->enabledByDefault(false),
             ExportColumn::make('payment.description')->label('Payment description')->enabledByDefault(false),
-            ExportColumn::make('Payment.status')->label('Payment status')->enabledByDefault(false),
+            ExportColumn::make('payment.status')->label('Payment status')->enabledByDefault(false),
             ExportColumn::make('course.name')->label('Course name')->enabledByDefault(false),
             ExportColumn::make('package.name')->label('Package name')->enabledByDefault(false),
             ExportColumn::make('schedule.duration')->label('Duration')->enabledByDefault(false),
@@ -49,5 +49,20 @@ class OrderExporter extends Exporter
         }
 
         return $body;
+    }
+
+    // public function getFileName(Export $export): string
+    // {
+    //     return "orders.csv";
+    // }
+
+    public function getFileName(Export $export): string
+    {
+        $courseName = $export->filters['course_id'] ?? 'all_courses';
+        $paymentMethod = $export->filters['payment_method'] ?? 'all_methods';
+        $startDate = $export->filters['start_date'] ?? 'no_start_date';
+        $endDate = $export->filters['end_date'] ?? 'no_end_date';
+
+        return "orders-{$courseName}-{$paymentMethod}-{$startDate}-{$endDate}.csv";
     }
 }

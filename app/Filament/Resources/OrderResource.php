@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\Package;
 use App\Models\Payment;
 use App\Models\Schedule;
+use Filament\Actions\Exports\Models\Export;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Select;
@@ -122,9 +123,6 @@ class OrderResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->headerActions([
-                ExportAction::make()->exporter(OrderExporter::class),
-            ])
             ->columns([
                 TextColumn::make('#')->rowIndex(),
                 TextColumn::make('order_number')->searchable(),
@@ -411,6 +409,10 @@ class OrderResource extends Resource
                             return back()->with('error', 'Unable to create the ZIP file.');
                         }
                     }),
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->exporter(OrderExporter::class)
             ])->defaultSort('created_at', 'desc');
     }
 
