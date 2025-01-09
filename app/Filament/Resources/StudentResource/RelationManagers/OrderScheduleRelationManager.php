@@ -23,15 +23,18 @@ class OrderScheduleRelationManager extends RelationManager
             ->schema([
                 Select::make('schedule_id')
                     ->label('Schedule')
-                    ->options(
-                        Schedule::where('course_id', $this->ownerRecord->course_id)
+                    ->options(function ($record) {
+                        return Schedule::where('course_id', $record->schedule->course->id)
+                            ->with('course')
+                            ->orderBy('start_date', 'asc')->orderBy('time', 'asc')
                             ->get()
                             ->mapWithKeys(function ($schedule) {
                                 return [
                                     $schedule->id => "{$schedule->course->name} - {$schedule->start_date} - {$schedule->time} ({$schedule->training_mode})",
                                 ];
                             })
-                    )
+                            ->toArray();
+                    })
                     ->searchable()
                     ->columnSpanFull(),
                 FileUpload::make('proof')->columnSpanFull()->required(),
@@ -56,7 +59,7 @@ class OrderScheduleRelationManager extends RelationManager
             ])
             ->headerActions([
                 CreateAction::make()
-                    ->visible(fn () => $this->getSchedules()->isEmpty()),
+                    ->visible(fn() => $this->getSchedules()->isEmpty()),
             ])
             ->actions([
                 ActionsAction::make('proof')
