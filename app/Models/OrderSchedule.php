@@ -28,6 +28,7 @@ class OrderSchedule extends Model
                 $orderSchedule->admin_name = $admin->name;
                 $orderSchedule->admin_email = $admin->email;
                 $orderSchedule->ip_address = Request::ip();
+                $orderSchedule->saveQuietly();
                 $user = $orderSchedule->order->user;
                 $order = $orderSchedule->order;
                 Mail::to($user->email)->send(new ScheduleUpdatedMail($order));
