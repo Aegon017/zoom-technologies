@@ -10,11 +10,14 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 class StudentsOverview extends BaseWidget
 {
     use InteractsWithPageTable;
+
     protected static ?string $pollingInterval = null;
+
     protected function getTablePage(): string
     {
         return ListStudents::class;
     }
+
     protected function getStats(): array
     {
         return [

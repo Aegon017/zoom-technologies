@@ -19,7 +19,7 @@ class Order extends Model
         'cgst',
         'sgst',
         'invoice',
-        'enrolled_by'
+        'enrolled_by',
     ];
 
     public function payment(): HasOne

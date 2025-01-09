@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\StudentResource\Pages;
 
-use App\Filament\Resources\OrderResource\Widgets\OrdersOverview;
 use App\Filament\Resources\StudentResource;
 use App\Filament\Resources\StudentResource\Widgets\StudentsOverview;
 use Filament\Actions;
@@ -12,6 +11,7 @@ use Filament\Resources\Pages\ListRecords;
 class ListStudents extends ListRecords
 {
     use ExposesTableToWidgets;
+
     protected static string $resource = StudentResource::class;
 
     protected function getHeaderActions(): array
