@@ -63,6 +63,6 @@ class OrderExporter extends Exporter
         $startDate = $export->filters['start_date'] ?? 'no_start_date';
         $endDate = $export->filters['end_date'] ?? 'no_end_date';
 
-        return "orders-{$courseName}-{$paymentMethod}-{$startDate}-{$endDate}.csv";
+        return "orders-{ $export->getKey() }.csv";
     }
 }
