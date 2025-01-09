@@ -24,7 +24,7 @@ class OrderScheduleRelationManager extends RelationManager
                 Select::make('schedule_id')
                     ->label('Schedule')
                     ->options(function ($record) {
-                        return Schedule::where('course_id', $record->schedule->course->id)
+                        return Schedule::where('status', true)->where('course_id', $record->schedule->course->id)
                             ->with('course')
                             ->orderBy('start_date', 'asc')->orderBy('time', 'asc')
                             ->get()

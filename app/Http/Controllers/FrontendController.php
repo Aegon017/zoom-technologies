@@ -112,7 +112,7 @@ class FrontendController extends Controller
                 ->limit(1);
         }])
             ->whereHas('schedule', function ($query) {
-                $query->where('start_date', '>', today());
+                $query->where('status', true)->where('start_date', '>', today());
             })
             ->get()
             ->map(function ($course) {
@@ -236,7 +236,7 @@ class FrontendController extends Controller
 
     public function checkout(Request $request)
     {
-        $scheduleIDs = array_values(array_filter($request->all(), fn ($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
+        $scheduleIDs = array_values(array_filter($request->all(), fn($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
         Session::put('scheduleIDs', $scheduleIDs);
         $thankyou = Thankyou::first();
         $bankTransferDetails = BankTransfer::first();
@@ -259,8 +259,8 @@ class FrontendController extends Controller
     {
         $user = Auth::user();
         $successfulOrders = $user->orders()
-            ->whereHas('payment', fn ($query) => $query->where('status', 'success'))
-            ->with(['schedule', 'payment' => fn ($query) => $query->where('status', 'success')])
+            ->whereHas('payment', fn($query) => $query->where('status', 'success'))
+            ->with(['schedule', 'payment' => fn($query) => $query->where('status', 'success')])
             ->get();
 
         return view('pages.online-classes', compact('successfulOrders'));

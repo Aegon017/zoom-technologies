@@ -22,22 +22,21 @@
                                         @php
                                             $schedules = $course
                                                 ->schedule()
+                                                ->where('status', true)
                                                 ->orderBy('start_date', 'asc')
                                                 ->orderBy('time', 'asc')
                                                 ->get();
                                         @endphp
                                         @foreach ($schedules as $schedule)
-                                            @if ($schedule->status == true)
-                                                <option value="{{ $schedule->id }}">
-                                                    {{ \Carbon\Carbon::parse($schedule->start_date)->format('jS M Y') }}
-                                                    -
-                                                    {{ \Carbon\Carbon::parse($schedule->time)->format('g:i A') }}
-                                                    ({{ $schedule->timezone?->abbreviation }} -
-                                                    {{ $schedule->timezone?->offset }})
-                                                    -
-                                                    {{ $schedule->training_mode }}
-                                                </option>
-                                            @endif
+                                            <option value="{{ $schedule->id }}">
+                                                {{ \Carbon\Carbon::parse($schedule->start_date)->format('jS M Y') }}
+                                                -
+                                                {{ \Carbon\Carbon::parse($schedule->time)->format('g:i A') }}
+                                                ({{ $schedule->timezone?->abbreviation }} -
+                                                {{ $schedule->timezone?->offset }})
+                                                -
+                                                {{ $schedule->training_mode }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>

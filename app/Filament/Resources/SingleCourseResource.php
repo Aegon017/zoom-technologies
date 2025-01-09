@@ -198,7 +198,7 @@ class SingleCourseResource extends Resource
                                         $courseId = $get('course_id');
                                         $trainingMode = $get('training_mode');
                                         if ($courseId) {
-                                            return Schedule::where('course_id', $courseId)->where('training_mode', $trainingMode)->orderBy('start_date', 'asc')->orderBy('time', 'asc')->get()->pluck('formatted_schedule', 'id');
+                                            return Schedule::where('status', true)->where('course_id', $courseId)->where('training_mode', $trainingMode)->orderBy('start_date', 'asc')->orderBy('time', 'asc')->get()->pluck('formatted_schedule', 'id');
                                         }
                                     }
 

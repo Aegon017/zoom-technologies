@@ -52,6 +52,7 @@
                                                             @php
                                                                 $schedules = $course
                                                                     ->schedule()
+                                                                    ->where('status', true)
                                                                     ->orderBy('start_date', 'asc')
                                                                     ->orderBy('time', 'asc')
                                                                     ->get();
