@@ -88,6 +88,7 @@
     </div>
 
     <div class="content">
+        <p>Course: {{ $schedule->course->name }}</p>
         <p>Batch: {{ $schedule->start_date }} {{ $schedule->time }}</p>
         <p>Training Mode: {{ $schedule->training_mode }}</p>
         @if ($schedule->training_mode == 'Online')

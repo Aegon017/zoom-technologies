@@ -23,7 +23,6 @@ class SendMeetingCredentialsUpdatedEmail
     public function handle(MeetingCredentialsUpdatedEvent $event): void
     {
         $subject = 'Updated meeting credentials';
-        $user = 'kondanagamalleswararao016@gmail.com';
         $scheduleId = $event->schedule->id;
         $orderSchedules = OrderSchedule::where('schedule_id', $scheduleId)->get();
         $users = [];
