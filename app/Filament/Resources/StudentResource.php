@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Exports\OrderExporter;
 use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers\OrderScheduleRelationManager;
-use App\Filament\Resources\StudentResource\Widgets\StudentsOverview;
 use App\Models\Course;
 use App\Models\Order;
 use App\Models\Package;
@@ -287,13 +286,6 @@ class StudentResource extends Resource
             'index' => Pages\ListStudents::route('/'),
             'create' => Pages\CreateStudent::route('/create'),
             'edit' => Pages\EditStudent::route('/{record}/edit'),
-        ];
-    }
-
-    public static function getWidgets(): array
-    {
-        return [
-            StudentsOverview::class,
         ];
     }
 }
