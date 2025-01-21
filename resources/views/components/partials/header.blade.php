@@ -18,6 +18,8 @@
                                 Study Material</a>
                             <a class="dropdown-item" href="{{ route('render.online-classes') }}"><i class="fas fa-book"></i>
                                 Online classes</a>
+                            <a class="dropdown-item" href="{{ route('render.certificates') }}"><i class="fas fa-book"></i>
+                                Certificates</a>
                             <a class="dropdown-item" href="{{ route('render.myOrders') }}" style="padding-left: 19px"><i
                                     class="fas fa-shopping-cart"></i> My Orders</a>
                             <a class="dropdown-item" href="{{ route('profile.show') }}"><i class="fas fa-id-badge"></i>

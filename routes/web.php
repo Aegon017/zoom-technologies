@@ -39,6 +39,7 @@ Route::middleware([
     Route::get('/student/study-materials', [FrontendController::class, 'renderStudentStudyMaterials'])->name('render.student.studyMaterials');
     Route::get('/student/study-materials/{subscription}', [FrontendController::class, 'renderStudentStudyMaterialsType'])->name('render.student.studyMaterials.type');
     Route::get('/student/online-classes', [FrontendController::class, 'renderOnlineClasses'])->name('render.online-classes');
+    Route::get('/student/certificates', [FrontendController::class, 'renderCertificates'])->name('render.certificates');
 });
 
 Route::post('/payment/initiate', [PaymentController::class, 'initiate'])->name('payment.initiate');
@@ -48,7 +49,7 @@ Route::any('/payment/failure', [PaymentController::class, 'failure'])->name('pay
 
 Route::get('/storage-link', function () {
     $target = storage_path('app/public');
-    $link = $_SERVER['DOCUMENT_ROOT'].'/zoom-technologies/public/storage';
+    $link = $_SERVER['DOCUMENT_ROOT'] . '/zoom-technologies/public/storage';
     symlink($target, $link);
 });
 
