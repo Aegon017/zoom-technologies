@@ -8,6 +8,7 @@ use App\Models\Package;
 use App\Models\Schedule;
 use App\Models\Tax;
 use App\Models\User;
+use Closure;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Radio;
@@ -206,7 +207,22 @@ class PackageCourseResource extends Resource
                                 ->disabled(function ($get) {
                                     return ! $get('package_id');
                                 })
-                                ->rules(['array', 'min:2', 'max:2'])
+                                ->rules(function ($get) {
+                                    $packageId = $get('package_id');
+                                    $minMaxCount = $packageId ? count(Package::find($packageId)->courses) : 0;
+
+                                    return [
+                                        'array',
+                                        "min:{$minMaxCount}",
+                                        "max:{$minMaxCount}",
+                                        function (string $attribute, $value, Closure $fail) {
+                                            $courseIds = Schedule::whereIn('id', $value)->pluck('course_id')->toArray();
+                                            if (count($courseIds) !== count(array_unique($courseIds))) {
+                                                $fail("You cannot select multiple schedules for the same course.");
+                                            }
+                                        },
+                                    ];
+                                })
                                 ->columnSpanFull(),
                         ]),
                     Step::make('Payment Details')

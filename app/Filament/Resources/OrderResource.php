@@ -61,8 +61,17 @@ class OrderResource extends Resource
                     TextEntry::make('user.phone')->label('Phone'),
                 ]),
                 Fieldset::make('Course Details')->schema([
-                    TextEntry::make('course.name'),
+                    TextEntry::make('combined')
+                        ->label(function ($record) {
+                            return $record->course ? 'Course Name' : 'Package Course Name';
+                        })
+                        ->getStateUsing(function ($record) {
+                            return $record->course->name ?? $record->package->name ?? 'No Name Available';
+                        }),
                     TextEntry::make('courseOrPackage_price')
+                        ->label(function ($record) {
+                            return $record->course ? 'Course Price' : 'Package Course Price';
+                        })
                         ->formatStateUsing(fn($state, $record) => $record->payment->currency . ' ' . $state),
                 ]),
                 Fieldset::make('Batches')->schema([
