@@ -87,4 +87,9 @@ class Course extends Model
     {
         return $this->hasOne(SampleCertificate::class);
     }
+
+    public function courseCoordinator(): HasOne
+    {
+        return $this->hasOne(CourseCoordinator::class);
+    }
 }

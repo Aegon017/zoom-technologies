@@ -58,6 +58,8 @@ class FreeStudentResource extends Resource
                             $paymentQuery->where('status', 'success');
                         });
                     });
+            })->whereHas('roles', function (Builder $roleQuery) {
+                $roleQuery->where('name', 'student');
             }))
             ->columns([
                 TextColumn::make('name')->searchable(),
