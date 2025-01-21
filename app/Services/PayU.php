@@ -174,13 +174,13 @@ final class PayU
         $keyArray = explode('|', $keyString);
         $reverseKeyArray = array_reverse($keyArray);
         $reverseKeyString = implode('|', $reverseKeyArray);
-        $CalcHashString = strtolower(hash('sha512', $this->salt.'|'.$status.'|'.$reverseKeyString)); //hash without additionalcharges
-        //check for presence of additionalcharges parameter in response.
+        $CalcHashString = strtolower(hash('sha512', $this->salt.'|'.$status.'|'.$reverseKeyString)); // hash without additionalcharges
+        // check for presence of additionalcharges parameter in response.
         $additionalCharges = '';
 
         if (isset($params['additionalCharges'])) {
             $additionalCharges = $params['additionalCharges'];
-            //hash with additionalcharges
+            // hash with additionalcharges
             $CalcHashString = strtolower(hash('sha512', $additionalCharges.'|'.$this->salt.'|'.$status.'|'.$reverseKeyString));
         }
 
@@ -375,7 +375,7 @@ final class PayU
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_SSLVERSION, 6); //TLS 1.2 mandatory
+            curl_setopt($ch, CURLOPT_SSLVERSION, 6); // TLS 1.2 mandatory
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 

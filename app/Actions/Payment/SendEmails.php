@@ -7,7 +7,6 @@ use App\Mail\MeetingMail;
 use App\Mail\OrderMail;
 use App\Models\Order;
 use App\Models\Thankyou;
-use Illuminate\Support\Env;
 use Illuminate\Support\Facades\Mail;
 
 class SendEmails
