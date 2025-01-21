@@ -29,15 +29,17 @@ class StudentResource extends Resource
 {
     protected static ?string $model = Order::class;
 
-    protected static ?string $label = 'Students';
+    protected static ?string $label = 'Enrolled Student';
 
-    protected static ?string $navigationLabel = 'Students';
+    protected static ?string $navigationLabel = 'Enrolled Students';
 
-    public static ?string $slug = 'students';
+    public static ?string $slug = 'enrolled-students';
 
     protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationGroup = 'Students';
 
     public static function canCreate(): bool
     {
@@ -99,7 +101,7 @@ class StudentResource extends Resource
                                 })
                                 ->searchable()
                                 ->preload()
-                                ->disabled(fn (Get $get) => ! $get('course_id')),
+                                ->disabled(fn(Get $get) => ! $get('course_id')),
                             Select::make('schedule_id')
                                 ->label('Batch')
                                 ->options(function (Get $get) {
@@ -121,46 +123,46 @@ class StudentResource extends Resource
                                 })->columnSpanFull()
                                 ->searchable()
                                 ->preload()
-                                ->disabled(fn (Get $get) => ! $get('training_mode')),
+                                ->disabled(fn(Get $get) => ! $get('training_mode')),
                         ])->columns(2),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
                             ->when(
                                 $data['course_id'] ?? null,
-                                fn (Builder $query, $courseId) => $query
+                                fn(Builder $query, $courseId) => $query
                                     ->where(function (Builder $subQuery) use ($courseId) {
-                                        $subQuery->whereHas('course', fn (Builder $courseQuery) => $courseQuery->where('id', $courseId))
-                                            ->orWhereHas('package', fn (Builder $packageQuery) => $packageQuery->whereJsonContains('courses', (string) $courseId));
+                                        $subQuery->whereHas('course', fn(Builder $courseQuery) => $courseQuery->where('id', $courseId))
+                                            ->orWhereHas('package', fn(Builder $packageQuery) => $packageQuery->whereJsonContains('courses', (string) $courseId));
                                     })
                             )
                             ->when(
                                 $data['training_mode'],
-                                fn (Builder $query, $trainingMode) => $query->whereHas(
+                                fn(Builder $query, $trainingMode) => $query->whereHas(
                                     'schedule',
-                                    fn (Builder $scheduleQuery) => $scheduleQuery->where('training_mode', $trainingMode)
+                                    fn(Builder $scheduleQuery) => $scheduleQuery->where('training_mode', $trainingMode)
                                 )
                             )
                             ->when(
                                 $data['schedule_id'],
-                                fn (Builder $query, $scheduleId): Builder => $query->whereHas('schedule', fn (Builder $query) => $query->where('schedule_id', $scheduleId)),
+                                fn(Builder $query, $scheduleId): Builder => $query->whereHas('schedule', fn(Builder $query) => $query->where('schedule_id', $scheduleId)),
                             );
                     })
                     ->indicateUsing(function (array $data): array {
                         $indicators = [];
 
                         if ($data['course_id'] ?? null) {
-                            $indicators[] = Indicator::make('Course: '.Course::where('id', $data['course_id'])->first()->name)
+                            $indicators[] = Indicator::make('Course: ' . Course::where('id', $data['course_id'])->first()->name)
                                 ->removeField('course_id');
                         }
 
                         if ($data['training_mode'] ?? null) {
-                            $indicators[] = Indicator::make('Training Mode: '.$data['training_mode'])
+                            $indicators[] = Indicator::make('Training Mode: ' . $data['training_mode'])
                                 ->removeField('training_mode');
                         }
 
                         if ($data['schedule_id'] ?? null) {
-                            $indicators[] = Indicator::make('Batch: '.Schedule::where('id', $data['schedule_id'])->first()->formatted_schedule)
+                            $indicators[] = Indicator::make('Batch: ' . Schedule::where('id', $data['schedule_id'])->first()->formatted_schedule)
                                 ->removeField('schedule_id');
                         }
 
@@ -177,9 +179,9 @@ class StudentResource extends Resource
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->when(
                             $data['start_date'] && $data['end_date'],
-                            fn (Builder $query): Builder => $query->whereHas(
+                            fn(Builder $query): Builder => $query->whereHas(
                                 'payment',
-                                fn (Builder $query): Builder => $query->whereBetween(
+                                fn(Builder $query): Builder => $query->whereBetween(
                                     'payments.date',
                                     [$data['start_date'], $data['end_date']]
                                 )
@@ -189,7 +191,7 @@ class StudentResource extends Resource
                     ->indicateUsing(function (array $data): array {
                         $indicators = [];
                         if ($data['start_date'] && $data['end_date']) {
-                            $indicators[] = Indicator::make('From: '.$data['start_date'].' To: '.$data['end_date'])
+                            $indicators[] = Indicator::make('From: ' . $data['start_date'] . ' To: ' . $data['end_date'])
                                 ->removeField('start_date')
                                 ->removeField('end_date');
                         }
@@ -212,9 +214,9 @@ class StudentResource extends Resource
                         return $query
                             ->when(
                                 $data['package_id'] ?? null,
-                                fn (Builder $query, $courseId) => $query
+                                fn(Builder $query, $courseId) => $query
                                     ->where(function (Builder $subQuery) use ($courseId) {
-                                        $subQuery->whereHas('package', fn (Builder $courseQuery) => $courseQuery->where('id', $courseId));
+                                        $subQuery->whereHas('package', fn(Builder $courseQuery) => $courseQuery->where('id', $courseId));
                                     })
                             );
                     })
@@ -222,17 +224,17 @@ class StudentResource extends Resource
                         $indicators = [];
 
                         if ($data['package_id'] ?? null) {
-                            $indicators[] = Indicator::make('Package Course: '.Package::where('id', $data['package_id'])->first()->name)
+                            $indicators[] = Indicator::make('Package Course: ' . Package::where('id', $data['package_id'])->first()->name)
                                 ->removeField('package_id');
                         }
 
                         if ($data['training_mode'] ?? null) {
-                            $indicators[] = Indicator::make('Training Mode: '.$data['training_mode'])
+                            $indicators[] = Indicator::make('Training Mode: ' . $data['training_mode'])
                                 ->removeField('training_mode');
                         }
 
                         if ($data['schedule_id'] ?? null) {
-                            $indicators[] = Indicator::make('Batch: '.Schedule::where('id', $data['schedule_id'])->first()->formatted_schedule)
+                            $indicators[] = Indicator::make('Batch: ' . Schedule::where('id', $data['schedule_id'])->first()->formatted_schedule)
                                 ->removeField('schedule_id');
                         }
 
@@ -248,9 +250,9 @@ class StudentResource extends Resource
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->when(
                             $data['payment_method'],
-                            fn (Builder $query): Builder => $query->whereHas(
+                            fn(Builder $query): Builder => $query->whereHas(
                                 'payment',
-                                fn (Builder $query): Builder => $query->where(
+                                fn(Builder $query): Builder => $query->where(
                                     'payments.method',
                                     $data['payment_method']
                                 )
@@ -260,7 +262,7 @@ class StudentResource extends Resource
                     ->indicateUsing(function (array $data): array {
                         $indicators = [];
                         if ($data['payment_method']) {
-                            $indicators[] = Indicator::make('Payment Mode: '.$data['payment_method'])
+                            $indicators[] = Indicator::make('Payment Mode: ' . $data['payment_method'])
                                 ->removeField('payment_method');
                         }
 

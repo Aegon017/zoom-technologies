@@ -65,6 +65,7 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->navigationGroups([
+                'Students',
                 'User Management',
                 'Offline Enrolls',
                 'Courses & Packages',
