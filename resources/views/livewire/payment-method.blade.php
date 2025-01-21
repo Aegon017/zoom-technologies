@@ -52,25 +52,23 @@
                     </label>
                 </div>
             @endif
-            @guest
-                @if (in_array('Bank Transfer', $paymentGateways))
-                    <div class="form-check" x-on:click="button = false; bankTransfer = true; qrCode = false">
-                        <input class="form-check-input" type="radio" name="payment_method" value="bank transfer"
-                            id="bank_transfer">
-                        <label class="form-check-label" for="bank_transfer">
-                            Bank Transfer
-                        </label>
-                    </div>
-                @endif
-                @if (in_array('QR Code', $paymentGateways))
-                    <div class="form-check" x-on:click="button=false; qrCode = true; bankTransfer = false">
-                        <input class="form-check-input" type="radio" name="payment_method" value="QR code" id="qr_code">
-                        <label class="form-check-label" for="qr_code">
-                            QR Code
-                        </label>
-                    </div>
-                @endif
-            @endguest
+            @if (in_array('Bank Transfer', $paymentGateways))
+                <div class="form-check" x-on:click="button = false; bankTransfer = true; qrCode = false">
+                    <input class="form-check-input" type="radio" name="payment_method" value="bank transfer"
+                        id="bank_transfer">
+                    <label class="form-check-label" for="bank_transfer">
+                        Bank Transfer
+                    </label>
+                </div>
+            @endif
+            @if (in_array('QR Code', $paymentGateways))
+                <div class="form-check" x-on:click="button=false; qrCode = true; bankTransfer = false">
+                    <input class="form-check-input" type="radio" name="payment_method" value="QR code" id="qr_code">
+                    <label class="form-check-label" for="qr_code">
+                        QR Code
+                    </label>
+                </div>
+            @endif
         </div>
     @endif
     <button class="btn btn-dark" wire:click.prevent="checkAuth" x-on:click="$dispatch('check-address')"

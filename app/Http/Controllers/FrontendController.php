@@ -258,7 +258,7 @@ class FrontendController extends Controller
     public function renderOnlineClasses()
     {
         $user = Auth::user();
-        $successfulOrders = $user->orders()
+        $successfulOrders = $user->orders
             ->whereHas('payment', fn($query) => $query->where('status', 'success'))
             ->with(['schedule', 'payment' => fn($query) => $query->where('status', 'success')])
             ->get();
