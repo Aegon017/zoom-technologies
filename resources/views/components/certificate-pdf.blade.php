@@ -78,18 +78,40 @@
         <p>
             This is to certify that
             <strong>
-                Mr. Dipti Ranjan Rout
+                Mr./Ms. {{ $certificate->user->name }}
             </strong>
         </p>
         <p>
             Has successfully completed the Course in
         </p>
         <h2>
-            Microsoft Azure
+            {{ $cert->course->name }}
         </h2>
         <div class="details">
+            @php
+                $startDate = Carbon\Carbon::parse($cert->start_date);
+                $duration = $cert->duration;
+                $durationType = $cert->duration_type;
+                $endDate = $startDate->clone();
+
+                switch ($durationType) {
+                    case 'Day':
+                        $endDate = $endDate->addDays($duration);
+                        break;
+                    case 'Week':
+                        $endDate = $endDate->addWeeks($duration);
+                        break;
+                    case 'Month':
+                        $endDate = $endDate->addMonths($duration);
+                        break;
+                    default:
+                        $endDate = null;
+                        break;
+                }
+            @endphp
             <p>
-                Start Date : 30-10-2024 End Date : 14-11-2024
+                Start Date: {{ $startDate->format('d M Y') }} &nbsp;&nbsp;&nbsp;
+                End Date: {{ $endDate ? $endDate->format('d M Y') : 'N/A' }}
             </p>
             <p>
                 Reference No. ZTT35 at Virtual Education Center.
@@ -97,14 +119,14 @@
         </div>
         <div class="signature">
             <img alt="Signature of Course Co-Ordinator"
-                src="https://ui-avatars.com/api/?name=A&color=FFFFFF&background=09090b" />
+                src="{{ asset(Storage::url($cert->course->courseCoordinator->signature_image)) }}" />
             <p>
                 Course Co-Ordinator
             </p>
         </div>
         <div class="footer">
             <p>
-                Above HDFC Bank, Road No.12, Banjara Hills, Hyderabad - 500 034, INDIA
+                {{ $companyAddress->location }}
             </p>
         </div>
     </div>

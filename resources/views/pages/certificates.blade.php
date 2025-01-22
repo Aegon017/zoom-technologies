@@ -26,13 +26,17 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <div class="content-wrapper p-5">
-                        <div class="px-3 pb-3 row justify-content-between">
-                            <h5>Course Name</h5>
-                            <a href="" class="btn btn-dark">Download</a>
+                    @foreach ($certificates as $certificate)
+                        <div class="content-wrapper p-5 mb-5">
+                            <div class="px-3 pb-3 row justify-content-between">
+                                @foreach ($certificate->schedule as $cert)
+                                    <h5>{{ $cert->course->name }}</h5>
+                                @endforeach
+                                {{-- <a href="{{ route('download.certificate') }}" class="btn btn-dark">Download</a> --}}
+                            </div>
+                            <x-certificate-pdf :$certificate :$cert :$companyAddress />
                         </div>
-                        <x-certificate-pdf />
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>

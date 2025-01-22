@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\CalculatePrice;
 use App\Models\AboutUsSection;
+use App\Models\Address;
 use App\Models\BankTransfer;
 use App\Models\Blog;
 use App\Models\BlogCategory;
@@ -13,6 +14,7 @@ use App\Models\Course;
 use App\Models\FaqsSection;
 use App\Models\FeatureCard;
 use App\Models\FeatureSection;
+use App\Models\FooterOffice;
 use App\Models\Franchisee;
 use App\Models\FreeMaterialSection;
 use App\Models\MemorableMoments;
@@ -258,7 +260,7 @@ class FrontendController extends Controller
     public function renderOnlineClasses()
     {
         $user = Auth::user();
-        $successfulOrders = $user->orders
+        $successfulOrders = $user->orders()
             ->whereHas('payment', fn($query) => $query->where('status', 'success'))
             ->with(['schedule', 'payment' => fn($query) => $query->where('status', 'success')])
             ->get();
@@ -270,6 +272,18 @@ class FrontendController extends Controller
     {
         $metaDetail = null;
         $pageSchema = null;
-        return view('pages.certificates', compact('metaDetail', 'pageSchema'));
+        $certificates = Auth::user()->orders()
+            ->whereHas('payment', function ($query) {
+                $query->where('status', 'success');
+            })
+            ->whereHas('schedule', function ($query) {
+                $query->where('certificate_status', true);
+            })
+            ->with('schedule')
+            ->get();
+        $companyAddress = FooterOffice::where('name', 'Registered Office')->first();
+        return view('pages.certificates', compact('metaDetail', 'pageSchema', 'certificates', 'companyAddress'));
     }
+
+    public function downloadCertificate() {}
 }
