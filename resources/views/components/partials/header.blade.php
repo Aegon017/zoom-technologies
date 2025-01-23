@@ -13,22 +13,21 @@
                     </a>
                     <div class="dropdown-menu login-dropdown" aria-labelledby="navbarDropdown">
                         @auth
-                            <a class="dropdown-item" href="{{ route('render.student.studyMaterials') }}"><i
-                                    class="fas fa-book"></i>
-                                Study Material</a>
-                            <a class="dropdown-item" href="{{ route('render.online-classes') }}"><i class="fas fa-book"></i>
-                                Online classes</a>
-                            <a class="dropdown-item" href="{{ route('render.certificates') }}"><i class="fas fa-book"></i>
-                                Certificates</a>
-                            <a class="dropdown-item" href="{{ route('render.myOrders') }}" style="padding-left: 19px"><i
-                                    class="fas fa-shopping-cart"></i> My Orders</a>
-                            <a class="dropdown-item" href="{{ route('profile.show') }}"><i class="fas fa-id-badge"></i>
-                                Profile</a>
+                            <a class="dropdown-item" href="{{ route('render.student.studyMaterials') }}">
+                                <i class="fa-solid fa-book-open-reader"></i> Study Material</a>
+                            <a class="dropdown-item" href="{{ route('render.online-classes') }}">
+                                <i class="fa-solid fa-chalkboard-user"></i> Online classes</a>
+                            <a class="dropdown-item" href="{{ route('render.certificates') }}">
+                                <i class="fa-solid fa-certificate"></i> Certificates</a>
+                            <a class="dropdown-item" href="{{ route('render.myOrders') }}">
+                                <i class="fa-solid fa-cart-shopping"></i> My Orders</a>
+                            <a class="dropdown-item" href="{{ route('profile.show') }}">
+                                <i class="fa-solid fa-id-badge"></i> Profile</a>
                             <div class="dropdown-divider"></div>
                             <form method="POST" action="{{ route('logout') }}" x-data>
                                 @csrf
-                                <a class="dropdown-item" href="{{ route('logout') }}" @click.prevent="$root.submit();"><i
-                                        class="fas fa-sign-out-alt"></i> Logout</a>
+                                <a class="dropdown-item" href="{{ route('logout') }}" @click.prevent="$root.submit();">
+                                    <i class="fas fa-sign-out-alt"></i> Logout</a>
                             </form>
                         @endauth
                         @guest

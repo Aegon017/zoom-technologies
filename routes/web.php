@@ -40,7 +40,6 @@ Route::middleware([
     Route::get('/student/study-materials/{subscription}', [FrontendController::class, 'renderStudentStudyMaterialsType'])->name('render.student.studyMaterials.type');
     Route::get('/student/online-classes', [FrontendController::class, 'renderOnlineClasses'])->name('render.online-classes');
     Route::get('/student/certificates', [FrontendController::class, 'renderCertificates'])->name('render.certificates');
-    route::get('/student/certificate/download', [FrontendController::class, 'downloadCertificate'])->name('download.certificate');
 });
 
 Route::post('/payment/initiate', [PaymentController::class, 'initiate'])->name('payment.initiate');

@@ -9,6 +9,7 @@ use App\Models\BankTransfer;
 use App\Models\Blog;
 use App\Models\BlogCategory;
 use App\Models\Brochure;
+use App\Models\Certificate;
 use App\Models\CorporateTraining;
 use App\Models\Course;
 use App\Models\FaqsSection;
@@ -32,6 +33,7 @@ use App\Models\TermsAndCondition;
 use App\Models\Testimonial;
 use App\Models\TestimonialSection;
 use App\Models\Thankyou;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -259,10 +261,17 @@ class FrontendController extends Controller
 
     public function renderOnlineClasses()
     {
-        $user = Auth::user();
+        $user = User::find(Auth::id());
         $successfulOrders = $user->orders()
-            ->whereHas('payment', fn($query) => $query->where('status', 'success'))
-            ->with(['schedule', 'payment' => fn($query) => $query->where('status', 'success')])
+            ->whereHas('payment', function ($query) {
+                $query->where('status', 'success');
+            })
+            ->with(['schedule' => function ($query) {
+                $query->where('certificate_status', false)
+                    ->where('training_mode', 'Online');
+            }, 'payment' => function ($query) {
+                $query->where('status', 'success');
+            }])
             ->get();
 
         return view('pages.online-classes', compact('successfulOrders'));
@@ -270,20 +279,7 @@ class FrontendController extends Controller
 
     public function renderCertificates()
     {
-        $metaDetail = null;
-        $pageSchema = null;
-        $certificates = Auth::user()->orders()
-            ->whereHas('payment', function ($query) {
-                $query->where('status', 'success');
-            })
-            ->whereHas('schedule', function ($query) {
-                $query->where('certificate_status', true);
-            })
-            ->with('schedule')
-            ->get();
-        $companyAddress = FooterOffice::where('name', 'Registered Office')->first();
-        return view('pages.certificates', compact('metaDetail', 'pageSchema', 'certificates', 'companyAddress'));
+        $certificates = Certificate::where('user_id', Auth::id())->get();
+        return view('pages.certificates', compact('certificates'));
     }
-
-    public function downloadCertificate() {}
 }

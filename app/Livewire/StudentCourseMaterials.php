@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\OtherStudyMaterial;
 use App\Models\StudyMaterial;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
@@ -22,7 +23,7 @@ class StudentCourseMaterials extends Component
 
     public function mount()
     {
-        $user = Auth::user();
+        $user = User::find(Auth::id());
         if ($this->subscription == 'free') {
             $this->courseStudyMaterials = StudyMaterial::where('subscription', 'Free')->get();
             $this->otherStudyMaterials = OtherStudyMaterial::where('subscription', 'Free')->get();
