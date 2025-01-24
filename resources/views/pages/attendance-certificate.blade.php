@@ -1,112 +1,87 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <title>
-        Certificate
-    </title>
+    <meta charset="UTF-8">
+    <title>Certificate</title>
     <style>
+        @page {
+            margin: 0;
+        }
+
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #fff;
-        }
-
-        .certificate {
-            border: 40px solid red;
-            padding: 40px;
-            text-align: center;
-            position: relative;
-            margin: 0px;
-        }
-
-        .certificate h1 {
-            font-size: 40px;
-            margin: 0;
-            font-family: "Catamaran", serif;
-            font-weight: 500;
-            color: #034a9a;
-        }
-
-        .certificate img {
-            padding: 20px 0px 40px 0px;
-        }
-
-        .certificate p {
-            margin: 0px 0;
-            font-size: 22px;
-            font-family: "Catamaran", serif;
-            font-weight: 500;
-        }
-
-        .certificate h2 {
-            font-size: 26px;
-            margin: 0;
-            font-family: "Catamaran", serif;
-            font-weight: 600;
-        }
-
-        .certificate .details {
-            font-size: 18px;
-            margin: 20px 0;
-        }
-
-        .certificate .signature {
+            padding: 0;
+            font-family: sans-serif;
+            width: 297mm;
+            height: 210mm;
             display: flex;
-            align-items: flex-end;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .certificate_main_div {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-image: url({{ asset('frontend/assets/img/Certificate-bg-image.png') }});
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
             flex-direction: column;
+            align-items: center;
         }
 
-        .certificate .signature img {
-            width: 200px;
-            height: 100px;
-            padding: 0px;
+        .certificate_name {
+            position: absolute;
+            top: 36.5%;
+            font-size: 60px;
+            font-weight: 500;
+            color: #0e48e9;
+            text-align: center;
+            width: 100%;
+            letter-spacing: 3px;
         }
 
-        .certificate .footer {
-            font-size: 14px;
-            margin-top: 20px;
+        .certificate_course_name {
+            position: absolute;
+            top: 58%;
+            font-size: 27px;
+            font-weight: 400;
+            color: #ff6a10;
+            text-align: center;
+            width: 100%;
+        }
+
+        .certificate_course_duration {
+            position: absolute;
+            top: 63.5%;
+            font-size: 20px;
+            font-weight: 600;
+            color: #202938;
+            text-align: center;
+            width: 100%;
+        }
+
+        .certificate_reference_no {
+            position: absolute;
+            bottom: 19.1%;
+            font-size: 20px;
+            font-weight: 600;
+            color: #323a48;
+            left: 58%;
+            width: 100%;
         }
     </style>
 </head>
 
 <body>
-    <div class="certificate">
-        <h1>
-            Zoom Education Certificate
-        </h1>
-        <img src="http://localhost/frontend/assets/img/logo.png" alt="">
-        <p>
-            This is to certify that
-            <strong>
-                Mr. Dipti Ranjan Rout
-            </strong>
-        </p>
-        <p>
-            Has successfully completed the Course in
-        </p>
-        <h2>
-            Microsoft Azure
-        </h2>
-        <div class="details">
-            <p>
-                Start Date : 30-10-2024 End Date : 14-11-2024
-            </p>
-            <p>
-                Reference No. ZTT35 at Virtual Education Center.
-            </p>
-        </div>
-        <div class="signature">
-            <img alt="Signature of Course Co-Ordinator"
-                src="https://ui-avatars.com/api/?name=A&color=FFFFFF&background=09090b" />
-            <p>
-                Course Co-Ordinator
-            </p>
-        </div>
-        <div class="footer">
-            <p>
-                Above HDFC Bank, Road No.12, Banjara Hills, Hyderabad - 500 034, INDIA
-            </p>
-        </div>
+    <div class="certificate_main_div">
+        <h1 class="certificate_name">Mr. Jitendra Jain</h1>
+        <h3 class="certificate_course_name">Cybersecurity Professional Course</h3>
+        <h4 class="certificate_course_duration">June 26, 2023 - July 3, 2023</h4>
+        <h5 class="certificate_reference_no">101</h5>
     </div>
 </body>
 
