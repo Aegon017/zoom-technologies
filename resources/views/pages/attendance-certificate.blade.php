@@ -66,7 +66,7 @@
 
         .certificate_reference_no {
             position: absolute;
-            bottom: 19.1%;
+            bottom: 18.9%;
             font-size: 20px;
             font-weight: 600;
             color: #323a48;
@@ -78,10 +78,12 @@
 
 <body>
     <div class="certificate_main_div">
-        <h1 class="certificate_name">Mr. Jitendra Jain</h1>
-        <h3 class="certificate_course_name">Cybersecurity Professional Course</h3>
-        <h4 class="certificate_course_duration">June 26, 2023 - July 3, 2023</h4>
-        <h5 class="certificate_reference_no">101</h5>
+        <h1 class="certificate_name">Mr. {{ $userName }}</h1>
+        <h3 class="certificate_course_name">{{ $courseName }}</h3>
+        <h4 class="certificate_course_duration">{{ Carbon\Carbon::parse($batchDate)->format('F d, Y') }} -
+            {{ $endDate->format('F d, Y') }}
+        </h4>
+        <h5 class="certificate_reference_no">{{ $referenceNo }}</h5>
     </div>
 </body>
 

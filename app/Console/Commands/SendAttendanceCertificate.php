@@ -61,17 +61,16 @@ class SendAttendanceCertificate extends Command
                     $userEmail = $user->email;
                     $courseName = $orderSchedule->schedule->course->name;
                     $batchDate = $schedule->start_date;
-                    $batchTime = $schedule->time;
-                    $trainingMode = $schedule->training_mode;
+                    $referenceNo = 101;
+
                     $data = [
                         'userName' => $userName,
                         'courseName' => $courseName,
                         'batchDate' => $batchDate,
-                        'batchTime' => $batchTime,
-                        'trainingMode' => $trainingMode,
-                        'userEmail' => $userEmail,
+                        'endDate' => $endDate,
+                        'referenceNo' => $referenceNo,
                     ];
-                    $pdf = Pdf::loadView('pages.attendance-certificate', $data);
+                    $pdf = Pdf::loadView('pages.attendance-certificate', $data)->setOption(['defaultFont' => 'sans-serif'])->setPaper('a4', 'landscape');
                     $pdfFileName = 'certificates/certificate_' . time() . '.pdf';
                     $pdfPath = public_path($pdfFileName);
                     $pdf->save($pdfPath);
@@ -82,7 +81,7 @@ class SendAttendanceCertificate extends Command
                     $user->certificates()->save($certificate);
 
                     // $subject = 'Course Completion Certificate';
-                    // Mail::to($data['userEmail'])->send(new AttendingCertificateMail($pdfFileName, $subject, $userName, $courseName));
+                    // Mail::to($userEmail)->send(new AttendingCertificateMail($pdfFileName, $subject, $userName, $courseName));
                 }
                 $schedule->update(['certificate_status' => true]);
             }
