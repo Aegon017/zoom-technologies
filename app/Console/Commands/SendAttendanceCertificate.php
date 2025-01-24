@@ -2,12 +2,13 @@
 
 namespace App\Console\Commands;
 
+use App\Mail\AttendingCertificateMail;
 use App\Models\Certificate;
 use App\Models\Schedule;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-
+use Illuminate\Support\Facades\Mail;
 
 class SendAttendanceCertificate extends Command
 {
@@ -80,8 +81,8 @@ class SendAttendanceCertificate extends Command
                     ]);
                     $user->certificates()->save($certificate);
 
-                    // $subject = 'Course Completion Certificate';
-                    // Mail::to($userEmail)->send(new AttendingCertificateMail($pdfFileName, $subject, $userName, $courseName));
+                    $subject = 'Course Completion Certificate';
+                    Mail::to($userEmail)->send(new AttendingCertificateMail($pdfFileName, $subject, $userName, $courseName));
                 }
                 $schedule->update(['certificate_status' => true]);
             }
