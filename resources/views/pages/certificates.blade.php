@@ -52,8 +52,8 @@
                                 <div class="card p-3 border-radius-md course-card">
                                     <div class="card-body">
                                         <h5 class="card-title mb-4">{{ $certificate->course_name }}</h5>
-                                        <a href="{{ asset($certificate->certificate_path) }}"
-                                            class="btn btn-dark">Download</a>
+                                        <a href="{{ asset($certificate->certificate_path) }}" class="btn btn-dark"
+                                            target="_blank" rel="noopener noreferrer">Download</a>
                                     </div>
                                 </div>
                             </div>
