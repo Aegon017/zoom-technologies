@@ -196,7 +196,28 @@
                 </tr>
             </table>
         </div>
-
+        <div class="modal-body text-left" style="height:400px; overflow-x:scroll;">
+            <h3 style="text-decoration: underline;text-underline-position: under;"
+                class="title text-center font-weight-bold mb-4">Terms &amp; Conditions</h3>
+            <p><strong>For Online Training Students</strong></p>
+            <p>Instructions will be Provided to do Lab Practicals with your PC at Home</p>
+            <ul>
+                <li>You will receive a link to your email in an hour after the class from Webex to Download the Recorded
+                    Videos..</li>
+                <li>All our study materials are available for free access on our online portal for registered students
+                </li>
+            </ul>
+            <p><strong>Imp. Note</strong></p>
+            <p>Fees once paid will not be refunded or adjusted against other courses / batches / students under any
+                circumstances whatsoever.</p>
+            <ul>
+                <li>Organization reserves the right to expel any student during the training period.</li>
+                <li>In case, a student fails to attend the given batch the amount given will be forfeited against his /
+                    her name.</li>
+            </ul>
+            <button class="btn d-block ml-auto mt-4 continue-btn" data-toggle="modal" data-target="#checkoutpopup"
+                data-dismiss="modal" aria-label="Close">Agree</button>
+        </div>
         <div class="footer">
             <div>Thank you for your order</div>
             <div class="bold">{{ $order->order_number }}</div>

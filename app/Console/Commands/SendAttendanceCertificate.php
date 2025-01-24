@@ -62,7 +62,7 @@ class SendAttendanceCertificate extends Command
                     $userEmail = $user->email;
                     $courseName = $orderSchedule->schedule->course->name;
                     $batchDate = $schedule->start_date;
-                    $referenceNo = 101;
+                    $referenceNo = '';
 
                     $data = [
                         'userName' => $userName,
