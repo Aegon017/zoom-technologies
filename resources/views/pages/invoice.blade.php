@@ -16,17 +16,17 @@
 
         .invoice-box {
             margin: auto;
-            padding: 10mm;
+            padding: 5mm;
             box-sizing: border-box;
         }
 
         .header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10mm;
-            border-bottom: 2px solid #000;
-            padding-bottom: 5mm;
+            align-items: start;
+            margin-bottom: 5mm;
+            border-bottom: 1px solid #000;
+            padding-bottom: 3mm;
         }
 
         .logo {
@@ -35,7 +35,7 @@
 
         .company-details,
         .customer-details {
-            margin-bottom: 5mm;
+            margin-bottom: 3mm;
         }
 
         .section-title {
@@ -85,10 +85,10 @@
         }
 
         .footer {
-            margin-top: 10mm;
+            margin-top: 5mm;
             text-align: center;
             border-top: 1px solid #ddd;
-            padding-top: 5mm;
+            padding-top: 3mm;
         }
     </style>
 </head>
@@ -195,33 +195,24 @@
                 </tr>
             </table>
         </div>
-        <div style="margin-top: 5mm;">
+        <div style="margin-top: 3mm;">
             <div class="section-title">Terms & Conditions</div>
-            <ol>
-                <li>
-                    The organization reserves the right to expel any student during the training period.
-                </li>
-                <li>
-                    Fees paid are non-refundable and cannot be transferred or adjusted against other courses, batches,
-                    or students under any circumstances.
-                </li>
-                <li>
-                    Once a batch is allotted, it is final and cannot be changed. If a student fails to attend the
-                    assigned batch, the fee paid will be forfeited.
-                </li>
-                <li>
-                    Any disputes or discrepancies will be subject to the jurisdiction of Hyderabad.
-                </li>
-                <li>
-                    Vehicles are kept at owners risk (Classroom).
-                </li>
+            <ol style="font-size: 9px;">
+                <li>The organization reserves the right to expel any student during the training period.</li>
+                <li>Fees paid are non-refundable and cannot be transferred or adjusted against other courses, batches,
+                    or students.</li>
+                <li>Once a batch is allotted, it is final and cannot be changed. If a student fails to attend the
+                    assigned batch, the fee paid will be forfeited.</li>
+                <li>Any disputes will be subject to the jurisdiction of Hyderabad.</li>
+                <li>Vehicles are kept at owners risk (Classroom).</li>
             </ol>
         </div>
         <div class="footer">
             <div>Thank you for your order</div>
             <div class="bold">{{ $order->order_number }}</div>
-            <div>System-generated invoice. Signature not required.</div>
+            <div>System-generated invoice. Signature not required.</div>
         </div>
+    </div>
 </body>
 
 </html>

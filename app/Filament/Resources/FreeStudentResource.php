@@ -5,8 +5,10 @@ namespace App\Filament\Resources;
 use App\Filament\Exports\UserExporter;
 use App\Filament\Resources\FreeStudentResource\Pages;
 use App\Models\User;
+use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\BulkActionGroup;
@@ -14,8 +16,13 @@ use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\Indicator;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
+
+use function Laravel\Prompts\form;
+use function Laravel\Prompts\select;
 
 class FreeStudentResource extends Resource
 {
@@ -69,6 +76,32 @@ class FreeStudentResource extends Resource
                 TextColumn::make('phone')->searchable(),
             ])
             ->filters([
+                Filter::make('created_at')
+                    ->label('Registration Date')
+                    ->form([
+                        Select::make('created_at')
+                            ->options(
+                                User::select(DB::raw('DATE_FORMAT(created_at, "%b %d, %Y") as date'))
+                                    ->distinct()
+                                    ->pluck('date', 'date')
+                                    ->toArray()
+                            )->searchable()
+                    ])
+                    ->query(function (Builder $query, array $data) {
+                        if (!empty($data['created_at'])) {
+                            $date = Carbon::createFromFormat('F j, Y', $data['created_at'])->format('Y-m-d');
+                            return $query->whereDate('created_at', $date);
+                        }
+                        return $query;
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+                        if (!empty($data['created_at'])) {
+                            $indicators[] = Indicator::make('Registration date: ' . Carbon::parse($data['created_at'])->format('M j, Y'))
+                                ->removeField('created_at');
+                        }
+                        return $indicators;
+                    }),
                 Filter::make('registered_date_range')
                     ->label('Registered Date Range')
                     ->form([
