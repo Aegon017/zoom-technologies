@@ -31,6 +31,10 @@ class CreateOrder
                 $payablePrice = $usd;
                 $prices = (new DecodePrice)->execute($payablePrice);
                 break;
+            case 'phonepe':
+                $payablePrice = $payablePrice;
+                $prices = (new DecodePrice)->execute($payablePrice);
+                break;
             default:
                 echo 'Please choose a valid payment method';
                 break;
@@ -40,7 +44,7 @@ class CreateOrder
             'user_id' => $userID,
             'course_id' => $item->courses ? null : $item->id,
             'package_id' => $item->courses ? $item->id : null,
-            'order_number' => $orderNumberPrefix.$userID.now()->format('YmdHis'),
+            'order_number' => $orderNumberPrefix . $userID . now()->format('YmdHis'),
             'courseOrPackage_price' => $prices['actualPrice'],
             'sgst' => $prices['sgst'],
             'cgst' => $prices['cgst'],

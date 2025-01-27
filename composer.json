@@ -2,7 +2,10 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.2",
@@ -14,6 +17,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.5",
+        "phonepe/phonepe-pg-php-sdk": "^1.0",
         "php-flasher/flasher-laravel": "^2.1",
         "srmklive/paypal": "^3.0",
         "stripe/stripe-php": "^16.3",
@@ -77,5 +81,25 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "package",
+            "package": [
+                {
+                    "dist": {
+                        "type": "zip",
+                        "url": "https://phonepe.mycloudrepo.io/public/repositories/phonepe-pg-php-sdk/phonepe-pg-php-sdk.zip"
+                    },
+                    "name": "phonepe/phonepe-pg-php-sdk",
+                    "version": "1.0.0",
+                    "autoload": {
+                        "classmap": [
+                            "/"
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
 }

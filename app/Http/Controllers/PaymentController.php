@@ -16,6 +16,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
+use PhonePe\Env;
+use PhonePe\payments\v1\models\request\builders\InstrumentBuilder;
+use PhonePe\payments\v1\models\request\builders\PgPayRequestBuilder;
+use PhonePe\payments\v1\PhonePePaymentClient;
 use Srmklive\PayPal\Services\PayPal;
 use Stripe\Checkout\Session as CheckoutSession;
 use Stripe\Stripe;
@@ -117,7 +121,29 @@ class PaymentController extends Controller
                 return redirect($checkoutSession->url);
                 break;
             case 'phonepe':
+                $merchantID = config('services.phonepe.merchant_id');
+                $saltKey = config('services.phonepe.salt_key');
+                $saltIndex = config('services.phonepe.salt_index');
+                $environment = config('services.phonepe.environment');
+                $shouldPublishEvents = config('services.phonepe.should_publish_events');
+                $phonePePaymentsClient = new PhonePePaymentClient($merchantID, $saltKey, $saltIndex, $environment, $shouldPublishEvents);
 
+                $merchantTransactionId = 'PHPSDK' . date("ymdHis") . "payPageTest";
+                $request = PgPayRequestBuilder::builder()
+                    ->mobileNumber("9381480023")
+                    ->callbackUrl("https://webhook.in/test/status")
+                    ->merchantId($merchantID)
+                    ->merchantUserId("123456")
+                    ->amount(100)
+                    ->merchantTransactionId($merchantTransactionId)
+                    ->redirectUrl(route('payment.success'))
+                    ->redirectMode("POST")
+                    ->paymentInstrument(InstrumentBuilder::buildPayPageInstrument())
+                    ->build();
+                $response = $phonePePaymentsClient->pay($request);
+                $url = $response->getInstrumentResponse()->getRedirectInfo()->getUrl();
+                return redirect($url);
+                break;
             default:
                 echo 'Please choose a valid payment method';
                 break;
@@ -187,6 +213,42 @@ class PaymentController extends Controller
                     $time = now();
                     $status = 'success';
                     $amount = Session::get('usd');
+                    $generateInvoice = new GenerateInvoice;
+                    $sendEmails = new SendEmails;
+                    $updateOrderPayment = new UpdateOrderPayment;
+                    $data = [
+                        'paymentId' => $paymentId,
+                        'method' => $method,
+                        'mode' => $mode,
+                        'description' => $description,
+                        'date' => $date,
+                        'time' => $time,
+                        'status' => $status,
+                        'amount' => $amount,
+                        'currency' => 'USD',
+                    ];
+                    $updateOrderPayment->execute($order->id, $data);
+                    $address = Address::where('user_id', $userID)->first();
+                    $order->invoice = $generateInvoice->execute($order, $address);
+                    $order->save();
+                    $sendEmails->execute($order);
+                    break;
+                case 'phonepe':
+                    $merchantID = config('services.phonepe.merchant_id');
+                    $saltKey = config('services.phonepe.salt_key');
+                    $saltIndex = config('services.phonepe.salt_index');
+                    $environment = config('services.phonepe.environment');
+                    $shouldPublishEvents = config('services.phonepe.should_publish_events');
+                    $phonePePaymentsClient = new PhonePePaymentClient($merchantID, $saltKey, $saltIndex, $environment, $shouldPublishEvents);
+                    $response = $phonePePaymentsClient->statusCheck($request->transactionId);
+                    $paymentId = $request->providerReferenceId;
+                    $method = 'phonepe';
+                    $mode = 'PhonePe';
+                    $description = 'Payment success';
+                    $date = today();
+                    $time = now();
+                    $status = 'success';
+                    $amount = 100;
                     $generateInvoice = new GenerateInvoice;
                     $sendEmails = new SendEmails;
                     $updateOrderPayment = new UpdateOrderPayment;

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "05e20263c298ad1057d2ecffa22c641e",
+    "content-hash": "8e5f7729d1c715f8572e94195bfc63df",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -4630,6 +4630,20 @@
                 "source": "https://github.com/paragonie/constant_time_encoding"
             },
             "time": "2024-05-08T12:36:18+00:00"
+        },
+        {
+            "name": "phonepe/phonepe-pg-php-sdk",
+            "version": "1.0.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://phonepe.mycloudrepo.io/public/repositories/phonepe-pg-php-sdk/phonepe-pg-php-sdk.zip"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "/"
+                ]
+            }
         },
         {
             "name": "php-flasher/flasher",
