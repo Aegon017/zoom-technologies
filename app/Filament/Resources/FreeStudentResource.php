@@ -62,6 +62,8 @@ class FreeStudentResource extends Resource
                 $roleQuery->where('name', 'student');
             }))
             ->columns([
+                TextColumn::make('#')->rowIndex(),
+                TextColumn::make('created_at')->label('Registration date')->date(),
                 TextColumn::make('name')->searchable(),
                 TextColumn::make('email')->searchable(),
                 TextColumn::make('phone')->searchable(),
