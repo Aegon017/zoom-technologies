@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\BlogCategory;
 use App\Models\User;
+use App\Models\BlogCategory;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class BlogCategoryPolicy

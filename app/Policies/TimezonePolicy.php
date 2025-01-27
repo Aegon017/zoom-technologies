@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Timezone;
 use App\Models\User;
+use App\Models\Timezone;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TimezonePolicy

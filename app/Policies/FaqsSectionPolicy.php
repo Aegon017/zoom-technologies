@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\FaqsSection;
 use App\Models\User;
+use App\Models\FaqsSection;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class FaqsSectionPolicy

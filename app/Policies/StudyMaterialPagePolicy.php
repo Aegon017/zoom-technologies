@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\StudyMaterialPage;
 use App\Models\User;
+use App\Models\StudyMaterialPage;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class StudyMaterialPagePolicy

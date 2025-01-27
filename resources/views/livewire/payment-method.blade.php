@@ -61,11 +61,11 @@
                     </label>
                 </div>
             @endif
-            @if (in_array('QR Code', $paymentGateways))
-                <div class="form-check" x-on:click="button=false; qrCode = true; bankTransfer = false">
-                    <input class="form-check-input" type="radio" name="payment_method" value="QR code" id="qr_code">
-                    <label class="form-check-label" for="qr_code">
-                        QR Code
+            @if (in_array('PhonePe', $paymentGateways))
+                <div class="form-check" x-on:click="bankTransfer = false">
+                    <input class="form-check-input" type="radio" name="payment_method" value="phonepe" id="phonepe">
+                    <label class="form-check-label" for="phonepe">
+                        PhonePe
                     </label>
                 </div>
             @endif
@@ -114,9 +114,9 @@
         </div>
     </div>
     <div x-transition.duration.opacity x-show="qrCode" class="qr-code-container">
-        <h5 class="mb-3">QR Code</h5>
+        <h5 class="mb-3">PhonePe</h5>
         <div class="text-center">
-            <img src="{{ asset(Storage::url($qrCode?->image)) }}" alt="Payment QR Code" class="img-fluid"
+            <img src="{{ asset(Storage::url($qrCode?->image)) }}" alt="Payment PhonePe" class="img-fluid"
                 loading="lazy">
         </div>
     </div>

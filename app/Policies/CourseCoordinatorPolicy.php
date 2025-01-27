@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\PageMetaDetails;
+use App\Models\CourseCoordinator;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class PageMetaDetailsPolicy
+class CourseCoordinatorPolicy
 {
     use HandlesAuthorization;
 
@@ -15,15 +15,15 @@ class PageMetaDetailsPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_page::meta::details');
+        return $user->can('view_any_course::coordinator');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, PageMetaDetails $pageMetaDetails): bool
+    public function view(User $user, CourseCoordinator $courseCoordinator): bool
     {
-        return $user->can('view_page::meta::details');
+        return $user->can('view_course::coordinator');
     }
 
     /**
@@ -31,23 +31,23 @@ class PageMetaDetailsPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_page::meta::details');
+        return $user->can('create_course::coordinator');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, PageMetaDetails $pageMetaDetails): bool
+    public function update(User $user, CourseCoordinator $courseCoordinator): bool
     {
-        return $user->can('update_page::meta::details');
+        return $user->can('update_course::coordinator');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, PageMetaDetails $pageMetaDetails): bool
+    public function delete(User $user, CourseCoordinator $courseCoordinator): bool
     {
-        return $user->can('delete_page::meta::details');
+        return $user->can('delete_course::coordinator');
     }
 
     /**
@@ -55,13 +55,13 @@ class PageMetaDetailsPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_page::meta::details');
+        return $user->can('delete_any_course::coordinator');
     }
 
     /**
      * Determine whether the user can permanently delete.
      */
-    public function forceDelete(User $user, PageMetaDetails $pageMetaDetails): bool
+    public function forceDelete(User $user, CourseCoordinator $courseCoordinator): bool
     {
         return $user->can('{{ ForceDelete }}');
     }
@@ -77,7 +77,7 @@ class PageMetaDetailsPolicy
     /**
      * Determine whether the user can restore.
      */
-    public function restore(User $user, PageMetaDetails $pageMetaDetails): bool
+    public function restore(User $user, CourseCoordinator $courseCoordinator): bool
     {
         return $user->can('{{ Restore }}');
     }
@@ -93,7 +93,7 @@ class PageMetaDetailsPolicy
     /**
      * Determine whether the user can replicate.
      */
-    public function replicate(User $user, PageMetaDetails $pageMetaDetails): bool
+    public function replicate(User $user, CourseCoordinator $courseCoordinator): bool
     {
         return $user->can('{{ Replicate }}');
     }
