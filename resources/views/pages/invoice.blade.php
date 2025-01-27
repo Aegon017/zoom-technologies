@@ -173,10 +173,15 @@
 
         <div>
             <div class="section-title">Payment Details</div>
-            <div class="text-center">
-                <strong>Payment Mode:</strong> {{ $order->payment->method }}<br>
-            </div>
             <table class="pricing-table">
+                <tr>
+                    <td>Reference Number</td>
+                    <td>{{ $order->payment->reference_number }}</td>
+                </tr>
+                <tr>
+                    <td>Payment Mode</td>
+                    <td>{{ $order->payment->method }}</td>
+                </tr>
                 <tr>
                     <td>Course Price</td>
                     <td>{{ $order->payment->currency }} {{ $order->courseOrPackage_price }}/-</td>
