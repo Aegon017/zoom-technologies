@@ -96,8 +96,7 @@
 <body>
     <div class="invoice-box">
         <div class="header">
-            <img src="data:image/png;base64,{{ base64_encode(file_get_contents(asset('frontend/assets/img/logo.png'))) }}"
-                class="logo" alt="Logo" />
+            <img src="{{ asset('frontend/assets/img/logo.png') }}" class="logo" alt="Logo" />
             <div class="text-right">
                 <div class="bold" style="font-size: 14px;">TAX INVOICE</div>
                 <div class="bold">Order No: {{ $order->order_number }}</div>
@@ -196,17 +195,27 @@
                 </tr>
             </table>
         </div>
-        <div>
+        <div style="margin-top: 5mm;">
             <div class="section-title">Terms & Conditions</div>
-            <div>
-                Vehicles are kept at owners risk (Classroom). The organization reserves the right to expel any student
-                during the training period.<br>
-                Fees paid are non-refundable and cannot be transferred or adjusted against other courses, batches, or
-                students under any circumstances.<br>
-                Once a batch is allotted, it is final and cannot be changed. If a student fails to attend the assigned
-                batch, the fee paid will be forfeited.<br>
-                Any disputes or discrepancies will be subject to the jurisdiction of Hyderabad.
-            </div>
+            <ol>
+                <li>
+                    The organization reserves the right to expel any student during the training period.
+                </li>
+                <li>
+                    Fees paid are non-refundable and cannot be transferred or adjusted against other courses, batches,
+                    or students under any circumstances.
+                </li>
+                <li>
+                    Once a batch is allotted, it is final and cannot be changed. If a student fails to attend the
+                    assigned batch, the fee paid will be forfeited.
+                </li>
+                <li>
+                    Any disputes or discrepancies will be subject to the jurisdiction of Hyderabad.
+                </li>
+                <li>
+                    Vehicles are kept at owners risk (Classroom).
+                </li>
+            </ol>
         </div>
         <div class="footer">
             <div>Thank you for your order</div>
