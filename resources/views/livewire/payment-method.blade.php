@@ -26,6 +26,14 @@
                     </label>
                 </div>
             @endif
+            @if (in_array('PhonePe', $paymentGateways))
+                <div class="form-check" x-on:click="bankTransfer = false">
+                    <input class="form-check-input" type="radio" name="payment_method" value="phonepe" id="phonepe">
+                    <label class="form-check-label" for="phonepe">
+                        PhonePe
+                    </label>
+                </div>
+            @endif
             @if (in_array('PayPal', $paymentGateways))
                 <div class="form-check" x-on:click="button = true; bankTransfer = false; qrCode = false">
                     <input class="form-check-input" type="radio" name="payment_method" value="paypal" id="paypal">
@@ -58,14 +66,6 @@
                         id="bank_transfer">
                     <label class="form-check-label" for="bank_transfer">
                         Bank Transfer
-                    </label>
-                </div>
-            @endif
-            @if (in_array('PhonePe', $paymentGateways))
-                <div class="form-check" x-on:click="bankTransfer = false">
-                    <input class="form-check-input" type="radio" name="payment_method" value="phonepe" id="phonepe">
-                    <label class="form-check-label" for="phonepe">
-                        PhonePe
                     </label>
                 </div>
             @endif

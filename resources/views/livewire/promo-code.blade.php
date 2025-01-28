@@ -20,6 +20,12 @@
             <span>SGST</span>
             <span>Rs {{ $sgst }}</span>
         </div>
+        @if ($discount)
+            <div class="d-flex justify-content-between">
+                <span>Discount</span>
+                <span>Rs {{ $discount }}</span>
+            </div>
+        @endif
     </div>
 
     <div class="d-flex justify-content-between font-weight-bold">

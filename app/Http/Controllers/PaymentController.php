@@ -134,7 +134,7 @@ class PaymentController extends Controller
                     ->callbackUrl("https://webhook.in/test/status")
                     ->merchantId($merchantID)
                     ->merchantUserId("123456")
-                    ->amount(100)
+                    ->amount($payablePrice * 100)
                     ->merchantTransactionId($merchantTransactionId)
                     ->redirectUrl(route('payment.success'))
                     ->redirectMode("POST")
@@ -248,7 +248,7 @@ class PaymentController extends Controller
                     $date = today();
                     $time = now();
                     $status = 'success';
-                    $amount = 100;
+                    $amount = $request->amount / 100;
                     $generateInvoice = new GenerateInvoice;
                     $sendEmails = new SendEmails;
                     $updateOrderPayment = new UpdateOrderPayment;
@@ -261,7 +261,7 @@ class PaymentController extends Controller
                         'time' => $time,
                         'status' => $status,
                         'amount' => $amount,
-                        'currency' => 'USD',
+                        'currency' => 'Rs',
                     ];
                     $updateOrderPayment->execute($order->id, $data);
                     $address = Address::where('user_id', $userID)->first();

@@ -14,11 +14,13 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use MichaelRubel\Couponables\Traits\HasCoupons;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     use HasApiTokens;
+    use HasCoupons;
 
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;

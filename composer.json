@@ -17,6 +17,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.5",
+        "michael-rubel/laravel-couponables": "^9.0",
         "phonepe/phonepe-pg-php-sdk": "^1.0",
         "php-flasher/flasher-laravel": "^2.1",
         "srmklive/paypal": "^3.0",
