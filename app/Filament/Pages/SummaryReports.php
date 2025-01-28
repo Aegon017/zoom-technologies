@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Models\Order;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Group as ComponentsGroup;
 use Filament\Pages\Page;
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class SummaryReports extends Page implements HasTable
 {
+    use HasPageShield;
     use InteractsWithTable;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
