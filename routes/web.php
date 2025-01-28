@@ -56,3 +56,5 @@ Route::get('/storage-link', function () {
 Route::get('/zoom-technologies/filament/exports/{export}/download', DownloadExport::class)
     ->name('filament.exports.download')
     ->middleware(['web', 'auth']);
+
+Route::any('/phonepe/callback', [PaymentController::class, 'phonepeCallback'])->name('phonepe.callback');

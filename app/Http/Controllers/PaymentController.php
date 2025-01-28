@@ -15,8 +15,8 @@ use App\Services\PayUPayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
-use PhonePe\Env;
 use PhonePe\payments\v1\models\request\builders\InstrumentBuilder;
 use PhonePe\payments\v1\models\request\builders\PgPayRequestBuilder;
 use PhonePe\payments\v1\PhonePePaymentClient;
@@ -131,7 +131,7 @@ class PaymentController extends Controller
                 $merchantTransactionId = 'PHPSDK' . date("ymdHis") . "payPageTest";
                 $request = PgPayRequestBuilder::builder()
                     ->mobileNumber("9381480023")
-                    ->callbackUrl("https://webhook.in/test/status")
+                    ->callbackUrl(route('phonepe.callback'))
                     ->merchantId($merchantID)
                     ->merchantUserId("123456")
                     ->amount($payablePrice * 100)
@@ -234,6 +234,7 @@ class PaymentController extends Controller
                     $sendEmails->execute($order);
                     break;
                 case 'phonepe':
+                    // dd($request);
                     $merchantID = config('services.phonepe.merchant_id');
                     $saltKey = config('services.phonepe.salt_key');
                     $saltIndex = config('services.phonepe.salt_index');
@@ -241,7 +242,7 @@ class PaymentController extends Controller
                     $shouldPublishEvents = config('services.phonepe.should_publish_events');
                     $phonePePaymentsClient = new PhonePePaymentClient($merchantID, $saltKey, $saltIndex, $environment, $shouldPublishEvents);
                     $response = $phonePePaymentsClient->statusCheck($request->transactionId);
-                    $paymentId = $request->providerReferenceId;
+                    $paymentId = $response->getTransactionId();
                     $method = 'phonepe';
                     $mode = 'PhonePe';
                     $description = 'Payment success';
@@ -359,5 +360,10 @@ class PaymentController extends Controller
         } else {
             return redirect()->route('render.home');
         }
+    }
+
+    public function phonepeCallback(Request $request)
+    {
+        Log::info('PhonePe Callback');
     }
 }
