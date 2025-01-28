@@ -234,7 +234,6 @@ class PaymentController extends Controller
                     $sendEmails->execute($order);
                     break;
                 case 'phonepe':
-                    // dd($request);
                     $merchantID = config('services.phonepe.merchant_id');
                     $saltKey = config('services.phonepe.salt_key');
                     $saltIndex = config('services.phonepe.salt_index');

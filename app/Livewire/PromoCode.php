@@ -34,9 +34,10 @@ class PromoCode extends Component
                         } else {
                             $this->discount = $value;
                         }
-                        $this->payablePrice = $this->payablePrice - $this->discount;
-                        $redeemer->redeemCoupon($this->promoCode);
-                        flash()->success('Promocode reedemed successfully');
+                        $this->payablePrice = $coupon->calc($this->payablePrice);
+                        $this->dispatch('promo-code-applied', $this->payablePrice);
+                        // $redeemer->redeemCoupon($this->promoCode);
+                        flash()->success('Promocode Applied');
                     }
                 } else {
                     flash()->error('Promocode already used');
@@ -47,6 +48,14 @@ class PromoCode extends Component
         } else {
             flash()->error('Please Sign In/SignUp to use promocodes');
         }
+    }
+
+    public function removePromoCode()
+    {
+        $this->promoCode = null;
+        $this->discount = null;
+        $this->payablePrice = $this->coursePrice + $this->sgst + $this->cgst;
+        $this->dispatch('promo-code-removed');
     }
 
     public function render()

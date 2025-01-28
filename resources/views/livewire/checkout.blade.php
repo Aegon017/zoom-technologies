@@ -307,7 +307,9 @@
                         <form action="{{ route('payment.initiate') }}" x-ref="checkoutForm" method="POST">
                             @csrf
                             <input type="hidden" name="name" value="{{ $request->name }}">
-                            <input type="hidden" name="payable_price" value="{{ $request->payablePrice }}">
+                            <div x-data="{ payablePrice: {{ $request->payablePrice }} }" x-on:promo-code-applied.window="payablePrice = $event.detail">
+                                <input type="hidden" name="payable_price" :value="payablePrice">
+                            </div>
                             <input type="hidden" name="product_type" value="{{ $request->product_type }}">
                             <div class="step-content" id="content-1" x-transition.duration.opacity
                                 x-show="paymentMethod">
