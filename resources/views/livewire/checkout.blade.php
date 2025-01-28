@@ -202,6 +202,10 @@
             background-color: #cc3309;
             border-color: #cc3309;
         }
+
+        .gap-1 {
+            gap: 1rem;
+        }
     </style>
     @php
         $request = request();
@@ -263,25 +267,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="border-top pt-3">
-                                    <div class="d-flex justify-content-between">
-                                        <span>Subtotal</span>
-                                        <span>Rs {{ $request->coursePrice }}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between">
-                                        <span>CGST</span>
-                                        <span>Rs {{ $request->cgst }}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between">
-                                        <span>SGST</span>
-                                        <span>Rs {{ $request->sgst }}</span>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex justify-content-between font-weight-bold">
-                                    <span>Total</span>
-                                    <span>Rs {{ $request->payablePrice }}</span>
-                                </div>
+                                @php
+                                    $coursePrice = $request->coursePrice;
+                                    $sgst = $request->sgst;
+                                    $cgst = $request->cgst;
+                                    $payablePrice = $request->payablePrice;
+                                @endphp
+                                <livewire:promo-code :$coursePrice :$sgst :$cgst :$payablePrice />
                             </div>
                         </div>
                     </div>
