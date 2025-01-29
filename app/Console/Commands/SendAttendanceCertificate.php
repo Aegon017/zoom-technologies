@@ -33,7 +33,7 @@ class SendAttendanceCertificate extends Command
     {
         $today = Carbon::today();
         $data = [];
-        $schedules = Schedule::where('status', false)->where('certificate_status', false)->get();
+        $schedules = Schedule::where('certificate_status', false)->get();
         foreach ($schedules as $schedule) {
             $startDate = Carbon::parse($schedule->start_date);
             $duration = $schedule->duration;
@@ -62,7 +62,7 @@ class SendAttendanceCertificate extends Command
                     $userEmail = $user->email;
                     $courseName = $orderSchedule->schedule->course->name;
                     $batchDate = $schedule->start_date;
-                    $referenceNo = '';
+                    $referenceNo = $order->payment->reference_number;
 
                     $data = [
                         'userName' => $userName,
