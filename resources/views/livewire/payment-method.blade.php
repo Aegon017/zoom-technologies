@@ -3,53 +3,66 @@
     <p class="text-muted">Please select your payment method</p>
     @if ($paymentGateways)
         <div class="py-3 justify-content-center">
-            @if (in_array('PayU', $paymentGateways))
-                <div class="form-check" x-on:click="button = true; bankTransfer = false; qrCode = false">
-                    <input class="form-check-input" type="radio" name="payment_method" value="payu" id="payu"
-                        checked>
-                    <label class="form-check-label" for="payu">
-                        Credit or Debit Card (India),UPI and Net Bankings
-                        <div>
-                            <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/visa.svg"
-                                alt="visa logo" width="54" class="mr-2 mt-2">
-                            <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/mastercard.svg"
-                                alt="mastercard logo" width="54" class="mr-2 mt-2">
-                            <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/google-pay.svg"
-                                alt="google pay logo" width="54" class="mr-2 mt-2">
-                            <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/bhim.svg"
-                                alt="bhim logo" width="54" class="mr-2 mt-2">
-                            <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/pay-tm.svg"
-                                alt="paytm logo" width="54" class="mr-2 mt-2">
-                            <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/phone-pe.svg"
-                                alt="phonepe logo" width="54" class="mr-2 mt-2">
-                        </div>
-                    </label>
+            @if (in_array('PhonePe', $paymentGateways))
+                <div class="phonepe">
+                    <p class="text-primary">For Indian Cardholder Only</p>
+                    <div class="form-check" x-on:click="button = true; bankTransfer = false">
+                        <input class="form-check-input" type="radio" name="payment_method" value="phonepe"
+                            id="phonepe">
+                        <label class="form-check-label" for="phonepe">
+                            PhonePe
+                        </label>
+                    </div>
                 </div>
             @endif
-            @if (in_array('PhonePe', $paymentGateways))
-                <div class="form-check" x-on:click="button = true; bankTransfer = false">
-                    <input class="form-check-input" type="radio" name="payment_method" value="phonepe" id="phonepe">
-                    <label class="form-check-label" for="phonepe">
-                        PhonePe
-                    </label>
+            @if (in_array('PayU', $paymentGateways))
+                <div class="PayU">
+                    <p class="text-primary">For Indian Cardholder Only</p>
+                    <div class="form-check" x-on:click="button = true; bankTransfer = false; qrCode = false">
+                        <input class="form-check-input" type="radio" name="payment_method" value="payu"
+                            id="payu" checked>
+                        <label class="form-check-label" for="payu">
+                            Credit or Debit Card (India),UPI and Net Bankings
+                            <div>
+                                <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/visa.svg"
+                                    alt="visa logo" width="54" class="mr-2 mt-2">
+                                <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/mastercard.svg"
+                                    alt="mastercard logo" width="54" class="mr-2 mt-2">
+                                <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/google-pay.svg"
+                                    alt="google pay logo" width="54" class="mr-2 mt-2">
+                                <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/bhim.svg"
+                                    alt="bhim logo" width="54" class="mr-2 mt-2">
+                                <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/pay-tm.svg"
+                                    alt="paytm logo" width="54" class="mr-2 mt-2">
+                                <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/phone-pe.svg"
+                                    alt="phonepe logo" width="54" class="mr-2 mt-2">
+                            </div>
+                        </label>
+                    </div>
                 </div>
             @endif
             @if (in_array('PayPal', $paymentGateways))
-                <div class="form-check" x-on:click="button = true; bankTransfer = false; qrCode = false">
-                    <input class="form-check-input" type="radio" name="payment_method" value="paypal" id="paypal">
-                    <label class="form-check-label" for="paypal">
-                        PayPal
-                        <div>
-                            <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/paypal.svg"
-                                alt="paypal logo" width="54" class="mr-2 mt-2">
-                            <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/mastercard.svg"
-                                alt="mastercard logo" width="54" class="mr-2 mt-2">
-                            <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/visa.svg"
-                                alt="visa logo" width="54" class="mr-2 mt-2">
-                            <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/amex.svg"
-                                alt="amex logo" width="54" class="mr-2 mt-2">
-                        </div>
-                    </label>
+                <div class="paypal">
+                    <p class="text-primary">For International customers paying from outside India we recommend to
+                        select Paypal gateway.
+                    </p>
+                    <div class="form-check" x-on:click="button = true; bankTransfer = false; qrCode = false">
+                        <input class="form-check-input" type="radio" name="payment_method" value="paypal"
+                            id="paypal">
+                        <label class="form-check-label" for="paypal">
+                            PayPal
+                            <div>
+                                <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/paypal.svg"
+                                    alt="paypal logo" width="54" class="mr-2 mt-2">
+                                <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/mastercard.svg"
+                                    alt="mastercard logo" width="54" class="mr-2 mt-2">
+                                <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/visa.svg"
+                                    alt="visa logo" width="54" class="mr-2 mt-2">
+                                <img src="https://d11s7fcxy18ubx.cloudfront.net/node/static/2024/2024-56339-g11143a2892a07a/icons/amex.svg"
+                                    alt="amex logo" width="54" class="mr-2 mt-2">
+                            </div>
+                        </label>
+                    </div>
                 </div>
             @endif
             @if (in_array('Stripe', $paymentGateways))
