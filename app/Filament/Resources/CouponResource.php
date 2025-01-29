@@ -20,6 +20,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
+use MichaelRubel\Couponables\Models\Contracts\CouponContract;
 
 class CouponResource extends Resource
 {
@@ -42,8 +43,8 @@ class CouponResource extends Resource
                 Select::make('type')
                     ->label('Type')
                     ->options([
-                        'percentage' => 'Percentage',
-                        'amount' => 'Amount',
+                        CouponContract::TYPE_PERCENTAGE => CouponContract::TYPE_PERCENTAGE,
+                        CouponContract::TYPE_SUBTRACTION => CouponContract::TYPE_SUBTRACTION,
                     ])
                     ->required(),
 
@@ -54,10 +55,6 @@ class CouponResource extends Resource
                 TextInput::make('quantity')
                     ->label('Quantity')
                     ->required(),
-
-                TextInput::make('limit')
-                    ->label('Limit'),
-
                 DateTimePicker::make('expires_at')
                     ->label('Expires At'),
             ]);
