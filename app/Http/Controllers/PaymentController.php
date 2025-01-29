@@ -274,7 +274,11 @@ class PaymentController extends Controller
                     $order->invoice = $generateInvoice->execute($order, $address);
                     $order->save();
                     $sendEmails->execute($order);
-                    return view('pages.payment-failure', compact('order'));
+                    if ($response->getResponseCode() === 'SUCCESS') {
+                        break;
+                    } else {
+                        return view('pages.payment-failure', compact('order'));
+                    }
                     break;
                 default:
                     echo 'Please choose a valid payment method';
