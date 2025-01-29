@@ -12,9 +12,9 @@ class UpdateOrderPayment
         $payment = new Payment;
         $payment->order_id = $order_id;
         if ($data['status'] == 'success') {
-            $payment->reference_number = $this->setReferenceNumber();
+            $payment->receipt_number = $this->setReceiptNumber();
         } else {
-            $payment->reference_number = null;
+            $payment->receipt_number = null;
         }
         $payment->payment_id = $data['paymentId'];
         $payment->method = $data['method'];
@@ -28,13 +28,13 @@ class UpdateOrderPayment
         $payment->save();
     }
 
-    private function setReferenceNumber()
+    private function setReceiptNumber()
     {
-        $lastReferenceNo = Payment::where('status', 'success')
+        $lastReceiptNo = Payment::where('status', 'success')
             ->latest('created_at')
-            ->value('reference_number');
-        $referenceNumber = $lastReferenceNo ? (intval(substr($lastReferenceNo, 3)) + 1) : 1;
-        $reference_no = 'REF' . str_pad($referenceNumber, 6, '0', STR_PAD_LEFT);
-        return $reference_no;
+            ->value('receipt_number');
+        $receiptNumber = $lastReceiptNo ? (intval(substr($lastReceiptNo, 3)) + 1) : 1;
+        $receipt_no = 'REF' . str_pad($receiptNumber, 6, '0', STR_PAD_LEFT);
+        return $receipt_no;
     }
 }

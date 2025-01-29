@@ -175,8 +175,8 @@
             <div class="section-title">Payment Details</div>
             <table class="pricing-table">
                 <tr>
-                    <td>Reference Number</td>
-                    <td>{{ $order->payment->reference_number }}</td>
+                    <td>Receipt Number</td>
+                    <td>{{ $order->payment->receipt_number }}</td>
                 </tr>
                 <tr>
                     <td>Payment Mode</td>

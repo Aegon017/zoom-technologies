@@ -83,7 +83,7 @@
         <h4 class="certificate_course_duration">{{ Carbon\Carbon::parse($batchDate)->format('F d, Y') }} -
             {{ $endDate->format('F d, Y') }}
         </h4>
-        <h5 class="certificate_reference_no">{{ $referenceNo }}</h5>
+        <h5 class="certificate_reference_no">{{ $receiptNo }}</h5>
     </div>
 </body>
 

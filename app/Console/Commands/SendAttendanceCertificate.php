@@ -62,14 +62,14 @@ class SendAttendanceCertificate extends Command
                     $userEmail = $user->email;
                     $courseName = $orderSchedule->schedule->course->name;
                     $batchDate = $schedule->start_date;
-                    $referenceNo = $order->payment->reference_number;
+                    $receiptNo = $order->payment->receipt_number;
 
                     $data = [
                         'userName' => $userName,
                         'courseName' => $courseName,
                         'batchDate' => $batchDate,
                         'endDate' => $endDate,
-                        'referenceNo' => $referenceNo,
+                        'receiptNo' => $receiptNo,
                     ];
                     $pdf = Pdf::loadView('pages.attendance-certificate', $data)->setOption(['defaultFont' => 'sans-serif'])->setPaper('a4', 'landscape');
                     $pdfFileName = 'certificates/certificate_' . time() . '.pdf';
