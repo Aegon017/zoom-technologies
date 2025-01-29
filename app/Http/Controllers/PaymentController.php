@@ -244,10 +244,16 @@ class PaymentController extends Controller
                     $paymentId = $response->getTransactionId();
                     $method = 'phonepe';
                     $mode = 'PhonePe';
-                    $description = 'Payment success';
+                    if ($response->getResponseCode() === 'SUCCESS') {
+                        $description = 'Payment success';
+                        $status = 'success';
+                    } else {
+                        $description = 'Payment failure';
+                        $status = 'failure';
+                    }
+
                     $date = today();
                     $time = now();
-                    $status = 'success';
                     $amount = $request->amount / 100;
                     $generateInvoice = new GenerateInvoice;
                     $sendEmails = new SendEmails;
@@ -268,6 +274,7 @@ class PaymentController extends Controller
                     $order->invoice = $generateInvoice->execute($order, $address);
                     $order->save();
                     $sendEmails->execute($order);
+                    return view('pages.payment-failure', compact('order'));
                     break;
                 default:
                     echo 'Please choose a valid payment method';

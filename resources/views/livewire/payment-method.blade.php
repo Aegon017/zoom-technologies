@@ -8,7 +8,7 @@
                     <p class="text-primary">For Indian Cardholder Only</p>
                     <div class="form-check" x-on:click="button = true; bankTransfer = false">
                         <input class="form-check-input" type="radio" name="payment_method" value="phonepe"
-                            id="phonepe">
+                            id="phonepe" checked>
                         <label class="form-check-label" for="phonepe">
                             Credit or Debit Card (India),UPI and Net Bankings (PhonePe)
                             <div>
@@ -33,7 +33,7 @@
                 <div class="PayU">
                     <div class="form-check" x-on:click="button = true; bankTransfer = false; qrCode = false">
                         <input class="form-check-input" type="radio" name="payment_method" value="payu"
-                            id="payu" checked>
+                            id="payu">
                         <label class="form-check-label" for="payu">
                             Credit or Debit Card (India),UPI and Net Bankings (PayU)
                             <div>
