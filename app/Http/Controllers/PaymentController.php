@@ -114,7 +114,7 @@ class PaymentController extends Controller
                         ],
                     ],
                     'mode' => 'payment',
-                    'success_url' => route('payment.success').'?session_id={CHECKOUT_SESSION_ID}',
+                    'success_url' => route('payment.success') . '?session_id={CHECKOUT_SESSION_ID}',
                     'cancel_url' => route('payment.failure'),
                 ]);
 
@@ -128,12 +128,12 @@ class PaymentController extends Controller
                 $shouldPublishEvents = config('services.phonepe.should_publish_events');
                 $phonePePaymentsClient = new PhonePePaymentClient($merchantID, $saltKey, $saltIndex, $environment, $shouldPublishEvents);
 
-                $merchantTransactionId = 'PHPSDK'.date('ymdHis').'payPageTest';
+                $merchantTransactionId = date('ymdHis');
                 $request = PgPayRequestBuilder::builder()
-                    ->mobileNumber('9381480023')
+                    ->mobileNumber($user->phone)
                     ->callbackUrl(route('phonepe.callback'))
                     ->merchantId($merchantID)
-                    ->merchantUserId('123456')
+                    ->merchantUserId($user->id)
                     ->amount($payablePrice * 100)
                     ->merchantTransactionId($merchantTransactionId)
                     ->redirectUrl(route('payment.success'))
