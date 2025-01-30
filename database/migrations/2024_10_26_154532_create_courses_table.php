@@ -27,6 +27,9 @@ return new class extends Migration
             $table->boolean('certificate');
             $table->mediumInteger('sale_price')->nullable();
             $table->mediumInteger('actual_price');
+            $table->decimal('rating', 2, 1);
+            $table->unsignedInteger('number_of_ratings');
+            $table->unsignedInteger('number_of_students');
             $table->timestamps();
         });
     }

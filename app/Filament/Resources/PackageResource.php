@@ -47,8 +47,8 @@ class PackageResource extends Resource
                     Section::make('Courses package details')->schema([
                         TextInput::make('position')->numeric()->required()->helperText('Position of the course in the list'),
                         TextInput::make('name')->live(onBlur: true)
-                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
-                        TextInput::make('slug')->prefix('training/india/')->required(),
+                            ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
+                        TextInput::make('slug')->prefix('training/india/')->columnSpanFull()->required(),
                         RichEditor::make('short_description')->columnSpanFull()->required(),
                         TextInput::make('duration')->required(),
                         Select::make('duration_type')->options(['Month' => 'Month', 'Week' => 'Week', 'Day' => 'Day'])->required(),
@@ -69,10 +69,29 @@ class PackageResource extends Resource
                         TextInput::make('image_alt')->columnSpanFull()->required(),
                         TextInput::make('video_link')->required(),
                     ]),
-                    Section::make('Courses')->schema([
-                        Select::make('courses')->label('Select courses')->multiple()->options(Course::all()->pluck('name', 'id'))->searchable(),
-                        Textarea::make('message')->rows(4)->helperText('Provide some information to students about the courses in the package.'),
+                    Section::make('Statistics')->schema([
+                        TextInput::make('rating')
+                            ->required()
+                            ->numeric()
+                            ->minValue(0)
+                            ->maxValue(5)
+                            ->step(0.1)
+                            ->label('Rating (0-5)'),
+
+                        TextInput::make('number_of_ratings')
+                            ->required()
+                            ->numeric()
+                            ->label('Number of Ratings'),
+
+                        TextInput::make('number_of_students')
+                            ->required()
+                            ->numeric()
+                            ->label('Number of Students'),
                     ]),
+                ]),
+                Section::make('Courses')->schema([
+                    Select::make('courses')->label('Select courses')->multiple()->options(Course::all()->pluck('name', 'id'))->searchable(),
+                    Textarea::make('message')->rows(4)->helperText('Provide some information to students about the courses in the package.'),
                 ]),
             ])->columns(3);
     }

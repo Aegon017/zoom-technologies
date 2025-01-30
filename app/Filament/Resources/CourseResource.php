@@ -51,8 +51,8 @@ class CourseResource extends Resource
                     Section::make('Course Details')->schema([
                         TextInput::make('position')->numeric()->required()->helperText('Position of the course in the list'),
                         TextInput::make('name')->live(onBlur: true)
-                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
-                        TextInput::make('slug')->prefix('training/india/')->required(),
+                            ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
+                        TextInput::make('slug')->prefix('training/india/')->columnSpanFull()->required(),
                         RichEditor::make('short_description')->columnSpanFull()->required(),
                         TextInput::make('duration')->required(),
                         Select::make('duration_type')->options(['Month' => 'Month', 'Week' => 'Week', 'Day' => 'Day'])->required(),
@@ -73,6 +73,25 @@ class CourseResource extends Resource
                         TextInput::make('image_alt')->columnSpanFull()->required(),
                         FileUpload::make('outline_pdf')->label('Outline Pdf')->disk('public')->directory('outline_PDFs')->preserveFilenames(),
                         TextInput::make('video_link')->required(),
+                    ]),
+                    Section::make('Statistics')->schema([
+                        TextInput::make('rating')
+                            ->required()
+                            ->numeric()
+                            ->minValue(0)
+                            ->maxValue(5)
+                            ->step(0.1)
+                            ->label('Rating (0-5)'),
+
+                        TextInput::make('number_of_ratings')
+                            ->required()
+                            ->numeric()
+                            ->label('Number of Ratings'),
+
+                        TextInput::make('number_of_students')
+                            ->required()
+                            ->numeric()
+                            ->label('Number of Students'),
                     ]),
                 ]),
             ])->columns(3);
@@ -113,7 +132,7 @@ class CourseResource extends Resource
 
     public static function replicateCourse(Course $course)
     {
-        $baseName = 'Copy of '.$course->name;
+        $baseName = 'Copy of ' . $course->name;
         $uniqueName = self::generateUniqueName($baseName);
         $uniqueSlug = self::generateUniqueSlug(Str::slug($uniqueName));
         $newCourse = $course->replicate([
@@ -140,7 +159,7 @@ class CourseResource extends Resource
         $counter = 1;
 
         while (Course::where('name', $newName)->exists()) {
-            $newName = $baseName.' ('.$counter.')';
+            $newName = $baseName . ' (' . $counter . ')';
             $counter++;
         }
 
@@ -153,7 +172,7 @@ class CourseResource extends Resource
         $counter = 1;
 
         while (Course::where('slug', $newSlug)->exists()) {
-            $newSlug = $baseSlug.'-'.$counter;
+            $newSlug = $baseSlug . '-' . $counter;
             $counter++;
         }
 

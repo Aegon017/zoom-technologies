@@ -28,6 +28,9 @@ class Package extends Model
         'sale_price',
         'actual_price',
         'message',
+        'rating',
+        'number_of_ratings',
+        'number_of_students'
     ];
 
     protected $casts = [

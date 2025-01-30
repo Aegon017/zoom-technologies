@@ -31,16 +31,17 @@
                                 </span>
                             </div>
                             <div class="feature-sin rating">
-                                <a href="#">4.8</a>
+                                <a href="#">{{ $product->rating }}</a>
                                 @for ($i = 0; $i < 5; $i++)
                                     <a href="#"><i class="fa fa-star"></i></a>
                                 @endfor
                             </div>
                             <div class="feature-sin total-rating">
-                                <a class="zt-badge-4" href="#">215,475 ratings</a>
+                                <a class="zt-badge-4" href="#">{{ number_format($product->number_of_ratings) }}
+                                    ratings</a>
                             </div>
                             <div class="feature-sin total-student">
-                                <span>616,029 students</span>
+                                <span>{{ number_format($product->number_of_students) }} students</span>
                             </div>
                         </div>
                     </div>

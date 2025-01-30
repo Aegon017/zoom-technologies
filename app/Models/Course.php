@@ -27,6 +27,9 @@ class Course extends Model
         'certificate',
         'sale_price',
         'actual_price',
+        'rating',
+        'number_of_ratings',
+        'number_of_students'
     ];
 
     protected $casts = [
@@ -86,10 +89,5 @@ class Course extends Model
     public function sampleCertificate(): HasOne
     {
         return $this->hasOne(SampleCertificate::class);
-    }
-
-    public function courseCoordinator(): HasOne
-    {
-        return $this->hasOne(CourseCoordinator::class);
     }
 }

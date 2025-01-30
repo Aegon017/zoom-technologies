@@ -32,6 +32,9 @@ return new class extends Migration
             $table->mediumInteger('sale_price')->nullable();
             $table->mediumInteger('actual_price');
             $table->string('message', 500)->nullable();
+            $table->decimal('rating', 2, 1);
+            $table->unsignedInteger('number_of_ratings');
+            $table->unsignedInteger('number_of_students');
             $table->timestamps();
         });
     }
