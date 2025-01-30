@@ -47,7 +47,7 @@ class PackageResource extends Resource
                     Section::make('Courses package details')->schema([
                         TextInput::make('position')->numeric()->required()->helperText('Position of the course in the list'),
                         TextInput::make('name')->live(onBlur: true)
-                            ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
+                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
                         TextInput::make('slug')->prefix('training/india/')->columnSpanFull()->required(),
                         RichEditor::make('short_description')->columnSpanFull()->required(),
                         TextInput::make('duration')->required(),

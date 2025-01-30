@@ -11,10 +11,15 @@ use function Flasher\Prime\flash;
 class PromoCode extends Component
 {
     public $coursePrice;
+
     public $sgst;
+
     public $cgst;
+
     public $payablePrice;
+
     public $discount;
+
     public $promoCode;
 
     public function applyPromoCode()
@@ -26,7 +31,7 @@ class PromoCode extends Component
                 $coupon = $redeemer->verifyCoupon($this->promoCode);
                 $value = $coupon->value;
                 $alreadyUsed = $redeemer->isCouponAlreadyUsed($this->promoCode);
-                if (!$alreadyUsed) {
+                if (! $alreadyUsed) {
                     if ($coupon) {
                         $type = $coupon->type;
                         if ($type === 'percentage') {

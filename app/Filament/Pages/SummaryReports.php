@@ -7,15 +7,12 @@ use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Group as ComponentsGroup;
 use Filament\Pages\Page;
-use Filament\Tables\Columns\ColumnGroup;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\Indicator;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -31,7 +28,7 @@ class SummaryReports extends Page implements HasTable
     public static function table(Table $table): Table
     {
         return $table
-            ->query(Order::whereHas('payment', fn(Builder $query) => $query->where('status', 'success')))
+            ->query(Order::whereHas('payment', fn (Builder $query) => $query->where('status', 'success')))
             ->defaultGroup('course.name')
             ->columns([
                 TextColumn::make('#')->rowIndex(),
@@ -50,9 +47,9 @@ class SummaryReports extends Page implements HasTable
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->when(
                             $data['start_date'] && $data['end_date'],
-                            fn(Builder $query): Builder => $query->whereHas(
+                            fn (Builder $query): Builder => $query->whereHas(
                                 'payment',
-                                fn(Builder $query): Builder => $query->whereBetween(
+                                fn (Builder $query): Builder => $query->whereBetween(
                                     'payments.date',
                                     [$data['start_date'], $data['end_date']]
                                 )
@@ -62,7 +59,7 @@ class SummaryReports extends Page implements HasTable
                     ->indicateUsing(function (array $data): array {
                         $indicators = [];
                         if ($data['start_date'] && $data['end_date']) {
-                            $indicators[] = Indicator::make('From: ' . $data['start_date'] . ' To: ' . $data['end_date'])
+                            $indicators[] = Indicator::make('From: '.$data['start_date'].' To: '.$data['end_date'])
                                 ->removeField('start_date')
                                 ->removeField('end_date');
                         }

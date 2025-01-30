@@ -41,16 +41,16 @@ class ScheduleRelationManager extends RelationManager
                     }),
                 TextInput::make('zoom_meeting_url')
                     ->label('Meeting URL')
-                    ->hidden(fn($get) => $get('training_mode') !== 'Online')
+                    ->hidden(fn ($get) => $get('training_mode') !== 'Online')
                     ->url()
                     ->required(),
                 TextInput::make('meeting_id')
                     ->label('Meeting ID')
-                    ->hidden(fn($get) => $get('training_mode') !== 'Online')
+                    ->hidden(fn ($get) => $get('training_mode') !== 'Online')
                     ->required(),
                 TextInput::make('meeting_password')
                     ->label('Meeting Password')
-                    ->hidden(fn($get) => $get('training_mode') !== 'Online')
+                    ->hidden(fn ($get) => $get('training_mode') !== 'Online')
                     ->required(),
                 DatePicker::make('start_date')->native(false)->minDate(now())->required(),
                 TimePicker::make('time')->seconds(false)->label('Start time')->seconds(false)->required(),
@@ -64,10 +64,10 @@ class ScheduleRelationManager extends RelationManager
                     ->searchable()
                     ->required(),
                 TextInput::make('duration')->required()
-                    ->default(fn($livewire) => $livewire->getOwnerRecord()->duration),
+                    ->default(fn ($livewire) => $livewire->getOwnerRecord()->duration),
                 Select::make('duration_type')
                     ->options(['Month' => 'Month', 'Week' => 'Week', 'Day' => 'Day'])
-                    ->default(fn($livewire) => $livewire->getOwnerRecord()->duration_type)
+                    ->default(fn ($livewire) => $livewire->getOwnerRecord()->duration_type)
                     ->required(),
                 Select::make('day_off')
                     ->multiple()
@@ -100,7 +100,7 @@ class ScheduleRelationManager extends RelationManager
             ->filters([])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->visible(fn() => request()->input('components.0.updates.activeTab', 'true') === 'true'),
+                    ->visible(fn () => request()->input('components.0.updates.activeTab', 'true') === 'true'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -113,9 +113,9 @@ class ScheduleRelationManager extends RelationManager
     {
         return [
             'false' => Tab::make('Past Schedules')
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', false)),
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', false)),
             'true' => Tab::make('Upcoming Schedules')
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', true)),
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', true)),
         ];
     }
 

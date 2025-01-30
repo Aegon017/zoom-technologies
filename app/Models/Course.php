@@ -29,7 +29,7 @@ class Course extends Model
         'actual_price',
         'rating',
         'number_of_ratings',
-        'number_of_students'
+        'number_of_students',
     ];
 
     protected $casts = [

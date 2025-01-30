@@ -10,7 +10,7 @@ class Certificate extends Model
     protected $fillable = [
         'user_id',
         'course_name',
-        'certificate_path'
+        'certificate_path',
     ];
 
     public function user(): BelongsTo

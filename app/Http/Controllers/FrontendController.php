@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Actions\CalculatePrice;
 use App\Models\AboutUsSection;
-use App\Models\Address;
 use App\Models\BankTransfer;
 use App\Models\Blog;
 use App\Models\BlogCategory;
@@ -15,7 +14,6 @@ use App\Models\Course;
 use App\Models\FaqsSection;
 use App\Models\FeatureCard;
 use App\Models\FeatureSection;
-use App\Models\FooterOffice;
 use App\Models\Franchisee;
 use App\Models\FreeMaterialSection;
 use App\Models\MemorableMoments;
@@ -240,7 +238,7 @@ class FrontendController extends Controller
 
     public function checkout(Request $request)
     {
-        $scheduleIDs = array_values(array_filter($request->all(), fn($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
+        $scheduleIDs = array_values(array_filter($request->all(), fn ($key) => str_starts_with($key, 'course_schedule'), ARRAY_FILTER_USE_KEY));
         Session::put('scheduleIDs', $scheduleIDs);
         $thankyou = Thankyou::first();
         $bankTransferDetails = BankTransfer::first();
@@ -280,6 +278,7 @@ class FrontendController extends Controller
     public function renderCertificates()
     {
         $certificates = Certificate::where('user_id', Auth::id())->get();
+
         return view('pages.certificates', compact('certificates'));
     }
 }

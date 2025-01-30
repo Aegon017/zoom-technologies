@@ -16,13 +16,9 @@ use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\Indicator;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
-
-use function Laravel\Prompts\form;
-use function Laravel\Prompts\select;
 
 class FreeStudentResource extends Resource
 {
@@ -56,7 +52,7 @@ class FreeStudentResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn(Builder $query) => $query->where(function (Builder $query) {
+            ->modifyQueryUsing(fn (Builder $query) => $query->where(function (Builder $query) {
                 $query->whereDoesntHave('orders')
                     ->orWhere(function (Builder $subQuery) {
                         $subQuery->whereHas('orders.payment', function (Builder $paymentQuery) {
@@ -85,21 +81,24 @@ class FreeStudentResource extends Resource
                                     ->distinct()
                                     ->pluck('date', 'date')
                                     ->toArray()
-                            )->searchable()
+                            )->searchable(),
                     ])
                     ->query(function (Builder $query, array $data) {
-                        if (!empty($data['created_at'])) {
+                        if (! empty($data['created_at'])) {
                             $date = Carbon::createFromFormat('F j, Y', $data['created_at'])->format('Y-m-d');
+
                             return $query->whereDate('created_at', $date);
                         }
+
                         return $query;
                     })
                     ->indicateUsing(function (array $data): array {
                         $indicators = [];
-                        if (!empty($data['created_at'])) {
-                            $indicators[] = Indicator::make('Registration date: ' . Carbon::parse($data['created_at'])->format('M j, Y'))
+                        if (! empty($data['created_at'])) {
+                            $indicators[] = Indicator::make('Registration date: '.Carbon::parse($data['created_at'])->format('M j, Y'))
                                 ->removeField('created_at');
                         }
+
                         return $indicators;
                     }),
                 Filter::make('registered_date_range')
@@ -117,20 +116,22 @@ class FreeStudentResource extends Resource
                         ]),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
-                        if (!empty($data['start_date']) && !empty($data['end_date'])) {
+                        if (! empty($data['start_date']) && ! empty($data['end_date'])) {
                             return $query->whereBetween('created_at', [$data['start_date'], $data['end_date']]);
                         }
+
                         return $query;
                     })
                     ->indicateUsing(function (array $data): array {
                         $indicators = [];
-                        if (!empty($data['start_date']) && !empty($data['end_date'])) {
-                            $indicators[] = Indicator::make('From: ' . $data['start_date'] . ' To: ' . $data['end_date'])
+                        if (! empty($data['start_date']) && ! empty($data['end_date'])) {
+                            $indicators[] = Indicator::make('From: '.$data['start_date'].' To: '.$data['end_date'])
                                 ->removeField('start_date')
                                 ->removeField('end_date');
                         }
+
                         return $indicators;
-                    })
+                    }),
             ])
             ->actions([])
             ->bulkActions([

@@ -30,7 +30,7 @@ class Package extends Model
         'message',
         'rating',
         'number_of_ratings',
-        'number_of_students'
+        'number_of_students',
     ];
 
     protected $casts = [

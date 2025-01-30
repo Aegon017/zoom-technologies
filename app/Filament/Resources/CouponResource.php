@@ -3,12 +3,9 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CouponResource\Pages;
-use App\Filament\Resources\CouponResource\RelationManagers;
 use App\Models\Coupon;
-use Filament\Forms;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -17,8 +14,6 @@ use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 use MichaelRubel\Couponables\Models\Contracts\CouponContract;
 
@@ -37,7 +32,7 @@ class CouponResource extends Resource
                     ->required()
                     ->unique('coupons', 'code', ignoreRecord: true)
                     ->default(
-                        fn() => Str::upper(Str::random(10))
+                        fn () => Str::upper(Str::random(10))
                     ),
 
                 Select::make('type')
@@ -73,7 +68,7 @@ class CouponResource extends Resource
             ])
             ->actions([
                 EditAction::make(),
-                DeleteAction::make()
+                DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
