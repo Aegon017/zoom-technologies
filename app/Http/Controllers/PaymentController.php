@@ -31,6 +31,7 @@ class PaymentController extends Controller
     {
         Session::put('refresh', true);
         $user = Auth::user();
+        $discount = $request->discount;
         $payablePrice = $request->payable_price;
         $productType = $request->product_type;
         $productInfo = $request->name;
@@ -41,6 +42,7 @@ class PaymentController extends Controller
         Session::put('scheduleIDs', $scheduleIDs);
         session::put('productName', $productInfo);
         Session::put('payablePrice', $payablePrice);
+        Session::put('discount', $discount);
         Session::put('productType', $productType);
         Session::put('selectedAddress', $selectedAddress);
         switch ($request->payment_method) {
@@ -88,7 +90,7 @@ class PaymentController extends Controller
                     }
                 } else {
                     return redirect()
-                        ->route('/')
+                        ->back()
                         ->with('error', $response['message'] ?? 'Something went wrong.');
                 }
                 break;
@@ -234,6 +236,7 @@ class PaymentController extends Controller
                     $order->save();
                     $sendEmails->execute($order);
                     break;
+
                 case 'phonepe':
                     $merchantID = config('services.phonepe.merchant_id');
                     $saltKey = config('services.phonepe.salt_key');

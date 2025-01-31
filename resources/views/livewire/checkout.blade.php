@@ -307,8 +307,10 @@
                         <form action="{{ route('payment.initiate') }}" x-ref="checkoutForm" method="POST">
                             @csrf
                             <input type="hidden" name="name" value="{{ $request->name }}">
-                            <div x-data="{ payablePrice: {{ $request->payablePrice }} }" x-on:promo-code-applied.window="payablePrice = $event.detail">
+                            <div x-data="{ payablePrice: {{ $request->payablePrice }}, discount: 0 }"
+                                x-on:promo-code-applied.window="payablePrice = $event.detail.payablePrice; discount=$event.detail.discount">
                                 <input type="hidden" name="payable_price" :value="payablePrice">
+                                <input type="hidden" name="discount", :value="discount">
                             </div>
                             <input type="hidden" name="product_type" value="{{ $request->product_type }}">
                             <div class="step-content" id="content-1" x-transition.duration.opacity
@@ -324,73 +326,5 @@
                 </div>
             </div>
         </div>
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const stepBadges = document.querySelectorAll('.step-badge');
-                const steps = document.querySelectorAll('.step-item');
-                const contents = document.querySelectorAll('.step-content');
-
-                function activateStep(stepNumber) {
-                    stepBadges.forEach(badge => badge.classList.remove('active'));
-                    steps.forEach(step => step.classList.remove('active'));
-
-                    const activeBadge = document.querySelector('.step-badge[data-step="' + stepNumber + '"]');
-                    const activeStep = document.getElementById('step-' + stepNumber);
-
-                    activeBadge?.classList.add('active');
-                    activeStep?.classList.add('active');
-                }
-
-                const observerOptions = {
-                    root: null,
-                    rootMargin: '0px',
-                    threshold: 0.5
-                };
-
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        const stepNumber = entry.target.id.replace('content-', '');
-                        if (entry.isIntersecting) {
-                            activateStep(stepNumber);
-                        }
-                    });
-                }, observerOptions);
-
-                contents.forEach(content => {
-                    observer.observe(content);
-                });
-
-                if (contents.length > 0) {
-                    activateStep(1);
-                }
-            });
-        </script>
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const inputs = document.querySelectorAll('.otp-input input');
-                inputs.forEach((input, index) => {
-                    input.addEventListener('input', (e) => {
-                        if (e.target.value.length > 1) {
-                            e.target.value = e.target.value.slice(0, 1);
-                        }
-                        if (e.target.value.length === 1) {
-                            if (index < inputs.length - 1) {
-                                inputs[index + 1].focus();
-                            }
-                        }
-                    });
-
-                    input.addEventListener('keydown', (e) => {
-                        if (e.key === 'Backspace' && !e.target.value) {
-                            if (index > 0) {
-                                inputs[index - 1].focus();
-                            }
-                        }
-                        if (e.key === 'e') {
-                            e.preventDefault();
-                        }
-                    });
-                });
-            });
-        </script>
+    </body>
 </x-frontend-layout>

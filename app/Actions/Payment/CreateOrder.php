@@ -16,24 +16,25 @@ class CreateOrder
         $productName = Session::get('productName');
         $productType = Session::get('productType');
         $payablePrice = Session::get('payablePrice');
+        $discount = Session::get('discount');
         $model = (new ModelFromProductType)->execute($productType);
         $item = $model::where('slug', $productName)->firstOrFail();
         switch ($paymentMethod) {
             case 'payu':
                 $payablePrice = $payablePrice;
-                $prices = (new DecodePrice)->execute($payablePrice);
+                $prices = (new DecodePrice)->execute($payablePrice, $discount);
                 break;
             case 'paypal':
                 $payablePrice = $usd;
-                $prices = (new DecodePrice)->execute($payablePrice);
+                $prices = (new DecodePrice)->execute($payablePrice, $discount);
                 break;
             case 'stripe':
                 $payablePrice = $usd;
-                $prices = (new DecodePrice)->execute($payablePrice);
+                $prices = (new DecodePrice)->execute($payablePrice, $discount);
                 break;
             case 'phonepe':
                 $payablePrice = $payablePrice;
-                $prices = (new DecodePrice)->execute($payablePrice);
+                $prices = (new DecodePrice)->execute($payablePrice, $discount);
                 break;
             default:
                 echo 'Please choose a valid payment method';
@@ -44,10 +45,11 @@ class CreateOrder
             'user_id' => $userID,
             'course_id' => $item->courses ? null : $item->id,
             'package_id' => $item->courses ? $item->id : null,
-            'order_number' => $orderNumberPrefix.$userID.now()->format('YmdHis'),
+            'order_number' => $orderNumberPrefix . $userID . now()->format('YmdHis'),
             'courseOrPackage_price' => $prices['actualPrice'],
             'sgst' => $prices['sgst'],
             'cgst' => $prices['cgst'],
+            'discount' => $prices['discount']
         ]);
     }
 }

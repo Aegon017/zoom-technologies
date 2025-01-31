@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Actions\CalculatePrice;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -22,36 +23,42 @@ class PromoCode extends Component
 
     public $promoCode;
 
+    public $subTotal;
+
     public function applyPromoCode()
     {
-        $this->discount = null;
         $redeemer = User::find(Auth::id());
-        if ($redeemer) {
-            try {
-                $coupon = $redeemer->verifyCoupon($this->promoCode);
-                $value = $coupon->value;
-                $alreadyUsed = $redeemer->isCouponAlreadyUsed($this->promoCode);
-                if (! $alreadyUsed) {
-                    if ($coupon) {
-                        $type = $coupon->type;
-                        if ($type === 'percentage') {
-                            $this->discount = ($value / 100) * $this->payablePrice;
-                        } else {
-                            $this->discount = $value;
-                        }
-                        $this->payablePrice = $coupon->calc($this->payablePrice);
-                        $this->dispatch('promo-code-applied', $this->payablePrice);
-                        // $redeemer->redeemCoupon($this->promoCode);
-                        flash()->success('Promocode Applied');
-                    }
-                } else {
-                    flash()->error('Promocode already used');
-                }
-            } catch (\Throwable $th) {
-                flash()->error($th->getMessage());
-            }
-        } else {
+        if (!$redeemer) {
             flash()->error('Please Sign In/SignUp to use promocodes');
+            return;
+        }
+        try {
+            $coupon = $redeemer->verifyCoupon($this->promoCode);
+            if (!$coupon) {
+                flash()->error('Invalid promocode');
+                return;
+            }
+            $alreadyUsed = $redeemer->isCouponAlreadyUsed($this->promoCode);
+            if ($alreadyUsed) {
+                flash()->error('Promocode already used');
+                return;
+            }
+            $value = $coupon->value;
+            $type = $coupon->type;
+            $this->discount = $type === 'percentage'
+                ? ($value / 100) * $this->coursePrice
+                : $value;
+            $this->subTotal = $coupon->calc($this->coursePrice);
+            $calculatePrice = new CalculatePrice();
+            $prices = $calculatePrice->execute($this->subTotal, null);
+            $this->sgst = $prices['sgst'];
+            $this->cgst = $prices['cgst'];
+            $this->payablePrice = $prices['payablePrice'];
+            // $redeemer->redeemCoupon($this->promoCode);
+            $this->dispatch('promo-code-applied', payablePrice: $this->payablePrice, discount: $this->discount);
+            flash()->success('Promocode Applied');
+        } catch (\Throwable $th) {
+            flash()->error($th->getMessage());
         }
     }
 
@@ -59,7 +66,11 @@ class PromoCode extends Component
     {
         $this->promoCode = null;
         $this->discount = null;
-        $this->payablePrice = $this->coursePrice + $this->sgst + $this->cgst;
+        $calculatePrice = new CalculatePrice();
+        $prices = $calculatePrice->execute($this->coursePrice, null);
+        $this->sgst = $prices['sgst'];
+        $this->cgst = $prices['cgst'];
+        $this->payablePrice = $prices['payablePrice'];
         $this->dispatch('promo-code-removed');
     }
 

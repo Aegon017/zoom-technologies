@@ -18,6 +18,7 @@ class Order extends Model
         'courseOrPackage_price',
         'cgst',
         'sgst',
+        'discount',
         'invoice',
         'enrolled_by',
     ];
