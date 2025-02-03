@@ -84,7 +84,7 @@ class SendAttendanceCertificate extends Command
                     $subject = 'Course Completion Certificate';
                     Mail::to($userEmail)->send(new AttendingCertificateMail($pdfFileName, $subject, $userName, $courseName));
                 }
-                // $schedule->update(['certificate_status' => true]);
+                $schedule->update(['certificate_status' => true]);
             }
         }
     }
