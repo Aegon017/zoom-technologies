@@ -52,7 +52,7 @@ class FreeStudentResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn (Builder $query) => $query->where(function (Builder $query) {
+            ->modifyQueryUsing(fn(Builder $query) => $query->where(function (Builder $query) {
                 $query->whereDoesntHave('orders')
                     ->orWhere(function (Builder $subQuery) {
                         $subQuery->whereHas('orders.payment', function (Builder $paymentQuery) {
@@ -66,7 +66,7 @@ class FreeStudentResource extends Resource
             }))
             ->columns([
                 TextColumn::make('#')->rowIndex(),
-                TextColumn::make('created_at')->label('Registration date')->date(),
+                TextColumn::make('created_at')->label('Registration date')->date('M j, Y - H:i'),
                 TextColumn::make('name')->searchable(),
                 TextColumn::make('email')->searchable(),
                 TextColumn::make('phone')->searchable(),
@@ -95,7 +95,7 @@ class FreeStudentResource extends Resource
                     ->indicateUsing(function (array $data): array {
                         $indicators = [];
                         if (! empty($data['created_at'])) {
-                            $indicators[] = Indicator::make('Registration date: '.Carbon::parse($data['created_at'])->format('M j, Y'))
+                            $indicators[] = Indicator::make('Registration date: ' . Carbon::parse($data['created_at'])->format('M j, Y'))
                                 ->removeField('created_at');
                         }
 
@@ -125,7 +125,7 @@ class FreeStudentResource extends Resource
                     ->indicateUsing(function (array $data): array {
                         $indicators = [];
                         if (! empty($data['start_date']) && ! empty($data['end_date'])) {
-                            $indicators[] = Indicator::make('From: '.$data['start_date'].' To: '.$data['end_date'])
+                            $indicators[] = Indicator::make('From: ' . $data['start_date'] . ' To: ' . $data['end_date'])
                                 ->removeField('start_date')
                                 ->removeField('end_date');
                         }
