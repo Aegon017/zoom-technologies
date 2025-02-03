@@ -31,6 +31,7 @@
                 </div>
                 <input type="text" class="form-control @error('fullName') is-invalid @enderror" id="fullName"
                     placeholder="Enter your name" wire:model="fullName" required>
+                <p class="mt-1 text-primary">The name entered will appear on the course completion certificate.</p>
             </div>
             @error('fullName')
                 <span class="text-danger">{{ $message }}</span>

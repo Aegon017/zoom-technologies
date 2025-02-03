@@ -59,13 +59,13 @@ class SingleCourseResource extends Resource
                 Fieldset::make('Student Details')->schema([
                     TextEntry::make('user_name')
                         ->label('Student Name')
-                        ->getStateUsing(fn ($record) => $record->is_registered ? $record->user->name : $record->user_name),
+                        ->getStateUsing(fn($record) => $record->is_registered ? $record->user->name : $record->user_name),
                     TextEntry::make('user_email')
                         ->label('Email')
-                        ->getStateUsing(fn ($record) => $record->is_registered ? $record->user->email : $record->user_email),
+                        ->getStateUsing(fn($record) => $record->is_registered ? $record->user->email : $record->user_email),
                     TextEntry::make('user_phone')
                         ->label('Phone')
-                        ->getStateUsing(fn ($record) => $record->is_registered ? $record->user->phone : $record->user_email),
+                        ->getStateUsing(fn($record) => $record->is_registered ? $record->user->phone : $record->user_email),
                     ComponentsSection::make()->schema([
                         ImageEntry::make('user_image')->label('Student Image'),
                         ImageEntry::make('user_id_card')->label('Student Id '),
@@ -74,28 +74,28 @@ class SingleCourseResource extends Resource
                 Fieldset::make('Course Details')->schema([
                     TextEntry::make('course.name'),
                     TextEntry::make('course_price')->label('Price')
-                        ->formatStateUsing(fn ($state, $record) => 'Rs.'.' '.$state),
+                        ->formatStateUsing(fn($state, $record) => 'Rs.' . ' ' . $state),
                 ]),
                 Fieldset::make('Batches')->schema([
                     TextEntry::make('schedule')
                         ->label('')
                         ->listWithLineBreaks()
                         ->getStateUsing(
-                            fn ($record) => ! $record->schedule
+                            fn($record) => ! $record->schedule
                                 ? ['🚫 No Schedules Available']
                                 : [
-                                    '📚 Course: '.($record->schedule->first()->course?->name ?? 'N/A'),
-                                    '📅 Date: '.(
+                                    '📚 Course: ' . ($record->schedule->first()->course?->name ?? 'N/A'),
+                                    '📅 Date: ' . (
                                         $record->schedule->first()->start_date
                                         ? \Carbon\Carbon::parse($record->schedule->first()->start_date)->format('d M Y')
                                         : 'Unscheduled'
                                     ),
-                                    '⏰ Time: '.(
+                                    '⏰ Time: ' . (
                                         $record->schedule->first()->time
                                         ? \Carbon\Carbon::parse($record->schedule->first()->time)->format('h:i A')
                                         : 'TBD'
                                     ),
-                                    '🌐 Mode: '.($record->schedule->first()->training_mode ?? 'Unspecified'),
+                                    '🌐 Mode: ' . ($record->schedule->first()->training_mode ?? 'Unspecified'),
                                 ]
 
                         )
@@ -104,11 +104,11 @@ class SingleCourseResource extends Resource
                 Fieldset::make('Payment Details')->schema([
                     TextEntry::make('payment_mode'),
                     TextEntry::make('cgst')
-                        ->formatStateUsing(fn ($state, $record) => 'Rs.'.' '.$state),
+                        ->formatStateUsing(fn($state, $record) => 'Rs.' . ' ' . $state),
                     TextEntry::make('sgst')
-                        ->formatStateUsing(fn ($state, $record) => 'Rs.'.' '.$state),
+                        ->formatStateUsing(fn($state, $record) => 'Rs.' . ' ' . $state),
                     TextEntry::make('amount')
-                        ->formatStateUsing(fn ($state, $record) => 'Rs.'.' '.$state),
+                        ->formatStateUsing(fn($state, $record) => 'Rs.' . ' ' . $state),
                 ]),
             ]);
     }
@@ -127,12 +127,14 @@ class SingleCourseResource extends Resource
                                 ->boolean()
                                 ->default(false),
                             Group::make()->schema([
-                                Select::make('user_id')->label('Select Student Email')->options(User::pluck('email', 'id'))->hidden(fn (Get $get): bool => ! $get('is_registered'))->searchable()->required(),
-                                TextInput::make('user_name')->visible(fn (Get $get): bool => ! $get('is_registered'))->required()->label('Student Name'),
-                                TextInput::make('user_email')->visible(fn (Get $get): bool => ! $get('is_registered'))->required()
+                                Select::make('user_id')->label('Select Student Email')->options(User::pluck('email', 'id'))->hidden(fn(Get $get): bool => ! $get('is_registered'))->searchable()->required(),
+                                TextInput::make('user_name')
+                                    ->helperText('The name entered will appear on the course completion certificate.')
+                                    ->visible(fn(Get $get): bool => ! $get('is_registered'))->required()->label('Student Name'),
+                                TextInput::make('user_email')->visible(fn(Get $get): bool => ! $get('is_registered'))->required()
                                     ->unique('users', 'email')
                                     ->label('Email'),
-                                PhoneInput::make('user_phone')->visible(fn (Get $get): bool => ! $get('is_registered'))->required()
+                                PhoneInput::make('user_phone')->visible(fn(Get $get): bool => ! $get('is_registered'))->required()
                                     ->unique('users', 'phone')
                                     ->label('Phone Number'),
                             ]),
@@ -266,17 +268,17 @@ class SingleCourseResource extends Resource
                 TextColumn::make('enrolled_by'),
                 TextColumn::make('user_name')
                     ->label('Student name')
-                    ->getStateUsing(fn ($record) => $record->is_registered ? $record->user->name : $record->user_name)
+                    ->getStateUsing(fn($record) => $record->is_registered ? $record->user->name : $record->user_name)
                     ->searchable(),
 
                 TextColumn::make('user_email')
                     ->label('Student email')
-                    ->getStateUsing(fn ($record) => $record->is_registered ? $record->user->email : $record->user_email)
+                    ->getStateUsing(fn($record) => $record->is_registered ? $record->user->email : $record->user_email)
                     ->searchable(),
 
                 TextColumn::make('user_phone')
                     ->label('Student phone')
-                    ->getStateUsing(fn ($record) => $record->is_registered ? $record->user->phone : $record->user_phone)
+                    ->getStateUsing(fn($record) => $record->is_registered ? $record->user->phone : $record->user_phone)
                     ->searchable(),
                 TextColumn::make('course.name')->label('Course name')->searchable(),
                 TextColumn::make('payment_mode'),
@@ -293,7 +295,7 @@ class SingleCourseResource extends Resource
                 ViewAction::make(),
             ])
             ->bulkActions([])
-            ->modifyQueryUsing(fn (Builder $query) => $query->whereNotNull('course_id'));
+            ->modifyQueryUsing(fn(Builder $query) => $query->whereNotNull('course_id'));
     }
 
     public static function getRelations(): array
