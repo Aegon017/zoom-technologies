@@ -2,7 +2,12 @@
     $startDate = $schedule->start_date;
     $startTime = $schedule->time;
     $endTime = $schedule->end_time;
-    $timeDiff = (new DateTime($schedule->time))->diff(new DateTime($schedule->end_time));
+    $sTime = new DateTime($schedule->time);
+    $eTime = new DateTime($schedule->end_time);
+    if ($eTime < $sTime) {
+        $eTime->modify('+1 day');
+    }
+    $timeDiff = $sTime->diff($eTime);
     $hoursPerDay = $timeDiff->h + $timeDiff->i / 60;
     $daysOff = implode(', ', $schedule->day_off);
     $timeZone = $schedule->timezone;
