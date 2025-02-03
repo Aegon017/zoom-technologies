@@ -17,10 +17,10 @@ return new class extends Migration
             $table->foreignId('course_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('package_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('order_number');
-            $table->decimal('courseOrPackage_price', 6, 3);
-            $table->decimal('cgst', 6, 3);
-            $table->decimal('sgst', 6, 3);
-            $table->decimal('discount', 6, 3);
+            $table->decimal('courseOrPackage_price', 9, 3);
+            $table->decimal('cgst', 9, 3);
+            $table->decimal('sgst', 9, 3);
+            $table->decimal('discount', 9, 3);
             $table->string('invoice')->nullable();
             $table->string('enrolled_by')->default('Self');
             $table->timestamps();
