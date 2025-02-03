@@ -29,7 +29,8 @@
                 {{ $schedule->duration }}
                 {{ Str::plural($schedule->duration_type, $schedule->duration) }}
             </p>
-            <p class="hrs">{{ $hoursPerDay }} Hrs/Day</p>
+            <p class="hrs">{{ $hoursPerDay }} {{ Str::plural('Hr', $hoursPerDay) }}/Day
+            </p>
             <p class="m-0">{{ $daysOff }} off</p>
         </div>
         <div class="course-batch-duration">
