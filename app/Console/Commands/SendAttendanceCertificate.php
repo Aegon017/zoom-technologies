@@ -35,7 +35,7 @@ class SendAttendanceCertificate extends Command
         $data = [];
         $schedules = Schedule::where('certificate_status', false)->get();
         foreach ($schedules as $schedule) {
-            $startDate = Carbon::parse($schedule->start_date);
+            $startDate = Carbon::parse($schedule->start_date)->subDays(1);
             $duration = $schedule->duration;
             $durationType = $schedule->duration_type;
             switch ($durationType) {
