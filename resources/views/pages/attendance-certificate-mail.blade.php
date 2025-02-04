@@ -91,6 +91,8 @@
             find your certificate attached to this email. If you have any questions or require further assistance, feel
             free to reach out.</p>
         <p>Congratulations on completing the course, and we wish you continued success in your learning journey.</p>
+        <p>For any further assistance or query feel free to reach out to us by Call/ WhatsApp at +91 9391191563 or
+            emailing us at priya@zoomgroup.com</p>
         <p>Sincerely,<br /><strong>Zoom Technologies Team</strong></p>
     </div>
     <div class="footer">
