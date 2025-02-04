@@ -11,20 +11,16 @@ class BillingAddress extends Component
 {
     public $streetAddress = '';
 
-    #[Validate('required')]
     public $city = '';
 
-    #[Validate('required')]
     public $state = '';
 
     public $zipCode = '';
 
-    #[Validate('required')]
     public $country = '';
 
     public function save()
     {
-        $this->validate();
         if (Auth::user()->addresses) {
             $address = Auth::user()->addresses->update([
                 'address' => $this->streetAddress,

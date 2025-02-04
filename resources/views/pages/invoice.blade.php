@@ -121,15 +121,18 @@
                 <strong>Name:</strong> {{ $order->user->name }}<br>
                 <strong>Email:</strong> {{ $order->user->email }}<br>
                 <strong>Phone:</strong> {{ $order->user->phone }}<br>
-                <strong>Address:</strong>
-                @if ($address->address)
+                @if (
+                    !empty($address?->address) |
+                        !empty($address?->city) |
+                        !empty($address?->state) |
+                        !empty($address?->zip_code) |
+                        !empty($address?->country))
+                    <strong>Address:</strong>
                     {{ $address->address }},
+                    {{ $address->city }}, {{ $address->state }}
+                    - {{ $address->zip_code }},
+                    {{ $address->country }}
                 @endif
-                {{ $address->city }}, {{ $address->state }}
-                @if ($address->zip_code)
-                    - {{ $address->zip_code }}
-                @endif,
-                {{ $address->country }}
             </div>
         </div>
 
