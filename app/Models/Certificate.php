@@ -9,12 +9,17 @@ class Certificate extends Model
 {
     protected $fillable = [
         'user_id',
-        'course_name',
+        'schedule_id',
         'certificate_path',
     ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function schedule(): BelongsTo
+    {
+        return $this->belongsTo(Schedule::class);
     }
 }

@@ -82,7 +82,7 @@ class Schedule extends Model
         $offset = $timezone->offset;
         $abbreviation = $timezone->abbreviation;
 
-        return $this->start_date.', '.$this->time.' ( '.$abbreviation.' - '.$offset.' )';
+        return $this->start_date . ', ' . $this->time . ' ( ' . $abbreviation . ' - ' . $offset . ' )';
     }
 
     public function getFormattedPackageScheduleAttribute()
@@ -91,7 +91,7 @@ class Schedule extends Model
         $offset = $timezone->offset;
         $abbreviation = $timezone->abbreviation;
 
-        return $this->course->name.' - '.$this->start_date.', '.$this->time.' ( '.$abbreviation.' - '.$offset.' )'.' - '.$this->training_mode;
+        return $this->course->name . ' - ' . $this->start_date . ', ' . $this->time . ' ( ' . $abbreviation . ' - ' . $offset . ' )' . ' - ' . $this->training_mode;
     }
 
     public function getStartDateAttribute($value)
@@ -107,5 +107,10 @@ class Schedule extends Model
     public function getEndTimeAttribute($value)
     {
         return Carbon::parse($value)->format('h:i A');
+    }
+
+    public function certificates(): HasMany
+    {
+        return $this->hasMany(Certificate::class);
     }
 }

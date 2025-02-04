@@ -5,6 +5,7 @@
         }
 
         .course-card {
+            height: 12rem;
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
@@ -51,7 +52,7 @@
                             <div class="col-lg-4 mb-4">
                                 <div class="card p-3 border-radius-md course-card">
                                     <div class="card-body">
-                                        <h5 class="card-title mb-4">{{ $certificate->course_name }}</h5>
+                                        <h5 class="card-title mb-4">{{ $certificate->schedule->course->name }}</h5>
                                         <a href="{{ asset($certificate->certificate_path) }}" class="btn btn-dark"
                                             target="_blank" rel="noopener noreferrer">Download</a>
                                     </div>

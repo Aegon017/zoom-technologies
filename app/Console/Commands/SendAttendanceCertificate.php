@@ -72,11 +72,11 @@ class SendAttendanceCertificate extends Command
                         'receiptNo' => $receiptNo,
                     ];
                     $pdf = Pdf::loadView('pages.attendance-certificate', $data)->setOption(['defaultFont' => 'sans-serif'])->setPaper('a4', 'landscape');
-                    $pdfFileName = 'certificates/certificate_' . time() . '.pdf';
+                    $pdfFileName = 'certificates/zoom_certificate_' . time() . '.pdf';
                     $pdfPath = public_path($pdfFileName);
                     $pdf->save($pdfPath);
                     $certificate = new Certificate([
-                        'course_name' => $courseName,
+                        'schedule_id' => $schedule->id,
                         'certificate_path' => $pdfFileName,
                     ]);
                     $user->certificates()->save($certificate);

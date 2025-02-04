@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('certificates', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('course_name');
+            $table->foreignId('schedule_id')->constrained()->cascadeOnDelete();
             $table->string('certificate_path');
             $table->timestamps();
         });

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Actions\SendCertificate;
 use App\Filament\Exports\OrderExporter;
 use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers\OrderScheduleRelationManager;
@@ -276,16 +277,20 @@ class StudentResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Action::make('send_certificate')
+                    ->icon('heroicon-o-check-badge')
                     ->label('Send Certificate')
                     ->requiresConfirmation()
                     ->action(function ($record) {
-                        Certificate::where('user_id', $record->user_id)->where('course_name', $record->course->name)->delete();
-                        $orderSchedules = $record->orderSchedule;
-                        foreach ($orderSchedules as $orderSchedule) {
-                            dump($orderSchedule->schedule);
+                        $certificates = $record->user->certificates()->whereIn('schedule_id', $record->schedule->pluck('id'))->get();
+                        foreach ($certificates as $certificate) {
+                            if (file_exists($certificate->certificate_path)) {
+                                unlink($certificate->certificate_path);
+                            }
+                            $certificate->delete();
                         }
+                        $orderSchedules = $record->orderSchedule;
+                        (new SendCertificate())->execute($orderSchedules);
                     })
-                    ->color('success'),
             ])
             ->bulkActions([]);
     }
