@@ -72,4 +72,9 @@ class Package extends Model
     {
         return $this->hasMany(ManualOrder::class);
     }
+
+    public function coupons(): HasMany
+    {
+        return $this->hasMany(Coupon::class);
+    }
 }

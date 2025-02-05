@@ -45,16 +45,16 @@ class PageSchemaResource extends Resource
                             'Study material' => 'Study material',
                         ],
                         Course::pluck('name', 'name')->mapWithKeys(function ($item, $key) {
-                            return [$key => 'Course - '.$item];
+                            return [$key => 'Course - ' . $item];
                         })->toArray(),
                         Package::pluck('name', 'name')->mapWithKeys(function ($item, $key) {
-                            return [$key => 'Package - '.$item];
+                            return [$key => 'Package - ' . $item];
                         })->toArray(),
                         Blog::pluck('name', 'name')->mapWithKeys(function ($item, $key) {
-                            return [$key => 'Blog - '.$item];
+                            return [$key => 'Blog - ' . $item];
                         })->toArray(),
                         BlogCategory::pluck('name', 'name')->mapWithKeys(function ($item, $key) {
-                            return [$key => 'Blog category - '.$item];
+                            return [$key => 'Blog category - ' . $item];
                         })->toArray()
                     )
                 )->searchable()->required()->columnSpanFull(),
@@ -83,7 +83,8 @@ class PageSchemaResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc');
     }
 
     public static function getRelations(): array

@@ -54,7 +54,8 @@ class UserResource extends Resource
             ->actions([
                 EditAction::make(),
             ])
-            ->bulkActions([]);
+            ->bulkActions([])
+            ->defaultSort('created_at', 'desc');
     }
 
     public static function getRelations(): array

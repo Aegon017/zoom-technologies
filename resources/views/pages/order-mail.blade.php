@@ -103,7 +103,9 @@
                 <tbody>
                     <tr>
                         <td>{{ $order->course->name ?? $order->package->name }}</td>
-                        <td>Rs {{ $order->course->actual_price ?? $order->package->actual_price }}/-</td>
+                        <td>{{ $order->payment->currency }}
+                            {{ rtrim(rtrim(number_format($order->courseOrPackage_price, 3, '.', ''), '0'), '.') }}/-
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -131,22 +133,32 @@
             <table class="table">
                 <tbody>
                     <tr>
-                        <td>Subtotal:</td>
-                        <td>Rs {{ $order->course->actual_price ?? $order->package->actual_price }}/-</td>
-                    </tr>
-                    <tr>
                         <td>Payment mode:</td>
                         <td>{{ $order->payment->method ?? 'None' }}</td>
                     </tr>
                     <tr>
+                        <td>Subtotal:</td>
+                        <td>{{ $order->payment->currency }}
+                            {{ rtrim(rtrim(number_format($order->courseOrPackage_price, 3, '.', ''), '0'), '.') }}/-
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Discount @if ($order->payment->coupon)
+                                ( {{ $order->payment->coupon->code }} )
+                            @endif:</td>
+                        <td>- {{ $order->payment->currency }}
+                            {{ rtrim(rtrim(number_format($order->discount, 3, '.', ''), '0'), '.') }}/-
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Taxes:</td>
                         <td>
-                            CGST({{ (100 * $order->cgst) / $order->courseOrPackage_price }}%):
+                            CGST ({{ (100 * $order->cgst) / ($order->courseOrPackage_price - $order->discount) }}%):
                             {{ $order->payment->currency }}
-                            {{ $order->cgst }}/-<br>
-                            SGST({{ (100 * $order->sgst) / $order->courseOrPackage_price }}%):
+                            {{ rtrim(rtrim(number_format($order->cgst, 3, '.', ''), '0'), '.') }}/-<br>
+                            SGST ({{ (100 * $order->sgst) / ($order->courseOrPackage_price - $order->discount) }}%):
                             {{ $order->payment->currency }}
-                            {{ $order->sgst }}/-
+                            {{ rtrim(rtrim(number_format($order->sgst, 3, '.', ''), '0'), '.') }}/-
                         </td>
                     </tr>
                     <tr>
@@ -199,7 +211,9 @@
                 <tbody>
                     <tr>
                         <td>{{ $order->course->name ?? $order->package->name }}</td>
-                        <td>Rs {{ $order->course->actual_price ?? $order->package->actual_price }}/-</td>
+                        <td>{{ $order->payment->currency }}
+                            {{ rtrim(rtrim(number_format($order->courseOrPackage_price, 3, '.', ''), '0'), '.') }}/-
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -227,20 +241,32 @@
             <table class="table">
                 <tbody>
                     <tr>
-                        <td>Subtotal:</td>
-                        <td>Rs {{ $order->course->actual_price ?? $order->package->actual_price }}/-</td>
-                    </tr>
-                    <tr>
                         <td>Payment mode:</td>
                         <td>{{ $order->payment->method ?? 'None' }}</td>
                     </tr>
                     <tr>
+                        <td>Subtotal:</td>
+                        <td>{{ $order->payment->currency }}
+                            {{ rtrim(rtrim(number_format($order->courseOrPackage_price, 3, '.', ''), '0'), '.') }}/-
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Discount @if ($order->payment->coupon)
+                                ( {{ $order->payment->coupon->code }} )
+                            @endif:</td>
+                        <td>- {{ $order->payment->currency }}
+                            {{ rtrim(rtrim(number_format($order->discount, 3, '.', ''), '0'), '.') }}/-
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Taxes:</td>
                         <td>
-                            CGST({{ (100 * $order->cgst) / $order->courseOrPackage_price }}%):
-                            {{ $order->payment->currency }} {{ $order->cgst }}/-<br>
-                            SGST({{ (100 * $order->sgst) / $order->courseOrPackage_price }}%):
-                            {{ $order->payment->currency }} {{ $order->sgst }}/-
+                            CGST ({{ (100 * $order->cgst) / ($order->courseOrPackage_price - $order->discount) }}%):
+                            {{ $order->payment->currency }}
+                            {{ rtrim(rtrim(number_format($order->cgst, 3, '.', ''), '0'), '.') }}/-<br>
+                            SGST ({{ (100 * $order->sgst) / ($order->courseOrPackage_price - $order->discount) }}%):
+                            {{ $order->payment->currency }}
+                            {{ rtrim(rtrim(number_format($order->sgst, 3, '.', ''), '0'), '.') }}/-
                         </td>
                     </tr>
                     <tr>
@@ -249,7 +275,10 @@
                     </tr>
                 </tbody>
             </table>
-
+            <p>
+                For any further assistance or query feel free to reach out to us by Call/ WhatsApp at +91 9391191563 or
+                emailing us at priya@zoomgroup.com
+            </p>
             <p>Thank you for your understanding.</p>
             <p>Sincerely,<br /><strong>Zoom Technologies Team</strong></p>
         </div>

@@ -312,6 +312,7 @@ class PackageCourseResource extends Resource
                 ViewAction::make(),
             ])
             ->bulkActions([])
+            ->defaultSort('created_at', 'desc')
             ->modifyQueryUsing(fn(Builder $query) => $query->whereNotNull('package_id'));
     }
 

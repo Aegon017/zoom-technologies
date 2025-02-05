@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create(config('couponables.table', 'coupons'), function (Blueprint $table) {
             $table->id();
+            $table->foreignId('course_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('package_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->string('product_type', 128);
             $table->string('code', 64)->unique();
             $table->string('type', 128)->nullable();
             $table->string('value')->nullable();

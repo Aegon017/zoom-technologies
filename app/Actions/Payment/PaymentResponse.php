@@ -3,6 +3,7 @@
 namespace App\Actions\Payment;
 
 use App\Models\Address;
+use App\Models\Coupon;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Session;
 
 class PaymentResponse
 {
-    public function execute(Request $request, Order $order)
+    public function execute(Request $request, Order $order, $couponId)
     {
         $generateInvoice = new GenerateInvoice;
         $sendEmails = new SendEmails;
@@ -33,13 +34,17 @@ class PaymentResponse
             'status' => $status,
             'amount' => $amount,
             'currency' => 'Rs',
+            'coupon_id' => $couponId,
         ];
         $updateOrderPayment->execute($order->id, $data);
-        if ($request->status == 'success') {
-            $selectedAddress = Session::get('selectedAddress');
+        if ($status == 'success') {
             $address = Address::where('user_id', Auth::id())->first();
             $order->invoice = $generateInvoice->execute($order, $address);
             $order->save();
+            if ($couponId) {
+                $redeemer = $order->user;
+                $redeemer->redeemCoupon(Coupon::find($couponId)?->code);
+            }
         }
         $sendEmails->execute($order);
     }

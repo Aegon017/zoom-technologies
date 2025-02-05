@@ -52,7 +52,7 @@ class ScheduleRelationManager extends RelationManager
                     ->label('Meeting Password')
                     ->hidden(fn($get) => $get('training_mode') !== 'Online')
                     ->required(),
-                DatePicker::make('start_date')->native(false)->required(),
+                DatePicker::make('start_date')->maxDate(fn($record) => $record->start_date ?? null)->minDate(fn($record) => $record->start_date ?? today())->native(false)->required(),
                 TimePicker::make('time')->seconds(false)->label('Start time')->seconds(false)->required(),
                 TimePicker::make('end_time')->seconds(false)->required(),
                 Select::make('timezone_id')

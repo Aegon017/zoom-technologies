@@ -4,8 +4,10 @@
         <h6>Promo code</h6>
         <div x-show="!show">
             <div class="d-flex gap-1 pr-1">
-                <input type="text" class="form-control" id="promocode" wire:model='promoCode'
+                <input type="text" class="form-control" id="promocode" wire:model="promoCode"
                     placeholder="Enter promo code">
+                <input type="hidden" wire:model="productType" value="{{ $productType }}">
+                <input type="hidden" wire:model="slug" value="{{ $slug }}">
                 <button class="btn btn-primary" wire:click="applyPromoCode">Apply</button>
             </div>
         </div>

@@ -9,6 +9,7 @@ use App\Actions\Payment\PaymentResponse;
 use App\Actions\Payment\SendEmails;
 use App\Actions\Payment\UpdateOrderPayment;
 use App\Models\Address;
+use App\Models\Coupon;
 use App\Models\Currency;
 use App\Models\Thankyou;
 use App\Services\PayUPayment;
@@ -45,6 +46,7 @@ class PaymentController extends Controller
         Session::put('discount', $discount);
         Session::put('productType', $productType);
         Session::put('selectedAddress', $selectedAddress);
+        Session::put('couponId', $request->coupon_id);
         switch ($request->payment_method) {
             case 'payu':
                 $txnId = uniqid();
@@ -162,13 +164,14 @@ class PaymentController extends Controller
             $paymentMethod = Session::get('paymentMethod');
             $userID = Session::get('userID');
             $usd = Session::get('usd');
+            $couponId = Session::get('couponId');
             $scheduleIDs = Session::get('scheduleIDs');
             $order = $createOrder->execute($userID, $usd);
             $attachScheduleToOrder->execute($scheduleIDs, $order->id);
             $thankyou = Thankyou::first();
             switch ($paymentMethod) {
                 case 'payu':
-                    $paymentResponse->execute($request, $order);
+                    $paymentResponse->execute($request, $order, $couponId);
                     break;
                 case 'paypal':
                     $provider = new PayPal;
@@ -196,12 +199,17 @@ class PaymentController extends Controller
                         'status' => $status,
                         'amount' => $amount,
                         'currency' => 'USD',
+                        'coupon_id' => $couponId,
                     ];
                     $updateOrderPayment->execute($order->id, $data);
                     $selectedAddress = Session::get('selectedAddress');
                     $address = Address::where('user_id', $userID)->first();
                     $order->invoice = $generateInvoice->execute($order, $address);
                     $order->save();
+                    if ($couponId) {
+                        $redeemer = $order->user;
+                        $redeemer->redeemCoupon(Coupon::find($couponId)?->code);
+                    }
                     $sendEmails->execute($order);
                     break;
 
@@ -229,11 +237,16 @@ class PaymentController extends Controller
                         'status' => $status,
                         'amount' => $amount,
                         'currency' => 'USD',
+                        'coupon_id' => $couponId,
                     ];
                     $updateOrderPayment->execute($order->id, $data);
                     $address = Address::where('user_id', $userID)->first();
                     $order->invoice = $generateInvoice->execute($order, $address);
                     $order->save();
+                    if ($couponId) {
+                        $redeemer = $order->user;
+                        $redeemer->redeemCoupon(Coupon::find($couponId)?->code);
+                    }
                     $sendEmails->execute($order);
                     break;
 
@@ -251,6 +264,10 @@ class PaymentController extends Controller
                     if ($response->getResponseCode() === 'SUCCESS') {
                         $description = 'Payment success';
                         $status = 'success';
+                        if ($couponId) {
+                            $redeemer = $order->user;
+                            $redeemer->redeemCoupon(Coupon::find($couponId)?->code);
+                        }
                     } else {
                         $description = 'Payment failure';
                         $status = 'failure';
@@ -272,6 +289,7 @@ class PaymentController extends Controller
                         'status' => $status,
                         'amount' => $amount,
                         'currency' => 'Rs',
+                        'coupon_id' => $couponId,
                     ];
                     $updateOrderPayment->execute($order->id, $data);
                     $address = Address::where('user_id', $userID)->first();
@@ -305,12 +323,13 @@ class PaymentController extends Controller
             $paymentMethod = Session::get('paymentMethod');
             $userID = Session::get('userID');
             $usd = Session::get('usd');
+            $couponId = Session::get('couponId');
             $scheduleIDs = Session::get('scheduleIDs');
             $order = $createOrder->execute($userID, $usd);
             $attachScheduleToOrder->execute($scheduleIDs, $order->id);
             switch ($paymentMethod) {
                 case 'payu':
-                    $paymentResponse->execute($request, $order);
+                    $paymentResponse->execute($request, $order, $couponId);
                     break;
                 case 'paypal':
                     $provider = new PayPal;
@@ -337,6 +356,7 @@ class PaymentController extends Controller
                         'status' => $status,
                         'amount' => $amount,
                         'currency' => 'USD',
+                        'coupon_id' => $couponId,
                     ];
                     $updateOrderPayment->execute($order->id, $data);
                     $sendEmails->execute($order);
@@ -363,6 +383,7 @@ class PaymentController extends Controller
                         'status' => $status,
                         'amount' => $amount,
                         'currency' => 'USD',
+                        'coupon_id' => $couponId,
                     ];
                     $updateOrderPayment->execute($order->id, $data);
                     $sendEmails->execute($order);

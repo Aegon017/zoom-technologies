@@ -24,6 +24,7 @@ class UpdateOrderPayment
         $payment->status = $data['status'];
         $payment->amount = $data['amount'];
         $payment->currency = $data['currency'];
+        $payment->coupon_id = $data['coupon_id'];
         $payment->save();
     }
 
@@ -33,7 +34,7 @@ class UpdateOrderPayment
             ->latest('created_at')
             ->value('receipt_number');
         $receiptNumber = $lastReceiptNo ? (intval(substr($lastReceiptNo, 3)) + 1) : 1;
-        $receipt_no = 'ZTR'.str_pad($receiptNumber, 6, '0', STR_PAD_LEFT);
+        $receipt_no = 'ZTR' . str_pad($receiptNumber, 6, '0', STR_PAD_LEFT);
 
         return $receipt_no;
     }

@@ -292,7 +292,8 @@ class StudentResource extends Resource
                         (new SendCertificate())->execute($orderSchedules);
                     })
             ])
-            ->bulkActions([]);
+            ->bulkActions([])
+            ->defaultSort('created_at', 'desc');
     }
 
     public static function getRelations(): array

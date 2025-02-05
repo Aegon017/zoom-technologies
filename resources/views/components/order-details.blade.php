@@ -31,6 +31,7 @@
                             </h2>
                             <p><strong>Price:</strong> {{ $order->payment->currency }}
                                 {{ rtrim(rtrim(number_format($order->courseOrPackage_price, 3, '.', ''), '0'), '.') }}
+                                /-
                             </p>
                             <p><strong>Duration:</strong>{{ $order->course->duration ?? $order->package->duration }}
                                 {{ $order->course->duration_type ?? $order->package->duration_type }}</p>
@@ -83,28 +84,32 @@
                     <div class="flex justify-between text-gray-600 mb-2">
                         <span>Subtotal</span>
                         <span>{{ $order->payment->currency }}
-                            {{ rtrim(rtrim(number_format($order->courseOrPackage_price, 3, '.', ''), '0'), '.') }}</span>
+                            {{ rtrim(rtrim(number_format($order->courseOrPackage_price, 3, '.', ''), '0'), '.') }}
+                            /-</span>
                     </div>
                     <div class="flex justify-between text-gray-600 mb-2">
-                        <span>Discount</span>
+                        <span>Discount @if ($order->payment->coupon)
+                                ( {{ $order->payment->coupon->code }} )
+                            @endif
+                        </span>
                         <span>- {{ $order->payment->currency }}
-                            {{ rtrim(rtrim(number_format($order->discount, 3, '.', ''), '0'), '.') }}</span>
+                            {{ rtrim(rtrim(number_format($order->discount, 3, '.', ''), '0'), '.') }} /-</span>
                     </div>
                     <div class="flex justify-between text-gray-600 mb-2">
                         <span>CGST
                             ({{ (100 * $order->cgst) / ($order->courseOrPackage_price - $order->discount) }}%)</span>
                         <span>{{ $order->payment->currency }}
-                            {{ rtrim(rtrim(number_format($order->cgst, 3, '.', ''), '0'), '.') }}</span>
+                            {{ rtrim(rtrim(number_format($order->cgst, 3, '.', ''), '0'), '.') }} /-</span>
                     </div>
                     <div class="flex justify-between text-gray-600 mb-2">
                         <span>SGST
                             ({{ (100 * $order->sgst) / ($order->courseOrPackage_price - $order->discount) }}%)</span>
                         <span>{{ $order->payment->currency }}
-                            {{ rtrim(rtrim(number_format($order->sgst, 3, '.', ''), '0'), '.') }}</span>
+                            {{ rtrim(rtrim(number_format($order->sgst, 3, '.', ''), '0'), '.') }} /-</span>
                     </div>
                     <div class="flex justify-between font-semibold text-gray-900">
                         <span>Order total</span>
-                        <span>{{ $order->payment->currency }} {{ $order->payment->amount }}</span>
+                        <span>{{ $order->payment->currency }} {{ $order->payment->amount }} /-</span>
                     </div>
                 </div>
             </div>

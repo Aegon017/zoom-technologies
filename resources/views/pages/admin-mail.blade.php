@@ -144,14 +144,10 @@
         <p><strong>Student email:</strong> {{ $order->user->email }}</p>
         <p><strong>Student phone:</strong> {{ $order->user->phone }}</p>
         <p><strong>Order ID:</strong> {{ $order->order_number }}</p>
-        <p><strong>Enrollment Date:</strong> {{ today() }}</p>
+        <p><strong>Enrollment Date:</strong> {{ today()->format('d M Y') }}</p>
         <p><strong>Payment Details:</strong></p>
         <table>
             <tbody>
-                <tr>
-                    <td>Price:</td>
-                    <td>{{ $order->payment->currency }} {{ $order->courseOrPackage_price }}/-</td>
-                </tr>
                 <tr>
                     <td>Payment Method:</td>
                     <td>
@@ -159,16 +155,29 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>Price:</td>
+                    <td>{{ $order->payment->currency }} {{ $order->courseOrPackage_price }}/-</td>
+                </tr>
+                <tr>
+                    <td>Discount @if ($order->payment->coupon)
+                            ( {{ $order->payment->coupon->code }} )
+                        @endif:</td>
+                    <td>- {{ $order->payment->currency }}
+                        {{ rtrim(rtrim(number_format($order->discount, 3, '.', ''), '0'), '.') }}/-</td>
+                </tr>
+                <tr>
                     <td>Taxes:</td>
                     <td>
-                        CGST({{ (100 * $order->cgst) / $order->courseOrPackage_price }}%):
-                        {{ $order->payment->currency }} {{ $order->cgst }}/-<br>
-                        SGST({{ (100 * $order->sgst) / $order->courseOrPackage_price }}%):
-                        {{ $order->payment->currency }} {{ $order->sgst }}/-
+                        CGST ({{ (100 * $order->cgst) / ($order->courseOrPackage_price - $order->discount) }}%):
+                        {{ $order->payment->currency }}
+                        {{ rtrim(rtrim(number_format($order->cgst, 3, '.', ''), '0'), '.') }}/-<br>
+                        SGST ({{ (100 * $order->sgst) / ($order->courseOrPackage_price - $order->discount) }}%):
+                        {{ $order->payment->currency }}
+                        {{ rtrim(rtrim(number_format($order->sgst, 3, '.', ''), '0'), '.') }}/-
                     </td>
                 </tr>
                 <tr>
-                    <td>Total Amount:</td>
+                    <td>Total Price:</td>
                     <td>{{ $order->payment->currency }} {{ $order->payment->amount }}/-</td>
                 </tr>
             </tbody>

@@ -90,4 +90,9 @@ class Course extends Model
     {
         return $this->hasOne(SampleCertificate::class);
     }
+
+    public function coupons(): HasMany
+    {
+        return $this->hasMany(Coupon::class);
+    }
 }

@@ -272,8 +272,10 @@
                                     $sgst = $request->sgst;
                                     $cgst = $request->cgst;
                                     $payablePrice = $request->payablePrice;
+                                    $slug = $request->name;
+                                    $productType = $request->product_type;
                                 @endphp
-                                <livewire:promo-code :$coursePrice :$sgst :$cgst :$payablePrice />
+                                <livewire:promo-code :$coursePrice :$sgst :$cgst :$payablePrice :$productType :$slug />
                             </div>
                         </div>
                     </div>
@@ -307,10 +309,11 @@
                         <form action="{{ route('payment.initiate') }}" x-ref="checkoutForm" method="POST">
                             @csrf
                             <input type="hidden" name="name" value="{{ $request->name }}">
-                            <div x-data="{ payablePrice: {{ $request->payablePrice }}, discount: 0 }"
-                                x-on:promo-code-applied.window="payablePrice = $event.detail.payablePrice; discount=$event.detail.discount">
+                            <div x-data="{ payablePrice: {{ $request->payablePrice }}, discount: 0, couponId: null }"
+                                x-on:promo-code-applied.window="payablePrice = $event.detail.payablePrice; discount=$event.detail.discount; couponId=$event.detail.couponId">
                                 <input type="hidden" name="payable_price" :value="payablePrice">
                                 <input type="hidden" name="discount", :value="discount">
+                                <input type="hidden" name="coupon_id" :value="couponId">
                             </div>
                             <input type="hidden" name="product_type" value="{{ $request->product_type }}">
                             <div class="step-content" id="content-1" x-transition.duration.opacity

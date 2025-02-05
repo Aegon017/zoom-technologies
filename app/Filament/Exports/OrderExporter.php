@@ -19,6 +19,7 @@ class OrderExporter extends Exporter
             ExportColumn::make('user.phone')->label('User phone'),
             ExportColumn::make('order_number')->enabledByDefault(false),
             ExportColumn::make('enrolled_by')->enabledByDefault(false),
+            ExportColumn::make('payment.receipt_number')->label('Receipt number')->enabledByDefault(false),
             ExportColumn::make('payment.payment_id')->label('Payment ID')->enabledByDefault(false),
             ExportColumn::make('payment.mode')->label('Payment Method')->enabledByDefault(false),
             ExportColumn::make('payment.method')->label('Payment mode')->enabledByDefault(false),
@@ -42,10 +43,10 @@ class OrderExporter extends Exporter
 
     public static function getCompletedNotificationBody(Export $export): string
     {
-        $body = 'Your order export has completed and '.number_format($export->successful_rows).' '.str('row')->plural($export->successful_rows).' exported.';
+        $body = 'Your order export has completed and ' . number_format($export->successful_rows) . ' ' . str('row')->plural($export->successful_rows) . ' exported.';
 
         if ($failedRowsCount = $export->getFailedRowsCount()) {
-            $body .= ' '.number_format($failedRowsCount).' '.str('row')->plural($failedRowsCount).' failed to export.';
+            $body .= ' ' . number_format($failedRowsCount) . ' ' . str('row')->plural($failedRowsCount) . ' failed to export.';
         }
 
         return $body;
@@ -56,13 +57,13 @@ class OrderExporter extends Exporter
     //     return "orders.csv";
     // }
 
-    public function getFileName(Export $export): string
-    {
-        $courseName = $export->filters['course_id'] ?? 'all_courses';
-        $paymentMethod = $export->filters['payment_method'] ?? 'all_methods';
-        $startDate = $export->filters['start_date'] ?? 'no_start_date';
-        $endDate = $export->filters['end_date'] ?? 'no_end_date';
+    // public function getFileName(Export $export): string
+    // {
+    //     $courseName = $export->filters['course_id'] ?? 'all_courses';
+    //     $paymentMethod = $export->filters['payment_method'] ?? 'all_methods';
+    //     $startDate = $export->filters['start_date'] ?? 'no_start_date';
+    //     $endDate = $export->filters['end_date'] ?? 'no_end_date';
 
-        return "orders-{ $export->getKey() }.csv";
-    }
+    //     return "orders-{ $export->getKey() }.csv";
+    // }
 }

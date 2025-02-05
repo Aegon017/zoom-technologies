@@ -34,7 +34,8 @@
                         {{ $order->course->name ?? $order->package->name }}
                     </td>
                     <td class="px-6 py-4">
-                        {{ $order->payment->currency }} {{ $order->courseOrPackage_price }}
+                        {{ $order->payment->currency }}
+                        {{ rtrim(rtrim(number_format($order->courseOrPackage_price, 3, '.', ''), '0'), '.') }} /-
                     </td>
                     <td class="px-6 py-4 font-semibold">
                         {{ $order->payment->date }}, {{ $order->payment->time }}

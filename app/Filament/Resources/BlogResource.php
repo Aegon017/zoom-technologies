@@ -37,7 +37,7 @@ class BlogResource extends Resource
                     ->label('Blog category')
                     ->options(BlogCategory::pluck('name', 'id'))->required(),
                 TextInput::make('name')->live(onBlur: true)
-                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
+                    ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state)))->required(),
                 TextInput::make('slug')->required(),
                 TextInput::make('source')->required(),
                 TextInput::make('source_url')->columnSpanFull(),
@@ -74,7 +74,8 @@ class BlogResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc');
     }
 
     public static function getRelations(): array
