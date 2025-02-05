@@ -199,14 +199,14 @@
                         {{ rtrim(rtrim(number_format($order->discount, 3, '.', ''), '0'), '.') }}/-</td>
                 </tr>
                 <tr>
-                    <td>SGST ({{ (100 * $order->cgst) / ($order->courseOrPackage_price - $order->discount) }}%)</td>
-                    <td>{{ $order->payment->currency }}
-                        {{ rtrim(rtrim(number_format($order->cgst, 3, '.', ''), '0'), '.') }}/-</td>
-                </tr>
-                <tr>
-                    <td>CGST ({{ (100 * $order->sgst) / ($order->courseOrPackage_price - $order->discount) }}%)</td>
+                    <td>SGST ({{ (100 * $order->sgst) / ($order->courseOrPackage_price - $order->discount) }}%)</td>
                     <td>{{ $order->payment->currency }}
                         {{ rtrim(rtrim(number_format($order->sgst, 3, '.', ''), '0'), '.') }}/-</td>
+                </tr>
+                <tr>
+                    <td>CGST ({{ (100 * $order->cgst) / ($order->courseOrPackage_price - $order->discount) }}%)</td>
+                    <td>{{ $order->payment->currency }}
+                        {{ rtrim(rtrim(number_format($order->cgst, 3, '.', ''), '0'), '.') }}/-</td>
                 </tr>
                 <tr>
                     <td><strong>Total Amount</strong></td>
