@@ -63,6 +63,7 @@ class SendAttendanceCertificate extends Command
                     $courseName = $orderSchedule->schedule->course->name;
                     $batchDate = $schedule->start_date;
                     $receiptNo = $order->payment->receipt_number;
+                    $orderNumber = $order->order_number;
 
                     $data = [
                         'userName' => $userName,
@@ -70,6 +71,7 @@ class SendAttendanceCertificate extends Command
                         'batchDate' => $batchDate,
                         'endDate' => $endDate,
                         'receiptNo' => $receiptNo,
+                        'orderNumber' => $orderNumber,
                     ];
                     $pdf = Pdf::loadView('pages.attendance-certificate', $data)->setOption(['defaultFont' => 'sans-serif'])->setPaper('a4', 'landscape');
                     $pdfFileName = 'certificates/zoom_certificate_' . time() . '.pdf';
