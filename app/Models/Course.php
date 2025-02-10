@@ -91,8 +91,8 @@ class Course extends Model
         return $this->hasOne(SampleCertificate::class);
     }
 
-    public function coupons(): HasMany
+    public function couponCourses(): HasMany
     {
-        return $this->hasMany(Coupon::class);
+        return $this->hasMany(CouponCourse::class);
     }
 }
