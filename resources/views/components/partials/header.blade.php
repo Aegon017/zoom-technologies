@@ -43,7 +43,7 @@
                         <li>
                             <a href="{{ route('render.home') }}">Home</a>
                         </li>
-                        <li><a href="#about">About</a></li>
+                        <li><a href="{{ route('render.home') }}#about">About</a></li>
                         <li>
                             <a href="{{ route('render.course.list') }}">Courses</a>
                         </li>
@@ -83,7 +83,7 @@
                                     <li>
                                         <a href="{{ route('render.home') }}">Home</a>
                                     </li>
-                                    <li><a href="#about">About</a></li>
+                                    <li><a href="{{ route('render.home') }}#about">About</a></li>
                                     <li>
                                         <a href="{{ route('render.course.list') }}">Courses</a>
                                     </li>
