@@ -268,14 +268,18 @@
                                     </div>
                                 </div>
                                 @php
+                                    $thumbnail = $request->thumbnail;
+                                    $thumbnail_alt = $request->thumbnail_alt;
+                                    $slug = $request->name;
+                                    $productType = $request->product_type;
                                     $coursePrice = $request->coursePrice;
                                     $sgst = $request->sgst;
                                     $cgst = $request->cgst;
                                     $payablePrice = $request->payablePrice;
-                                    $slug = $request->name;
-                                    $productType = $request->product_type;
+                                    $actualName = $request->actualName;
                                 @endphp
-                                <livewire:promo-code :$coursePrice :$sgst :$cgst :$payablePrice :$productType :$slug />
+                                <livewire:promo-code :$thumbnail :$thumbnail_alt :$coursePrice :$sgst :$cgst
+                                    :$payablePrice :$productType :$slug :$actualName />
                             </div>
                         </div>
                     </div>
@@ -330,4 +334,45 @@
             </div>
         </div>
     </body>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const stepBadges = document.querySelectorAll('.step-badge');
+            const steps = document.querySelectorAll('.step-item');
+            const contents = document.querySelectorAll('.step-content');
+
+            function activateStep(stepNumber) {
+                stepBadges.forEach(badge => badge.classList.remove('active'));
+                steps.forEach(step => step.classList.remove('active'));
+
+                const activeBadge = document.querySelector('.step-badge[data-step="' + stepNumber + '"]');
+                const activeStep = document.getElementById('step-' + stepNumber);
+
+                activeBadge?.classList.add('active');
+                activeStep?.classList.add('active');
+            }
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const stepNumber = entry.target.id.replace('content-', '');
+                    if (entry.isIntersecting) {
+                        activateStep(stepNumber);
+                    }
+                });
+            }, observerOptions);
+
+            contents.forEach(content => {
+                observer.observe(content);
+            });
+
+            if (contents.length > 0) {
+                activateStep(1);
+            }
+        });
+    </script>
 </x-frontend-layout>

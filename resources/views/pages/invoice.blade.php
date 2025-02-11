@@ -228,7 +228,6 @@
         </div>
         <div class="footer">
             <div>Thank you for your order</div>
-            <div class="bold">{{ $order->order_number }}</div>
             <div>System-generated invoice. Signature not required.</div>
         </div>
     </div>

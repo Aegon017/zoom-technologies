@@ -131,7 +131,6 @@ class PaymentController extends Controller
                 $environment = config('services.phonepe.environment');
                 $shouldPublishEvents = config('services.phonepe.should_publish_events');
                 $phonePePaymentsClient = new PhonePePaymentClient($merchantID, $saltKey, $saltIndex, $environment, $shouldPublishEvents);
-
                 $merchantTransactionId = date('ymdHis');
                 $request = PgPayRequestBuilder::builder()
                     ->mobileNumber($user->phone)

@@ -1,14 +1,13 @@
-<div class="pt-3" x-data="{ button: true, bankTransfer: false, qrCode: false }">
+<div x-data="{ button: true, bankTransfer: false, qrCode: false }">
     <h4 class="mb-3 text-dark">Payment Method</h4>
-    <p class="text-muted">Please select your payment method</p>
     @if ($paymentGateways)
         <div class="pb-3 justify-content-center">
             <p class="text-primary">For Indian Cardholder Only</p>
             @if (in_array('PhonePe', $paymentGateways))
                 <div class="phonepe">
                     <div class="form-check" x-on:click="button = true; bankTransfer = false">
-                        <input class="form-check-input" type="radio" name="payment_method" value="phonepe"
-                            id="phonepe" checked>
+                        <input class="form-check-input" type="radio" name="payment_method" value="phonepe" id="phonepe"
+                            checked>
                         <label class="form-check-label" for="phonepe">
                             Credit or Debit Card (India),UPI and Net Bankings (PhonePe)
                             <div>

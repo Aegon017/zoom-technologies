@@ -38,6 +38,7 @@ class OrderExporter extends Exporter
             ExportColumn::make('sgst')->enabledByDefault(false),
             ExportColumn::make('cgst')->enabledByDefault(false),
             ExportColumn::make('payment.amount')->label('Payment amount')->enabledByDefault(false),
+            ExportColumn::make('payment.coupon.code')->label('Promo code')->enabledByDefault(false),
         ];
     }
 

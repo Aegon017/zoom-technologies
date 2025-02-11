@@ -13,6 +13,12 @@ use function Flasher\Prime\flash;
 
 class PromoCode extends Component
 {
+    public $thumbnail;
+
+    public $thumbnail_alt;
+
+    public $actualName;
+
     public $coursePrice;
 
     public $sgst;
@@ -45,25 +51,9 @@ class PromoCode extends Component
                 flash()->error('Invalid promocode');
                 return;
             }
-
-            if ($coupon->product_type !== $this->productType) {
-                flash()->error('This promo code is not valid for the selected course');
-                return;
-            }
-
-            $productSlug = null;
             $couponCode = Coupon::find($coupon->id);
-            switch ($coupon->product_type) {
-                case 'course':
-                    $productSlug = $couponCode->course->slug ?? null;
-                    break;
-                case 'package':
-                    $productSlug = $couponCode->package->slug ?? null;
-                    break;
-            }
-
-            if ($productSlug !== $this->slug) {
-                flash()->error('This promo code is not valid for the selected course');
+            if (!$couponCode->courses->contains('slug', $this->slug) && !$couponCode->packages->contains('slug', $this->slug)) {
+                flash()->error('This promo code is not valid for the selected course or package');
                 return;
             }
 
