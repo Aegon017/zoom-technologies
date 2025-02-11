@@ -87,14 +87,16 @@
                             {{ rtrim(rtrim(number_format($order->courseOrPackage_price, 3, '.', ''), '0'), '.') }}
                             /-</span>
                     </div>
-                    <div class="flex justify-between text-gray-600 mb-2">
-                        <span>Discount @if ($order->payment->coupon)
-                                ( {{ $order->payment->coupon->code }} )
-                            @endif
-                        </span>
-                        <span>- {{ $order->payment->currency }}
-                            {{ rtrim(rtrim(number_format($order->discount, 3, '.', ''), '0'), '.') }} /-</span>
-                    </div>
+                    @if ($order->discount != 0)
+                        <div class="flex justify-between text-gray-600 mb-2">
+                            <span>Discount @if ($order->payment->coupon)
+                                    ( {{ $order->payment->coupon->code }} )
+                                @endif
+                            </span>
+                            <span>{{ $order->payment->currency }}
+                                {{ rtrim(rtrim(number_format($order->discount, 3, '.', ''), '0'), '.') }} /-</span>
+                        </div>
+                    @endif
                     <div class="flex justify-between text-gray-600 mb-2">
                         <span>CGST
                             ({{ (100 * $order->cgst) / ($order->courseOrPackage_price - $order->discount) }}%)</span>

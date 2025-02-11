@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -73,8 +74,8 @@ class Package extends Model
         return $this->hasMany(ManualOrder::class);
     }
 
-    public function coupons(): HasMany
+    public function coupons(): BelongsToMany
     {
-        return $this->hasMany(Coupon::class);
+        return $this->belongsToMany(Coupon::class, 'coupon_package_courses');
     }
 }

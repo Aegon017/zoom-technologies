@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -91,8 +92,8 @@ class Course extends Model
         return $this->hasOne(SampleCertificate::class);
     }
 
-    public function couponCourses(): HasMany
+    public function coupons(): BelongsToMany
     {
-        return $this->hasMany(CouponCourse::class);
+        return $this->belongsToMany(Coupon::class, 'coupon_courses');
     }
 }

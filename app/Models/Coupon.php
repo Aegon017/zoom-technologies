@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Coupon extends Model
@@ -38,8 +39,13 @@ class Coupon extends Model
         return $this->hasMany(Payment::class);
     }
 
-    public function couponCourses(): HasMany
+    public function courses(): BelongsToMany
     {
-        return $this->hasMany(CouponCourse::class);
+        return $this->belongsToMany(Course::class, 'coupon_courses');
+    }
+
+    public function packages(): BelongsToMany
+    {
+        return $this->belongsToMany(Package::class, 'coupon_package_courses');
     }
 }

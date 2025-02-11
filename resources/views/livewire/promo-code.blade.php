@@ -23,10 +23,12 @@
             <span>Subtotal</span>
             <span>Rs {{ $coursePrice }}</span>
         </div>
-        <div class="d-flex justify-content-between">
-            <span>Discount</span>
-            <span>- Rs {{ $discount ?? 0 }}</span>
-        </div>
+        @if ($discount != 0)
+            <div class="d-flex justify-content-between">
+                <span>Discount</span>
+                <span>Rs {{ $discount ?? 0 }}</span>
+            </div>
+        @endif
         <div class="d-flex justify-content-between">
             <span>CGST</span>
             <span>Rs {{ $cgst }}</span>

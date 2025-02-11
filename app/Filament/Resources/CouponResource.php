@@ -32,16 +32,18 @@ class CouponResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('course_id')
-                    ->label('Single Course')
-                    ->multiple()
-                    ->preload()
-                    ->relationship(name: 'couponCourses.course', titleAttribute: 'name'),
-                // Select::make('package_id')
-                //     ->label('Package Course')
-                //     ->options(
-                //         fn() => Package::pluck('name', 'id')
-                //     ),
+                Section::make()->schema([
+                    Select::make('courses')
+                        ->label('Single Course')
+                        ->multiple()
+                        ->preload()
+                        ->relationship('courses', 'name'),
+                    Select::make('packages')
+                        ->label('Package Course')
+                        ->multiple()
+                        ->preload()
+                        ->relationship('packages', 'name'),
+                ]),
                 Section::make()->schema([
                     TextInput::make('code')
                         ->label('Code')
