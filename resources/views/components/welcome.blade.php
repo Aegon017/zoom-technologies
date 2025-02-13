@@ -34,14 +34,14 @@
                         {{ $order->course->name ?? $order->package->name }}
                     </td>
                     <td class="px-6 py-4">
-                        {{ $order->payment->currency }}
+                        {{ $order->payment?->currency }}
                         {{ rtrim(rtrim(number_format($order->courseOrPackage_price, 3, '.', ''), '0'), '.') }} /-
                     </td>
                     <td class="px-6 py-4 font-semibold">
-                        {{ $order->payment->date }}, {{ $order->payment->time }}
+                        {{ $order->payment?->date }}, {{ $order->payment?->time }}
                     </td>
                     <td class="px-6 py-4">
-                        {{ $order->payment->status }}
+                        {{ $order->payment?->status }}
                     </td>
                     <td class="px-6 py-4">
                         <a class="font-bold hover:text-orange-500 px-2 py-2 rounded"
