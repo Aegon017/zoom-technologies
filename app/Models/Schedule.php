@@ -19,6 +19,7 @@ class Schedule extends Model
         'course_id',
         'timezone_id',
         'start_date',
+        'end_date',
         'time',
         'end_time',
         'duration',
@@ -95,6 +96,11 @@ class Schedule extends Model
     }
 
     public function getStartDateAttribute($value)
+    {
+        return Carbon::parse($value)->format('d M Y');
+    }
+
+    public function getEndDateAttribute($value)
     {
         return Carbon::parse($value)->format('d M Y');
     }

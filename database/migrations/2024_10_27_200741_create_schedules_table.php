@@ -13,6 +13,7 @@ return new class extends Migration
             $table->foreignId('course_id')->constrained()->cascadeOnDelete();
             $table->foreignId('timezone_id')->constrained()->cascadeOnDelete();
             $table->date('start_date');
+            $table->date('end_date');
             $table->time('time');
             $table->time('end_time');
             $table->tinyInteger('duration');

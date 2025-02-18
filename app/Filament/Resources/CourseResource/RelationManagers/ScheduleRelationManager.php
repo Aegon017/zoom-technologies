@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\CourseResource\RelationManagers;
 
 use App\Models\Timezone;
+use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -53,6 +54,7 @@ class ScheduleRelationManager extends RelationManager
                     ->hidden(fn($get) => $get('training_mode') !== 'Online')
                     ->required(),
                 DatePicker::make('start_date')->maxDate(fn($record) => $record->start_date ?? null)->minDate(fn($record) => $record->start_date ?? today())->native(false)->required(),
+                DatePicker::make('end_date')->minDate(fn($record) => $record?->start_date ?? null)->native(false)->required(),
                 TimePicker::make('time')->seconds(false)->label('Start time')->seconds(false)->required(),
                 TimePicker::make('end_time')->seconds(false)->required(),
                 Select::make('timezone_id')
