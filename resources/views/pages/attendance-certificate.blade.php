@@ -47,8 +47,8 @@
 
         .certificate_name {
             position: absolute;
-            top: 37%;
-            font-size: 64px;
+            top: 38%;
+            font-size: 52px;
             font-weight: 600;
             color: #0f3ecd;
             text-align: center;
@@ -105,7 +105,7 @@
         <h2 class="has_completed">has Completed</h2>
         <h3 class="certificate_course_name">{{ $courseName }}</h3>
         <h4 class="certificate_course_duration">{{ Carbon\Carbon::parse($batchDate)->format('F d, Y') }} -
-            {{ $endDate->format('F d, Y') }}
+            {{ Carbon\Carbon::parse($endDate)->format('F d, Y') }}
         </h4>
         <h5 class="certificate_reference_no">Reference No. {{ $receiptNo ?? $orderNumber }}</h5>
     </div>
