@@ -212,11 +212,7 @@ class OrderResource extends Resource
                         return $query
                             ->when(
                                 $data['course_id'] ?? null,
-                                fn(Builder $query, $courseId) => $query
-                                    ->where(function (Builder $subQuery) use ($courseId) {
-                                        $subQuery->whereHas('course', fn(Builder $courseQuery) => $courseQuery->where('id', $courseId))
-                                            ->orWhereHas('package', fn(Builder $packageQuery) => $packageQuery->whereJsonContains('courses', (string) $courseId));
-                                    })
+                                fn(Builder $query, $courseId) => $query->whereHas('course', fn(Builder $courseQuery) => $courseQuery->where('id', $courseId))
                             )
                             ->when(
                                 $data['training_mode'],

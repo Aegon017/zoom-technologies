@@ -64,6 +64,5 @@
             </div>
         </div>
     </section>
-
     <x-related-courses />
 </x-frontend-layout>
