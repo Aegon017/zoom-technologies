@@ -19,23 +19,7 @@ class SendCertificate
         $data = [];
         foreach ($orderSchedules as $orderSchedule) {
             $schedule = $orderSchedule->schedule;
-            $startDate = Carbon::parse($schedule->start_date)->subDays(1);
-            $duration = $schedule->duration;
-            $durationType = $schedule->duration_type;
-            switch ($durationType) {
-                case 'Day':
-                    $endDate = $startDate->addDays($duration);
-                    break;
-                case 'Week':
-                    $endDate = $startDate->addWeeks($duration);
-                    break;
-                case 'Month':
-                    $endDate = $startDate->addMonths($duration);
-                    break;
-                default:
-                    $endDate = null;
-                    break;
-            }
+            $endDate = Carbon::parse($schedule->end_date);
             if ($endDate->lt($today)) {
                 $order = $orderSchedule->order;
                 $user = $order->user;

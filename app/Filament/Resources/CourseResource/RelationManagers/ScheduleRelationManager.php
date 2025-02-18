@@ -54,7 +54,7 @@ class ScheduleRelationManager extends RelationManager
                     ->hidden(fn($get) => $get('training_mode') !== 'Online')
                     ->required(),
                 DatePicker::make('start_date')->maxDate(fn($record) => $record->start_date ?? null)->minDate(fn($record) => $record->start_date ?? today())->native(false)->required(),
-                DatePicker::make('end_date')->maxDate(fn($record) => $record->start_date ?? null)->minDate(fn($record) => Carbon::parse($record->start_date))->native(false)->required(),
+                DatePicker::make('end_date')->minDate(fn($record) =>  $record->start_date ?? null)->native(false)->required(),
                 TimePicker::make('time')->seconds(false)->label('Start time')->seconds(false)->required(),
                 TimePicker::make('end_time')->seconds(false)->required(),
                 Select::make('timezone_id')
