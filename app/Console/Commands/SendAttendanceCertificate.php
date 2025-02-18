@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Mail\AttendingCertificateMail;
 use App\Models\Certificate;
-use App\Models\Schedule;
+use App\Models\Order;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -33,17 +33,24 @@ class SendAttendanceCertificate extends Command
     {
         $today = Carbon::today();
         $data = [];
-        $schedules = Schedule::where('certificate_status', false)->get();
-        foreach ($schedules as $schedule) {
-            $endDate = Carbon::parse($schedule->end_date);
-            if ($endDate->lt($today)) {
-                $orderSchedules = $schedule->orderSchedule;
-                foreach ($orderSchedules as $orderSchedule) {
-                    $order = $orderSchedule->order;
+        $orders = Order::with('schedule')
+            ->whereHas('payment', function ($query) {
+                $query->where('status', 'success');
+            })
+            ->whereHas('schedule', function ($query) {
+                $query->where('certificate_status', false);
+            })
+            ->get();
+        foreach ($orders as $order) {
+            $schedules = $order->schedule;
+            foreach ($schedules as $schedule) {
+                $endDate = Carbon::parse($schedule->end_date);
+                if ($endDate->lt($today) && $schedule->certificate_status === false) {
+                    $order = $order;
                     $user = $order->user;
                     $userName = $user->name;
                     $userEmail = $user->email;
-                    $courseName = $orderSchedule->schedule->course->name;
+                    $courseName = $schedule->course->name;
                     $batchDate = $schedule->start_date;
                     $receiptNo = $order->payment->receipt_number;
                     $orderNumber = $order->order_number;
@@ -65,11 +72,10 @@ class SendAttendanceCertificate extends Command
                         'certificate_path' => $pdfFileName,
                     ]);
                     $user->certificates()->save($certificate);
-
                     $subject = 'Course Completion Certificate';
                     Mail::to($userEmail)->send(new AttendingCertificateMail($pdfFileName, $subject, $userName, $courseName));
+                    $schedule->update(['certificate_status' => true]);
                 }
-                $schedule->update(['certificate_status' => true]);
             }
         }
     }

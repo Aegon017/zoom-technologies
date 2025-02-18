@@ -4,7 +4,6 @@ namespace App\Actions;
 
 use App\Mail\AttendingCertificateMail;
 use App\Models\Certificate;
-use App\Models\Schedule;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Filament\Notifications\Notification;
