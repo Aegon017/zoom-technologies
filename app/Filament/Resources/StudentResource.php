@@ -43,7 +43,8 @@ class StudentResource extends Resource implements HasShieldPermissions
             'update',
             'delete',
             'delete_any',
-            'export'
+            'export',
+            'certificate'
         ];
     }
 
@@ -297,6 +298,7 @@ class StudentResource extends Resource implements HasShieldPermissions
                     ->icon('heroicon-o-check-badge')
                     ->label('Send Certificate')
                     ->requiresConfirmation()
+                    ->visible(auth()->user()->can('certificate_student'))
                     ->action(function ($record) {
                         $certificates = $record->user->certificates()->whereIn('schedule_id', $record->schedule->pluck('id'))->get();
                         foreach ($certificates as $certificate) {

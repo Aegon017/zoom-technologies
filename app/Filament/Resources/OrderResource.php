@@ -48,9 +48,15 @@ class OrderResource extends Resource implements HasShieldPermissions
             'delete_any',
             'invoice',
             'export',
-            'widgets'
+            'show'
         ];
     }
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()->can('show_order');
+    }
+
     protected static ?string $model = Order::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
@@ -441,6 +447,7 @@ class OrderResource extends Resource implements HasShieldPermissions
                 BulkAction::make('invoice')
                     ->label('Download Invoices')
                     ->icon('heroicon-o-arrow-down-tray')
+                    ->visible(auth()->user()->can('invoice_order'))
                     ->action(function ($records) {
                         $zip = new ZipArchive;
                         $zipFileName = storage_path('app/public/invoices.zip');
@@ -455,7 +462,6 @@ class OrderResource extends Resource implements HasShieldPermissions
                                 }
                             }
                             $zip->close();
-
                             return response()->download($zipFileName)->deleteFileAfterSend(true);
                         } else {
                             return back()->with('error', 'Unable to create the ZIP file.');

@@ -135,8 +135,8 @@ class OrderPolicy
      * @param  \App\Models\User  $admin
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function widgets(User $user)
+    public function show(User $user)
     {
-        return $user->can('widgets_order');
+        return $user->can('show_order');
     }
 }
