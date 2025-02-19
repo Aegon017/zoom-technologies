@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\OtherStudyMaterial;
 use App\Models\User;
+use App\Models\OtherStudyMaterial;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class OtherStudyMaterialPolicy

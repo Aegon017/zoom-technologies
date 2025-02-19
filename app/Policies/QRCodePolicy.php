@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\QRCode;
 use App\Models\User;
+use App\Models\QRCode;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class QRCodePolicy

@@ -32,48 +32,51 @@ class SendAttendanceCertificate extends Command
     public function handle()
     {
         $today = Carbon::today();
-        $data = [];
-        $orders = Order::with('schedule')
-            ->whereHas('payment', function ($query) {
-                $query->where('status', 'success');
-            })
-            ->whereHas('schedule', function ($query) {
-                $query->where('certificate_status', false);
-            })
-            ->get();
-        foreach ($orders as $order) {
-            $schedules = $order->schedule;
-            foreach ($schedules as $schedule) {
-                $endDate = Carbon::parse($schedule->end_date);
-                if ($endDate->lt($today) && $schedule->certificate_status === false) {
-                    $order = $order;
-                    $user = $order->user;
-                    $userName = $user->name;
-                    $userEmail = $user->email;
-                    $courseName = $schedule->course->name;
-                    $batchDate = $schedule->start_date;
-                    $receiptNo = $order->payment->receipt_number;
-                    $orderNumber = $order->order_number;
 
+        // Fetch orders with successful payments and schedules that haven't issued certificates yet
+        $orders = Order::with(['schedule.course', 'user', 'payment'])
+            ->whereHas('payment', fn($query) => $query->where('status', 'success'))
+            ->whereHas('schedule', fn($query) => $query->where('certificate_status', false))
+            ->get();
+
+        foreach ($orders as $order) {
+            foreach ($order->schedule as $schedule) {
+                $endDate = Carbon::parse($schedule->end_date);
+
+                // Check if the schedule has ended and certificate hasn't been issued
+                if ($endDate->lt($today) && !$schedule->certificate_status) {
+                    $user = $order->user;
                     $data = [
-                        'userName' => $userName,
-                        'courseName' => $courseName,
-                        'batchDate' => $batchDate,
+                        'userName' => $user->name,
+                        'courseName' => $schedule->course->name,
+                        'batchDate' => $schedule->start_date,
                         'endDate' => $endDate,
-                        'receiptNo' => $receiptNo,
-                        'orderNumber' => $orderNumber,
+                        'receiptNo' => $order->payment->receipt_number,
+                        'orderNumber' => $order->order_number,
                     ];
-                    $pdf = Pdf::loadView('pages.attendance-certificate', $data)->setOption(['defaultFont' => 'sans-serif'])->setPaper('a4', 'landscape');
-                    $pdfFileName = 'certificates/zoom_certificate_' . time() . '.pdf';
+
+                    // Generate PDF
+                    $pdf = Pdf::loadView('pages.attendance-certificate', $data)
+                        ->setOption(['defaultFont' => 'sans-serif'])
+                        ->setPaper('a4', 'landscape');
+
+                    // Save PDF to storage
+                    $pdfFileName = 'certificates/zoom_certificate_' . time() . '_' . $schedule->id . '.pdf';
                     $pdfPath = public_path($pdfFileName);
                     $pdf->save($pdfPath);
+
+                    // Create certificate record
                     $certificate = new Certificate([
                         'schedule_id' => $schedule->id,
                         'certificate_path' => $pdfFileName,
                     ]);
                     $user->certificates()->save($certificate);
+
+                    // Send email
                     $subject = 'Course Completion Certificate';
-                    Mail::to($userEmail)->send(new AttendingCertificateMail($pdfFileName, $subject, $userName, $courseName));
+                    Mail::to($user->email)->send(new AttendingCertificateMail($pdfFileName, $subject, $user->name, $schedule->course->name));
+
+                    // Update schedule certificate status
                     $schedule->update(['certificate_status' => true]);
                 }
             }

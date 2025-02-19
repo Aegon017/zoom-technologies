@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Order;
 use App\Models\User;
+use App\Models\Order;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class OrderPolicy
@@ -104,5 +104,39 @@ class OrderPolicy
     public function reorder(User $user): bool
     {
         return $user->can('{{ Reorder }}');
+    }
+
+
+    /**
+     * Determine whether the user can publish posts.
+     *
+     * @param  \App\Models\User  $admin
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function invoice(User $user)
+    {
+        return $user->can('invoice_order');
+    }
+
+    /**
+     * Determine whether the user can publish posts.
+     *
+     * @param  \App\Models\User  $admin
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function export(User $user)
+    {
+        return $user->can('export_order');
+    }
+
+    /**
+     * Determine whether the user can publish posts.
+     *
+     * @param  \App\Models\User  $admin
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function widgets(User $user)
+    {
+        return $user->can('widgets_order');
     }
 }

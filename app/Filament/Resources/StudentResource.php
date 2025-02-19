@@ -13,6 +13,8 @@ use App\Models\Package;
 use App\Models\Payment;
 use App\Models\Schedule;
 use App\Models\User;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Select;
@@ -30,8 +32,21 @@ use Filament\Tables\Filters\Indicator;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
-class StudentResource extends Resource
+class StudentResource extends Resource implements HasShieldPermissions
 {
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+            'export'
+        ];
+    }
+
     protected static ?string $model = Order::class;
 
     protected static ?string $label = 'Enrolled Student';
@@ -66,7 +81,9 @@ class StudentResource extends Resource
                 });
             })
             ->headerActions([
-                ExportAction::make()->exporter(OrderExporter::class),
+                ExportAction::make()
+                    ->exporter(OrderExporter::class)
+                    ->visible(auth()->user()->can('export_student')),
             ])
             ->columns([
                 TextColumn::make('user.name')->label('Username')->searchable(),

@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\MobileNumber;
 use App\Models\User;
+use App\Models\MobileNumber;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class MobileNumberPolicy

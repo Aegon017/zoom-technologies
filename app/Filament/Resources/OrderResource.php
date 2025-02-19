@@ -10,6 +10,8 @@ use App\Models\Order;
 use App\Models\Package;
 use App\Models\Payment;
 use App\Models\Schedule;
+use App\Models\User;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Select;
@@ -30,10 +32,25 @@ use Filament\Tables\Filters\Indicator;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use ZipArchive;
 
-class OrderResource extends Resource
+class OrderResource extends Resource implements HasShieldPermissions
 {
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+            'invoice',
+            'export',
+            'widgets'
+        ];
+    }
     protected static ?string $model = Order::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
@@ -417,7 +434,7 @@ class OrderResource extends Resource
                     ->action(function ($record) {
                         return response()->download(public_path($record->invoice));
                     })
-                    ->visible(fn($record) => ! is_null($record->invoice)),
+                    ->visible(fn($record) => ! is_null($record->invoice) && auth()->user()->can('invoice_order')),
                 ViewAction::make(),
             ])
             ->bulkActions([
@@ -443,11 +460,13 @@ class OrderResource extends Resource
                         } else {
                             return back()->with('error', 'Unable to create the ZIP file.');
                         }
-                    }),
+                    })
+                    ->visible(auth()->user()->can('invoice_order')),
             ])
             ->headerActions([
                 ExportAction::make()
-                    ->exporter(OrderExporter::class),
+                    ->exporter(OrderExporter::class)
+                    ->visible(auth()->user()->can('export_order')),
             ])->defaultSort('created_at', 'desc');
     }
 

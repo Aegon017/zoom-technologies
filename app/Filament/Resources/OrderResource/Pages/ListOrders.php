@@ -23,9 +23,9 @@ class ListOrders extends ListRecords
     {
         return [
             'success' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('payment', fn ($query) => $query->where('status', 'success'))),
+                ->modifyQueryUsing(fn(Builder $query) => $query->whereHas('payment', fn($query) => $query->where('status', 'success'))),
             'failure' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('payment', fn ($query) => $query->where('status', 'failure'))),
+                ->modifyQueryUsing(fn(Builder $query) => $query->whereHas('payment', fn($query) => $query->where('status', 'failure'))),
         ];
     }
 

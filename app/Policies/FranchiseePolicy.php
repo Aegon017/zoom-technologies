@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Franchisee;
 use App\Models\User;
+use App\Models\Franchisee;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class FranchiseePolicy
