@@ -3,10 +3,12 @@
 namespace App\Livewire;
 
 use App\Mail\UserEnrollMail;
+use App\Models\Schedule;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
@@ -64,8 +66,15 @@ class RegisterUser extends Component
             Auth::login($user);
             session()->flash('success', 'Registration Successful');
             $this->dispatch('registration-success');
+            $scheduleIds = Session::get('scheduleIDs');
+            $hasClassroomTraining = Schedule::whereIn('id', $scheduleIds)
+                ->where('training_mode', 'classroom')
+                ->exists();
+            if ($hasClassroomTraining) {
+                $this->dispatch('show-upload-profile');
+            }
         } catch (\Exception $e) {
-            logger()->error('Registration failed: '.$e->getMessage());
+            logger()->error('Registration failed: ' . $e->getMessage());
             session()->flash('error', 'Registration failed. Please try again.');
         }
     }

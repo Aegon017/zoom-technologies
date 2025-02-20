@@ -3,7 +3,9 @@
 namespace App\Livewire;
 
 use App\Models\PaymentGateway;
+use App\Models\Schedule;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -36,7 +38,15 @@ class PaymentMethod extends Component
 
     public function checkAuth()
     {
-        if (Auth::check()) {
+        $user = Auth::user();
+        $scheduleIds = Session::get('scheduleIDs');
+        $hasClassroomTraining = Schedule::whereIn('id', $scheduleIds)
+            ->where('training_mode', 'classroom')
+            ->exists();
+        if ($user) {
+            if (!$user->studentProfile && $hasClassroomTraining) {
+                $this->dispatch('show-upload-profile');
+            }
             $this->dispatch('show-address-form');
             $this->dispatch('show-otp-verification');
         } else {

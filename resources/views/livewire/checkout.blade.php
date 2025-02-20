@@ -334,45 +334,63 @@
             </div>
         </div>
     </body>
+    <div class="modal fade" id="studentProofPopup" tabindex="-1" role="dialog" aria-hidden="true"
+        data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog" style="z-index:1" role="document">
+            <div class="modal-content">
+                <div class="position-relative">
+                    <div class="text-center pera-content">
+                        <div class="modal-body text-left" style="height:400px; overflow-y:scroll;">
+                            <livewire:upload-proof />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const stepBadges = document.querySelectorAll('.step-badge');
+        var modalInstance;
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('studentProofPopup');
+            modalInstance = new bootstrap.Modal(modal, {
+                backdrop: 'static',
+                keyboard: false
+            });
+
             const steps = document.querySelectorAll('.step-item');
             const contents = document.querySelectorAll('.step-content');
+            const stepBadges = document.querySelectorAll('.step-badge');
 
-            function activateStep(stepNumber) {
+            const activateStep = stepNumber => {
                 stepBadges.forEach(badge => badge.classList.remove('active'));
                 steps.forEach(step => step.classList.remove('active'));
 
-                const activeBadge = document.querySelector('.step-badge[data-step="' + stepNumber + '"]');
-                const activeStep = document.getElementById('step-' + stepNumber);
+                const activeBadge = document.querySelector(`.step-badge[data-step="${stepNumber}"]`);
+                const activeStep = document.getElementById(`step-${stepNumber}`);
 
                 activeBadge?.classList.add('active');
                 activeStep?.classList.add('active');
-            }
-
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.5
             };
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    const stepNumber = entry.target.id.replace('content-', '');
-                    if (entry.isIntersecting) {
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(({
+                    isIntersecting,
+                    target
+                }) => {
+                    if (isIntersecting) {
+                        const stepNumber = target.id.split('-')[1];
                         activateStep(stepNumber);
                     }
                 });
-            }, observerOptions);
-
-            contents.forEach(content => {
-                observer.observe(content);
+            }, {
+                threshold: 0.5
             });
 
-            if (contents.length > 0) {
-                activateStep(1);
-            }
+            contents.forEach(content => observer.observe(content));
+            contents.length && activateStep(1);
         });
+
+        document.addEventListener('close-upload-profile', () => modalInstance.hide());
+        document.addEventListener('show-upload-profile', () => modalInstance.show());
     </script>
 </x-frontend-layout>
