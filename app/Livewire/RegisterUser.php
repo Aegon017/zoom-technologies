@@ -68,7 +68,7 @@ class RegisterUser extends Component
             $this->dispatch('registration-success');
             $scheduleIds = Session::get('scheduleIDs');
             $hasClassroomTraining = Schedule::whereIn('id', $scheduleIds)
-                ->where('training_mode', 'classroom')
+                ->where('training_mode', 'Classroom')
                 ->exists();
             if ($hasClassroomTraining) {
                 $this->dispatch('show-upload-profile');

@@ -1,3 +1,3 @@
 <x-filament-panels::page>
-    {{ $this->table }}
+    @dd($orders)
 </x-filament-panels::page>

@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Exports\OrderExporter;
 use App\Filament\Resources\OrderResource\Pages;
+use App\Filament\Widgets\OrdersOverview;
 use App\Models\Coupon;
 use App\Models\Course;
 use App\Models\Order;
@@ -487,6 +488,13 @@ class OrderResource extends Resource implements HasShieldPermissions
     {
         return [
             'index' => Pages\ListOrders::route('/'),
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            OrdersOverview::class,
         ];
     }
 }

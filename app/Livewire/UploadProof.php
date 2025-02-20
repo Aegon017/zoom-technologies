@@ -22,7 +22,6 @@ class UploadProof extends Component
 
     public function save()
     {
-        dd(url());
         $this->validate();
         $photoName = $this->photo->getClientOriginalName();
         $idCardName = $this->id_card->getClientOriginalName();

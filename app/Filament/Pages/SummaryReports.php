@@ -16,66 +16,19 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
-class SummaryReports extends Page implements HasTable
+class SummaryReports extends Page
 {
     use HasPageShield;
-    use InteractsWithTable;
-
+    public $orders;
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static string $view = 'filament.pages.summary-reports';
 
-    public static function table(Table $table): Table
+    public function mount()
     {
-        return $table
-            ->query(Order::whereHas('payment', fn (Builder $query) => $query->where('status', 'success')))
-            ->defaultGroup('course.name')
-            ->columns([
-                TextColumn::make('#')->rowIndex(),
-                TextColumn::make('schedule.start_date'),
-                TextColumn::make('schedule.time'),
-            ])
-            ->filters([
-                Filter::make('order_date_range')
-                    ->label('Order Date Range')
-                    ->form([
-                        ComponentsGroup::make()->schema([
-                            DatePicker::make('start_date')->maxDate(today())->label('Start Date')->required(),
-                            DatePicker::make('end_date')->label('End Date')->default(today())->required(),
-                        ]),
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query->when(
-                            $data['start_date'] && $data['end_date'],
-                            fn (Builder $query): Builder => $query->whereHas(
-                                'payment',
-                                fn (Builder $query): Builder => $query->whereBetween(
-                                    'payments.date',
-                                    [$data['start_date'], $data['end_date']]
-                                )
-                            )
-                        );
-                    })
-                    ->indicateUsing(function (array $data): array {
-                        $indicators = [];
-                        if ($data['start_date'] && $data['end_date']) {
-                            $indicators[] = Indicator::make('From: '.$data['start_date'].' To: '.$data['end_date'])
-                                ->removeField('start_date')
-                                ->removeField('end_date');
-                        }
-
-                        return $indicators;
-                    }),
-                SelectFilter::make('enrolled_by')
-                    ->options(Order::pluck('enrolled_by', 'enrolled_by'))
-                    ->searchable()
-                    ->columnSpan(2),
-            ])
-            ->actions([
-                //
-            ])
-            ->bulkActions([
-                //
-            ]);
+        $this->orders = Order::with(['schedule.course', 'user', 'payment'])
+            ->whereHas('payment', fn($query) => $query->where('status', 'success'))
+            ->get();
+        dd($this->orders);
     }
 }

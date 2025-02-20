@@ -41,7 +41,7 @@ class PaymentMethod extends Component
         $user = Auth::user();
         $scheduleIds = Session::get('scheduleIDs');
         $hasClassroomTraining = Schedule::whereIn('id', $scheduleIds)
-            ->where('training_mode', 'classroom')
+            ->where('training_mode', 'Classroom')
             ->exists();
         if ($user) {
             if (!$user->studentProfile && $hasClassroomTraining) {
