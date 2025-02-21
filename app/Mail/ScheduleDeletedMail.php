@@ -18,14 +18,17 @@ class ScheduleDeletedMail extends Mailable
 
     public $user;
 
+    public $stickyContact;
+
     /**
      * Create a new message instance.
      */
-    public function __construct($subject, $schedule, $user)
+    public function __construct($subject, $schedule, $user, $stickyContact)
     {
         $this->subject = $subject;
         $this->schedule = $schedule;
         $this->user = $user;
+        $this->stickyContact = $stickyContact;
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\ScheduleDeleted;
 use App\Mail\ScheduleDeletedMail;
 use App\Models\OrderSchedule;
+use App\Models\StickyContact;
 use Illuminate\Support\Facades\Mail;
 
 class SendChooseScheduleNotification
@@ -22,6 +23,7 @@ class SendChooseScheduleNotification
      */
     public function handle(ScheduleDeleted $event): void
     {
+        $stickyContact = StickyContact::with(['mobileNumber', 'email'])->first();
         $subject = 'Class Cancellation Notification';
         $scheduleId = $event->schedule->id;
         $orderSchedules = OrderSchedule::where('schedule_id', $scheduleId)->get();
@@ -33,7 +35,7 @@ class SendChooseScheduleNotification
         }
         if ($users) {
             foreach ($users as $user) {
-                Mail::to($user)->send(new ScheduleDeletedMail($subject, $event->schedule, $user));
+                Mail::to($user)->send(new ScheduleDeletedMail($subject, $event->schedule, $user, $stickyContact));
             }
         }
     }

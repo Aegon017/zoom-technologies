@@ -75,7 +75,7 @@ class SendAttendanceCertificate extends Command
 
                     // Send email
                     $subject = 'Course Completion Certificate';
-                    $stickyContact = StickyContact::first();
+                    $stickyContact = StickyContact::with(['mobileNumber', 'email'])->first();
                     Mail::to($user->email)->send(new AttendingCertificateMail($pdfFileName, $subject, $user->name, $schedule->course->name, $stickyContact));
 
                     // Update schedule certificate status

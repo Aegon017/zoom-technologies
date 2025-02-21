@@ -42,7 +42,7 @@ class AppServiceProvider extends ServiceProvider
         );
         Event::listen(Verified::class, function ($event) {
             $user = $event->user;
-            $stickyContact = StickyContact::first();
+            $stickyContact = StickyContact::with(['mobileNumber', 'email'])->first();
             Mail::to($user->email)->send(new EmailVerified($user, $stickyContact));
         });
 

@@ -49,7 +49,7 @@ class SendCertificate
                 $user->certificates()->save($certificate);
 
                 $subject = 'Course Completion Certificate';
-                $stickyContact = StickyContact::first();
+                $stickyContact = StickyContact::with(['mobileNumber', 'email'])->first();
                 Mail::to($userEmail)->send(new AttendingCertificateMail($pdfFileName, $subject, $userName, $courseName, $stickyContact));
                 Notification::make()
                     ->title('Certificate sent successfully')
