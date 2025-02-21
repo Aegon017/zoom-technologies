@@ -14,6 +14,7 @@ class SendEmails
 {
     public function execute(Order $order)
     {
+        $stickyContact = StickyContact::with(['mobileNumber', 'email'])->first();
         $to = $order->user->email;
         $orderMailSubject = "Payment {$order->payment->status} on your order with Zoom Technologies";
         $thankyou = Thankyou::first();
@@ -22,10 +23,9 @@ class SendEmails
         if ($order->payment->status === 'success') {
             $adminEmail = Env('ADMIN_EMAIL');
             $adminMailSubject = 'New Enrollment';
-            $stickyContact = StickyContact::with(['mobileNumber', 'email'])->first();
             Mail::to($adminEmail)->send(new AdminMail($adminMailSubject, $order, $stickyContact));
             $meetingMailSubject = 'Zoom Technologies Training Session Details';
-            Mail::to($to)->send(new MeetingMail($meetingMailSubject, $order));
+            Mail::to($to)->send(new MeetingMail($meetingMailSubject, $order, $stickyContact));
         }
     }
 }

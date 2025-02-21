@@ -16,13 +16,17 @@ class MeetingMail extends Mailable
 
     public $subject;
 
+    public $stickyContact;
+
+
     /**
      * Create a new message instance.
      */
-    public function __construct($meetingMailSubject, $order)
+    public function __construct($meetingMailSubject, $order, $stickyContact)
     {
         $this->subject = $meetingMailSubject;
         $this->order = $order;
+        $this->stickyContact = $stickyContact;
     }
 
     /**
