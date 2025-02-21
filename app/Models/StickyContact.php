@@ -3,16 +3,22 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class StickyContact extends Model
 {
     protected $fillable = [
-        'mobile',
-        'email',
+        'mobile_number_id',
+        'email_id',
     ];
 
-    protected $casts = [
-        'mobile' => 'array',
-        'email' => 'array',
-    ];
+    public function mobileNumber(): BelongsTo
+    {
+        return $this->belongsTo(MobileNumber::class);
+    }
+
+    public function email(): BelongsTo
+    {
+        return $this->belongsTo(Email::class);
+    }
 }

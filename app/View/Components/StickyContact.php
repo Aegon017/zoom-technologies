@@ -13,7 +13,7 @@ class StickyContact extends Component
 
     public function __construct()
     {
-        $this->stickyContact = ModelsStickyContact::find(1);
+        $this->stickyContact = ModelsStickyContact::first();
     }
 
     /**

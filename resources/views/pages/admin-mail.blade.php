@@ -156,17 +156,18 @@
                 </tr>
                 <tr>
                     <td>Price:</td>
-                    <td>{{ $order->payment->currency }} {{ $order->courseOrPackage_price }}/-</td>
+                    <td>{{ $order->payment->currency }}
+                        {{ rtrim(rtrim(number_format($order->courseOrPackage_price, 3, '.', ''), '0'), '.') }} /-</td>
                 </tr>
-                @if ($order->discount != 0)
-                    <tr>
-                        <td>Discount @if ($order->payment->coupon)
-                                ( {{ $order->payment->coupon->code }} )
-                            @endif:</td>
-                        <td>{{ $order->payment->currency }}
-                            {{ rtrim(rtrim(number_format($order->discount, 3, '.', ''), '0'), '.') }}/-</td>
-                    </tr>
-                @endif
+                <tr>
+                    <td>Discount:
+                        @if ($order->payment->coupon)
+                            ( {{ $order->payment->coupon->code }} )
+                        @endif:
+                    </td>
+                    <td>- {{ $order->payment->currency }}
+                        {{ rtrim(rtrim(number_format($order->discount, 3, '.', ''), '0'), '.') }}/-</td>
+                </tr>
                 <tr>
                     <td>Taxes:</td>
                     <td>
@@ -186,6 +187,11 @@
         </table>
         <p>Thank you for being a part of our educational community! Please ensure the student receives all necessary
             materials to start their course.</p>
+        <p>
+            For any further assistance or query feel free to reach out to us by Call/ WhatsApp at
+            {{ $stickyContact->mobileNumber->number }}
+            or emailing us at {{ $stickyContact->email->email }}.
+        </p>
         <p>Best regards,<br /><strong>Zoom Technologies Team</strong></p>
     </div>
 

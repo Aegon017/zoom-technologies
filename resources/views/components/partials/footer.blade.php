@@ -88,12 +88,3 @@
         </div>
     </footer>
 @endif
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.mobile-link').forEach((link, index) => {
-            const fullNumber = link.getAttribute('data-full-number');
-            link.textContent = index > 0 ? fullNumber.replace(/^\+91/, '') : fullNumber;
-        });
-    });
-</script>

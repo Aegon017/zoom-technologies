@@ -21,12 +21,17 @@ class StickyContactResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function canCreate(): bool
+    {
+        return StickyContact::count() === 0;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Select::make('mobile')->options(MobileNumber::pluck('number', 'id'))->multiple()->searchable()->required(),
-                Select::make('email')->options(Email::pluck('email', 'id'))->multiple()->searchable()->required()->required(),
+                Select::make('mobile_number_id')->options(MobileNumber::pluck('number', 'id'))->searchable()->required(),
+                Select::make('email_id')->options(Email::pluck('email', 'id'))->searchable()->required()->required(),
             ]);
     }
 
@@ -34,8 +39,8 @@ class StickyContactResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('mobile')->getStateUsing(fn ($record) => is_array($record->mobile) ? implode(', ', MobileNumber::whereIn('id', $record->mobile)->pluck('number')->toArray()) : ''),
-                TextColumn::make('email')->getStateUsing(fn ($record) => is_array($record->email) ? implode(', ', Email::whereIn('id', $record->email)->pluck('email')->toArray()) : ''),
+                TextColumn::make('mobileNumber.number'),
+                TextColumn::make('email.email'),
             ])
             ->filters([
                 //

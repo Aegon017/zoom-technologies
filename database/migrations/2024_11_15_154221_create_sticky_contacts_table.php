@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('sticky_contacts', function (Blueprint $table) {
             $table->id();
-            $table->string('mobile');
-            $table->string('email');
+            $table->foreignId('mobile_number_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('email_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -16,10 +16,13 @@ class AdminMail extends Mailable
 
     public $order;
 
-    public function __construct($adminMailSubject, $order)
+    public $stickyContact;
+
+    public function __construct($adminMailSubject, $order, $stickyContact)
     {
         $this->subject = $adminMailSubject;
         $this->order = $order;
+        $this->stickyContact = $stickyContact;
     }
 
     public function envelope(): Envelope
