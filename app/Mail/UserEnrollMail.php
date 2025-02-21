@@ -16,13 +16,16 @@ class UserEnrollMail extends Mailable
 
     public $password;
 
+    public $stickyContact;
+
     /**
      * Create a new message instance.
      */
-    public function __construct($user, $password)
+    public function __construct($user, $password, $stickyContact)
     {
         $this->user = $user;
         $this->password = $password;
+        $this->stickyContact = $stickyContact;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Mail\UserEnrollMail;
 use App\Models\Schedule;
+use App\Models\StickyContact;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -62,7 +63,8 @@ class RegisterUser extends Component
                 'phone' => $validatedData['phone'],
                 'password' => Hash::make($password),
             ]);
-            Mail::to($user->email)->send(new UserEnrollMail($user, $password));
+            $stickyContact = StickyContact::with(['mobileNumber', 'email'])->first();
+            Mail::to($user->email)->send(new UserEnrollMail($user, $password, $stickyContact));
             Auth::login($user);
             session()->flash('success', 'Registration Successful');
             $this->dispatch('registration-success');

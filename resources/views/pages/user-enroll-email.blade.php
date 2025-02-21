@@ -90,11 +90,11 @@
         <p>Password: {{ $password }}</p>
         <p>Please keep your login details safe. You can now log in to your account and begin using our services.</p>
         <p>Log in here: {{ route('login') }}</p>
-        <p>If you have any questions or need assistance, feel free to contact our support team: <br>
-            Email: priya@zoomgroup.com <br>
-            Phone: +919391191563
-        </p>
         <p>Thank you for registering with us!</p>
+        <p>
+            For any further assistance or query feel free to reach out to us by Call/ WhatsApp at
+            {{ $stickyContact->mobileNumber->number }} or emailing us at {{ $stickyContact->email->email }}.
+        </p>
         <p>Sincerely,<br /><strong>Zoom Technologies Team</strong></p>
     </div>
     <div class="footer">

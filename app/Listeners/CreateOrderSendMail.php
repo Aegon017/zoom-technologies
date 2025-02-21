@@ -11,6 +11,7 @@ use App\Mail\UserEnrollMail;
 use App\Models\Address;
 use App\Models\Order;
 use App\Models\OrderNumber;
+use App\Models\StickyContact;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
@@ -31,6 +32,7 @@ class CreateOrderSendMail
     {
         $orderNumberPrefix = OrderNumber::first()->prefix;
         $isRegistered = $event->manualOrder->is_registered;
+        $stickyContact = StickyContact::with(['mobileNumber', 'email'])->first();
         if ($isRegistered) {
             $userId = $event->manualOrder->user_id;
         } else {
@@ -44,7 +46,7 @@ class CreateOrderSendMail
             $user->phone = $userPhone;
             $user->password = $password;
             $user->save();
-            Mail::to($userEmail)->send(new UserEnrollMail($user, $password));
+            Mail::to($userEmail)->send(new UserEnrollMail($user, $password, $stickyContact));
             $userId = $user->id;
         }
         $address = Address::create([
