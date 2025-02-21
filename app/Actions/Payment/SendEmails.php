@@ -18,7 +18,7 @@ class SendEmails
         $to = $order->user->email;
         $orderMailSubject = "Payment {$order->payment->status} on your order with Zoom Technologies";
         $thankyou = Thankyou::first();
-        Mail::to($to)->send(new OrderMail($orderMailSubject, $order, $thankyou));
+        Mail::to($to)->send(new OrderMail($orderMailSubject, $order, $thankyou, $stickyContact));
 
         if ($order->payment->status === 'success') {
             $adminEmail = Env('ADMIN_EMAIL');

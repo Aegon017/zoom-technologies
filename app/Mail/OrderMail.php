@@ -19,11 +19,14 @@ class OrderMail extends Mailable
 
     public $thankyou;
 
-    public function __construct($orderMailSubject, $order, $thankyou)
+    public $stickyContact;
+
+    public function __construct($orderMailSubject, $order, $thankyou, $stickyContact)
     {
         $this->subject = $orderMailSubject;
         $this->order = $order;
         $this->thankyou = $thankyou;
+        $this->stickyContact = $stickyContact;
     }
 
     public function envelope(): Envelope

@@ -142,16 +142,14 @@
                             {{ rtrim(rtrim(number_format($order->courseOrPackage_price, 3, '.', ''), '0'), '.') }}/-
                         </td>
                     </tr>
-                    @if ($order->discount != 0)
-                        <tr>
-                            <td>Discount @if ($order->payment->coupon)
-                                    ( {{ $order->payment->coupon->code }} )
-                                @endif:</td>
-                            <td>{{ $order->payment->currency }}
-                                {{ rtrim(rtrim(number_format($order->discount, 3, '.', ''), '0'), '.') }}/-
-                            </td>
-                        </tr>
-                    @endif
+                    <tr>
+                        <td>Discount @if ($order->payment->coupon)
+                                ( {{ $order->payment->coupon->code }} )
+                            @endif:</td>
+                        <td>- {{ $order->payment->currency }}
+                            {{ rtrim(rtrim(number_format($order->discount, 3, '.', ''), '0'), '.') }}/-
+                        </td>
+                    </tr>
                     <tr>
                         <td>Taxes:</td>
                         <td>
@@ -252,16 +250,14 @@
                             {{ rtrim(rtrim(number_format($order->courseOrPackage_price, 3, '.', ''), '0'), '.') }}/-
                         </td>
                     </tr>
-                    @if ($order->discount != 0)
-                        <tr>
-                            <td>Discount @if ($order->payment->coupon)
-                                    ( {{ $order->payment->coupon->code }} )
-                                @endif:</td>
-                            <td>{{ $order->payment->currency }}
-                                {{ rtrim(rtrim(number_format($order->discount, 3, '.', ''), '0'), '.') }}/-
-                            </td>
-                        </tr>
-                    @endif
+                    <tr>
+                        <td>Discount @if ($order->payment->coupon)
+                                ( {{ $order->payment->coupon->code }} )
+                            @endif:</td>
+                        <td>- {{ $order->payment->currency }}
+                            {{ rtrim(rtrim(number_format($order->discount, 3, '.', ''), '0'), '.') }}/-
+                        </td>
+                    </tr>
                     <tr>
                         <td>Taxes:</td>
                         <td>
@@ -279,11 +275,12 @@
                     </tr>
                 </tbody>
             </table>
-            <p>
-                For any further assistance or query feel free to reach out to us by Call/ WhatsApp at +91 9391191563 or
-                emailing us at priya@zoomgroup.com
-            </p>
+
             <p>Thank you for your understanding.</p>
+            <p>
+                For any further assistance or query feel free to reach out to us by Call/ WhatsApp at
+                {{ $stickyContact->mobileNumber->number }} or emailing us at {{ $stickyContact->email->email }}.
+            </p>
             <p>Sincerely,<br /><strong>Zoom Technologies Team</strong></p>
         </div>
     @endif
