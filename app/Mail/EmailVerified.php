@@ -12,14 +12,17 @@ class EmailVerified extends Mailable
 {
     public $user;
 
+    public $stickyContact;
+
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($user)
+    public function __construct($user, $stickyContact)
     {
         $this->user = $user;
+        $this->stickyContact = $stickyContact;
     }
 
     /**

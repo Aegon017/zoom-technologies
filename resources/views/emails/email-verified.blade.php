@@ -97,6 +97,10 @@
             have any questions or need assistance, don't hesitate to reach out to our support team. We're here to help!
         </p>
         <hr>
+        <p>
+            For any further assistance or query feel free to reach out to us by Call/ WhatsApp at
+            {{ $stickyContact->mobileNumber->number }} or emailing us at {{ $stickyContact->email->email }}.
+        </p>
         <p>Best regards,<br /><strong>Zoom Technologies Team</strong></p>
     </div>
 

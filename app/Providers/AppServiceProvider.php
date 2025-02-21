@@ -9,6 +9,7 @@ use App\Listeners\CreateOrderSendMail;
 use App\Listeners\SendChooseScheduleNotification;
 use App\Listeners\SendMeetingCredentialsUpdatedEmail;
 use App\Mail\EmailVerified;
+use App\Models\StickyContact;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
@@ -41,7 +42,8 @@ class AppServiceProvider extends ServiceProvider
         );
         Event::listen(Verified::class, function ($event) {
             $user = $event->user;
-            Mail::to($user->email)->send(new EmailVerified($user));
+            $stickyContact = StickyContact::first();
+            Mail::to($user->email)->send(new EmailVerified($user, $stickyContact));
         });
 
         // Livewire::setScriptRoute(function ($handle) {
