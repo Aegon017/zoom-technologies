@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\MeetingCredentialsUpdatedEvent;
 use App\Mail\UpdatedMeetingMail;
 use App\Models\OrderSchedule;
+use App\Models\StickyContact;
 use Illuminate\Support\Facades\Mail;
 
 class SendMeetingCredentialsUpdatedEmail
@@ -22,6 +23,7 @@ class SendMeetingCredentialsUpdatedEmail
      */
     public function handle(MeetingCredentialsUpdatedEvent $event): void
     {
+        $stickyContact = StickyContact::with(['mobileNumber', 'email'])->first();
         $subject = 'Updated meeting credentials';
         $scheduleId = $event->schedule->id;
         $orderSchedules = OrderSchedule::where('schedule_id', $scheduleId)->get();
@@ -33,7 +35,7 @@ class SendMeetingCredentialsUpdatedEmail
         }
         if ($users) {
             foreach ($users as $user) {
-                Mail::to($user)->send(new UpdatedMeetingMail($subject, $event->schedule));
+                Mail::to($user)->send(new UpdatedMeetingMail($subject, $event->schedule, $stickyContact));
             }
         }
     }

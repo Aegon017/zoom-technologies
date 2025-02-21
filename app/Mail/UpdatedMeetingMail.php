@@ -16,13 +16,16 @@ class UpdatedMeetingMail extends Mailable
 
     public $subject;
 
+    public $stickyContact;
+
     /**
      * Create a new message instance.
      */
-    public function __construct($subject, $schedule)
+    public function __construct($subject, $schedule, $stickyContact)
     {
         $this->subject = $subject;
         $this->schedule = $schedule;
+        $this->stickyContact = $stickyContact;
     }
 
     /**
