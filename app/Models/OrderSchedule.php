@@ -31,7 +31,8 @@ class OrderSchedule extends Model
                 $orderSchedule->saveQuietly();
                 $user = $orderSchedule->order->user;
                 $order = $orderSchedule->order;
-                Mail::to($user->email)->send(new ScheduleUpdatedMail($order));
+                $stickyContact = StickyContact::with(['mobileNumber', 'email'])->first();
+                Mail::to($user->email)->send(new ScheduleUpdatedMail($order, $stickyContact));
             }
         });
     }

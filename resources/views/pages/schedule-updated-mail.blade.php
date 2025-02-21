@@ -110,6 +110,10 @@
             <hr>
         @endforeach
         <p>Thank you for your purchase! We hope you enjoy your experience.</p>
+        <p>
+            For any further assistance or query feel free to reach out to us by Call/ WhatsApp at
+            {{ $stickyContact->mobileNumber->number }} or emailing us at {{ $stickyContact->email->email }}.
+        </p>
         <p>Sincerely,<br /><strong>Zoom Technologies Team</strong></p>
     </div>
 

@@ -14,12 +14,15 @@ class ScheduleUpdatedMail extends Mailable
 
     public $order;
 
+    public $stickyContact;
+
     /**
      * Create a new message instance.
      */
-    public function __construct($order)
+    public function __construct($order, $stickyContact)
     {
         $this->order = $order;
+        $this->stickyContact = $stickyContact;
     }
 
     /**
