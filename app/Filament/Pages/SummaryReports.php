@@ -22,57 +22,72 @@ class SummaryReports extends Page
 
     public function mount()
     {
-        $this->orders = Order::with('course', 'schedule')->get();
+        $this->loadOrders();
+        $this->isLoaded = true;
+    }
+
+    protected function loadOrders()
+    {
+        $this->orders = Order::with('course', 'schedule', 'payment')->get();
         $this->groupedOrders = $this->processOrders($this->orders);
         $this->records = $this->groupedOrders;
-        $this->isLoaded = true;
     }
 
     protected function processOrders($orders)
     {
-        $grouped = $orders->groupBy(function ($order) {
-            return $order->course->name;
-        });
+        return $orders->groupBy(fn($order) => $order->course->name)
+            ->map(fn($courseOrders, $courseName) => $this->getCourseSummary($courseOrders, $courseName))
+            ->values()
+            ->toArray();
+    }
 
-        $result = [];
-        foreach ($grouped as $courseName => $courseOrders) {
-            $totalPayment = $courseOrders->sum(function ($order) {
-                return $order->payment ? $order->payment->amount : 0;
-            });
+    protected function getCourseSummary($courseOrders, $courseName)
+    {
+        $paymentsByCurrency = [];
+        $batches = $this->getBatches($courseOrders);
 
-            $batches = [];
+        foreach ($courseOrders as $order) {
+            $amount = $order->payment->amount ?? 0;
+            $currency = $order->payment->currency ?? 'USD'; // Default to USD if no currency is set
 
-            foreach ($courseOrders as $order) {
-                foreach ($order->schedule as $schedule) {
-                    $dateKey = $schedule->start_date;
-                    if (!isset($batches[$dateKey])) {
-                        $batches[$dateKey] = [
-                            'times' => [],
-                            'payment_count' => 0,
-                        ];
-                    }
-                    $batches[$dateKey]['times'][] = $schedule->start_time;
-                    $batches[$dateKey]['payment_count']++;
-                }
+            if (!isset($paymentsByCurrency[$currency])) {
+                $paymentsByCurrency[$currency] = 0;
             }
-            $batchDetails = [];
-            foreach ($batches as $date => $data) {
-                $uniqueTimes = array_unique($data['times']);
-                $timeCount = count($uniqueTimes);
-                $paymentCount = $data['payment_count'];
-                $timeString = implode(', ', $uniqueTimes);
-
-                $batchDetails[] = "$date ($paymentCount payment" . ($paymentCount > 1 ? 's' : '') . ": $timeCount time" . ($timeCount > 1 ? 's' : '') . ": $timeString)";
-            }
-
-            $result[] = [
-                'course_name' => $courseName,
-                'total_payment' => $totalPayment,
-                'number_of_batches' => count($batches),
-                'batch_dates_and_times' => implode('; ', $batchDetails),
-            ];
+            $paymentsByCurrency[$currency] += $amount;
         }
 
-        return $result;
+        return [
+            'course_name' => $courseName,
+            'payments_by_currency' => $paymentsByCurrency,
+            'number_of_batches' => count($batches),
+            'batch_dates_and_times' => $this->formatBatchDetails($batches),
+        ];
+    }
+
+    protected function getBatches($courseOrders)
+    {
+        $batches = [];
+
+        foreach ($courseOrders as $order) {
+            foreach ($order->schedule as $schedule) {
+                $dateKey = $schedule->start_date;
+                $batches[$dateKey]['times'][] = $schedule->start_time;
+                $batches[$dateKey]['payment_count'] = ($batches[$dateKey]['payment_count'] ?? 0) + 1;
+            }
+        }
+
+        return $batches;
+    }
+
+    protected function formatBatchDetails($batches)
+    {
+        return collect($batches)->map(function ($data, $date) {
+            $uniqueTimes = array_unique($data['times']);
+            $timeCount = count($uniqueTimes);
+            $paymentCount = $data['payment_count'];
+            $timeString = implode(', ', $uniqueTimes);
+
+            return "$date ($paymentCount payment" . ($paymentCount > 1 ? 's' : '') . ": $timeCount time" . ($timeCount > 1 ? 's' : '') . ": $timeString)";
+        })->implode('; ');
     }
 }
