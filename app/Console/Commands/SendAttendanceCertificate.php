@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Mail\AttendingCertificateMail;
 use App\Models\Certificate;
 use App\Models\Order;
+use App\Models\StickyContact;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -74,7 +75,8 @@ class SendAttendanceCertificate extends Command
 
                     // Send email
                     $subject = 'Course Completion Certificate';
-                    Mail::to($user->email)->send(new AttendingCertificateMail($pdfFileName, $subject, $user->name, $schedule->course->name));
+                    $stickyContact = StickyContact::first();
+                    Mail::to($user->email)->send(new AttendingCertificateMail($pdfFileName, $subject, $user->name, $schedule->course->name, $stickyContact));
 
                     // Update schedule certificate status
                     $schedule->update(['certificate_status' => true]);

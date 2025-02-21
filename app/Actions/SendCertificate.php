@@ -4,6 +4,7 @@ namespace App\Actions;
 
 use App\Mail\AttendingCertificateMail;
 use App\Models\Certificate;
+use App\Models\StickyContact;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Filament\Notifications\Notification;
@@ -48,7 +49,8 @@ class SendCertificate
                 $user->certificates()->save($certificate);
 
                 $subject = 'Course Completion Certificate';
-                Mail::to($userEmail)->send(new AttendingCertificateMail($pdfFileName, $subject, $userName, $courseName));
+                $stickyContact = StickyContact::first();
+                Mail::to($userEmail)->send(new AttendingCertificateMail($pdfFileName, $subject, $userName, $courseName, $stickyContact));
                 Notification::make()
                     ->title('Certificate sent successfully')
                     ->body('The certificate for the course <strong>' . $courseName . '</strong> has been sent to <strong>' . $userName . '</strong>.')

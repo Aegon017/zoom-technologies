@@ -21,15 +21,18 @@ class AttendingCertificateMail extends Mailable
 
     public $courseName;
 
+    public $stickyContact;
+
     /**
      * Create a new message instance.
      */
-    public function __construct($pdfFileName, $subject, $userName, $courseName)
+    public function __construct($pdfFileName, $subject, $userName, $courseName, $stickyContact)
     {
         $this->subject = $subject;
         $this->pdfFileName = $pdfFileName;
         $this->userName = $userName;
         $this->courseName = $courseName;
+        $this->stickyContact = $stickyContact;
     }
 
     /**

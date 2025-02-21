@@ -7,10 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <title>Course Completion Certificate</title>
     <style>
-        /* public/css/style.css */
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #f5f5f5;
@@ -91,8 +89,10 @@
             find your certificate attached to this email. If you have any questions or require further assistance, feel
             free to reach out.</p>
         <p>Congratulations on completing the course, and we wish you continued success in your learning journey.</p>
-        <p>For any further assistance or query feel free to reach out to us by Call/ WhatsApp at +91 9391191563 or
-            emailing us at priya@zoomgroup.com</p>
+        <p>
+            For any further assistance or query feel free to reach out to us by Call/ WhatsApp at
+            {{ $stickyContact->mobileNumber->number }} or emailing us at {{ $stickyContact->email->email }}.
+        </p>
         <p>Sincerely,<br /><strong>Zoom Technologies Team</strong></p>
     </div>
     <div class="footer">
