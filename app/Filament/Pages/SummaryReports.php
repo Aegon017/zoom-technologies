@@ -83,6 +83,9 @@ class SummaryReports extends Page implements HasForms
     {
 
         $query = Order::with('course', 'schedule', 'payment')
+            ->whereHas('payment', function ($q) {
+                $q->where('status', 'success');
+            })
             ->when($this->paymentDate, function ($q) {
                 $q->whereHas('payment', function ($q) {
                     $q->whereDate('date', $this->paymentDate);
