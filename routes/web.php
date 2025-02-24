@@ -61,12 +61,3 @@ Route::get('/zoom-technologies/filament/exports/{export}/download', DownloadExpo
     ->middleware(['web', 'auth']);
 
 Route::any('/phonepe/callback', [PaymentController::class, 'phonepeCallback'])->name('phonepe.callback');
-
-
-Route::get('/test', function () {
-    $generateInvoice = new GenerateInvoice();
-    $order = Order::first();
-    $address = null;
-    $pdfFileName = $generateInvoice->execute($order, $address);
-    dump($pdfFileName);
-});
