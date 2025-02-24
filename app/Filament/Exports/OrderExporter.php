@@ -32,7 +32,10 @@ class OrderExporter extends Exporter
             ExportColumn::make('schedule.duration')->label('Duration')->enabledByDefault(false),
             ExportColumn::make('schedule.duration_type')->label('Duration type')->enabledByDefault(false),
             ExportColumn::make('schedule.start_date')->label('Batch date')->enabledByDefault(false),
-            ExportColumn::make('schedule.end_date')->label('End date')->enabledByDefault(false),
+            ExportColumn::make('schedule.end_date')
+                ->label('End date')
+                ->formatStateUsing(fn($state) => $state !== null ? $state : 'Not available')
+                ->enabledByDefault(false),
             ExportColumn::make('schedule.time')->label('Batch time')->enabledByDefault(false),
             ExportColumn::make('schedule.training_mode')->label('Training mode')->enabledByDefault(false),
             ExportColumn::make('courseOrPackage_price')->label('Course price')->enabledByDefault(false),
