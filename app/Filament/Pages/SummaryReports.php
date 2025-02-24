@@ -82,7 +82,7 @@ class SummaryReports extends Page implements HasForms
     public function loadOrders()
     {
 
-        $query = Order::with('course', 'schedule', 'payment')
+        $query = Order::with(['course', 'schedule', 'payment'])
             ->whereHas('payment', function ($q) {
                 $q->where('status', 'success');
             })
@@ -99,6 +99,17 @@ class SummaryReports extends Page implements HasForms
                     $q->where('training_mode', $this->trainingMode);
                 });
             });
+
+        $orders = $query->get();
+
+        // Load courses if not already loaded
+        $orders->each(function ($order) {
+            if (!$order->course && !empty($order->courses)) {
+                $order->course = \App\Models\Course::whereIn('id', $order->courses)->get();
+            }
+        });
+
+        $this->orders = $orders;
 
         $this->orders = $query->get();
         $this->currencies = $this->getUniqueCurrencies();
@@ -126,7 +137,7 @@ class SummaryReports extends Page implements HasForms
         foreach ($orders as $order) {
             if (!$order->payment) continue;
 
-            $courseName = $order->course->name ?? '(blank)';
+            $courseName = $order->course->name ?? $order->package->name;
             $currency = $order->payment->currency ?? 'USD';
             $amount = $order->payment->amount ?? 0;
 

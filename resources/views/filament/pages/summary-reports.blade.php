@@ -61,11 +61,11 @@
                                     <x-filament-tables::cell class="font-bold text-blue-800 text-base">
                                         📚 {{ $courseName }}
                                     </x-filament-tables::cell>
-                                    <x-filament-tables::cell class="font-semibold text-blue-700">
+                                    <x-filament-tables::cell class="font-semibold text-blue-700 text-center">
                                         {{ $courseData['count'] }}
                                     </x-filament-tables::cell>
                                     @foreach ($this->currencies as $currency)
-                                        <x-filament-tables::cell class="text-right font-semibold text-blue-700">
+                                        <x-filament-tables::cell class="font-semibold text-blue-700">
                                             {{ $this->formatCurrency($courseData['sums'][$currency] ?? 0, $currency) }}
                                         </x-filament-tables::cell>
                                     @endforeach
@@ -75,13 +75,18 @@
                                     <!-- Date Subgroup -->
                                     <x-filament-tables::row class="bg-gray-50 hover:bg-gray-100">
                                         <x-filament-tables::cell class="pl-8 font-medium text-gray-700">
-                                            📅 {{ \Carbon\Carbon::parse($date)->format('M d, Y') }}
+                                            @foreach (array_map('trim', explode(',', $date)) as $d)
+                                                @if ($loop->iteration > 1)
+                                                    ,
+                                                @endif
+                                                📅 {{ \Carbon\Carbon::parse(explode(',', $d)[0])->format('M d, Y') }}
+                                            @endforeach
                                         </x-filament-tables::cell>
-                                        <x-filament-tables::cell class="text-gray-600">
+                                        <x-filament-tables::cell class="text-gray-600 text-center">
                                             {{ $dateData['count'] }}
                                         </x-filament-tables::cell>
                                         @foreach ($this->currencies as $currency)
-                                            <x-filament-tables::cell class="text-right text-gray-600">
+                                            <x-filament-tables::cell class="text-gray-600">
                                                 {{ $this->formatCurrency($dateData['sums'][$currency] ?? 0, $currency) }}
                                             </x-filament-tables::cell>
                                         @endforeach
@@ -91,13 +96,18 @@
                                         <!-- Time Subgroup -->
                                         <x-filament-tables::row class="hover:bg-gray-50">
                                             <x-filament-tables::cell class="pl-16 text-gray-500 text-sm">
-                                                ⏰ {{ \Carbon\Carbon::parse($time)->format('h:i A') }}
+                                                @foreach (array_map('trim', explode(',', $time)) as $t)
+                                                    @if ($loop->iteration > 1)
+                                                        ,
+                                                    @endif
+                                                    ⏰ {{ \Carbon\Carbon::parse(explode(',', $t)[0])->format('h:i A') }}
+                                                @endforeach
                                             </x-filament-tables::cell>
-                                            <x-filament-tables::cell class="text-gray-500 text-sm">
+                                            <x-filament-tables::cell class="text-gray-500 text-sm text-center">
                                                 {{ $timeData['count'] }}
                                             </x-filament-tables::cell>
                                             @foreach ($this->currencies as $currency)
-                                                <x-filament-tables::cell class="text-right text-gray-500 text-sm">
+                                                <x-filament-tables::cell class="text-gray-500 text-sm">
                                                     {{ $this->formatCurrency($timeData['sums'][$currency] ?? 0, $currency) }}
                                                 </x-filament-tables::cell>
                                             @endforeach
@@ -118,11 +128,11 @@
                                 <x-filament-tables::cell class="font-bold text-blue-900 text-lg">
                                     🏆 Grand Total
                                 </x-filament-tables::cell>
-                                <x-filament-tables::cell class="font-bold text-blue-900 text-lg">
+                                <x-filament-tables::cell class="font-bold text-blue-900 text-lg text-center">
                                     {{ $grandTotals['count'] }}
                                 </x-filament-tables::cell>
                                 @foreach ($this->currencies as $currency)
-                                    <x-filament-tables::cell class="font-bold text-blue-900 text-lg text-right">
+                                    <x-filament-tables::cell class="font-bold text-blue-900 text-lg">
                                         {{ $this->formatCurrency($grandTotals['sums'][$currency] ?? 0, $currency) }}
                                     </x-filament-tables::cell>
                                 @endforeach
