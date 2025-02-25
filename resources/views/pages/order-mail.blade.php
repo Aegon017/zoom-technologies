@@ -146,7 +146,7 @@
                         <td>Discount @if ($order->payment->coupon)
                                 ( {{ $order->payment->coupon->code }} )
                             @endif:</td>
-                        <td>- {{ $order->payment->currency }}
+                        <td>{{ $order->payment->currency }}
                             {{ rtrim(rtrim(number_format($order->discount, 3, '.', ''), '0'), '.') }}/-
                         </td>
                     </tr>
@@ -254,7 +254,7 @@
                         <td>Discount @if ($order->payment->coupon)
                                 ( {{ $order->payment->coupon->code }} )
                             @endif:</td>
-                        <td>- {{ $order->payment->currency }}
+                        <td>{{ $order->payment->currency }}
                             {{ rtrim(rtrim(number_format($order->discount, 3, '.', ''), '0'), '.') }}/-
                         </td>
                     </tr>
